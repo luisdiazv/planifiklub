@@ -1,7 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import { supabase } from './API/SupabaseAPI';
 
 function App() {
+
+  async function fetchA() {
+    const { data, error } = await supabase.from('a').select('*');
+    
+    if (error) {
+      console.error('Error al obtener datos:', error);
+      return;
+    }
+
+    data.forEach(a => {
+      console.log(a); 
+    });
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +32,7 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={fetchA}>Boton</button>
       </header>
     </div>
   );
