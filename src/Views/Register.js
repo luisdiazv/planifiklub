@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import hash from "../Util/Hash"; // Para hashear la contraseña
+import hash from "../Util/Hash";
 import "./testing.css";
 import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
+import { codigoAuth, enviarCorreo } from "../Util/emailService";
 
 const Register = () => {
     const [nombres, setNombres] = useState("");
@@ -38,6 +39,19 @@ const Register = () => {
             };
 
             console.log("User Created!", user);
+
+            const codigo = await codigoAuth();
+            console.log("Codigo Creado!")
+
+            const sentEmail = await enviarCorreo(user, codigo);
+
+            if (sentEmail) {
+                console.log("Email sent");
+            } else {
+                console.log("Email NOT sent");
+            }
+            //Abrir pop-up
+
             const response = await registrarUsuario(user);
             console.log("Response: ", response);
 
