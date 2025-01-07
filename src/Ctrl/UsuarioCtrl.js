@@ -16,4 +16,21 @@ export const verificarUsuario = async (username, password) => {
   }
 };
 
-export default verificarUsuario;
+export const registrarUsuario = async (usuario) => {
+  try {
+    const { data, error } = await supabase.from("usuario").insert(usuario);
+
+    if (error) {
+      console.error("Error registrando usuario:", error.message);
+      throw new Error("No se pudo registrar el usuario: " + error.message);
+    }
+
+    console.log("Usuario registrado con éxito:", data);
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al registrar el usuario: " + error.message);
+  }
+};
+
+export default {verificarUsuario, registrarUsuario};
