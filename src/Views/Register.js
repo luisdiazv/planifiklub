@@ -13,6 +13,10 @@ const Register = () => {
     const [documento, setDocumento] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [inputCode, setInputCode] = useState("");
+    const [authCode, setAuthCode] = useState("");
+    const [isCodeValid, setIsCodeValid] = useState(false);
 
     const tiposDocumento = [
         "Cedula de Ciudadanía",
@@ -40,20 +44,18 @@ const Register = () => {
 
             console.log("User Created!", user);
 
-            const codigo = await codigoAuth();
+            const codigo = codigoAuth();
+            setAuthCode(codigo);
             console.log("Codigo Creado!")
 
             const sentEmail = await enviarCorreo(user, codigo);
 
-            if (sentEmail) {
-                console.log("Email sent");
-            } else {
-                console.log("Email NOT sent");
+            if (sentEmail) { 
+                console.log("Email sent"); 
+                setIsPopupVisible(true);
+            } else { 
+                console.log("Email NOT sent"); 
             }
-            //Abrir pop-up
-
-            const response = await registrarUsuario(user);
-            console.log("Response: ", response);
 
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error);
@@ -150,6 +152,51 @@ const Register = () => {
                     Registrarme
                 </button>
             </form>
+
+            {isPopupVisible && (
+                <div className="popup-container">
+                    <div className="popup">
+                        <h3>Verificación de Código</h3>
+                        <p>Ingresa el código de verificación que hemos enviado a tu correo:</p>
+                        <input
+                            type="text"
+                            value={inputCode}
+                            onChange={(e) => setInputCode(e.target.value)}
+                            placeholder="Código de verificación"
+                        />
+                        <button
+                            onClick={async () => {
+                                if (inputCode === authCode.toString()) {
+                                    setIsCodeValid(true);
+                                    setIsPopupVisible(false);
+                                    try {
+                                        const user = {
+                                            nombres,
+                                            apellidos,
+                                            correo,
+                                            teléfono,
+                                            documento,
+                                            tipo_documento,
+                                            password: await hash(password),
+                                            socio: false
+                                        };
+
+                                        const response = await registrarUsuario(user);
+                                        console.log("Usuario registrado: ", response);
+                                    } catch (error) {
+                                        console.error("Error al registrar usuario:", error);
+                                    }
+                                } else {
+                                    alert("Código incorrecto. Por favor, intenta de nuevo.");
+                                }
+                            }}
+                        >
+                            Verificar
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 };
