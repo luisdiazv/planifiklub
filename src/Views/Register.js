@@ -29,7 +29,6 @@ const Register = () => {
         e.preventDefault();
         try {
             const passwordHash = await hash(password);
-            console.warn(passwordHash);
 
             const user = {
                 nombres,
@@ -42,11 +41,8 @@ const Register = () => {
                 socio: false
             };
 
-            console.log("User Created!", user);
-
             const codigo = codigoAuth();
             setAuthCode(codigo);
-            console.log("Codigo Creado!")
 
             const sentEmail = await enviarCorreo(user, codigo);
 
@@ -159,7 +155,7 @@ const Register = () => {
                         <h3>Verificación de Código</h3>
                         <p>Ingresa el código de verificación que hemos enviado a tu correo:</p>
                         <input
-                            type="text"
+                            type="number"
                             value={inputCode}
                             onChange={(e) => setInputCode(e.target.value)}
                             placeholder="Código de verificación"
@@ -180,9 +176,9 @@ const Register = () => {
                                             password: await hash(password),
                                             socio: false
                                         };
-
                                         const response = await registrarUsuario(user);
                                         console.log("Usuario registrado: ", response);
+                                        alert("Ha sido registrado con exito!")
                                     } catch (error) {
                                         console.error("Error al registrar usuario:", error);
                                     }
