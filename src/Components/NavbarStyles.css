@@ -1,0 +1,86 @@
+.NavbarItems {
+    display: flex;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px 0 #560601;
+    width: 100%;
+    background-color: #7C0A01;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.nav-link-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-decoration: none;
+    padding-left: 1rem;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #DDAD41;
+    cursor: pointer;
+    height: 100%;
+}
+
+.logoContainer img {
+    height: 80%;
+    width: auto;
+    padding: 0.5rem;
+}
+
+.navbar-logo {
+    font-size: 3rem;
+    color: #DDAD41;
+    font-family: 'FoghlihtenNo01';
+    font-weight: lighter;
+}
+
+.menu-icons {
+    display: block;
+    cursor: pointer;
+    color: white;
+}
+
+.menu-icons i {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding-right: 1rem;
+}
+
+.nav-menu li {
+    margin: 0 15px;
+}
+
+.nav-links {
+    text-decoration: none;
+    color: white;
+    font-family: 'FoghlihtenNo01';
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.nav-links:hover {
+    color: #DDAD41;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}

@@ -1,14 +1,40 @@
+import './App.css';
 import { Routes, Route } from 'react-router-dom';
+
+import Navbar from './Components/Navbar.jsx';
+import Footer from './Components/footer.jsx';
+
+import Home from './routes/Home.jsx';  // Asegúrate de que la importación sea correcta
+import AboutUs from './routes/AboutUs.jsx';  // Asegúrate de que la importación sea correcta
+import AboutPk from './routes/AboutPk.jsx';  // Asegúrate de que la importación sea correcta
+import LogIn from './routes/LogIn.jsx';  // Asegúrate de que la importación sea correcta
+import SignUp from './routes/SignUp.jsx';  // Asegúrate de que la importación sea correcta
 import Register from './Views/Register';
+import NotFound from './routes/NotFound.jsx';  // Asegúrate de que la importación sea correcta
 
 function App() {
 
   return (
-    <div className='App'>
-      <Routes>
-        <Route path="/" element={<Register />} />
-      </Routes>
-    </div>
+    <>
+
+      <div className="App">
+        <Navbar />
+        <div className="App-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/AboutPk" element={<AboutPk />} />
+            <Route path="/LogIn" element={<LogIn />} />
+            <Route path="/SignUp" element={<SignUp />} />
+            <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
+            <Route path="/" element={<Register />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+
+    </>
+
   );
 }
 

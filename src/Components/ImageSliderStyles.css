@@ -1,0 +1,112 @@
+.slider {
+    position: relative;
+    padding: 60px 0 0 0;
+    width: 100%;
+    height: 70vh;
+
+    margin: 0 auto;
+}
+
+.slider-container {
+    width: 100%;
+    height: 100%;
+}
+
+.slider-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #DDAD41;
+    transition: transform 1s ease-in-out, opacity 0.5s ease-out;
+}
+
+.slider-image.visible {
+    opacity: 1;
+    transform: scale(1);
+    /* Restaurando tamaño normal al ser visible */
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #DDAD41;
+    transition: transform 1s ease-in-out, opacity 0.5s ease-out;
+}
+
+.image-description {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #DDAD41;
+    text-align: left;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.image-description p {
+    padding: 1rem 1rem 2rem 1rem;
+    margin: 0;
+}
+
+/* Buttons */
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #DDAD41;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.slider-button.left {
+    left: 10px;
+}
+
+.slider-button.right {
+    right: 10px;
+}
+
+/* Indicators */
+.slider-indicators {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: #7C0A0190;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: #DDAD41;
+}
+
+/* No images message */
+.no-images {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.5rem;
+    color: #ff0000;
+}
