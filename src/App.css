@@ -1,17 +1,15 @@
 .App {
   text-align: center;
-  background-color: #E5E5E5;
+  background-color: #dcd5c5;
   font-size: calc(10px + 2vmin);
   color: #3D0C01;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
-
-
+.App-container {
+  min-height: 100vh;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
