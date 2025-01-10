@@ -41,20 +41,20 @@ const Footer = () => {
                             <div>
                                 <h1>Nuestras Redes: </h1>
                                 <div className="social-links">
-                                    <Link to="https://www.instagram.com/compostify_col/" target="_blank" rel="noopener noreferrer">
+                                    {/* <Link to="https://www.instagram.com/compostify_col/" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-instagram"></i>
                                     </Link>
                                     <Link to="https://www.facebook.com/profile.php?id=61560271725752" target="_blank" rel="noopener noreferrer">
                                         <i class="fa-brands fa-square-facebook"></i>
-                                    </Link>
+                                    </Link> */}
 
-                                    <Link to="https://github.com/calarconf/ReactSupabaseIS2/tree/main" target="_blank" rel="noopener noreferrer">
+                                    <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
                                     </Link>
 
                                 </div>
                             </div>
-                            <div>
+                            <div style={{ textAlign: 'end' }}>
                                 <h1>Contáctanos: </h1>
                                 <div className="mails">
                                     <Link to="mailto:ludiazv@unal.edu.co" target="_blank" rel="noopener noreferrer">

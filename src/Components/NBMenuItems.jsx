@@ -17,6 +17,6 @@ export const MenuItems = [
     {
         title: "Registrarse",
         url: "/SignUp",
-        cName: "nav-links"
+        cName: "nav-links-button"
     }
 ];

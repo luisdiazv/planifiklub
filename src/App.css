@@ -9,6 +9,11 @@
 
 .App-container {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+  justify-content: center;
+  justify-items: stretch;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -31,4 +36,33 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  color: #CC9901;
+
+  select {
+    padding: 0.6rem;
+  }
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: start;
+}
+
+.form-group input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+h1,
+h2 {
+  font-family: 'FoghlihtenNo01';
+  font-weight: lighter;
 }
