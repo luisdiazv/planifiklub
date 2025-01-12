@@ -1,5 +1,11 @@
+.edit-container {
+    display: flex;
+    justify-content: space-between;
+
+}
+
 .register-container {
-    width: 60%;
+    width: 40%;
     margin: 50px auto;
     padding: 3rem;
     border: 1px solid #3D0C01;

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import logo from "./imgs/LogoGolden.gif";
 
 const Footer = () => {
+    const email = process.env.REACT_APP_EMAIL_ACTIVO;
     return (
         <div className="footer">
             <div className="footer-content">
@@ -57,21 +58,8 @@ const Footer = () => {
                             <div style={{ textAlign: 'end' }}>
                                 <h1>Contáctanos: </h1>
                                 <div className="mails">
-                                    <Link to="mailto:ludiazv@unal.edu.co" target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                        <p1>Luis Alfonso Diaz Vergel</p1>
-                                    </Link>
-                                    <Link to="mailto:mjarah@unal.edu.co" target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                        <p1>Maria Jose Jara Herrera</p1>
-                                    </Link>
-                                    <Link to="mailto:jsochoac@unal.edu.co" target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                        <p1>Jonathan Steven Ochoa Celis</p1>
-                                    </Link>
-                                    <Link to="mailto:saparadaa@unal.edu.co" target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-solid fa-chevron-right"></i>
-                                        <p1>Sergio Parada</p1>
+                                    <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+                                        <p1>Nuestro Correo</p1>
                                     </Link>
                                 </div>
                             </div>
