@@ -93,7 +93,7 @@ class Navbar extends Component {
                                     className="dropdown-item"
                                     onClick={this.closeDropdown}
                                 >
-                                    Configuración
+                                    Editar perfil
                                 </Link>
                                 <Link
                                     to="/logout"
