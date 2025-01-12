@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import verificarUsuario from "../Ctrl/UsuarioCtrl";
+import { verificarUsuario } from "../Ctrl/UsuarioCtrl";
+import accessControl from "../Util/accessControl";
 import hash from "../Util/Hash";
 import "./LogInStyles.css";
 import { Link } from 'react-router-dom';
@@ -13,18 +14,19 @@ const LogIn = () => {
         e.preventDefault();
         try {
             const passwordHash = await hash(password);
-            console.warn(passwordHash);
             const isValidUser = await verificarUsuario(email, passwordHash);
-            console.warn(isValidUser);
             if (isValidUser) {
+                await accessControl.setCurrentUser({ email }); // Establecer el usuario logueado
+                //DESCOMENTAR ESTA LINEA PARA EL TESTING
+                //await accessControl.tieneAcceso(1);
                 alert("Inicio de sesión exitoso");
             } else {
-                setErrorMessage("Usuario o contraseña incorrectos");
+                setErrorMessage("Credenciales incorrectas");
                 alert(errorMessage);
             }
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error);
-            setErrorMessage("Hubo un problema al verificar las credenciales");
+            setErrorMessage("Ocurrió un error durante el inicio de sesión");
             alert(errorMessage);
         }
     };
