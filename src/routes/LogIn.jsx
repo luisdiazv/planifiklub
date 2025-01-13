@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { verificarUsuario } from "../Ctrl/UsuarioCtrl";
+import {verificarUsuario} from "../Ctrl/UsuarioCtrl";
 import accessControl from "../Util/accessControl";
 import hash from "../Util/Hash";
+import ChangePassword from "../Views/changePassword";
 import "./LogInStyles.css";
 import { Link } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isChangePasswordVisible, setIsChangePasswordVisible] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,6 +22,9 @@ const LogIn = () => {
                 //DESCOMENTAR ESTA LINEA PARA EL TESTING
                 //await accessControl.tieneAcceso(1);
                 alert("Inicio de sesión exitoso");
+                //// Mostrar modal de cambio de contraseña, descomentar para pruebas
+                //setIsChangePasswordVisible(true); 
+                setErrorMessage("");
             } else {
                 setErrorMessage("Credenciales incorrectas");
                 alert(errorMessage);
@@ -71,6 +76,17 @@ const LogIn = () => {
                     ¿Olvidaste tu contraseña?
                 </Link>
             </div>
+            
+            {isChangePasswordVisible && ( //Interfaz basica para pruebas de cambio de contraseña
+                <div className="modal">
+                    <div className="modal-content">
+                        <ChangePassword
+                            userEmail={email}
+                            onClose={() => setIsChangePasswordVisible(false)} 
+                        />
+                    </div>
+                </div> //Quitar cuando tenga interfaz en edición de cuenta
+            )} 
         </div>
     );
 };

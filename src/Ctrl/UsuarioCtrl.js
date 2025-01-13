@@ -48,4 +48,31 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export default {verificarUsuario, registrarUsuario, getUserByEmail};
+export const actualizarPassword = async (email, newPassword) => {
+  try {
+    const { data, error, count } = await supabase
+      .from("usuario")
+      .update({ password: newPassword })
+      .eq("correo", email)
+      .select("*", { count: "exact" }); // Habilitamos el conteo exacto
+
+    if (error) {
+      console.error("Error actualizando contraseña:", error.message);
+      throw new Error("No se pudo actualizar la contraseña: " + error.message);
+    }
+
+    if (count === 0) {
+      console.warn("No se encontró un usuario con el correo proporcionado.");
+      return false; // No se actualizó ningún registro
+    }
+
+    console.log("Contraseña actualizada con éxito:", data);
+    return true; // Contraseña actualizada exitosamente
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al actualizar la contraseña: " + error.message);
+  }
+};
+
+
+export default { verificarUsuario, registrarUsuario, getUserByEmail, actualizarPassword };
