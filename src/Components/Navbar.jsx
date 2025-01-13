@@ -57,7 +57,7 @@ class Navbar extends Component {
 
     handleLogout = () => {
         // Limpiar el usuario en AccessControl
-        AccessControl.setCurrentUser(null);
+        AccessControl.setLogOut();
         // Limpiar el estado local
         this.setState({ currentUser: null });
 

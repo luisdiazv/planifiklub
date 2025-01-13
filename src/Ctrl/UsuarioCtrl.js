@@ -50,6 +50,7 @@ export const getUserByEmail = async (email) => {
 
 export const updateUsuario = async (email, updates) => {
   try {
+    console.warn(updates);
     const { data, error } = await supabase.from("usuario").update(updates).eq("correo", email);
     const usuario = await getUserByEmail(email);
     console.log("Usuario encontrado:", usuario);

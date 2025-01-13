@@ -6,7 +6,7 @@ import AccessControl from '../Util/accessControl'; // Importa AccessControl
 import "./editProfileStyles.css";
 
 const EditProfile = () => {
-    const { correo } = useParams();
+    const [correo, setCorreo] = useState("");
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
     const [teléfono, setTeléfono] = useState("");
@@ -30,6 +30,7 @@ const EditProfile = () => {
             try {
                 const usuario = AccessControl.getCurrentUser();
                 if (usuario) {
+                    setCorreo(usuario.correo);
                     setNombres(usuario.nombres);
                     setApellidos(usuario.apellidos);
                     setTeléfono(usuario.teléfono);

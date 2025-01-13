@@ -12,7 +12,11 @@ class AccessControl {
     }
 
     setCurrentUser = async (user) => {
-        this.currentUser = await getUserByEmail(user.email);;
+        this.currentUser = await getUserByEmail(user.email);
+    }
+
+    setLogOut = () => {
+        this.currentUser = null;
     }
 
     getCurrentUser() {
