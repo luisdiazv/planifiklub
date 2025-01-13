@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { updateUsuario } from "../Ctrl/UsuarioCtrl";  // Importing the API calls
 import hash from "../Util/Hash";
+import AccessControl from '../Util/accessControl'; // Importa AccessControl
 import "./editProfileStyles.css";
-import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
-import { codigoAuth, enviarCorreo } from "../Util/emailService";
 
 const EditProfile = () => {
+    const { correo } = useParams();
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
-    const [correo, setCorreo] = useState("");
     const [teléfono, setTeléfono] = useState("");
     const [tipo_documento, setTipo_documento] = useState("");
     const [documento, setDocumento] = useState("");
-    const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
-    const [inputCode, setInputCode] = useState("");
-    const [authCode, setAuthCode] = useState("");
-    const [isCodeValid, setIsCodeValid] = useState(false);
+    const [cargando, setCargando] = useState(true);
+    const [actualizando, setActualizando] = useState(false);
+    const navegar = useNavigate();
 
     const tiposDocumento = [
         "Cedula de Ciudadanía",
@@ -25,55 +24,90 @@ const EditProfile = () => {
         "Cedula de Extranjería",
     ];
 
+    // Load user data when the component mounts
+    useEffect(() => {
+        const cargarDatosUsuario = async () => {
+            try {
+                const usuario = AccessControl.getCurrentUser();
+                if (usuario) {
+                    setNombres(usuario.nombres);
+                    setApellidos(usuario.apellidos);
+                    setTeléfono(usuario.teléfono);
+                    setTipo_documento(usuario.tipo_documento);
+                    setDocumento(usuario.documento);
+                }
+            } catch (err) {
+                console.error("Error al cargar los datos del usuario:", err);
+                alert("Hubo un problema al cargar los datos.");
+                navegar("/editProfile"); // Or redirect to the desired route
+            } finally {
+                setCargando(false);
+            }
+        };
+
+        cargarDatosUsuario();
+    }, [correo, navegar]);
+
+    // Handle input change for user data
+    const handleChange = (e) => {
+        const { id, value } = e.target; // Acceder al 'id' y al 'value' del campo
+        if (id === "nombres") setNombres(value);
+        if (id === "apellidos") setApellidos(value);
+        if (id === "teléfono") setTeléfono(value);
+        if (id === "tipo_documento") setTipo_documento(value);
+        if (id === "documento") setDocumento(value);
+    };
+
+    // Submit the form for updating user data
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setActualizando(true);
         try {
-            const passwordHash = await hash(password);
-
-            const user = {
+            const usuarioActualizado = {
                 nombres,
                 apellidos,
-                correo,
                 teléfono,
-                documento,
                 tipo_documento,
-                password: passwordHash,
-                socio: false
+                documento
             };
 
-            const codigo = codigoAuth();
-            setAuthCode(codigo);
+            console.log("Datos a actualizar:", usuarioActualizado);
 
-            const sentEmail = await enviarCorreo(user, codigo);
 
-            if (sentEmail) {
-                console.log("Email sent");
-                setIsPopupVisible(true);
+            const respuesta = updateUsuario(correo, usuarioActualizado);
+
+            if (respuesta.error) {
+                setErrorMessage("Hubo un problema al actualizar el perfil.");
+                alert("Hubo un problema al actualizar el perfil.");
             } else {
-                console.log("Email NOT sent");
+                alert("Perfil actualizado exitosamente.");
+                navegar("/"); // Redirect to updated profile or another route
             }
-
-        } catch (error) {
-            console.error("Error durante el inicio de sesión:", error);
-            setErrorMessage("Hubo un problema al verificar las credenciales");
-            alert(errorMessage);
+        } catch (err) {
+            console.error("Error durante la actualización del perfil:", err);
+            setErrorMessage("Hubo un error al actualizar el perfil.");
+        } finally {
+            setActualizando(false);
         }
+    };
+
+    if (cargando) {
+        return <p className="loading-text">Cargando datos...</p>;
     }
 
     return (
         <div className="edit-container">
-            <div className="register-container">
-                <h2>Información de Usuario</h2>
+            <div className="editter-container">
+                <h2>Editar Información de Usuario</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-grouper">
                         <div className="form-group">
                             <label>Nombre:</label>
-                            <i class="fa-solid fa-pen"></i>
                             <input
                                 type="text"
                                 id="nombres"
                                 value={nombres}
-                                onChange={(e) => setNombres(e.target.value)}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -83,20 +117,10 @@ const EditProfile = () => {
                                 type="text"
                                 id="apellidos"
                                 value={apellidos}
-                                onChange={(e) => setApellidos(e.target.value)}
+                                onChange={handleChange}
+                                required
                             />
                         </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label>Correo Electrónico:</label>
-                        <input
-                            type="email"
-                            id="correo"
-                            value={correo}
-                            onChange={(e) => setCorreo(e.target.value)}
-                            required
-                        />
                     </div>
                     <div className="form-group">
                         <label>Teléfono:</label>
@@ -104,7 +128,7 @@ const EditProfile = () => {
                             type="number"
                             id="teléfono"
                             value={teléfono}
-                            onChange={(e) => setTeléfono(e.target.value)}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -114,7 +138,7 @@ const EditProfile = () => {
                             <select
                                 id="tipo_documento"
                                 value={tipo_documento}
-                                onChange={(e) => setTipo_documento(e.target.value)}
+                                onChange={handleChange}
                                 required
                             >
                                 <option value="" disabled>
@@ -133,77 +157,20 @@ const EditProfile = () => {
                                 type="number"
                                 id="documento"
                                 value={documento}
-                                onChange={(e) => setDocumento(e.target.value)}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
                     </div>
-
-                    <div className="form-group">
-                        <label>Contraseña:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <p>* Espacio obligatorio</p>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-                    <button type="submit" className="register-button">
-                        Registrarme
+                    <button type="submit" className="register-button" disabled={actualizando}>
+                        {actualizando ? "Actualizando..." : "Actualizar"}
                     </button>
                 </form>
-
-                {isPopupVisible && (
-                    <div className="popup-container">
-                        <div className="popup">
-                            <h3>Verificación de Código</h3>
-                            <p>Ingresa el código de verificación que hemos enviado a tu correo:</p>
-                            <input
-                                type="number"
-                                value={inputCode}
-                                onChange={(e) => setInputCode(e.target.value)}
-                                placeholder="Código de verificación"
-                            />
-                            <button
-                                onClick={async () => {
-                                    if (inputCode === authCode.toString()) {
-                                        setIsCodeValid(true);
-                                        setIsPopupVisible(false);
-                                        try {
-                                            const user = {
-                                                nombres,
-                                                apellidos,
-                                                correo,
-                                                teléfono,
-                                                documento,
-                                                tipo_documento,
-                                                password: await hash(password),
-                                                socio: false
-                                            };
-                                            const response = await registrarUsuario(user);
-                                            console.log("Usuario registrado: ", response);
-                                            alert("Ha sido registrado con exito!")
-                                        } catch (error) {
-                                            console.error("Error al registrar usuario:", error);
-                                        }
-                                    } else {
-                                        alert("Código incorrecto. Por favor, intenta de nuevo.");
-                                    }
-                                }}
-                            >
-                                Verificar
-                            </button>
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
-
-    )
+    );
 };
 
 export default EditProfile;

@@ -42,7 +42,7 @@ class AccessControl {
         if (vistasPermitidasIds.includes(vista)) {
             console.error("El usuario tiene acceso a la vista solicitada");
             return true;
-        }else{
+        } else {
             console.error("El usuario no tiene acceso a la vista");
             return false;
         }

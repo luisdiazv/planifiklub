@@ -3,12 +3,13 @@ import { verificarUsuario } from "../Ctrl/UsuarioCtrl";
 import accessControl from "../Util/accessControl";
 import hash from "../Util/Hash";
 import "./LogInStyles.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate(); // Aquí obtenemos la función navigate
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,18 +17,23 @@ const LogIn = () => {
             const passwordHash = await hash(password);
             const isValidUser = await verificarUsuario(email, passwordHash);
             if (isValidUser) {
-                await accessControl.setCurrentUser({ email }); // Establecer el usuario logueado
-                //DESCOMENTAR ESTA LINEA PARA EL TESTING
-                //await accessControl.tieneAcceso(1);
+                // Si no necesitas usar currentUser, puedes eliminar esta línea
+                await accessControl.setCurrentUser({ email });
+                await accessControl.tieneAcceso(1);
+
+                // Comunica a la barra de navegación que el usuario ha cambiado
+                window.dispatchEvent(new Event("userChanged"));
+
                 alert("Inicio de sesión exitoso");
+                navigate('/');
             } else {
                 setErrorMessage("Credenciales incorrectas");
-                alert(errorMessage);
+                alert("Credenciales incorrectas");
             }
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error);
             setErrorMessage("Ocurrió un error durante el inicio de sesión");
-            alert(errorMessage);
+            alert("Ocurrió un error durante el inicio de sesión");
         }
     };
 
@@ -58,7 +64,6 @@ const LogIn = () => {
                 </div>
 
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
-
                 <button type="submit" className="login-button">
                     Iniciar Sesión
                 </button>

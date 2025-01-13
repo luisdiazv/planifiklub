@@ -35,7 +35,7 @@ export const registrarUsuario = async (usuario) => {
 export const getUserByEmail = async (email) => {
   try {
     const { data, error } = await supabase.from("usuario").select("*").eq("correo", email).single();
-
+    console.log(data);
     if (error) {
       console.error("Error obteniendo usuario por correo:", error.message);
       throw new Error("No se pudo obtener el usuario: " + error.message);
@@ -48,4 +48,23 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export default {verificarUsuario, registrarUsuario, getUserByEmail};
+export const updateUsuario = async (email, updates) => {
+  try {
+    const { data, error } = await supabase.from("usuario").update(updates).eq("correo", email);
+    const usuario = await getUserByEmail(email);
+    console.log("Usuario encontrado:", usuario);
+    console.log("Datos actualizados:", data);
+    if (error) {
+      console.error(`Error al modificar usuario con ID ${email}:`, error);
+      return { data: null, error };
+    }
+
+    return { data, error: null };
+  } catch (err) {
+    console.error(`Error inesperado al modificar usuario con ID ${email}:`, err);
+    return { data: null, error: err };
+  }
+};
+
+
+export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario };
