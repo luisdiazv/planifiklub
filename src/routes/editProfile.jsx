@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, } from "react";
 import { updateUsuario } from "../Ctrl/UsuarioCtrl";  // Importing the API calls
 import hash from "../Util/Hash";
 import AccessControl from '../Util/accessControl'; // Importa AccessControl
@@ -13,9 +12,8 @@ const EditProfile = () => {
     const [tipo_documento, setTipo_documento] = useState("");
     const [documento, setDocumento] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [cargando, setCargando] = useState(true);
     const [actualizando, setActualizando] = useState(false);
-    const navegar = useNavigate();
+    
 
     const tiposDocumento = [
         "Cedula de Ciudadanía",
@@ -24,30 +22,24 @@ const EditProfile = () => {
         "Cedula de Extranjería",
     ];
 
-    // Load user data when the component mounts
-    useEffect(() => {
-        const cargarDatosUsuario = async () => {
-            try {
-                const usuario = AccessControl.getCurrentUser();
-                if (usuario) {
-                    setCorreo(usuario.correo);
-                    setNombres(usuario.nombres);
-                    setApellidos(usuario.apellidos);
-                    setTeléfono(usuario.teléfono);
-                    setTipo_documento(usuario.tipo_documento);
-                    setDocumento(usuario.documento);
-                }
-            } catch (err) {
-                console.error("Error al cargar los datos del usuario:", err);
-                alert("Hubo un problema al cargar los datos.");
-                navegar("/editProfile"); // Or redirect to the desired route
-            } finally {
-                setCargando(false);
+    const cargarDatosUsuario = async () => {
+        try {
+            const usuario = AccessControl.getCurrentUser();
+            if (usuario) {
+                setCorreo(usuario.correo);
+                setNombres(usuario.nombres);
+                setApellidos(usuario.apellidos);
+                setTeléfono(usuario.teléfono);
+                setTipo_documento(usuario.tipo_documento);
+                setDocumento(usuario.documento);
             }
-        };
-
-        cargarDatosUsuario();
-    }, [correo, navegar]);
+        } catch (err) {
+            console.error("Error al cargar los datos del usuario:", err);
+            alert("Hubo un problema al cargar los datos.");
+        }
+    };
+    
+    cargarDatosUsuario();
 
     // Handle input change for user data
     const handleChange = (e) => {
@@ -82,7 +74,6 @@ const EditProfile = () => {
                 alert("Hubo un problema al actualizar el perfil.");
             } else {
                 alert("Perfil actualizado exitosamente.");
-                navegar("/"); // Redirect to updated profile or another route
             }
         } catch (err) {
             console.error("Error durante la actualización del perfil:", err);
@@ -91,10 +82,6 @@ const EditProfile = () => {
             setActualizando(false);
         }
     };
-
-    if (cargando) {
-        return <p className="loading-text">Cargando datos...</p>;
-    }
 
     return (
         <div className="edit-container">
