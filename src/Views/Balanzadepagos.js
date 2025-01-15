@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Balanzadepagos = () => {
     const [preferenceId, setPreferenceId] = useState(null)
-    initMercadoPago('APP_USR-37ad88c6-8a8b-4999-9a8f-f0c56fc2b46f', {
+    initMercadoPago('APP_USR-559230ce-2f09-4179-959c-855f9d01f382', {
         locale: "es-CO"
     });
 
