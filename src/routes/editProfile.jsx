@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { updateUsuario } from "../Ctrl/UsuarioCtrl";  // Importing the API calls
-import hash from "../Util/Hash";
+import { useNavigate } from "react-router-dom";
+import { updateUsuario } from "../Ctrl/UsuarioCtrl"; // Importando la función de actualización
 import AccessControl from '../Util/accessControl'; // Importa AccessControl
 import "./editProfileStyles.css";
 
@@ -15,6 +14,7 @@ const EditProfile = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [cargando, setCargando] = useState(true);
     const [actualizando, setActualizando] = useState(false);
+    const [datosActualizados, setDatosActualizados] = useState(false); // Nuevo estado
     const navegar = useNavigate();
 
     const tiposDocumento = [
@@ -24,7 +24,7 @@ const EditProfile = () => {
         "Cedula de Extranjería",
     ];
 
-    // Load user data when the component mounts
+    // Cargar datos del usuario al montar el componente
     useEffect(() => {
         const cargarDatosUsuario = async () => {
             try {
@@ -40,18 +40,23 @@ const EditProfile = () => {
             } catch (err) {
                 console.error("Error al cargar los datos del usuario:", err);
                 alert("Hubo un problema al cargar los datos.");
-                navegar("/editProfile"); // Or redirect to the desired route
+                navegar("/editProfile"); // Redirige a otra página si hay error
             } finally {
                 setCargando(false);
             }
         };
 
-        cargarDatosUsuario();
-    }, [correo, navegar]);
+        if (datosActualizados) {
+            cargarDatosUsuario();  // Recargar los datos si han sido actualizados
+            setDatosActualizados(false); // Restablecer el estado
+        } else {
+            cargarDatosUsuario(); // Cargar los datos al inicio
+        }
+    }, [navegar, datosActualizados]); // Agregar 'datosActualizados' como dependencia
 
-    // Handle input change for user data
+    // Manejo de cambios en los inputs
     const handleChange = (e) => {
-        const { id, value } = e.target; // Acceder al 'id' y al 'value' del campo
+        const { id, value } = e.target;
         if (id === "nombres") setNombres(value);
         if (id === "apellidos") setApellidos(value);
         if (id === "teléfono") setTeléfono(value);
@@ -59,7 +64,7 @@ const EditProfile = () => {
         if (id === "documento") setDocumento(value);
     };
 
-    // Submit the form for updating user data
+    // Manejo del envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         setActualizando(true);
@@ -69,20 +74,28 @@ const EditProfile = () => {
                 apellidos,
                 teléfono,
                 tipo_documento,
-                documento
+                documento,
             };
 
             console.log("Datos a actualizar:", usuarioActualizado);
 
-
-            const respuesta = updateUsuario(correo, usuarioActualizado);
+            const respuesta = await updateUsuario(correo, usuarioActualizado);
 
             if (respuesta.error) {
                 setErrorMessage("Hubo un problema al actualizar el perfil.");
                 alert("Hubo un problema al actualizar el perfil.");
             } else {
+                // Actualiza los estados locales si la API devuelve los datos actualizados
+                if (respuesta.nombres) setNombres(respuesta.nombres);
+                if (respuesta.apellidos) setApellidos(respuesta.apellidos);
+                if (respuesta.teléfono) setTeléfono(respuesta.teléfono);
+                if (respuesta.tipo_documento) setTipo_documento(respuesta.tipo_documento);
+                if (respuesta.documento) setDocumento(respuesta.documento);
+
                 alert("Perfil actualizado exitosamente.");
-                navegar("/"); // Redirect to updated profile or another route
+
+                // Marcar que los datos fueron actualizados
+                setDatosActualizados(true); // Establecer el estado que indica que los datos fueron actualizados
             }
         } catch (err) {
             console.error("Error durante la actualización del perfil:", err);
@@ -92,6 +105,7 @@ const EditProfile = () => {
         }
     };
 
+    // Mostrar mensaje de carga si aún se están cargando los datos
     if (cargando) {
         return <p className="loading-text">Cargando datos...</p>;
     }
