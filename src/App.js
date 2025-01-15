@@ -11,7 +11,7 @@ import LogIn from './routes/LogIn.jsx';
 import SignUp from './routes/SignUp.jsx';
 import EditProfile from './routes/editProfile.jsx';
 import NotFound from './routes/NotFound.jsx';
-//import Balanzadepagos from './Views/Balanzadepagos.js'
+import Balanzadepagos from './routes/BalanzaDePagos.jsx';
 function App() {
   //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
   //funcion return y descomentar la primera
@@ -38,6 +38,8 @@ function App() {
             <Route path="/EditProfile" element={<EditProfile />} />
             <Route path="/SignUp" element={<SignUp />} />*/
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
+
+            <Route path="/payment" element={<Balanzadepagos />} />*/
           </Routes>
         </div>
         <Footer />
