@@ -1,31 +1,40 @@
 import React, { useState } from "react";
-import verificarUsuario from "../Ctrl/UsuarioCtrl";
+import { verificarUsuario } from "../Ctrl/UsuarioCtrl";
+import accessControl from "../Util/accessControl";
 import hash from "../Util/Hash";
 import "./LogInStyles.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const passwordHash = await hash(password);
-            console.warn(passwordHash);
             const isValidUser = await verificarUsuario(email, passwordHash);
-            console.warn(isValidUser);
             if (isValidUser) {
+                // Si no necesitas usar currentUser, puedes eliminar esta línea
+                await accessControl.setCurrentUser({ email });
+                //TESTING acceso basado en roles
+                await accessControl.tieneAcceso(20000);
+
+                // Comunica a la barra de navegación que el usuario ha cambiado
+                window.dispatchEvent(new Event("userChanged"));
+
                 alert("Inicio de sesión exitoso");
+                navigate('/');
             } else {
-                setErrorMessage("Usuario o contraseña incorrectos");
-                alert(errorMessage);
+                setErrorMessage("Credenciales incorrectas");
+                alert("Credenciales incorrectas");
             }
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error);
-            setErrorMessage("Hubo un problema al verificar las credenciales");
-            alert(errorMessage);
+            setErrorMessage("Ocurrió un error durante el inicio de sesión");
+            alert("Ocurrió un error durante el inicio de sesión");
         }
     };
 
@@ -56,7 +65,6 @@ const LogIn = () => {
                 </div>
 
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
-
                 <button type="submit" className="login-button">
                     Iniciar Sesión
                 </button>
