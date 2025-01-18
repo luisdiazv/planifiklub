@@ -66,5 +66,22 @@ export const updateUsuario = async (email, updates) => {
   }
 };
 
+export const getEventTypes = async () => {
+  try {
+    const { data, error } = await supabase.from("tipos_eventos").select("*");
 
-export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario };
+    if (error) {
+      console.error("Error obteniendo los tipos de eventos:", error.message);
+      throw new Error("No se pudo obtener los tipos de eventos: " + error.message);
+    }
+
+    //console.log("Tipos de eventos obtenidos con éxito:", data);
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los tipos de eventos: " + error.message);
+  }
+};
+
+
+export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario, getEventTypes };
