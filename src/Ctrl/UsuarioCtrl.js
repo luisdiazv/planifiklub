@@ -4,7 +4,6 @@ export const verificarUsuario = async (username, password) => {
 
   try {
     const { data, error } = await supabase.from("usuario").select("idusuario").eq("correo", username).eq("password", password);
-
     if (error) {
       console.error("Error verificando usuario:", error);
       throw new Error("No se pudo verificar el usuario");
@@ -33,4 +32,40 @@ export const registrarUsuario = async (usuario) => {
   }
 };
 
-export default {verificarUsuario, registrarUsuario};
+export const getUserByEmail = async (email) => {
+  try {
+    const { data, error } = await supabase.from("usuario").select("*").eq("correo", email).single();
+    console.log(data);
+    if (error) {
+      console.error("Error obteniendo usuario por correo:", error.message);
+      throw new Error("No se pudo obtener el usuario: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener el usuario: " + error.message);
+  }
+};
+
+export const updateUsuario = async (email, updates) => {
+  try {
+    console.warn(updates);
+    const { data, error } = await supabase.from("usuario").update(updates).eq("correo", email);
+    const usuario = await getUserByEmail(email);
+    console.log("Usuario encontrado:", usuario);
+    console.log("Datos actualizados:", data);
+    if (error) {
+      console.error(`Error al modificar usuario con ID ${email}:`, error);
+      return { data: null, error };
+    }
+
+    return { data, error: null };
+  } catch (err) {
+    console.error(`Error inesperado al modificar usuario con ID ${email}:`, err);
+    return { data: null, error: err };
+  }
+};
+
+
+export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario };
