@@ -9,7 +9,7 @@ const LogIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const navigate = useNavigate(); // Aquí obtenemos la función navigate
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,7 +19,8 @@ const LogIn = () => {
             if (isValidUser) {
                 // Si no necesitas usar currentUser, puedes eliminar esta línea
                 await accessControl.setCurrentUser({ email });
-                await accessControl.tieneAcceso(1);
+                //TESTING acceso basado en roles
+                await accessControl.tieneAcceso(20000);
 
                 // Comunica a la barra de navegación que el usuario ha cambiado
                 window.dispatchEvent(new Event("userChanged"));

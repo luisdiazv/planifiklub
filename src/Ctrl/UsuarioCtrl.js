@@ -35,7 +35,6 @@ export const registrarUsuario = async (usuario) => {
 export const getUserByEmail = async (email) => {
   try {
     const { data, error } = await supabase.from("usuario").select("*").eq("correo", email).single();
-    console.log(data);
     if (error) {
       console.error("Error obteniendo usuario por correo:", error.message);
       throw new Error("No se pudo obtener el usuario: " + error.message);

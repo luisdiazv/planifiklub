@@ -1,9 +1,9 @@
 import React, { Component, createRef } from "react";
 import "./NavbarStyles.css";
-import { MenuItems } from "./NBMenuItems";
-import { Link } from 'react-router-dom';
-import logo from './imgs/LogoGolden.gif';
-import AccessControl from '../Util/accessControl'; // Importa AccessControl
+import { MenuItems, dropdownOptions } from "./NBMenuItems";
+import { Link } from "react-router-dom";
+import logo from "./imgs/LogoGolden.gif";
+import AccessControl from "../Util/accessControl"; // Importa AccessControl
 
 class Navbar extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class Navbar extends Component {
     };
 
     toggleDropdown = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             isDropdownVisible: !prevState.isDropdownVisible,
         }));
     };
@@ -62,11 +62,14 @@ class Navbar extends Component {
         this.setState({ currentUser: null });
 
         // Redirigir a la página de inicio de sesión
-        this.props.history.push('/login');
+        this.props.history.push("/login");
     };
 
     render() {
         const { isDropdownVisible, currentUser } = this.state;
+
+        // Lista de opciones para el dropdown menu
+
 
         return (
             <nav className="NavbarItems">
@@ -91,9 +94,7 @@ class Navbar extends Component {
                                         style={{ textDecoration: "none" }}
                                         onClick={this.closeDropdown}
                                     >
-                                        <button className={item.cName}>
-                                            {item.title}
-                                        </button>
+                                        <button className={item.cName}>{item.title}</button>
                                     </Link>
                                 </li>
                             );
@@ -126,29 +127,27 @@ class Navbar extends Component {
                             </button>
                             {isDropdownVisible && (
                                 <div className="dropdown-menu">
-                                    <Link
-                                        to="/EditProfile"
-                                        className="dropdown-item"
-                                        onClick={this.closeDropdown}
-                                    >
-                                        Editar perfil
-                                    </Link>
-                                    <Link
-                                        to="/"
-                                        className="dropdown-item"
-                                        onClick={() => {
-                                            this.handleLogout(); // Manejar el cierre de sesión
-                                            this.closeDropdown(); // Cerrar el menú
-                                        }}
-                                    >
-                                        Cerrar sesión
-                                    </Link>
+                                    {dropdownOptions.map((option, idx) => (
+                                        <Link
+                                            key={idx}
+                                            to={option.path}
+                                            className="dropdown-item"
+                                            onClick={() => {
+                                                if (option.label === "Cerrar sesión") {
+                                                    this.handleLogout(); // Llama a la función local
+                                                }
+                                                this.closeDropdown(); // Cierra el menú
+                                            }}
+                                        >
+                                            {option.label}
+                                        </Link>
+                                    ))}
                                 </div>
                             )}
                         </div>
                     )}
                 </ul>
-            </nav >
+            </nav>
         );
     }
 }

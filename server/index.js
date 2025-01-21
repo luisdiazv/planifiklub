@@ -28,8 +28,8 @@ app.post("/create_preference", async (req, res) => {
                     unit_price: Number(req.body.price),
                     currency_id: "COP"
                 },
-            ],            
-            back_urls :{
+            ],
+            back_urls: {
                 success: "https://unal.edu.co/",
                 failure: "https://unal.edu.co/",
                 pending: "https://unal.edu.co/"
@@ -38,11 +38,11 @@ app.post("/create_preference", async (req, res) => {
         };
 
         const preference = new Preference(client);
-        const result = await preference.create({body});
+        const result = await preference.create({ body });
         res.json({
             id: result.id,
         });
-    }catch (error){
+    } catch (error) {
         console.log(error);
         res.status(500).json({
             error: "Error al crear la preferencia"
