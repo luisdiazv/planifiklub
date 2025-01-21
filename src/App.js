@@ -4,14 +4,14 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
-import Home from './routes/Home.jsx';
-import AboutUs from './routes/AboutUs.jsx';
-import AboutPk from './routes/AboutPk.jsx';
-import LogIn from './routes/LogIn.jsx';
-import SignUp from './routes/SignUp.jsx';
+import Home from './routes/Home.jsx';  // Asegúrate de que la importación sea correcta
+import AboutUs from './routes/AboutUs.jsx';  // Asegúrate de que la importación sea correcta
+import AboutPk from './routes/AboutPk.jsx';  // Asegúrate de que la importación sea correcta
+import LogIn from './routes/LogIn.jsx';  // Asegúrate de que la importación sea correcta
+import SignUp from './routes/SignUp.jsx';  // Asegúrate de que la importación sea correcta
 import EditProfile from './routes/editProfile.jsx';
-import NotFound from './routes/NotFound.jsx';
 import Balanzadepagos from './routes/BalanzaDePagos.jsx';
+
 function App() {
   //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
   //funcion return y descomentar la primera
@@ -24,7 +24,7 @@ function App() {
 } */
 
   return (
-    <>
+        <>
 
       <div className="App">
         <Navbar />
@@ -46,10 +46,10 @@ function App() {
       </div>
 
     </>
+    
 
 
   );
-
 }
 
 export default App;
