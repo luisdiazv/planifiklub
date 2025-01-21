@@ -1,0 +1,136 @@
+.footer {
+    position: static;
+    display: flex;
+    background: #1B1811;
+    color: #CC9901;
+    font-size: 0.8rem;
+    width: 100%;
+    height: auto;
+    margin-top: auto;
+
+}
+
+/* Other footer content styles remain the same */
+.footer-content {
+    width: 100%;
+    padding: 1.5rem 2rem;
+}
+
+.bottom {
+    display: flex;
+    text-align: start;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.bottom h1 {
+    align-self: flex-end;
+    color: #CC9901;
+    font-family: 'FoghlihtenNo01';
+}
+
+.top {
+    align-items: center;
+    text-align: start;
+    justify-content: space-between;
+    padding: 0rem 0.5rem;
+    flex: 1;
+}
+
+.top>div {
+    display: flex;
+    gap: 15px;
+}
+
+.top>div>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.top img {
+    width: 85px;
+}
+
+.logo img {
+    width: 100px;
+}
+
+
+
+.resp-footer1 {
+    display: flex;
+    flex: 1;
+}
+
+.proyect-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0rem 1rem 1rem 1rem;
+}
+
+.footer-columns {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.bottom i {
+    color: white;
+    font-size: 2.5rem;
+    margin-left: 1.5rem;
+}
+
+.bottom i:hover {
+    color: #DAA520;
+}
+
+.mails {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.mails a {
+    text-decoration: none;
+    color: white;
+    gap: 20px;
+}
+
+.mails a i {
+    font-size: 1.3rem;
+}
+
+.mails a:hover i {
+    color: #DAA520;
+}
+
+.mails a:hover {
+    color: #DAA520;
+}
+
+.User-Manual {
+    padding: 1.5rem;
+
+    a {
+        text-decoration: none;
+        width: 100%;
+        color: white;
+
+    }
+}
+
+.User-Manual a:hover {
+    color: #DAA520;
+
+}

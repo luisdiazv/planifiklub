@@ -1,10 +1,19 @@
 .App {
   text-align: center;
+  background-color: #dcd5c5;
+  font-size: calc(10px + 2vmin);
+  color: #3D0C01;
+  display: flex;
+  flex-direction: column;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+  justify-content: center;
+  justify-items: stretch;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -13,16 +22,7 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+
 
 .App-link {
   color: #61dafb;
@@ -32,7 +32,37 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  color: #CC9901;
+
+  select {
+    padding: 0.6rem;
+  }
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: start;
+}
+
+.form-group input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+h1,
+h2 {
+  font-family: 'FoghlihtenNo01';
+  font-weight: lighter;
 }
