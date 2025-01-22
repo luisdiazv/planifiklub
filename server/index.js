@@ -2,10 +2,10 @@ import express from "express"
 import cors from "cors"
 
 //SDK Mercado Pago
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Preference} from 'mercadopago';
 // Agrega credenciales
 const client = new MercadoPagoConfig({
-    accessToken: 'APP_USR-6829272797524487-011316-8512ccea19d2bf67aba53f899d1b41a0-2202170519',
+     accessToken: process.env.REACT_APP_MERCADOPAGO_API_KEY,
 });
 
 const app = express();
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 app.post("/create_preference", async (req, res) => {
     try {
         const body = {
-            items: [
+            items : [
                 {
                     title: req.body.title,
                     quantity: Number(req.body.quantity),
