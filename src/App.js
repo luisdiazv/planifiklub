@@ -18,6 +18,7 @@ import EventDetails from './routes/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 
 
+
 function App() {
   //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
   //funcion return y descomentar la primera
