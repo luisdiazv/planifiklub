@@ -11,13 +11,12 @@ import LogIn from './routes/LogIn.jsx';  // Asegúrate de que la importación se
 import SignUp from './routes/SignUp.jsx';  // Asegúrate de que la importación sea correcta
 import EditProfile from './routes/editProfile.jsx';
 import Balanzadepagos from './routes/BalanzaDePagos.jsx';
-<<<<<<< Updated upstream
+
 import NotFound from './routes/NotFound.jsx';
-=======
 
 import EventDetails from './routes/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
->>>>>>> Stashed changes
+
 
 function App() {
   //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
@@ -43,12 +42,8 @@ function App() {
             <Route path="/LogIn" element={<LogIn />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/EditProfile" element={<EditProfile />} />
-<<<<<<< Updated upstream
             <Route path="/SignUp" element={<SignUp />} />
-=======
-            <Route path="/SignUp" element={<SignUp />} />*/
             <Route path="/test" element= {<ShowEvent/>} />
->>>>>>> Stashed changes
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
             <Route path="/payment" element={<Balanzadepagos />} />*/
