@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ShowEvent.css";
-import { getEventInfo, getUserName } from "../Ctrl/Eventos";
+import { getEventInfo, getUserName, getEventType } from "../Ctrl/Eventos";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts"; // Importa las fuentes
-
 
 pdfMake.vfs = pdfFonts;
 
@@ -42,6 +41,21 @@ const ShowEvent = () => {
         }
     }, [eventInfo]);
 
+    useEffect(() => {
+        if (eventInfo?.id_tipo_evento) {
+            const fetchEventType = async () => {
+                try {
+                    const event_type = await getEventType(eventInfo.id_tipo_evento);
+                    setEventType(event_type); 
+                } catch (err) {
+                    console.error("Error obteniendo el tipo de evento:", err);
+                    setEventType("Evento desconocido");
+                }
+            };
+            fetchEventType();
+        }
+    }, [eventInfo]);    
+
     return (
         <div className="showevent-container">
             <h2>Informe General del Evento</h2>
@@ -50,7 +64,7 @@ const ShowEvent = () => {
                 <div className="event-details">
                     <h3>Detalles del Evento</h3>
                     <p><strong>Nombre del Usuario:</strong> {userName}</p>
-                    <p><strong>Tipo de Evento:</strong> {eventInfo.id_tipo_evento}</p>
+                    <p><strong>Tipo de Evento:</strong> {eventType}</p>
                     <p><strong>Fecha:</strong> {eventInfo.fecha}</p>
                     <p><strong>Hora de Inicio:</strong> {eventInfo.hora_inicio}</p>
                     <p><strong>Hora de Fin:</strong> {eventInfo.hora_fin}</p>
