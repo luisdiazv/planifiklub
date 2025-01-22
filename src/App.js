@@ -15,6 +15,8 @@ import Balanzadepagos from './routes/BalanzaDePagos.jsx';
 import NotFound from './routes/NotFound.jsx';
 
 import EventDetails from './routes/Event.jsx';
+import ShowEvent from './routes/ShowEvent.jsx';
+
 
 
 function App() {
