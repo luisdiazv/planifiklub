@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUsuario } from "../Ctrl/UsuarioCtrl"; // Importando la función de actualización
-import AccessControl from '../Util/accessControl'; // Importa AccessControl
+import userControl from '../Util/UserControl'; // Importa userControl
 import "./editProfileStyles.css";
 
 const EditProfile = () => {
@@ -28,7 +28,7 @@ const EditProfile = () => {
     useEffect(() => {
         const cargarDatosUsuario = async () => {
             try {
-                const usuario = AccessControl.getCurrentUser();
+                const usuario = userControl.getCurrentUser();
                 if (usuario) {
                     setCorreo(usuario.correo);
                     setNombres(usuario.nombres);

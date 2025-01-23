@@ -2,24 +2,32 @@ import { getVistaRolByRol } from "../Ctrl/VistasRol";
 import { getRolByUser } from "../Ctrl/Accesos";
 import { getUserByEmail } from "../Ctrl/UsuarioCtrl";
 
-class AccessControl {
+class UserControl {
     constructor() {
-        if (!AccessControl.instance) {
+        if (!UserControl.instance) {
             this.currentUser = null;
-            AccessControl.instance = this;
+            UserControl.instance = this;
         }
-        return AccessControl.instance;
+        return UserControl.instance;
     }
 
-    setCurrentUser = async (user) => {
-        this.currentUser = await getUserByEmail(user.email);
+    Login = async (userEmail) => {
+        const user = await getUserByEmail(userEmail);
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        this.currentUser = user;
     }
 
-    setLogOut = () => {
+    Logout = () => {
+        localStorage.removeItem('currentUser');
         this.currentUser = null;
     }
 
     getCurrentUser() {
+        const userObject = JSON.parse(localStorage.getItem('currentUser'));
+        if (!userObject) {
+            return null;
+        }
+        this.currentUser = userObject;
         return this.currentUser;
     }
 
@@ -54,5 +62,5 @@ class AccessControl {
     }
 }
 
-const instance = new AccessControl();
+const instance = new UserControl();
 export default instance;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { verificarUsuario } from "../Ctrl/UsuarioCtrl";
-import accessControl from "../Util/accessControl";
+import userControl from "../Util/UserControl";
 import hash from "../Util/Hash";
 import "./LogInStyles.css";
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,9 +18,7 @@ const LogIn = () => {
             const isValidUser = await verificarUsuario(email, passwordHash);
             if (isValidUser) {
                 // Si no necesitas usar currentUser, puedes eliminar esta línea
-                await accessControl.setCurrentUser({ email });
-                //TESTING acceso basado en roles
-                await accessControl.tieneAcceso(20000);
+                await userControl.Login(email);
 
                 // Comunica a la barra de navegación que el usuario ha cambiado
                 window.dispatchEvent(new Event("userChanged"));

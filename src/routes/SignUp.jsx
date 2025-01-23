@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import hash from "../Util/Hash";
 import "./SignUpStyles.css";
 import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
-import { codigoAuth, enviarCorreo } from "../Util/emailService";
+import { codigoAuth, enviarCorreo } from "../Util/EmailService";
 
 const Register = () => {
     const [nombres, setNombres] = useState("");
