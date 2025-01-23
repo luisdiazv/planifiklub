@@ -62,14 +62,11 @@ class Navbar extends Component {
         this.setState({ currentUser: null });
 
         // Redirigir a la página de inicio de sesión
-        this.props.history.push("/login");
+        window.location.href = "/login";
     };
 
     render() {
         const { isDropdownVisible, currentUser } = this.state;
-
-        // Lista de opciones para el dropdown menu
-
 
         return (
             <nav className="NavbarItems">
