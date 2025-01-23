@@ -9,7 +9,6 @@ export const getEventTypes = async () => {
       throw new Error("No se pudo obtener los tipos de eventos: " + error.message);
     }
 
-    //console.log("Tipos de eventos obtenidos con éxito:", data);
     return data;
   } catch (error) {
     console.error("Error interno:", error.message);
@@ -18,10 +17,6 @@ export const getEventTypes = async () => {
 };
 
 export const getEventInfo = async (eventId) => {
-    if (!eventId) {
-      throw new Error("El ID del evento es requerido.");
-    }
-  
     try {
       const { data, error } = await supabase.from("evento").select("*").eq("idevento", eventId);
   
@@ -33,8 +28,7 @@ export const getEventInfo = async (eventId) => {
       if (!data || data.length === 0) {
         throw new Error("No se encontró el evento con el ID proporcionado.");
       }
-  
-      //console.log("Información del Evento:", data[0]);
+
       return data[0];       
 
     } catch (error) {
@@ -55,11 +49,9 @@ export const getUserName = async (userId) => {
             throw new Error("No se pudo obtener el usuario: " + error.message);
         }
 
-        if (data.length > 0) {
-            return `${data[0].nombres} ${data[0].apellidos}`;
-        } else {
-            return "Usuario desconocido";
-        }
+        if (data.length > 0) { return `${data[0].nombres} ${data[0].apellidos}`;
+        } else { return "Usuario desconocido"; }
+
     } catch (error) {
         console.error("Error interno:", error.message);
         throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
@@ -75,11 +67,9 @@ export const getEventType = async (eventId) => {
             throw new Error("No se pudo obtener el tipo de evento: " + error.message);
         }
 
-        if (data.length > 0) {
-            return data[0].nombre;
-        } else {
-            return "Tipo de Evento Desconocido";
-        }
+        if (data.length > 0) { return data[0].nombre; 
+        } else { return "Tipo de Evento Desconocido"; }
+
     } catch (error) {
         console.error("Error interno:", error.message);
         throw new Error("Ocurrió un error al obtener el tipo de evento: " + error.message);
@@ -95,20 +85,18 @@ export const getPedidos = async (eventId) => {
           throw new Error("No se pudo obtener el id del pedido: " + error.message);
       }
 
-      if (data.length > 0) {
-          return getListaPedidosConNombre(data[0].idpedido);
-      } else {
-          return "ID de Pedido Desconocido";
-      }
+      if (data.length > 0) {return getListaPedidos(data[0].idpedido);
+      } else { return "ID de Pedido Desconocido"; }
+
   } catch (error) {
       console.error("Error interno:", error.message);
       throw new Error("Ocurrió un error al obtener el id del pedido: " + error.message);
   }
 };
 
-const getListaPedidosConNombre = async (pedidoId) => {
+const getListaPedidos = async (pedidoId) => {
   try {
-      const data = await getListaPedidos(pedidoId);
+      const data = await getInfoPedidos(pedidoId);
 
       if (data === "Lista de Pedidos Desconocido") {
           return [];
@@ -125,13 +113,14 @@ const getListaPedidosConNombre = async (pedidoId) => {
       );
 
       return listaConNombres;
+
   } catch (error) {
       console.error("Error al obtener la lista de pedidos con nombres:", error.message);
       throw new Error("No se pudo obtener la lista de pedidos con nombres: " + error.message);
   }
 };
 
-const getListaPedidos = async (pedidoId) => {
+const getInfoPedidos = async (pedidoId) => {
   try {
       const { data, error } = await supabase.from("producto_pedido").select("*").eq("id_pedido", pedidoId);
 
@@ -140,12 +129,9 @@ const getListaPedidos = async (pedidoId) => {
           throw new Error("No se pudo obtener la lista de pedidos: " + error.message);
       }
 
-      if (data.length > 0) {
-          //console.log(data);
-          return data;
-      } else {
-          return "Lista de Pedidos Desconocido";
-      }
+      if (data.length > 0) { return data;
+      } else { return "Lista de Pedidos Desconocido"; }
+
   } catch (error) {
       console.error("Error interno:", error.message);
       throw new Error("Ocurrió un error al obtener la lista de pedidos: " + error.message);
@@ -161,15 +147,114 @@ const getProductName = async (productoId) => {
           throw new Error("No se pudo obtener el nombre del producto: " + error.message);
       }
 
-      if (data.length > 0) {
-          return data[0];
-      } else {
-          return "Producto Desconocido";
-      }
+      if (data.length > 0) { return data[0];
+      } else { return "Producto Desconocido"; }
+
   } catch (error) {
       console.error("Error interno:", error.message);
       throw new Error("Ocurrió un error al obtener el nombre del producto: " + error.message);
   }
 };
+
+export const getEdificios = async (eventId) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios_evento")
+            .select("*")
+            .eq("id_evento", eventId);
+
+        if (error) {
+            console.error("Error obteniendo los edificios del evento:", error.message);
+            throw new Error("No se pudo obtener los edificios del evento: " + error.message);
+        }
+
+        if (data.length > 0) {
+            const info = await getInfoEdificios(data); // Usar await aquí
+            return info;
+        } else {
+            return "Edificios del Evento Desconocido";
+        }
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener los edificios del evento: " + error.message);
+    }
+};
+
+const getMontajeName = async (montajeId) => {
+    try {
+        const { data, error } = await supabase
+            .from("montajes")
+            .select("nombre_montaje")
+            .eq("idmontajes", montajeId);
+
+        if (error) {
+            console.error("Error obteniendo el nombre del montaje:", error.message);
+            throw new Error("No se pudo obtener el nombre del montaje: " + error.message);
+        }
+
+        if (data.length > 0) {
+            return data[0].nombre_montaje;
+        } else {
+            return "Nombre del Montaje Desconocido";
+        }
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener el nombre del montaje: " + error.message);
+    }
+};
+
+const getEdificioName = async (edificioId) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios")
+            .select("nombre")
+            .eq("idedificios", edificioId);
+
+        if (error) {
+            console.error("Error obteniendo el nombre del edificio:", error.message);
+            throw new Error("No se pudo obtener el nombre del edificio: " + error.message);
+        }
+
+        if (data.length > 0) {
+            return data[0].nombre;
+        } else {
+            return "Nombre del Edificio Desconocido";
+        }
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener el nombre del Edificio: " + error.message);
+    }
+};
+
+const getInfoEdificios = async (data) => {
+    try {
+        const listaConNombres = await Promise.all(
+            data.map(async (ed) => {
+                try {
+                    const edificio = await getEdificioName(ed.id_edificio);
+                    const montaje = await getMontajeName(ed.id_montaje_elegido);
+                    return {
+                        ...ed,
+                        nombre_edificio: edificio,
+                        nombre_montaje: montaje,
+                    };
+                } catch (err) {
+                    console.error("Error obteniendo nombres:", err.message);
+                    return {
+                        ...ed,
+                        nombre_edificio: "Nombre del Edificio Desconocido",
+                        nombre_montaje: "Nombre del Montaje Desconocido",
+                    };
+                }
+            })
+        );
+        return listaConNombres;
+    } catch (error) {
+        console.error("Error al obtener la lista de edificios con nombres:", error.message);
+        throw new Error("No se pudo obtener la lista de edificios con nombres: " + error.message);
+    }
+};
+
   
-export default { getEventTypes, getEventInfo, getUserName, getEventType, getPedidos };
+  
+export default { getEventTypes, getEventInfo, getUserName, getEventType, getPedidos, getEdificios };
