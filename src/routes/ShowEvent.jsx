@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./ShowEvent.css";
-import { getEventInfo, getUserName, getEventType } from "../Ctrl/Eventos";
+import { getEventInfo, getUserName, getEventType, getPedidos } from "../Ctrl/Eventos";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts"; // Importa las fuentes
 
+const event_ID = 2;
 pdfMake.vfs = pdfFonts;
 
 const ShowEvent = () => {
     const [eventInfo, setEventInfo] = useState(null); // Información del evento
     const [userName, setUserName] = useState(""); // Nombre del usuario
     const [eventType, setEventType] = useState("");
+    const [pedidos, setPedidos] = useState();
     const [error, setError] = useState(null); // Manejo de errores
 
     useEffect(() => {
         const fetchEventInfo = async () => {
             try {
-                const data = await getEventInfo(2); // Llama a la función con un ID de ejemplo
+                const data = await getEventInfo(event_ID); // Llama a la función con un ID de ejemplo
                 setEventInfo(data); // Guarda los datos del evento en el estado
             } catch (err) {
                 console.error("Error obteniendo los datos del evento:", err);
@@ -56,6 +58,21 @@ const ShowEvent = () => {
         }
     }, [eventInfo]);    
 
+    useEffect(() => {
+        if (eventInfo?.idevento) {
+            const fetchPedidos = async () => {
+                try {
+                    const pedidos = await getPedidos(eventInfo.idevento);
+                    setPedidos(pedidos); 
+                } catch (err) {
+                    console.error("Error obteniendo el tipo de evento:", err);
+                    setPedidos("Evento desconocido");
+                }
+            };
+            fetchPedidos();
+        }
+    }, [eventInfo]);   
+
     return (
         <div className="showevent-container">
             <h2>Informe General del Evento</h2>
@@ -73,6 +90,25 @@ const ShowEvent = () => {
                     <p><strong>Estado:</strong> {eventInfo.estado}</p>
                     <p><strong>Costo Total:</strong> ${eventInfo.costo_total}</p>
                     <p><strong>Saldo Pendiente:</strong> ${eventInfo.saldo_pendiente}</p>
+
+                    <p>--------------------------------------------</p>
+
+                    <h3>Lista de Pedidos</h3>
+                    {pedidos && Array.isArray(pedidos) && pedidos.length > 0 ? (
+                        <ul className="pedido-list">
+                            {pedidos.map((pedido) => (
+                                <li key={pedido.idproducto_pedido} className="pedido-item">
+                                    <p><strong>Producto:</strong> {pedido.nombre_producto}</p>
+                                    <p><strong>Cantidad:</strong> {pedido.cantidad}</p>
+                                    <p><strong>Subtotal:</strong> ${pedido.subtotal}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No hay pedidos registrados para este evento.</p>
+                    )}
+        
+                    
                 </div>
             ) : (
                 <p>Cargando información del evento...</p>

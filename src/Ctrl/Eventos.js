@@ -85,5 +85,91 @@ export const getEventType = async (eventId) => {
         throw new Error("Ocurrió un error al obtener el tipo de evento: " + error.message);
     }
 };
+
+export const getPedidos = async (eventId) => {
+  try {
+      const { data, error } = await supabase.from("pedido").select("idpedido").eq("id_evento", eventId);
+
+      if (error) {
+          console.error("Error obteniendo el id del pedido:", error.message);
+          throw new Error("No se pudo obtener el id del pedido: " + error.message);
+      }
+
+      if (data.length > 0) {
+          return getListaPedidosConNombre(data[0].idpedido);
+      } else {
+          return "ID de Pedido Desconocido";
+      }
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener el id del pedido: " + error.message);
+  }
+};
+
+const getListaPedidosConNombre = async (pedidoId) => {
+  try {
+      const data = await getListaPedidos(pedidoId);
+
+      if (data === "Lista de Pedidos Desconocido") {
+          return [];
+      }
+
+      const listaConNombres = await Promise.all(
+          data.map(async (pedido) => {
+              const productName = await getProductName(pedido.id_producto);
+              return {
+                  ...pedido,
+                  nombre_producto: productName.nombre,
+              };
+          })
+      );
+
+      return listaConNombres;
+  } catch (error) {
+      console.error("Error al obtener la lista de pedidos con nombres:", error.message);
+      throw new Error("No se pudo obtener la lista de pedidos con nombres: " + error.message);
+  }
+};
+
+const getListaPedidos = async (pedidoId) => {
+  try {
+      const { data, error } = await supabase.from("producto_pedido").select("*").eq("id_pedido", pedidoId);
+
+      if (error) {
+          console.error("Error obteniendo la lista de pedidos:", error.message);
+          throw new Error("No se pudo obtener la lista de pedidos: " + error.message);
+      }
+
+      if (data.length > 0) {
+          //console.log(data);
+          return data;
+      } else {
+          return "Lista de Pedidos Desconocido";
+      }
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener la lista de pedidos: " + error.message);
+  }
+};
+
+const getProductName = async (productoId) => {
+  try {
+      const { data, error } = await supabase.from("producto").select("nombre").eq("idproducto", productoId);
+
+      if (error) {
+          console.error("Error obteniendo el nombre del producto:", error.message);
+          throw new Error("No se pudo obtener el nombre del producto: " + error.message);
+      }
+
+      if (data.length > 0) {
+          return data[0];
+      } else {
+          return "Producto Desconocido";
+      }
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener el nombre del producto: " + error.message);
+  }
+};
   
-export default { getEventTypes, getEventInfo, getUserName, getEventType };
+export default { getEventTypes, getEventInfo, getUserName, getEventType, getPedidos };
