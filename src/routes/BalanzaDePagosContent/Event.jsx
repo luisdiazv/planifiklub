@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getEventTypes } from "../Ctrl/UsuarioCtrl";
-import "./Event.css";
+import { getEventTypes } from "../../Ctrl/UsuarioCtrl";
+import "./EventStyles.css";
 
 const EventDetails = () => {
     const [eventTypes, setEventTypes] = useState([]); // Estado para almacenar los tipos de eventos
@@ -24,6 +24,7 @@ const EventDetails = () => {
 
         fetchEventTypes(); // Llama a la función cuando el componente se monte
     }, []);
+
 
     const handleInfoClick = (index) => {
         // Alterna la descripción al hacer clic en +Info
@@ -61,8 +62,6 @@ const EventDetails = () => {
 
     return (
         <div className="login-container">
-            <h2>Detalles del Evento</h2>
-            <p>Inserte aquí el calendario, etc...</p>
 
             {error && <p className="error-message">{error}</p>} {/* Muestra un mensaje de error si ocurre */}
 

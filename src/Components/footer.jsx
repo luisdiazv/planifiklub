@@ -42,13 +42,6 @@ const Footer = () => {
                             <div>
                                 <h1>Nuestras Redes: </h1>
                                 <div className="social-links">
-                                    {/* <Link to="https://www.instagram.com/compostify_col/" target="_blank" rel="noopener noreferrer">
-                                        <i className="fa-brands fa-square-instagram"></i>
-                                    </Link>
-                                    <Link to="https://www.facebook.com/profile.php?id=61560271725752" target="_blank" rel="noopener noreferrer">
-                                        <i class="fa-brands fa-square-facebook"></i>
-                                    </Link> */}
-
                                     <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
                                     </Link>

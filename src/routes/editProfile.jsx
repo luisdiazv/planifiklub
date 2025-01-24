@@ -29,6 +29,7 @@ const EditProfile = () => {
         const cargarDatosUsuario = async () => {
             try {
                 const usuario = userControl.getCurrentUser();
+                console.log("Usuario cargado:", usuario); // Añadir para depuración
                 if (usuario) {
                     setCorreo(usuario.correo);
                     setNombres(usuario.nombres);
@@ -52,7 +53,7 @@ const EditProfile = () => {
         } else {
             cargarDatosUsuario(); // Cargar los datos al inicio
         }
-    }, [navegar, datosActualizados]); // Agregar 'datosActualizados' como dependencia
+    }, [navegar, datosActualizados]);
 
     // Manejo de cambios en los inputs
     const handleChange = (e) => {
@@ -68,6 +69,14 @@ const EditProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setActualizando(true);
+        // Verifica que correo esté disponible
+        if (!correo) {
+            console.error("Correo no disponible.");
+            setErrorMessage("Hubo un error con la recuperación del correo.");
+            setActualizando(false);
+            return;
+        }
+
         try {
             const usuarioActualizado = {
                 nombres,
@@ -79,7 +88,7 @@ const EditProfile = () => {
 
             console.log("Datos a actualizar:", usuarioActualizado);
 
-            const respuesta = await updateUsuario(correo, usuarioActualizado);
+            const respuesta = await updateUsuario(correo, usuarioActualizado); // Utiliza solo los campos que se actualizan
 
             if (respuesta.error) {
                 setErrorMessage("Hubo un problema al actualizar el perfil.");
@@ -91,6 +100,13 @@ const EditProfile = () => {
                 if (respuesta.teléfono) setTeléfono(respuesta.teléfono);
                 if (respuesta.tipo_documento) setTipo_documento(respuesta.tipo_documento);
                 if (respuesta.documento) setDocumento(respuesta.documento);
+
+                // Actualizar localStorage con los nuevos datos sin modificar el correo
+                const usuarioActualizadoLocal = {
+                    ...usuarioActualizado,
+                    correo: respuesta.correo || correo, // Mantén el correo original
+                };
+                localStorage.setItem("currentUser", JSON.stringify(usuarioActualizadoLocal));
 
                 alert("Perfil actualizado exitosamente.");
 
@@ -133,7 +149,6 @@ const EditProfile = () => {
                                 id="apellidos"
                                 value={apellidos}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
                     </div>

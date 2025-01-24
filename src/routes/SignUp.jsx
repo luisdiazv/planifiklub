@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import hash from "../Util/Hash";
 import "./SignUpStyles.css";
 import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
-import { codigoAuth, enviarCorreo } from "../Util/EmailService";
+import { codigoAuth, enviarCorreo } from "../Util/emailService";
 
 const Register = () => {
     const [nombres, setNombres] = useState("");
@@ -16,7 +16,7 @@ const Register = () => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [inputCode, setInputCode] = useState("");
     const [authCode, setAuthCode] = useState("");
-    const [isCodeValid, setIsCodeValid] = useState(false);
+    const [, setIsCodeValid] = useState(false);
 
     const tiposDocumento = [
         "Cedula de Ciudadanía",
