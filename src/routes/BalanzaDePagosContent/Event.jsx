@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getEventTypes } from "../../Ctrl/UsuarioCtrl";
+import getEventTypes from "../../Ctrl/UsuarioCtrl";
 import "./EventStyles.css";
 
 const EventDetails = () => {
