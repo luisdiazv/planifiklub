@@ -26,7 +26,7 @@ const Balanzadepagos = () => {
                 return sum + (service.price * quantity);
             }, 0);
 
-            const response = await axios.post("http://localhost:4000/create_preference", {
+            const response = await axios.post("https://pk-mercadopagoserver.onrender.com/create_preference", {
                 title: "Reserva de evento",
                 quantity: 1,
                 price: totalPrice,  // Verifica que el precio total sea correcto
