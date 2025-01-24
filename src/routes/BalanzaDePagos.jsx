@@ -26,10 +26,10 @@ const Balanzadepagos = () => {
                 return sum + (service.price * quantity);
             }, 0);
 
-            const response = await axios.post("http://localhost:4000/create_preference", {
+            const response = await axios.post("https://86c2-2800-484-5d87-5500-443b-efe9-d17e-7415.ngrok-free.app/create_preference", {
                 title: "Reserva de evento",
                 quantity: 1,
-                price: totalPrice,  // Verifica que el precio total sea correcto
+                price: totalPrice,
             });
 
             console.log("Respuesta del servidor:", response.data);
