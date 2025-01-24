@@ -66,3 +66,18 @@ h2 {
   font-family: 'FoghlihtenNo01';
   font-weight: lighter;
 }
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #CC9901;
+
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

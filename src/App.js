@@ -14,24 +14,14 @@ import Balanzadepagos from './routes/BalanzaDePagos.jsx';
 
 import NotFound from './routes/NotFound.jsx';
 
-import EventDetails from './routes/Event.jsx';
+import EventDetails from './routes/BalanzaDePagosContent/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 
 
 
 function App() {
-  //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
-  //funcion return y descomentar la primera
-  /*
-  return(
-    <>
-    <Balanzadepagos />
-    </>
-  )
-} */
-
   return (
-        <>
+    <>
 
       <div className="App">
         <Navbar />
@@ -44,7 +34,7 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/EditProfile" element={<EditProfile />} />
             <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/test" element= {<ShowEvent/>} />
+            <Route path="/test" element={<ShowEvent />} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
             <Route path="/payment" element={<Balanzadepagos />} />*/
@@ -54,7 +44,7 @@ function App() {
       </div>
 
     </>
-    
+
 
 
   );
