@@ -3,7 +3,7 @@ import "./NavbarStyles.css";
 import { MenuItems, dropdownOptions } from "./NBMenuItems";
 import { Link } from "react-router-dom";
 import logo from "./imgs/LogoGolden.gif";
-import AccessControl from "../Util/accessControl"; // Importa AccessControl
+import userControl from "../Util/UserControl"; // Importa userControl
 
 class Navbar extends Component {
     constructor(props) {
@@ -19,7 +19,7 @@ class Navbar extends Component {
         document.addEventListener("mousedown", this.handleClickOutside);
 
         // Verifica el usuario al montar
-        const user = AccessControl.getCurrentUser();
+        const user = localStorage.getItem("currentUser");
         if (user) {
             this.setState({ currentUser: user });
         }
@@ -34,7 +34,7 @@ class Navbar extends Component {
     }
 
     updateCurrentUser = async () => {
-        const user = AccessControl.getCurrentUser();
+        const user = userControl.getCurrentUser();
         this.setState({ currentUser: user });
     };
 
@@ -56,20 +56,17 @@ class Navbar extends Component {
     };
 
     handleLogout = () => {
-        // Limpiar el usuario en AccessControl
-        AccessControl.setLogOut();
+        // Limpiar el usuario en userControl
+        userControl.Logout();
         // Limpiar el estado local
         this.setState({ currentUser: null });
 
         // Redirigir a la página de inicio de sesión
-        this.props.history.push("/login");
+        window.location.href = "/login";
     };
 
     render() {
         const { isDropdownVisible, currentUser } = this.state;
-
-        // Lista de opciones para el dropdown menu
-
 
         return (
             <nav className="NavbarItems">
