@@ -255,5 +255,27 @@ const getInfoEdificios = async (data) => {
     }
 };
 
+export const getAllEventIds = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("evento") // Tabla de eventos
+        .select("idevento"); // Selecciona solo la columna de IDs
+  
+      if (error) {
+        console.error("Error obteniendo los IDs de los eventos:", error.message);
+        throw new Error("No se pudo obtener los IDs de los eventos: " + error.message);
+      }
+  
+      if (data && data.length > 0) {
+        return data.map(event => event.idevento); // Devuelve un array con los IDs
+      } else {
+        return []; // Si no hay datos, devuelve un array vacío
+      }
+    } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener los IDs de los eventos: " + error.message);
+    }
+  };
+
   
   
