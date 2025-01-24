@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./ShowEvent.css";
-import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios } from "../Ctrl/Eventos";
+import "./ShowEventStyles.css";
+import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios } from "../Ctrl/EventosCtrl";
 import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts"; // Importa las fuentes

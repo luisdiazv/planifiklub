@@ -257,4 +257,3 @@ const getInfoEdificios = async (data) => {
 
   
   
-export default { getEventTypes, getEventInfo, getUserName, getEventType, getPedidos, getEdificios };

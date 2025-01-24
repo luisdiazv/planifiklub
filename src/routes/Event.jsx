@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getEventTypes } from "../Ctrl/Eventos";
-import "./Event.css";
+import { getEventTypes } from "../Ctrl/EventosCtrl";
+import "./EventStyles.css";
 
 const EventDetails = () => {
     const [eventTypes, setEventTypes] = useState([]); // Estado para almacenar los tipos de eventos
