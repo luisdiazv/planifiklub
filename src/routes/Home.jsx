@@ -37,21 +37,21 @@ const Home = () => {
             <ImageSlider images={images} />
             <div className="home-content">
                 <div className="what-is-PK">
-                    <h1>¿Qué es PlanifiKlub?</h1>
+                    <h2>¿Qué es PlanifiKlub?</h2>
                     <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
                     <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
                 </div>
                 <div className='why-PK'>
                     <img className="home-image-content" alt="contentImg1" src={contentImg1} />
                     <div className="why-PK-content">
-                        <h1>¿Por qué usar PlanifiKlub?</h1>
+                        <h2>¿Por qué usar PlanifiKlub?</h2>
                         <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
                     </div>
                 </div>
 
                 <div className="how-PK">
                     <div className="content">
-                        <h1>¿Cómo puedo probar PlanifiKlub?</h1>
+                        <h2>¿Cómo puedo probar PlanifiKlub?</h2>
                         <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
                     </div>
                     <img className="image-content" alt="contentImg2" src={contentImg2} />
