@@ -2,7 +2,7 @@ import EventDetails from './BalanzaDePagosContent/Event.jsx';
 import OurServices from './BalanzaDePagosContent/OurServices.jsx';
 import PlaceSelector from './BalanzaDePagosContent/PlaceSelector.jsx';
 import PurchaseSummary from './BalanzaDePagosContent/purchaseSummary.jsx';
-
+import RolesService from './Service/RolesService.jsx';
 import { Wallet } from '@mercadopago/sdk-react';
 
 export const sections = [

@@ -16,8 +16,7 @@ import NotFound from './routes/NotFound.jsx';
 
 import EventDetails from './routes/BalanzaDePagosContent/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
-
-
+import ConfiguradorRoles from './routes/Service/RolesService.jsx';
 
 function App() {
   return (
@@ -28,6 +27,7 @@ function App() {
         <div className="App-container">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/RolesService" element={<ConfiguradorRoles />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
             <Route path="/LogIn" element={<LogIn />} />

@@ -32,7 +32,7 @@ export const registrarUsuario = async (usuario) => {
   }
 };
 
-export const getUserByEmail = async (email) => {
+export const getUsuarioByEmail = async (email) => {
   try {
     const { data, error } = await supabase.from("usuario").select("*").eq("correo", email).single();
     if (error) {
@@ -51,7 +51,7 @@ export const updateUsuario = async (email, updates) => {
   try {
     console.warn(updates);
     const { data, error } = await supabase.from("usuario").update(updates).eq("correo", email);
-    const usuario = await getUserByEmail(email);
+    const usuario = await getUsuarioByEmail(email);
     console.log("Usuario encontrado:", usuario);
     console.log("Datos actualizados:", data);
     if (error) {
@@ -66,4 +66,19 @@ export const updateUsuario = async (email, updates) => {
   }
 };
 
-export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario };
+export const getUsuarioByID = async (id) => {
+  try {
+    const { data, error } = await supabase.from("usuario").select("*").eq("idusuario", id).single();
+    if (error) {
+      console.error("Error obteniendo usuario por id:", error.message);
+      throw new Error("No se pudo obtener el usuario: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener el usuario: " + error.message);
+  }
+};
+
+export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario , getUsuarioByID};
