@@ -17,18 +17,10 @@ import NotFound from './routes/NotFound.jsx';
 import EventDetails from './routes/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 
+import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
 
 function App() {
-  //Prueba balanza de pagos con mercadopago. Para realizar la prueba es necesario comentar la segunda
-  //funcion return y descomentar la primera
-  /*
-  return(
-    <>
-    <Balanzadepagos />
-    </>
-  )
-} */
 
   return (
         <>
@@ -44,10 +36,11 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/EditProfile" element={<EditProfile />} />
             <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/test" element= {<ShowEvent/>} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
-            <Route path="/payment" element={<Balanzadepagos />} />*/
+            <Route path="/payment" element={<Balanzadepagos />} />
           </Routes>
         </div>
         <Footer />

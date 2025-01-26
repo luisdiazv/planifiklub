@@ -6,6 +6,7 @@ import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
 import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
 import { useNavigate } from 'react-router-dom'; // Para la navegación
+import './CalendarioEventos.css';
 
 dayjs.locale("es");
 
@@ -35,14 +36,14 @@ const Calendario = () => {
             );
 
             const formattedEvents = eventDetails
-                .filter(event => event.fecha) // Cambié a event.fecha
+                .filter(event => event.fecha) // Verifica que la fecha exista
                 .map(event => {
                     const start = dayjs(`${event.fecha}T${event.hora_inicio || "00:00:00"}`);
                     const end = dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`);
 
                     if (!start.isValid() || !end.isValid()) {
                         console.error(`Fecha u hora inválida para el evento con ID ${event.id}:`, {
-                            fecha: event.fecha, // Cambié a event.fecha
+                            fecha: event.fecha,
                             hora_inicio: event.hora_inicio,
                             hora_fin: event.hora_fin
                         });
@@ -88,10 +89,22 @@ const Calendario = () => {
         event: props => {
             console.log("Renderizando evento en el calendario:", props);
             return (
-                <div style={{ background: "#7C0A01", padding: '5px' }}>
-                    <CiCalendarDate />
+                <button 
+                    onClick={() => handleEventClick(props.event)} 
+                    style={{ 
+                        background: "#7C0A01", 
+                        color: "white", 
+                        border: "none", 
+                        width: "100%", 
+                        height: "100%", 
+                        textAlign: "left", 
+                        padding: "5px", 
+                        cursor: "pointer" 
+                    }}
+                >
+                    <CiCalendarDate style={{ marginRight: "5px" }} />
                     {props.title}
-                </div>
+                </button>
             );
         }
     };
@@ -111,18 +124,25 @@ const Calendario = () => {
     };
 
     return (
-        <div style={{
-            height: "95vh",
-            width: "70vw"
+        <div className="calendar-container" style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
         }}>
-            <Calendar
-                localizer={localizer}
-                events={events}
-                defaultView='month'
-                components={components}
-                messages={messages}
-                onSelectEvent={handleEventClick} // Maneja el clic en el evento
-            />
+            <div style={{
+                height: "90vh",
+                width: "80vw",
+                background: "#907665",
+             }}>
+                <Calendar
+                    localizer={localizer}
+                    events={events}
+                    views={["month", "day", "agenda"]}
+                    components={components}
+                    messages={messages}
+                    onSelectEvent={handleEventClick} // Maneja el clic en el evento
+                />
+            </div>
         </div>
     );
 };

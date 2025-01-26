@@ -1,0 +1,51 @@
+/* Contenedor general del calendario */
+.calendar-container {
+    display: flex; /* Elimina las comillas para que sea una regla CSS válida */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo general para los eventos */
+.rbc-event {
+    background-color: #7C0A01 !important;
+    color: white !important;
+    border: none;
+    padding: 5px;
+    text-align: left;
+    border-radius: 4px; /* Agrega bordes redondeados para un diseño más limpio */
+    overflow: hidden; /* Evita que el contenido sobresalga */
+}
+
+/* Estilo específico para la vista de mes */
+.rbc-month-view .rbc-event {
+    height: 30px; /* Ajusta este valor para cambiar la altura de los eventos */
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: flex-start; /* Alinea el texto a la izquierda */
+    overflow: hidden; /* Evita que el contenido sobresalga */
+}
+
+/* Truncar texto si es demasiado largo */
+.rbc-month-view .rbc-event-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botón dentro del evento (para clics) */
+/* Botón dentro del evento */
+.rbc-event-button {
+    background: transparent; /* Toma el color del contenedor */
+    color: inherit; /* Hereda el color del texto */
+    border: none; /* Sin bordes */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    height: 100%; /* Ocupa todo el alto del contenedor */
+    text-align: left; /* Texto alineado a la izquierda */
+    line-height: 1.2; /* Ajusta la altura de línea */
+    padding: 0 5px; /* Margen interno */
+    cursor: pointer; /* Cambia el cursor al pasar el ratón */
+    overflow: hidden; /* Evita contenido desbordado */
+    text-overflow: ellipsis; /* Puntos suspensivos si el texto es largo */
+    white-space: nowrap; /* Evita saltos de línea */
+}
+
