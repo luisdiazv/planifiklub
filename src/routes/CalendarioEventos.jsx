@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
-import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
+import { getAllEventIds, getEventInfo, getEdificios } from "../Ctrl/EventosCtrl";
+import { getUserById } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom'; // Para la navegación
 import './CalendarioEventos.css';
 
@@ -19,7 +20,7 @@ const Calendario = () => {
     const fetchEvents = async () => {
         try {
             console.log("Iniciando la carga de eventos...");
-            const eventIds = await getAllEventIds(); 
+            const eventIds = await getAllEventIds();
             console.log("IDs de eventos obtenidos:", eventIds);
 
             if (!eventIds || eventIds.length === 0) {
@@ -28,46 +29,89 @@ const Calendario = () => {
             }
 
             const eventDetails = await Promise.all(
-                eventIds.map(async id => {
+                eventIds.map(async (id) => {
+                    // Obtenemos los detalles del evento
                     const event = await getEventInfo(id);
                     console.log(`Datos del evento con ID ${id}:`, event);
-                    return event;
+
+                    if (!event) {
+                        console.warn(`No se encontraron datos del evento con ID ${id}.`);
+                        return null;
+                    }
+
+                    // Obtener la idusuario del evento
+                    const userId = event.id_usuario;
+                    if (!userId) {
+                        console.warn(`No se encontró un usuario asociado al evento con ID ${id}.`);
+                        return null; // Si no hay idusuario, no continuamos con este evento
+                    }
+
+                    // Buscar el nombre y apellido del usuario usando la idusuario
+                    const user = await getUserById(userId);
+                    if (!user) {
+                        console.warn(`No se encontró el usuario con ID ${userId}.`);
+                        return null; // Si no se encuentra el usuario, no continuamos con este evento
+                    }
+
+                    // Construir el nombre completo del usuario
+                    const userFullName = `${user.nombres} ${user.apellidos}`;
+
+                    // Obtener el nombre del edificio del evento
+                    const edificios = await getEdificios(id);
+                    const edificioName = edificios && edificios[0] ? edificios[0].nombre_edificio : "Edificio Desconocido";
+
+                    // Concatenar el título actual con el nombre del edificio
+                    const updatedTitle = `${userFullName} - ${edificioName}`;
+
+                    // Incluir el título actualizado en el evento
+                    const eventWithUserAndBuilding = {
+                        ...event,
+                        title: updatedTitle, // Título con el nombre del usuario y el edificio
+                        id_usuario: user.id_usuario, // Almacenar el idusuario en el evento
+                    };
+
+                    return eventWithUserAndBuilding;
                 })
             );
 
+            // Filtramos y formateamos los eventos
             const formattedEvents = eventDetails
-                .filter(event => event.fecha) // Verifica que la fecha exista
-                .map(event => {
+                .filter((event) => event !== null && event.fecha) // Verifica que el evento no sea null y que tenga una fecha
+                .map((event) => {
+                    // Verificación de la fecha y horas de inicio y fin
                     const start = dayjs(`${event.fecha}T${event.hora_inicio || "00:00:00"}`);
                     const end = dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`);
 
+                    // Verificar si las fechas y horas son válidas
                     if (!start.isValid() || !end.isValid()) {
                         console.error(`Fecha u hora inválida para el evento con ID ${event.id}:`, {
                             fecha: event.fecha,
                             hora_inicio: event.hora_inicio,
-                            hora_fin: event.hora_fin
+                            hora_fin: event.hora_fin,
                         });
-                        return null;
+                        return null; // Si la fecha no es válida, no agregamos este evento
                     }
 
                     console.log("Evento formateado:", {
                         start: start.toDate(),
                         end: end.toDate(),
-                        title: event.nombre_evento || "Evento sin título",
-                        id: event.id // Añadí el ID al evento
+                        title: event.title || "Evento sin título",
+                        id: event.id,
+                        idusuario: event.idusuario,
                     });
 
                     return {
                         start: start.toDate(),
                         end: end.toDate(),
-                        title: event.nombre_evento || "Evento sin título",
-                        id: event.id // Añadí el ID al evento
+                        title: event.title || "Evento sin título", // Usar el título con el nombre completo
+                        id: event.id,
+                        idusuario: event.idusuario,
                     };
                 })
-                .filter(event => event !== null);
+                .filter((event) => event !== null); // Filtrar los eventos que no son null
 
             console.log("Eventos formateados para el calendario:", formattedEvents);
-            setEvents(formattedEvents);
+            setEvents(formattedEvents); // Establecer los eventos en el estado
         } catch (error) {
             console.error("Error cargando eventos:", error.message);
         }
@@ -82,7 +126,7 @@ const Calendario = () => {
     const handleEventClick = (event) => {
         console.log("Evento seleccionado:", event);
         // Redirigir a la vista del evento usando su ID
-        navigate(`/evento/${event.id}`); // Redirigir a la vista con el ID
+        navigate(`/evento/${event.id}`); // Redirigir a la vista con el ID. Aqui Chara modifica el codigo
     };
 
     const components = {

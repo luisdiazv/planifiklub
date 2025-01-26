@@ -66,4 +66,25 @@ export const updateUsuario = async (email, updates) => {
   }
 };
 
-export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario };
+export const getUserById = async (idusuario) => {
+  try {
+    const { data, error } = await supabase
+      .from("usuario")
+      .select("nombres, apellidos")
+      .eq("idusuario", idusuario)
+      .single();
+
+    if (error) {
+      console.error("Error obteniendo el usuario por idusuario:", error.message);
+      throw new Error("No se pudo obtener el usuario con idusuario: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener el usuario por idusuario: " + error.message);
+  }
+};
+
+
+export default { verificarUsuario, registrarUsuario, getUserByEmail, updateUsuario, getUserById };
