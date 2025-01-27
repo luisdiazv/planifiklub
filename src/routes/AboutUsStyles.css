@@ -1,0 +1,104 @@
+.Ustitle {
+    font-size: 5rem;
+    font-weight: normal;
+    color: var(--primary-color);
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.Us-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: 1.3rem;
+}
+
+.Uscontent {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 90%;
+    margin: auto;
+    padding-bottom: 3rem;
+}
+
+.Uscolumn {
+    flex: 1 1 30%;
+    margin: 1rem;
+    max-width: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.Uscard {
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    color: var(--text-color);
+    transition: transform 0.3s;
+}
+
+.Uscard:hover {
+    transform: scale(1.05);
+    /* Efecto de hover */
+}
+
+.teamImg {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Información del miembro */
+.person-container {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1rem 0.5rem;
+}
+
+.person-container h2 {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin: 0.5rem 0;
+    line-height: normal;
+    vertical-align: top;
+
+}
+
+.person-container .title {
+    font-weight: bold;
+}
+
+.person-container p {
+    margin: 0.3rem 0;
+    font-size: 1.5rem;
+}
+
+/* Sección de fondo opcional */
+.about-section {
+    padding: 50px;
+    text-align: center;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Responsividad */
+@media screen and (max-width: 1000px) {
+    .Uscontent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Uscolumn {
+        flex: 1 1 80%;
+        /* Aumenta el ancho en pantallas pequeñas */
+    }
+
+    .teamImg {
+        height: auto;
+    }
+}

@@ -61,19 +61,43 @@
   border-radius: 4px;
 }
 
-h1,
-h2 {
+h1 {
   font-family: 'FoghlihtenNo01';
+  font-size: 3.5rem;
   font-weight: lighter;
 }
 
+h2 {
+  font-size: 3rem;
+  font-family: 'DMSerifText-Regular';
+  font-weight: lighter;
+}
+
+p,
+p1 {
+  font-family: 'ScheherazadeNew';
+  font-size: 1.8rem;
+  line-height: 1.5;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+a:hover {
+  color: #DAA520;
+}
+
 button {
+  font-family: 'FoghLihtenNo01';
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #CC9901;
-
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
