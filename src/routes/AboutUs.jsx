@@ -30,8 +30,8 @@ function AboutUs() {
         {
             imgSrc: Luis,
             name: "Luis Alfonso Diaz Vergel",
-            title: "Programmer",
-            roles: ["Back-End Programmer"],
+            title: "Tech Lead",
+            roles: ["Back-End Programmer", "server programer"],
             email: "ludiazv@unal.edu.co",
         },
         {
@@ -45,14 +45,14 @@ function AboutUs() {
             imgSrc: Jonathan,
             name: "Jonathan Steven Ochoa Celis",
             title: "Programmer",
-            roles: ["Front-end Designer & Programmer"],
+            roles: ["Front-end Designer", "Programmer"],
             email: "jsochoac@unal.edu.co",
         },
         {
             imgSrc: Sergio,
             name: "Sergio Alexander Parada Amarillo",
             title: "Programmer",
-            roles: ["Front-end Designer & Programmer"],
+            roles: ["Front-end Designer", "Programmer"],
             email: "saparadaa@unal.edu.co",
         },
     ];

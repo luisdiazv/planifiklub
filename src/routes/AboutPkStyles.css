@@ -1,0 +1,56 @@
+.About-PK-content {
+    display: flex;
+    position: relative;
+    padding: 3rem 0;
+    height: auto;
+    /* O establece una altura específica si es necesario */
+    overflow: hidden;
+    /* Asegúrate de que nada salga del contenedor */
+}
+
+.catchphrase {
+    padding: 1rem;
+    text-align: center;
+    font-style: italic;
+    color: var(--primary-color);
+    font-weight: 300;
+    border-bottom: 3px inset var(--secondary-color);
+    display: inline-block;
+}
+
+
+
+.textContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 65%;
+    padding-left: 5%;
+}
+
+.title {
+    color: var(--primary-color);
+    text-align: left;
+    padding: 1rem 0;
+    border-bottom: 3px inset var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+
+.image {
+    position: absolute;
+    right: 0;
+    display: block;
+    width: calc(35%);
+    height: calc(100% - 6rem);
+    object-fit: cover;
+    opacity: 0.45;
+    mask-image: linear-gradient(to left, #05161A 50%, transparent 100%);
+}
+
+.text {
+    color: var(--primary-color);
+    padding: 0.5rem 0 2rem 0;
+    text-align: left;
+    white-space: pre-line;
+}
