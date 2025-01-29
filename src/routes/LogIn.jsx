@@ -23,8 +23,8 @@ const LogIn = () => {
                 // Comunica a la barra de navegación que el usuario ha cambiado
                 window.dispatchEvent(new Event("userChanged"));
 
-                alert("Inicio de sesión exitoso");
-                navigate('/');
+                //alert("Inicio de sesión exitoso");
+                navigate('/app');
             } else {
                 setErrorMessage("Credenciales incorrectas");
                 alert("Credenciales incorrectas");
@@ -68,7 +68,7 @@ const LogIn = () => {
                 </button>
             </form>
             <div className="forgot-password">
-                <Link className="new-account" to='/SignUp'>
+                <Link className="new-account" to='/app/SignUp'>
                     ¿Aún no tienes cuenta?
                 </Link>
                 <Link className="forgot-password-link" onClick={() => alert("Redirigir a recuperación de contraseña")}>

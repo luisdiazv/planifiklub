@@ -41,7 +41,7 @@ const EditProfile = () => {
             } catch (err) {
                 console.error("Error al cargar los datos del usuario:", err);
                 alert("Hubo un problema al cargar los datos.");
-                navegar("/editProfile"); // Redirige a otra página si hay error
+                navegar("/app/editProfile"); // Redirige a otra página si hay error
             } finally {
                 setCargando(false);
             }

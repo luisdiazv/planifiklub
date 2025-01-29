@@ -62,7 +62,7 @@ class Navbar extends Component {
         this.setState({ currentUser: null });
 
         // Redirigir a la página de inicio de sesión
-        window.location.href = "/login";
+        window.location.href = "/app/login";
     };
 
     render() {
@@ -70,7 +70,7 @@ class Navbar extends Component {
 
         return (
             <nav className="NavbarItems">
-                <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
+                <Link className="nav-link-logo" to="/app" onClick={this.closeDropdown}>
                     <div className="logoContainer">
                         <img src={logo} alt="Logo" />
                         <h1 className="navbar-logo">PlanifiKlub</h1>
