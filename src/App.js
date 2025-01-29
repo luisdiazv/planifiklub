@@ -11,7 +11,7 @@ import LogIn from './routes/LogIn.jsx';  // Asegúrate de que la importación se
 import SignUp from './routes/SignUp.jsx';  // Asegúrate de que la importación sea correcta
 import EditProfile from './routes/editProfile.jsx';
 import Balanzadepagos from './routes/BalanzaDePagos.jsx';
-
+import AppHome from './routes/AppHome.jsx';
 import NotFound from './routes/NotFound.jsx';
 
 import EventDetails from './routes/BalanzaDePagosContent/Event.jsx';
@@ -27,17 +27,16 @@ function App() {
         <div className="App-container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/RolesService" element={<ConfiguradorRoles />} />
+            <Route path="/app" element={<AppHome />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
-            <Route path="/LogIn" element={<LogIn />} />
-            <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/EditProfile" element={<EditProfile />} />
-            <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/test" element={<ShowEvent />} />
+            <Route path="/app/LogIn" element={<LogIn />} />
+            <Route path="/app/SignUp" element={<SignUp />} />
+            <Route path="/app/EditProfile" element={<EditProfile />} />
+            <Route path="/app/ShowEvent" element={<ShowEvent />} />
+            <Route path="/app/RolesService" element={<ConfiguradorRoles />} />
+            <Route path="/app/payment" element={<Balanzadepagos />} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
-
-            <Route path="/payment" element={<Balanzadepagos />} />*/
           </Routes>
         </div>
         <Footer />
