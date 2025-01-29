@@ -116,7 +116,7 @@ const Balanzadepagos = () => {
                         {sections.map((section, index) => (
                             <div
                                 key={index}
-                                className={`timeline-point ${activeSection === index ? "active" : ""}`}
+                                className={`timeline-point ${index < activeSection ? "completed" : ""} ${activeSection === index ? "active" : ""}`}
                                 onClick={() => handleSectionClick(index)}
                             >
                                 <div className="circle" />
@@ -124,6 +124,24 @@ const Balanzadepagos = () => {
                             </div>
                         ))}
                     </div>
+                </div>
+                {/* Botones de Navegación */}
+                <div className="navigation-buttons">
+                    {/* Botón de mover hacia la izquierda */}
+                    <button
+                        onClick={handlePrev}
+                        disabled={activeSection === 0}  // Deshabilitado si está en el primer timeline
+                    >
+                        Anterior
+                    </button>
+
+                    {/* Botón de mover hacia la derecha */}
+                    <button
+                        onClick={handleNext}
+                        disabled={activeSection === sections.length - 1}  // Deshabilitado si está en el último timeline
+                    >
+                        Siguiente
+                    </button>
                 </div>
 
 
@@ -175,24 +193,7 @@ const Balanzadepagos = () => {
                         </div>
                     ))}
                 </div>
-                {/* Botones de Navegación */}
-                <div className="navigation-buttons">
-                    {/* Botón de mover hacia la izquierda */}
-                    <button
-                        onClick={handlePrev}
-                        disabled={activeSection === 0}  // Deshabilitado si está en el primer timeline
-                    >
-                        Anterior
-                    </button>
 
-                    {/* Botón de mover hacia la derecha */}
-                    <button
-                        onClick={handleNext}
-                        disabled={activeSection === sections.length - 1}  // Deshabilitado si está en el último timeline
-                    >
-                        Siguiente
-                    </button>
-                </div>
             </div>
 
 
