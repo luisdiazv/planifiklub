@@ -1,6 +1,6 @@
-import { getVistaRolByRol } from "../Ctrl/VistasRol";
-import { getRolByUser } from "../Ctrl/Accesos";
-import { getUserByEmail } from "../Ctrl/UsuarioCtrl";
+import { getVistaRolByRol } from "../Ctrl/VistaRolCtrl";
+import { getRolByUser } from "../Ctrl/AccesosCtrl";
+import { getUsuarioByEmail } from "../Ctrl/UsuarioCtrl";
 
 class UserControl {
     constructor() {
@@ -12,7 +12,7 @@ class UserControl {
     }
 
     Login = async (userEmail) => {
-        const user = await getUserByEmail(userEmail);
+        const user = await getUsuarioByEmail(userEmail);
         localStorage.setItem("currentUser", JSON.stringify(user));
         this.currentUser = user;
     }
