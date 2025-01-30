@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import './PlaceSelectorStyles.css';
+import './OurServicesStyles.css';
 
-const PlaceSelector = () => {
-    // Lista de servicios
+const OurServices = () => {
     const services = [
         { name: "Servicio 1", price: 50000 },
         { name: "Servicio 2", price: 30000 },
         { name: "Servicio 3", price: 20000 },
     ];
 
-    // Estado para almacenar las cantidades y selección de los servicios
     const [serviceQuantities, setServiceQuantities] = useState({});
     const [selectedServices, setSelectedServices] = useState({});
     const [totalPrice, setTotalPrice] = useState(0);
+    const [showSummary, setShowSummary] = useState(false);
+    const [extraServices, setExtraServices] = useState([]);
 
-    // Manejar el cambio de cantidad de un servicio
     const handleQuantityChange = (serviceName, quantity) => {
         if (selectedServices[serviceName]) {
             setServiceQuantities((prevQuantities) => {
@@ -25,7 +24,6 @@ const PlaceSelector = () => {
         }
     };
 
-    // Manejar el cambio del checkbox
     const handleCheckboxChange = (serviceName, isSelected) => {
         setSelectedServices((prevSelected) => {
             const newSelected = { ...prevSelected, [serviceName]: isSelected };
@@ -42,7 +40,6 @@ const PlaceSelector = () => {
         });
     };
 
-    // Calcular el precio total
     const calculateTotalPrice = (quantities) => {
         let total = 0;
         services.forEach(service => {
@@ -53,10 +50,8 @@ const PlaceSelector = () => {
         setTotalPrice(total);
     };
 
-    // Lógica para manejar el proceso de compra
     const handleBuy = () => {
-        console.log("Procesando compra...");
-        // Aquí podrías agregar la lógica de compra o redirigir a otra página
+        setShowSummary(true); // Muestra el resumen de la compra
     };
 
     return (
@@ -86,12 +81,38 @@ const PlaceSelector = () => {
                             </li>
                         ))}
                     </ul>
-                    <h4>Total a pagar: {totalPrice} $</h4>
-                    <button onClick={handleBuy} disabled={totalPrice === 0}>Pagar</button>
+
+                    <h4>Servicios Adicionales o Personalizados</h4>
+
+
+
+                    <h4>precio total de servicios: {totalPrice} $</h4>
+                    <p style={{ fontSize: "0.8rem", textAlign: "end" }}>* no olvides guardar</p>
+                    <button onClick={handleBuy} disabled={totalPrice === 0}>Guardar</button>
+
+                    {/* Mostrar resumen cuando sea necesario */}
+                    {showSummary && (
+                        <div className="purchase-summary">
+                            <h3>Resumen de la Compra</h3>
+                            <ul>
+                                {services.map((service) => {
+                                    if (selectedServices[service.name]) {
+                                        return (
+                                            <li key={service.name}>
+                                                {service.name} - Cantidad: {serviceQuantities[service.name] || 0} - Precio: {(serviceQuantities[service.name] || 0) * service.price} $
+                                            </li>
+                                        );
+                                    }
+                                    return null;
+                                })}
+                            </ul>
+                            <h4>Total: {totalPrice} $</h4>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
 
-export default PlaceSelector;
+export default OurServices;
