@@ -12,6 +12,7 @@ const OurServices = () => {
     const [selectedServices, setSelectedServices] = useState({});
     const [totalPrice, setTotalPrice] = useState(0);
     const [showSummary, setShowSummary] = useState(false);
+    const [extraServices, setExtraServices] = useState([]);
 
     const handleQuantityChange = (serviceName, quantity) => {
         if (selectedServices[serviceName]) {
@@ -80,6 +81,11 @@ const OurServices = () => {
                             </li>
                         ))}
                     </ul>
+
+                    <h4>Servicios Adicionales o Personalizados</h4>
+
+
+
                     <h4>precio total de servicios: {totalPrice} $</h4>
                     <p style={{ fontSize: "0.8rem", textAlign: "end" }}>* no olvides guardar</p>
                     <button onClick={handleBuy} disabled={totalPrice === 0}>Guardar</button>
