@@ -6,21 +6,24 @@ import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
 import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
 import { getUserById } from "../Ctrl/UsuarioCtrl";
-import { useNavigate } from 'react-router-dom'; // Para la navegación
-import './CalendarioEventos.css';
+import { useNavigate } from 'react-router-dom';
+import './CalendarioEventosStyles.css';
 
 dayjs.locale("es");
 
 const Calendario = () => {
     const localizer = dayjsLocalizer(dayjs);
     const [events, setEvents] = useState([]);
-    const navigate = useNavigate(); // Hook de navegación
+    const [filter, setFilter] = useState('todos');  // Estado para el filtro
+    const navigate = useNavigate();
 
-    // Función para cargar eventos desde la base de datos
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+    };
+
     const fetchEvents = async () => {
         try {
             const eventIds = await getAllEventIds();
-    
             if (!eventIds || eventIds.length === 0) {
                 console.warn("No se encontraron eventos en la base de datos.");
                 return;
@@ -29,71 +32,51 @@ const Calendario = () => {
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
                     const event = await getEventInfo(id);
-                    if (!event || event.estado !== "Confirmado") {
-                        console.warn(`Evento con ID ${id} no está confirmado o no tiene datos.`);
+                    if (!event || (event.estado !== "Confirmado" && event.estado !== "Pendiente")) {
                         return null;
                     }
     
-                    const userId = event.id_usuario;
-                    if (!userId) {
-                        console.warn(`No se encontró un usuario asociado al evento con ID ${id}.`);
-                        return null;
-                    }
-    
-                    const user = await getUserById(userId);
+                    const user = await getUserById(event.id_usuario);
                     if (!user) {
-                        console.warn(`No se encontró el usuario con ID ${userId}.`);
                         return null;
                     }
-    
-                    const userFullName = `${user.nombres} ${user.apellidos}`;
     
                     return {
                         ...event,
-                        title: userFullName,
-                        id_usuario: user.id_usuario,
+                        title: `${user.nombres} ${user.apellidos}`,
+                        color: event.estado === "Confirmado" ? "#CC9901" : "#7C0A01"
                     };
                 })
             );
     
-            const formattedEvents = eventDetails
-                .filter((event) => event !== null && event.fecha)
-                .map((event) => {
-                    const start = dayjs(`${event.fecha}T${event.hora_inicio || "00:00:00"}`);
-                    const end = dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`);
+            // Filtrar eventos según el filtro seleccionado
+            const filteredEvents = eventDetails.filter(event => event !== null).filter(event => {
+                if (filter === 'todos') return true;  // Mostrar todos los eventos
+                return event.estado === filter;  // Filtrar por estado
+            }).map(event => ({
+                start: dayjs(`${event.fecha}T${event.hora_inicio || "00:00:00"}`).toDate(),
+                end: dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`).toDate(),
+                title: event.title || "Evento sin título",
+                id: event.id,
+                color: event.color
+            }));
     
-                    if (!start.isValid() || !end.isValid()) {
-                        console.error(`Fecha u hora inválida para el evento con ID ${event.id}:`, {
-                            fecha: event.fecha,
-                            hora_inicio: event.hora_inicio,
-                            hora_fin: event.hora_fin,
-                        });
-                        return null;
-                    }
-    
-                    return {
-                        start: start.toDate(),
-                        end: end.toDate(),
-                        title: event.title || "Evento sin título",
-                        id: event.id,
-                        idusuario: event.idusuario,
-                    };
-                })
-                .filter((event) => event !== null);
-    
-            setEvents(formattedEvents);
+            setEvents(filteredEvents);
         } catch (error) {
             console.error("Error cargando eventos:", error.message);
         }
     };
     
+
     useEffect(() => {
-        fetchEvents();
-    }, []);
+        fetchEvents();  // Llama a la función para cargar los eventos según el filtro
+    }, [filter]);  // Este efecto se ejecuta cada vez que cambia `filter`
+    
 
     const handleEventClick = (event) => {
-        navigate(`/evento/${event.id}`);
+        navigate(`/evento/${event.id}`);  // Navegar a la ruta del evento con el ID
     };
+    
 
     const components = {
         event: props => {
@@ -101,7 +84,7 @@ const Calendario = () => {
                 <button 
                     onClick={() => handleEventClick(props.event)} 
                     style={{ 
-                        background: "#7C0A01", 
+                        background: props.event.color,  // Aquí se aplica el color dinámico del evento
                         color: "white", 
                         border: "none", 
                         width: "100%", 
@@ -117,6 +100,7 @@ const Calendario = () => {
             );
         }
     };
+       
 
     const messages = {
         allDay: 'Todo el día',
@@ -131,21 +115,20 @@ const Calendario = () => {
         time: 'Hora',
         event: 'Evento',
         noEventsInRange: "Sin eventos en este rango."
-        
     };
 
     return (
-        <div className="calendar-container" style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-        }}>
+        <div className="calendar-container">
             <h2 style={{ marginBottom: "10px" }}>Calendario de eventos</h2>
-            <div style={{
-                //height: "90vh",
-                //width: "80vw",
-                background: "#907665",
-             }}>
+    
+            {/* Filtro */}
+            <div className="filter-buttons">
+                <button onClick={() => handleFilterChange('Todo')}>Eventos y cotizaciones</button>
+                <button onClick={() => handleFilterChange('Confirmado')}>Eventos</button>
+                <button onClick={() => handleFilterChange('Pendiente')}>Cotizaciones</button>
+            </div>
+    
+            <div style={{ background: "#907665" }}>
                 <Calendar
                     localizer={localizer}
                     events={events}
@@ -157,6 +140,7 @@ const Calendario = () => {
             </div>
         </div>
     );
+    
 };
 
 export default Calendario;

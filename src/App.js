@@ -18,6 +18,7 @@ import EventDetails from './routes/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
+import VerCotizaciones from './routes/VerCotizaciones.jsx';
 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
             <Route path="/EditProfile" element={<EditProfile />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/CalendarioEventos" element={<CalendarioEventos />} />
+            <Route path="/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+            <Route path="/VerCotizaciones" element={<VerCotizaciones />} />
             <Route path="/test" element= {<ShowEvent/>} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
