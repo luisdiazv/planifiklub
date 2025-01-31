@@ -39,7 +39,6 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
-            <Route path="/VerCotizaciones" element={<VerCotizaciones />} />
             <Route path="/test" element= {<ShowEvent/>} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
