@@ -1,8 +1,16 @@
+:root {
+  --primary-color: #3D0C01;
+  --secondary-color: #CC9901;
+  --text-color: white;
+  --background-color: #3D0C01;
+}
+
 body {
   /* Ensure it takes full viewport height */
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'FoghlihtenNo01',
+    'ScheherazadeNew', 'DMSerifText-Regular',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -16,4 +24,14 @@ code {
 @font-face {
   font-family: 'FoghlihtenNo01';
   src: url('./Components/fonts/FoglihtenNo01.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'ScheherazadeNew';
+  src: url('./Components/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DMSerifText-Regular';
+  src: url('./Components/fonts/DMSerifText-Regular.ttf') format('truetype');
 }
