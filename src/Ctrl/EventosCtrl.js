@@ -277,5 +277,24 @@ export const getAllEventIds = async () => {
     }
   };
 
+  export const updateEventStatus = async (eventId, newStatus) => {
+    try {
+        const { error } = await supabase
+            .from("evento")
+            .update({ estado: newStatus })
+            .eq("idevento", eventId);
+
+        if (error) {
+            console.error("Error actualizando el estado del evento:", error.message);
+            throw new Error("No se pudo actualizar el estado del evento: " + error.message);
+        }
+
+        console.log("Estado del evento actualizado correctamente.");
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al actualizar el estado del evento: " + error.message);
+    }
+};
+
   
   

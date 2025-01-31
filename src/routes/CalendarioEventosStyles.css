@@ -40,6 +40,15 @@
     text-align: left;
 }
 
+.rbc-event-selected{
+    background-color: white;
+    color: #3D0C01;  /* Color del texto */
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    text-align: left;
+}
+
 .event-icon {
     margin-right: 5px;
 }
@@ -68,4 +77,5 @@
 .filter-buttons button:hover {
     background-color: #9b1305;
 }
+
 

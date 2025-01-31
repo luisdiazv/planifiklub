@@ -14,12 +14,8 @@ dayjs.locale("es");
 const Calendario = () => {
     const localizer = dayjsLocalizer(dayjs);
     const [events, setEvents] = useState([]);
-    const [filter, setFilter] = useState('todos');  // Estado para el filtro
+    const [filter, setFilter] = useState('todos');  // Filtro para los eventos
     const navigate = useNavigate();
-
-    const handleFilterChange = (newFilter) => {
-        setFilter(newFilter);
-    };
 
     const fetchEvents = async () => {
         try {
@@ -28,19 +24,21 @@ const Calendario = () => {
                 console.warn("No se encontraron eventos en la base de datos.");
                 return;
             }
-    
+
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
                     const event = await getEventInfo(id);
                     if (!event || (event.estado !== "Confirmado" && event.estado !== "Pendiente")) {
+                        console.warn(`Evento con ID ${id} tiene un estado no válido.`);
                         return null;
                     }
-    
+
                     const user = await getUserById(event.id_usuario);
                     if (!user) {
+                        console.warn(`No se encontró el usuario con ID ${event.id_usuario}.`);
                         return null;
                     }
-    
+
                     return {
                         ...event,
                         title: `${user.nombres} ${user.apellidos}`,
@@ -48,35 +46,45 @@ const Calendario = () => {
                     };
                 })
             );
-    
-            // Filtrar eventos según el filtro seleccionado
-            const filteredEvents = eventDetails.filter(event => event !== null).filter(event => {
-                if (filter === 'todos') return true;  // Mostrar todos los eventos
-                return event.estado === filter;  // Filtrar por estado
-            }).map(event => ({
+
+            const formattedEvents = eventDetails.filter(event => event !== null).map(event => ({
                 start: dayjs(`${event.fecha}T${event.hora_inicio || "00:00:00"}`).toDate(),
                 end: dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`).toDate(),
                 title: event.title || "Evento sin título",
-                id: event.id,
+                id: event.idevento, // El ID debe estar presente aquí
                 color: event.color
             }));
-    
-            setEvents(filteredEvents);
+
+            // Aplica el filtro seleccionado
+            if (filter !== 'todos') {
+                setEvents(formattedEvents.filter(event => event.estado === filter));
+            } else {
+                setEvents(formattedEvents);
+            }
+
         } catch (error) {
             console.error("Error cargando eventos:", error.message);
         }
     };
-    
 
+    // Llamamos a la función de obtención de eventos al montar el componente
     useEffect(() => {
-        fetchEvents();  // Llama a la función para cargar los eventos según el filtro
-    }, [filter]);  // Este efecto se ejecuta cada vez que cambia `filter`
-    
+        fetchEvents();
+    }, [filter]); // Dependemos del filtro para actualizar la vista de eventos
 
     const handleEventClick = (event) => {
-        navigate(`/evento/${event.id}`);  // Navegar a la ruta del evento con el ID
+        console.log(event.id); // Verifica que el evento tenga un id
+        if (event.id) {
+            navigate(`/evento/${event.id}`);
+        } else {
+            console.error("El evento no tiene un ID válido.");
+        }
     };
-    
+
+    // Cambia el filtro de eventos
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+    };
 
     const components = {
         event: props => {
@@ -84,7 +92,7 @@ const Calendario = () => {
                 <button 
                     onClick={() => handleEventClick(props.event)} 
                     style={{ 
-                        background: props.event.color,  // Aquí se aplica el color dinámico del evento
+                        background: props.event.color, 
                         color: "white", 
                         border: "none", 
                         width: "100%", 
@@ -100,7 +108,6 @@ const Calendario = () => {
             );
         }
     };
-       
 
     const messages = {
         allDay: 'Todo el día',
@@ -119,15 +126,15 @@ const Calendario = () => {
 
     return (
         <div className="calendar-container">
-            <h2 style={{ marginBottom: "10px" }}>Calendario de eventos</h2>
-    
-            {/* Filtro */}
+            <h2 style={{ marginBottom: "10px" }}>Calendario de eventos y cotizaciones</h2>
+            
+            {/* Filtro de eventos */}
             <div className="filter-buttons">
                 <button onClick={() => handleFilterChange('Todo')}>Eventos y cotizaciones</button>
                 <button onClick={() => handleFilterChange('Confirmado')}>Eventos</button>
                 <button onClick={() => handleFilterChange('Pendiente')}>Cotizaciones</button>
             </div>
-    
+
             <div style={{ background: "#907665" }}>
                 <Calendar
                     localizer={localizer}
@@ -140,7 +147,6 @@ const Calendario = () => {
             </div>
         </div>
     );
-    
 };
 
 export default Calendario;
