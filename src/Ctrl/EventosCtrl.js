@@ -255,5 +255,46 @@ const getInfoEdificios = async (data) => {
     }
 };
 
+export const getAllEventIds = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("evento") // Tabla de eventos
+        .select("idevento"); // Selecciona solo la columna de IDs
+  
+      if (error) {
+        console.error("Error obteniendo los IDs de los eventos:", error.message);
+        throw new Error("No se pudo obtener los IDs de los eventos: " + error.message);
+      }
+  
+      if (data && data.length > 0) {
+        return data.map(event => event.idevento); // Devuelve un array con los IDs
+      } else {
+        return []; // Si no hay datos, devuelve un array vacío
+      }
+    } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener los IDs de los eventos: " + error.message);
+    }
+  };
+
+  export const updateEventStatus = async (eventId, newStatus) => {
+    try {
+        const { error } = await supabase
+            .from("evento")
+            .update({ estado: newStatus })
+            .eq("idevento", eventId);
+
+        if (error) {
+            console.error("Error actualizando el estado del evento:", error.message);
+            throw new Error("No se pudo actualizar el estado del evento: " + error.message);
+        }
+
+        console.log("Estado del evento actualizado correctamente.");
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al actualizar el estado del evento: " + error.message);
+    }
+};
+
   
   

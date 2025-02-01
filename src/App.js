@@ -16,6 +16,9 @@ import NotFound from './routes/NotFound.jsx';
 
 import EventDetails from './routes/BalanzaDePagosContent/Event.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
+
+import CalendarioEventos from './routes/CalendarioEventos.jsx';
+
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
 
 function App() {
@@ -30,6 +33,11 @@ function App() {
             <Route path="/app" element={<AppHome />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
+              
+            <Route path="/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+
+              
+            <Route path="/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
@@ -37,6 +45,7 @@ function App() {
             <Route path="/app/RolesService" element={<ConfiguradorRoles />} />
             <Route path="/app/payment" element={<Balanzadepagos />} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
+
           </Routes>
         </div>
         <Footer />

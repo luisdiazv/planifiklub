@@ -66,6 +66,7 @@ export const updateUsuario = async (email, updates) => {
   }
 };
 
+
 export const getUsuarioByID = async (id) => {
   try {
     const { data, error } = await supabase.from("usuario").select("*").eq("idusuario", id).single();
