@@ -1,9 +1,41 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { getAllAdmins } from "../../Ctrl/RolCtrl";
 
 const PurchaseSummary = () => {
     const location = useLocation();
     const { selectedServices, serviceQuantities, totalPrice } = location.state || {};
+
+    const enviarCorreoSocio = async (correo, nombres) => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_conf`;
+            const response = await axios.post(
+                API_URL,
+                { correo, nombres },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+            setIsPopupVisible(true);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
+
+    const enviarCorreoAdmin = async () => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_admin`;
+            const correos = getAllAdmins();
+            const response = await axios.post(
+                API_URL,
+                { correos },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+            setIsPopupVisible(true);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
 
     // Verifica si los datos existen antes de intentar renderizarlos
     if (!selectedServices || !serviceQuantities || totalPrice === undefined) {
