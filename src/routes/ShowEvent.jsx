@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import "./ShowEventStyles.css";
+
 import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios, updateEventStatus } from "../Ctrl/EventosCtrl";
+//import pdfMake from "../Util/FontsForPDFS";
+import htmlToPdfMake from "html-to-pdfmake";
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts;
+
+const event_ID = 2;
+
+//pdfMake.vfs = { ...pdfFonts, ...customFonts };
 
 const ShowEvent = () => {
     const { id } = useParams();
@@ -96,7 +107,92 @@ const ShowEvent = () => {
             console.error("Error al cambiar el estado del evento:", err);
         }
     };
+  
+    const [loading, setLoading] = useState(false);
 
+    const generatePDF = async () => {
+        try {
+            setLoading(true);
+            console.log(pdfMake.vfs);
+    
+            // Construye el contenido HTML dinámico basado en la información del evento
+            const htmlContent = `
+                <h1 style="text-align: center;">Informe General del Evento</h1>
+                <h3>Detalles del Evento</h3>
+                <p><strong>Nombre del Usuario:</strong> ${userName || "Usuario desconocido"}</p>
+                <p><strong>Tipo de Evento:</strong> ${eventType || "Evento desconocido"}</p>
+                <p><strong>Fecha:</strong> ${eventInfo?.fecha || "No especificada"}</p>
+                <p><strong>Hora de Inicio:</strong> ${eventInfo?.hora_inicio || "No especificada"}</p>
+                <p><strong>Hora de Fin:</strong> ${eventInfo?.hora_fin || "No especificada"}</p>
+                <p><strong>Detalles:</strong> ${eventInfo?.detalles || "Sin detalles"}</p>
+                <p><strong>Número de Personas:</strong> ${eventInfo?.personas || "No especificado"}</p>
+                <p><strong>Estado:</strong> ${eventInfo?.estado || "No especificado"}</p>
+                <p><strong>Costo Total:</strong> $${eventInfo?.costo_total || 0}</p>
+                <p><strong>Saldo Pendiente:</strong> $${eventInfo?.saldo_pendiente || 0}</p>
+                
+                <h3>Lista de Edificios</h3>
+                ${
+                    edificios && edificios.length > 0
+                        ? edificios
+                              .map(
+                                  (edificio) => `
+                        <div>
+                            <p><strong>Edificio:</strong> ${edificio.nombre_edificio || "Desconocido"}</p>
+                            <p><strong>Montaje:</strong> ${edificio.nombre_montaje || "Desconocido"}</p>
+                            <p><strong>Hora de Inicio:</strong> ${edificio.hora_inicio || "No especificada"}</p>
+                            <p><strong>Hora de Fin:</strong> ${edificio.hora_fin || "No especificada"}</p>
+                            <p><strong>Subtotal:</strong> $${edificio.subtotal_alquiler || 0}</p>
+                            <hr/>
+                        </div>
+                    `
+                              )
+                              .join("")
+                        : "<p>No hay edificios registrados para este evento.</p>"
+                }
+    
+                <h3>Lista de Pedidos</h3>
+                ${
+                    pedidos && pedidos.length > 0
+                        ? pedidos
+                              .map(
+                                  (pedido) => `
+                        <div>
+                            <p><strong>Producto:</strong> ${pedido.nombre_producto || "Desconocido"}</p>
+                            <p><strong>Cantidad:</strong> ${pedido.cantidad || 0}</p>
+                            <p><strong>Subtotal:</strong> $${pedido.subtotal || 0}</p>
+                            <hr/>
+                        </div>
+                    `
+                              )
+                              .join("")
+                        : "<p>No hay pedidos registrados para este evento.</p>"
+                }
+            `;
+    
+            // Convierte el contenido HTML a formato PDFMake
+            const pdfContent = htmlToPdfMake(htmlContent);
+    
+            // Configuración básica del documento PDF
+            const documentDefinition = {
+                content: pdfContent,
+                styles: {
+                    header: { fontSize: 18, margin: [0, 10, 0, 10], font: "ScheherazadeNew-Regular" },
+                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5], font: "ScheherazadeNew-Regular" },
+                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5], font: "ScheherazadeNew-Regular" },
+                },
+            };
+    
+            // Genera y descarga el PDF
+            pdfMake.createPdf(documentDefinition).download(`Reporte_Evento_${event_ID}.pdf`);
+    
+        } catch (error) {
+            console.error("Error generando el reporte en PDF:", error.message);
+            alert("Ocurrió un error al generar el reporte. Inténtalo nuevamente.");
+        } finally {
+            setLoading(false);
+        }
+    };
+  
     return (
         <div className="showevent-container">
             <h2>Informe General del Evento</h2>
@@ -160,6 +256,18 @@ const ShowEvent = () => {
             ) : (
                 <p>Cargando información del evento...</p>
             )}
+
+        <button
+            onClick={generatePDF}
+            disabled={loading} // Deshabilitar el botón mientras se genera el PDF
+            style={{
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.6 : 1,
+            }}
+        >
+            {loading ? "Generando PDF..." : "Generar Reporte en PDF"}
+        </button>
+
         </div>
     );
 };

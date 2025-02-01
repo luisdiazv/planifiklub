@@ -1,0 +1,20 @@
+.event-type-list {
+  margin: 20px 0;
+}
+
+.event-type-item {
+  margin: 10px 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.event-type-item button {
+  margin-left: 10px;
+}
+
+.event-type-item input[type="checkbox"] {
+  margin-left: 10px;
+}
