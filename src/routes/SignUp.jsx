@@ -81,7 +81,7 @@ const Register = () => {
 
     const enviarCodigoAuth = async (correo, nombres, codigo) => {
         try {
-            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_recovery_email`;
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_auth_code`;
             const response = await axios.post(
                 API_URL,
                 { correo, nombres, codigo },
