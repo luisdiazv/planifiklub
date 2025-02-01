@@ -18,7 +18,6 @@ import LogIn from './routes/LogIn.jsx';
 import SignUp from './routes/SignUp.jsx'; 
 import EditProfile from './routes/editProfile.jsx';
 
-
 // Manejo de eventos
 import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
@@ -32,7 +31,6 @@ import NotFound from './routes/NotFound.jsx';
 function App() {
   return (
     <>
-
       <div className="App">
         <Navbar />
         <div className="App-container">
@@ -41,28 +39,30 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
+
             {/* App */}
             <Route path="/app" element={<AppHome />} />
+
             {/* Manejo de usuarios */}
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
+
             {/* Manejo de eventos */}
             <Route path="/app/reservation" element={<Reservation />} />
             <Route path="/app/ShowEvent" element={<ShowEvent />} />
+
             {/* Configuradores */}
             <Route path="/app/rolesService" element={<ConfiguradorRoles />} />
+
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
+            
           </Routes>
         </div>
         <Footer />
       </div>
-
     </>
-
-
-
   );
 }
 
