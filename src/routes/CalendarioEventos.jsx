@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
 import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
-import { getUserById } from "../Ctrl/UsuarioCtrl";
+import { getUsuarioByID } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
 
@@ -33,7 +33,7 @@ const Calendario = () => {
                         return null;
                     }
 
-                    const user = await getUserById(event.id_usuario);
+                    const user = await getUsuarioByID(event.id_usuario);
                     if (!user) {
                         console.warn(`No se encontró el usuario con ID ${event.id_usuario}.`);
                         return null;
