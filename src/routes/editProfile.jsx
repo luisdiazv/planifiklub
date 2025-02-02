@@ -112,6 +112,8 @@ const EditProfile = () => {
 
                 // Marcar que los datos fueron actualizados
                 setDatosActualizados(true); // Establecer el estado que indica que los datos fueron actualizados
+                // Redirigir a /app tras una actualización exitosa
+                navegar("/app");
             }
         } catch (err) {
             console.error("Error durante la actualización del perfil:", err);
