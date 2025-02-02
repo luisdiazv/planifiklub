@@ -87,14 +87,14 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/*
-                <div className="how-PK">
+
+                {/* <div className="how-PK">
                     <div className="content">
                         <h2>¿Cómo puedo probar PlanifiKlub?</h2>
                         <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
                     </div>
-                    <img className="image-content" alt="contentImg2" src={contentImg2} />
-                </div>
+
+                </div> */}
                 <div className="demo-PK-container">
                     <Link to={"/app/"} style={{ textDecoration: "none" }}>
                         <button className="prove-PK" onClick={(e) => {
@@ -106,7 +106,7 @@ const Home = () => {
                     </Link>
 
                 </div>
-                */}
+
 
             </div>
         </div>
