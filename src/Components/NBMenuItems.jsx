@@ -13,20 +13,21 @@ export const MenuItems = [
     },
     {
         title: "Iniciar Sesión",
-        url: "/App/LogIn",
+        url: "/app/LogIn",
         cName: "nav-links",
         icon: ""
     },
     {
         title: "Registrarse",
-        url: "/App/SignUp",
+        url: "/app/SignUp",
         cName: "nav-links-button",
         icon: ""
     }
 ];
 
 export const dropdownOptions = [
-    { path: "/App/payment", label: "Nuestros Servicios" },
-    { path: "/App/EditProfile", label: "Editar perfil" },
+    { path: "/app/payment", label: "Nuestros Servicios" },
+    { path: "/app/EditProfile", label: "Editar perfil" },
+    { path: "/app/CalendarioEventos", label: "Eventos y cotizaciones [ADMIN]" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
 ];

@@ -72,7 +72,7 @@ class Navbar extends Component {
 
         return (
             <nav className="NavbarItems">
-                <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
+                <Link className="nav-link-logo" to="/app" onClick={this.closeDropdown}>
                     <div className="logoContainer">
                         <img src={logo} alt="Logo" />
                         <h1 className="navbar-logo">PlanifiKlub</h1>

@@ -1,9 +1,6 @@
 import EventDetails from './BalanzaDePagosContent/Event.jsx';
 import OurServices from './BalanzaDePagosContent/OurServices.jsx';
 import PlaceSelector from './BalanzaDePagosContent/PlaceSelector.jsx';
-import PurchaseSummary from './BalanzaDePagosContent/purchaseSummary.jsx';
-
-import { Wallet } from '@mercadopago/sdk-react';
 
 export const sections = [
     {

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import "./ShowEventStyles.css";
+
+import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios, updateEventStatus } from "../Ctrl/EventosCtrl";
 //import pdfMake from "../Util/FontsForPDFS";
-import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios } from "../Ctrl/EventosCtrl";
 import htmlToPdfMake from "html-to-pdfmake";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -13,32 +15,34 @@ const event_ID = 2;
 //pdfMake.vfs = { ...pdfFonts, ...customFonts };
 
 const ShowEvent = () => {
-    const [eventInfo, setEventInfo] = useState(null); // Información del evento
-    const [userName, setUserName] = useState(""); // Nombre del usuario
+    const { id } = useParams();
+    const navigate = useNavigate(); // Crear la instancia de navigate
+    const [eventInfo, setEventInfo] = useState(null);
+    const [userName, setUserName] = useState("");
     const [eventType, setEventType] = useState("");
     const [edificios, setEdificios] = useState([]);
     const [pedidos, setPedidos] = useState();
-    const [error, setError] = useState(null); // Manejo de errores
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchEventInfo = async () => {
             try {
-                const data = await getEventInfo(event_ID); // Llama a la función con un ID de ejemplo
-                setEventInfo(data); // Guarda los datos del evento en el estado
+                const data = await getEventInfo(id);
+                setEventInfo(data);
             } catch (err) {
                 console.error("Error obteniendo los datos del evento:", err);
                 setError("Ocurrió un error al cargar los datos del evento.");
             }
         };
         fetchEventInfo();
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         if (eventInfo?.id_usuario) {
             const fetchUserName = async () => {
                 try {
                     const fullName = await getUserName(eventInfo.id_usuario);
-                    setUserName(fullName); // Guarda el nombre completo
+                    setUserName(fullName);
                 } catch (err) {
                     console.error("Error obteniendo el nombre del usuario:", err);
                     setUserName("Usuario desconocido");
@@ -53,7 +57,7 @@ const ShowEvent = () => {
             const fetchEventType = async () => {
                 try {
                     const event_type = await getEventType(eventInfo.id_tipo_evento);
-                    setEventType(event_type); 
+                    setEventType(event_type);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
                     setEventType("Evento desconocido");
@@ -68,7 +72,7 @@ const ShowEvent = () => {
             const fetchPedidos = async () => {
                 try {
                     const pedidos = await getPedidos(eventInfo.idevento);
-                    setPedidos(pedidos); 
+                    setPedidos(pedidos);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
                     setPedidos("Evento desconocido");
@@ -83,7 +87,7 @@ const ShowEvent = () => {
             const fetchEdificios = async () => {
                 try {
                     const ListEdificios = await getEdificios(eventInfo.idevento);
-                    setEdificios(ListEdificios); 
+                    setEdificios(ListEdificios);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
                     setEdificios("Evento desconocido");
@@ -93,6 +97,17 @@ const ShowEvent = () => {
         }
     }, [eventInfo]);   
 
+    // Función para cambiar el estado a "Confirmado" y redirigir al calendario
+    const handleGenerarEvento = async () => {
+        try {
+            await updateEventStatus(id, "Confirmado"); // Actualiza el estado a Confirmado
+            setEventInfo({ ...eventInfo, estado: "Confirmado" }); // Actualiza el estado local
+            navigate("/CalendarioEventos"); // Redirige al calendario
+        } catch (err) {
+            console.error("Error al cambiar el estado del evento:", err);
+        }
+    };
+  
     const [loading, setLoading] = useState(false);
 
     const generatePDF = async () => {
@@ -177,8 +192,7 @@ const ShowEvent = () => {
             setLoading(false);
         }
     };
-    
-    
+  
     return (
         <div className="showevent-container">
             <h2>Informe General del Evento</h2>
@@ -234,8 +248,10 @@ const ShowEvent = () => {
                     ) : (
                         <p>No hay pedidos registrados para este evento.</p>
                     )}
-        
-                    
+
+                    {eventInfo.estado === "Pendiente" && (
+                        <button className="generate-event-button" onClick={handleGenerarEvento}>Generar evento</button>
+                    )}
                 </div>
             ) : (
                 <p>Cargando información del evento...</p>

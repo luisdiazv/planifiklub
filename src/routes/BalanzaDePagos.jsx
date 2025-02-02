@@ -32,13 +32,15 @@ const Balanzadepagos = () => {
                 return sum + (service.price * quantity);
             }, 0);
 
-            const response = await axios.post("https://86c2-2800-484-5d87-5500-443b-efe9-d17e-7415.ngrok-free.app/create_preference", {
+            const request =  "https://" + process.env.REACT_APP_MERCADOPAGO_API_URL + "/create_preference";
+
+            const response = await axios.post(request, {
                 title: "Reserva de evento",
                 quantity: 1,
                 price: totalPrice,
             });
 
-            console.log("Respuesta del servidor:", response.data);
+            //console.log("Respuesta del servidor:", response.data);
             const { id } = response.data;
             return id;
         } catch (error) {
@@ -48,7 +50,6 @@ const Balanzadepagos = () => {
 
     const handleBuy = async () => {
         const id = await createPreference();
-        console.log(id);
         if (id) {
             setPreferenceId(id);  // Setea el ID de la preferencia si se recibe correctamente
         }
