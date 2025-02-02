@@ -2,16 +2,16 @@
     width: 60%;
     margin: 50px auto;
     padding: 3rem;
-    border: 1px solid #3D0C01;
+    border: 1px solid var(--secondary-container-color);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #3D0C01;
+    background-color: var(--secondary-container-color);
 
     h2 {
         text-align: center;
         margin: 0;
         padding-bottom: 1rem;
-        color: #CC9901;
+        color: var(--button-color);
         font-size: 4rem;
         font-weight: lighter;
     }
@@ -19,7 +19,7 @@
     p {
         font-size: 1rem;
         text-align: end;
-        color: #CC9901;
+        color: var(--button-color);
     }
 }
 
@@ -37,17 +37,11 @@
 .register-button {
     width: 100%;
     padding: 10px;
-    background-color: #CC9901;
-    color: #3D0C01;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.register-button:hover {
-    background-color: #DAA520;
-    color: #fff;
-}
 
 .popup-container {
     position: fixed;
@@ -62,7 +56,7 @@
 }
 
 .popup {
-    background: #CC9901;
+    background: var(--button-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -71,7 +65,7 @@
     p {
         font-size: 1rem;
         text-align: end;
-        color: #3D0C01;
+        color: var(--secondary-container-color);
     }
 }
 
@@ -79,19 +73,13 @@
     width: 80%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-color);
     border-radius: 5px;
 }
 
 .popup button {
     padding: 10px 20px;
-    background: #3D0C01;
-    color: #CC9901;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.popup button:hover {
-    background: #7C0A01;
 }

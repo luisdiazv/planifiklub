@@ -24,7 +24,7 @@ const LogIn = () => {
                 window.dispatchEvent(new Event("userChanged"));
 
                 alert("Inicio de sesión exitoso");
-                navigate('/');
+                navigate('/app/');
             } else {
                 setErrorMessage("Credenciales incorrectas");
                 alert("Credenciales incorrectas");

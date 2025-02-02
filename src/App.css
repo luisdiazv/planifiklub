@@ -1,8 +1,8 @@
 .App {
   text-align: center;
-  background-color: #dcd5c5;
+  background-color: var(--background-color);
   font-size: calc(10px + 2vmin);
-  color: #3D0C01;
+  color: var(--secondary-text-color);
   display: flex;
   flex-direction: column;
 }
@@ -23,11 +23,6 @@
 }
 
 
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -42,7 +37,7 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
-  color: #CC9901;
+  color: var(--text-color);
 
   select {
     padding: 0.6rem;
@@ -68,9 +63,11 @@ h1 {
 }
 
 h2 {
+  width: auto;
   font-size: 2.5rem;
   font-family: 'DMSerifText-Regular';
   font-weight: lighter;
+  border-bottom: 3px inset var(--secondary-text-color);
 }
 
 p,
@@ -79,23 +76,35 @@ p1 {
   font-size: 1.8rem;
   line-height: 1.5;
   font-weight: normal;
+  color: var(--secondary-text-color);
+  padding: 0.5rem 0 2rem 0;
 }
 
 a {
   text-decoration: none;
-  color: var(--secondary-color);
+  color: var(--button-color);
 }
 
 a:hover {
-  color: #DAA520;
+  color: var(--secondary-button-color);
 }
 
 button {
+
   font-family: 'FoghLihtenNo01';
+  font-size: 1.3rem;
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #CC9901;
-  color: white;
+  background-color: var(--button-color);
+  color: var(--secondary-text-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--secondary-button-color);
+  color: var(--text-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;

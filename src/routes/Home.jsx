@@ -7,6 +7,7 @@ import image2 from '../Components/imgs/homeSliderImage2.jpg'
 import image3 from '../Components/imgs/homeSliderImage3.jpg'
 import contentImg1 from '../Components/imgs/homeSliderImage1.jpg'
 import contentImg2 from '../Components/imgs/homeSliderImage1.jpg'
+import { Link } from "react-router-dom";
 
 const images = [
     {
@@ -57,9 +58,15 @@ const Home = () => {
                     <img className="image-content" alt="contentImg2" src={contentImg2} />
                 </div>
                 <div className="demo-PK-container">
-                    <button className="prove-PK">
-                        Agendar una demo
-                    </button>
+                    <Link to={"/app/"} style={{ textDecoration: "none" }}>
+                        <button className="prove-PK" onClick={(e) => {
+                            e.preventDefault(); // Evita que el enlace se active antes del reload
+                            window.location.href = "/app/"; // Redirige a la página antes de refrescar
+                        }}>
+                            Agendar una demo
+                        </button>
+                    </Link>
+
                 </div>
 
             </div>

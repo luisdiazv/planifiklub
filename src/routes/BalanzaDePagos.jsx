@@ -152,7 +152,7 @@ const Balanzadepagos = () => {
                 >
                     {sections.map((section, index) => (
                         <div key={index} className="section">
-                            <h2>{section.title}</h2>
+                            <h1>{section.title}</h1>
                             <p>{section.description}</p>
 
                             <>{section.content}</>

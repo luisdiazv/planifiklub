@@ -13,20 +13,20 @@ export const MenuItems = [
     },
     {
         title: "Iniciar Sesión",
-        url: "/LogIn",
+        url: "/App/LogIn",
         cName: "nav-links",
         icon: ""
     },
     {
         title: "Registrarse",
-        url: "/SignUp",
+        url: "/App/SignUp",
         cName: "nav-links-button",
         icon: ""
     }
 ];
 
 export const dropdownOptions = [
-    { path: "/payment", label: "Nuestros Servicios" },
-    { path: "/EditProfile", label: "Editar perfil" },
+    { path: "/App/payment", label: "Nuestros Servicios" },
+    { path: "/App/EditProfile", label: "Editar perfil" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
 ];

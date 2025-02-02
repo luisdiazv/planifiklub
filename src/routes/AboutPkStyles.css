@@ -12,9 +12,9 @@
     padding: 1rem;
     text-align: center;
     font-style: italic;
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
     font-weight: 300;
-    border-bottom: 3px inset var(--secondary-color);
+    border-bottom: 3px inset var(--secondary-text-color);
     display: inline-block;
 }
 
@@ -29,10 +29,9 @@
 }
 
 .title {
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
     text-align: left;
     padding: 1rem 0;
-    border-bottom: 3px inset var(--secondary-color);
     margin-bottom: 1rem;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .text {
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
     padding: 0.5rem 0 2rem 0;
     text-align: left;
     white-space: pre-line;

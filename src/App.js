@@ -30,23 +30,19 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
-            <Route path="/LogIn" element={<LogIn />} />
-            <Route path="/SignUp" element={<SignUp />} />
-            <Route path="/EditProfile" element={<EditProfile />} />
-            <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/app/LogIn" element={<LogIn />} />
+            <Route path="/app/SignUp" element={<SignUp />} />
+            <Route path="/app/EditProfile" element={<EditProfile />} />
             <Route path="/test" element={<ShowEvent />} />
-            <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
+            <Route path="/app/*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
-            <Route path="/payment" element={<Balanzadepagos />} />*/
+            <Route path="/app/payment" element={<Balanzadepagos />} />*/
           </Routes>
         </div>
         <Footer />
       </div>
 
     </>
-
-
-
   );
 }
 

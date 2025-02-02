@@ -8,7 +8,7 @@
     border: none;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px var(--secondary-container-color);
     max-width: 400px;
     width: 100%;
 }
@@ -24,11 +24,4 @@ ul {
 
 li {
     margin-bottom: 15px;
-}
-
-input[type="number"] {
-    margin-left: 10px;
-    padding: 5px;
-    width: 60px;
-    text-align: right;
 }
