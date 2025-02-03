@@ -20,6 +20,7 @@ import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
+import ConfiguradorSocio from './routes/Service/MemberService.jsx';
 
 function App() {
   return (
@@ -42,7 +43,8 @@ function App() {
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
             <Route path="/app/ShowEvent" element={<ShowEvent />} />
-            <Route path="/app/RolesService" element={<ConfiguradorRoles />} />
+            <Route path="/app/RolesService" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
+            <Route path="/app/MemberService" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
             <Route path="/app/payment" element={<Balanzadepagos />} />
             <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
 
