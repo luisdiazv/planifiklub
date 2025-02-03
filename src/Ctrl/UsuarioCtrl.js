@@ -82,4 +82,6 @@ export const getUsuarioByID = async (id) => {
   }
 };
 
+
+
 export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario , getUsuarioByID};
