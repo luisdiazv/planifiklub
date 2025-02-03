@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import hash from "../Util/Hash";
 import { actualizarPassword } from "../Ctrl/UsuarioCtrl";
 import { codigoAuth, enviarCorreo } from "../Util/EmailService";
+import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -13,11 +15,16 @@ const ChangePassword = ({ userEmail }) => {
     const [authCode, setAuthCode] = useState("");
 
     const handleSendCode = async () => {
+        if (newPassword !== confirmPassword) {
+            setErrorMessage("Las contraseñas no coinciden.");
+            return;
+        }
+
         try {
             const codigo = codigoAuth();
             setAuthCode(codigo);
 
-            const emailSent = await enviarCorreo({ correo: userEmail }, codigo);
+            const emailSent = await enviarCorreo({ correo: email }, codigo);
 
             if (emailSent) {
                 setIsPopupVisible(true);
@@ -35,28 +42,26 @@ const ChangePassword = ({ userEmail }) => {
         if (inputCode === authCode.toString()) {
             try {
                 const hashedNewPassword = await hash(newPassword);
-                const updateSuccess = await actualizarPassword(userEmail, hashedNewPassword);
+                const updateSuccess = await actualizarPassword(email, hashedNewPassword);
 
                 if (updateSuccess) {
                     setSuccessMessage("Contraseña actualizada correctamente.");
                     setErrorMessage("");
+                    setEmail("");
                     setNewPassword("");
                     setConfirmPassword("");
                     setInputCode("");
-                    setIsPopupVisible(false); // Solo se cierra el popup al confirmar éxito
+                    setIsPopupVisible(false);
                     alert("Cambio de contraseña confirmado: La contraseña se ha actualizado correctamente.");
                 } else {
                     setErrorMessage("Hubo un problema al actualizar la contraseña. Por favor, inténtalo de nuevo.");
-                    alert("Error del sistema: No se pudo actualizar la contraseña.");
                 }
             } catch (error) {
                 console.error("Error al actualizar la contraseña:", error);
                 setErrorMessage("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.");
-                alert("Error del sistema: No se pudo completar la operación.");
             }
         } else {
             setErrorMessage("El código de verificación es incorrecto.");
-            alert("Código incorrecto: La contraseña no se ha actualizado.");
         }
     };
 
@@ -64,6 +69,15 @@ const ChangePassword = ({ userEmail }) => {
         <div className="change-password-container">
             <h2>Cambiar Contraseña</h2>
             <form onSubmit={(e) => { e.preventDefault(); handleSendCode(); }}>
+                <div className="form-group">
+                    <label>Correo Electrónico</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
                 <div className="form-group">
                     <label>Nueva Contraseña</label>
                     <input
