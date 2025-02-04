@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import hash from "../Util/Hash";
+import axios from "axios";
 import { actualizarPassword } from "../Ctrl/UsuarioCtrl";
-import { codigoAuth, enviarCorreo } from "../Util/EmailService";
+import { codigoAuth} from "../Util/EmailService";
 import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {
@@ -24,7 +25,7 @@ const ChangePassword = ({ userEmail }) => {
             const codigo = codigoAuth();
             setAuthCode(codigo);
 
-            const emailSent = await enviarCorreo({ correo: email }, codigo);
+            const emailSent = await enviarCodigoAuth(email, codigo);
 
             if (emailSent) {
                 setIsPopupVisible(true);
@@ -35,6 +36,20 @@ const ChangePassword = ({ userEmail }) => {
         } catch (error) {
             console.error("Error al enviar el código de verificación:", error);
             setErrorMessage("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.");
+        }
+    };
+    const enviarCodigoAuth = async (correo, codigo) => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_auth_code`;
+            const response = await axios.post(
+                API_URL,
+                { correo, codigo },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+            setIsPopupVisible(true);
+        } catch (error) {
+            console.error("Error en la petición:", error);
         }
     };
 
