@@ -33,9 +33,9 @@ const images = [
 
 const AppHome = () => {
     return (
-        <div className="home-Container">
+        <div className="app-home-Container">
             <ImageSlider images={images} />
-            <div className="home-content">
+            <div className="app-home-content">
                 <div className="what-is-PK">
                     <h1>¿Qué es PlanifiKlub?</h1>
                     <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
@@ -56,11 +56,7 @@ const AppHome = () => {
                     </div>
                     <img className="image-content" alt="contentImg2" src={contentImg2} />
                 </div>
-                <div className="demo-PK-container">
-                    <button className="prove-PK">
-                        Agendar una demo
-                    </button>
-                </div>
+
 
             </div>
         </div>

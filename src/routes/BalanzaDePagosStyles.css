@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
 }
 
 .timeline {
@@ -112,6 +111,8 @@
 }
 
 .section {
+    align-items: center;
+    justify-content: center;
     flex: 0 0 100%;
     box-sizing: border-box;
     border: none;

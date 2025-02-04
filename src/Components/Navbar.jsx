@@ -68,11 +68,11 @@ class Navbar extends Component {
     render() {
         const { isDropdownVisible, currentUser } = this.state;
         const location = window.location.pathname;
-        const isAppPage = location.startsWith("/app/");
+        const isAppPage = location.startsWith("/app");
 
         return (
             <nav className="NavbarItems">
-                <Link className="nav-link-logo" to="/app" onClick={this.closeDropdown}>
+                <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
                     <div className="logoContainer">
                         <img src={logo} alt="Logo" />
                         <h1 className="navbar-logo">PlanifiKlub</h1>

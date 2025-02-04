@@ -6,6 +6,8 @@ import image1 from '../Components/imgs/homeSliderImage1.jpg'
 import image2 from '../Components/imgs/homeSliderImage2.jpg'
 import image3 from '../Components/imgs/homeSliderImage3.jpg'
 import contentImg1 from '../Components/imgs/homeSliderImage1.jpg'
+
+import { Link } from "react-router-dom";
 //import contentImg2 from '../Components/imgs/homeSliderImage1.jpg'
 
 const images = [
