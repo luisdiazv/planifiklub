@@ -33,7 +33,7 @@ const Register = () => {
     const validarPassword = (password) => {
         const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
         const testResult = regex.test(password);
-        console.log("Resultado de la prueba:", testResult);
+        console.log("Resultado de la prueba de password:", testResult);
         return testResult;
     };
 
