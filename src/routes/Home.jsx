@@ -5,8 +5,7 @@ import logoRed from '../Components/imgs/LogoRed.png'
 import image1 from '../Components/imgs/homeSliderImage1.jpg'
 import image2 from '../Components/imgs/homeSliderImage2.jpg'
 import image3 from '../Components/imgs/homeSliderImage3.jpg'
-import contentImg1 from '../Components/imgs/homeSliderImage1.jpg'
-//import contentImg2 from '../Components/imgs/homeSliderImage1.jpg'
+import contentImg1 from '../Components/imgs/why.jpeg'
 
 const images = [
     {
@@ -86,22 +85,6 @@ const Home = () => {
                         </p1>
                     </div>
                 </div>
-
-                {/*
-                <div className="how-PK">
-                    <div className="content">
-                        <h2>¿Cómo puedo probar PlanifiKlub?</h2>
-                        <p1>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p1>
-                    </div>
-                    <img className="image-content" alt="contentImg2" src={contentImg2} />
-                </div>
-                <div className="demo-PK-container">
-                    <button className="prove-PK">
-                        Agendar una demo
-                    </button>
-                </div>
-                */}
-
             </div>
         </div>
     );

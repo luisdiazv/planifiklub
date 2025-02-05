@@ -31,8 +31,10 @@ const Register = () => {
     ];
 
     const validarPassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return regex.test(password);
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
+        const testResult = regex.test(password);
+        console.log("Resultado de la prueba de password:", testResult);
+        return testResult;
     };
 
     const handleSubmit = async (e) => {
