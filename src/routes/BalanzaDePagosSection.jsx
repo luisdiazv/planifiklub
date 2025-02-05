@@ -2,6 +2,7 @@ import EventDetails from './BalanzaDePagosContent/Event.jsx';
 import OurServices from './BalanzaDePagosContent/OurServices.jsx';
 //import PlaceSelector from './BalanzaDePagosContent/PlaceSelector.jsx';
 import EdificiosList from "./BalanzaDePagosContent/edificios.jsx";
+import PurchaseSummary from "./BalanzaDePagosContent/purchaseSummary.jsx";
 
 export const sections = [
     {
@@ -21,7 +22,9 @@ export const sections = [
         content: <OurServices />
     },
     {
-        title: "Resumen Final"
+        title: "Resumen Final",
+        content: <PurchaseSummary />
+
     },
 
 ];

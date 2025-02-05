@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
+import EdificiosList from "./edificios";
+
 const PurchaseSummary = () => {
     const location = useLocation();
     const { selectedServices, serviceQuantities, totalPrice } = location.state || {};
@@ -12,6 +14,7 @@ const PurchaseSummary = () => {
 
     return (
         <div>
+
             <h2>Resumen de Compra</h2>
             <div>
                 <h3>Servicios seleccionados:</h3>
