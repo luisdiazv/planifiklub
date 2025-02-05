@@ -24,15 +24,17 @@ const Register = () => {
     const navegar = useNavigate();
 
     const tiposDocumento = [
-        "Cédula de Ciudadanía",
+        "Cedula de Ciudadanía",
         "NIT",
         "Pasaporte",
-        "Cédula de Extranjería",
+        "Cedula de Extranjería",
     ];
 
     const validarPassword = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return regex.test(password);
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
+        const testResult = regex.test(password);
+        console.log("Resultado de la prueba:", testResult);
+        return testResult;
     };
 
     const handleSubmit = async (e) => {
