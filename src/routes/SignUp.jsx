@@ -72,8 +72,12 @@ const Register = () => {
 
         try {
             const code = codigoAuth();
+            if(true){
+                console.log(code);
+            }
             setAuthCode(code);
             await enviarCodigoAuth(correo, nombres, code);
+            //setIsPopupVisible(true);  //Desconmentar para activar el popup de verificación de ser necesario, correos no funcionando
         } catch (error) {
             console.error("Error durante el registro del usuario:", error);
             setErrorMessage("Hubo un problema al verificar las credenciales");

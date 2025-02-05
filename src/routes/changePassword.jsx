@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import hash from "../Util/Hash";
 import axios from "axios";
-import { actualizarPassword } from "../Ctrl/UsuarioCtrl";
-import { codigoAuth} from "../Util/EmailService";
+import { actualizarPassword, getUsuarioByEmail } from "../Ctrl/UsuarioCtrl";
+import { codigoAuth } from "../Util/EmailService";
 import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {
@@ -15,7 +16,14 @@ const ChangePassword = ({ userEmail }) => {
     const [inputCode, setInputCode] = useState("");
     const [authCode, setAuthCode] = useState("");
 
+    const navegar = useNavigate();
     const handleSendCode = async () => {
+        verificarCorreo(email)
+
+        if (!validarPassword(newPassword)) {
+            setErrorMessage("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo especial.");
+            return;
+        }
         if (newPassword !== confirmPassword) {
             setErrorMessage("Las contraseñas no coinciden.");
             return;
@@ -23,10 +31,13 @@ const ChangePassword = ({ userEmail }) => {
 
         try {
             const codigo = codigoAuth();
+            if(true){
+                console.log(codigo);
+            }
             setAuthCode(codigo);
 
             const emailSent = await enviarCodigoAuth(email, codigo);
-
+            //setIsPopupVisible(true);  //Desconmentar para activar el popup de verificación de ser necesario, correos no funcionando
             if (emailSent) {
                 setIsPopupVisible(true);
                 setErrorMessage("");
@@ -53,6 +64,24 @@ const ChangePassword = ({ userEmail }) => {
         }
     };
 
+    const validarPassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
+        const testResult = regex.test(password);
+        console.log("Resultado de la prueba de password:", testResult);
+        return testResult;
+    };
+
+    const verificarCorreo = async (email) => {
+        try {
+          const usuario = await getUsuarioByEmail(email);
+          return usuario !== null;  // Retorna true si existe, false si no.
+        } catch (error) {
+          console.log("El correo no está registrado.");
+          setErrorMessage("Correo no registrado");
+          return false;
+        }
+      };
+
     const handleCodeVerification = async () => {
         if (inputCode === authCode.toString()) {
             try {
@@ -68,6 +97,7 @@ const ChangePassword = ({ userEmail }) => {
                     setInputCode("");
                     setIsPopupVisible(false);
                     alert("Cambio de contraseña confirmado: La contraseña se ha actualizado correctamente.");
+                    navegar("/app");
                 } else {
                     setErrorMessage("Hubo un problema al actualizar la contraseña. Por favor, inténtalo de nuevo.");
                 }
