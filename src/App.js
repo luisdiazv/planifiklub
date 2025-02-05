@@ -34,7 +34,7 @@ function App() {
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
               
-            <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+            <Route path="evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
 
               
             <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />

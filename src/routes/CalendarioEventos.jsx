@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
-import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
+import { getAllEventIds, getEventInfo, getEdificios } from "../Ctrl/EventosCtrl";
 import { getUsuarioByID } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
@@ -38,11 +38,14 @@ const Calendario = () => {
                         console.warn(`No se encontró el usuario con ID ${event.id_usuario}.`);
                         return null;
                     }
+                    const edificios = await getEdificios(id);
+                    const edificioName = edificios && edificios[0] ? edificios[0].nombre_edificio : "Edificio Desconocido";
 
                     return {
                         ...event,
-                        title: `${user.nombres} ${user.apellidos}`,
-                        color: event.estado === "Confirmado" ? "#CC9901" : "#7C0A01"
+                        title: `${user.nombres} ${user.apellidos} - ${edificioName}`,
+                        color: event.estado === "Confirmado" ? "#CC9901" : "#7C0A01",
+                        estado:event.estado
                     };
                 })
             );
@@ -52,10 +55,10 @@ const Calendario = () => {
                 end: dayjs(`${event.fecha}T${event.hora_fin || "23:59:59"}`).toDate(),
                 title: event.title || "Evento sin título",
                 id: event.idevento, // El ID debe estar presente aquí
-                color: event.color
+                color: event.color,
+                estado: event.estado
             }));
 
-            // Aplica el filtro seleccionado
             if (filter !== 'todos') {
                 setEvents(formattedEvents.filter(event => event.estado === filter));
             } else {
@@ -130,12 +133,12 @@ const Calendario = () => {
             
             {/* Filtro de eventos */}
             <div className="filter-buttons">
-                <button onClick={() => handleFilterChange('Todo')}>Eventos y cotizaciones</button>
+                <button onClick={() => handleFilterChange('todos')}>Eventos y cotizaciones</button>
                 <button onClick={() => handleFilterChange('Confirmado')}>Eventos</button>
                 <button onClick={() => handleFilterChange('Pendiente')}>Cotizaciones</button>
             </div>
 
-            <div style={{ background: "#907665" }}>
+            <div>
                 <Calendar
                     localizer={localizer}
                     events={events}
