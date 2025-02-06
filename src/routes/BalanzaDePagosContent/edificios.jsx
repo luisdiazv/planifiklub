@@ -99,7 +99,7 @@ const EdificiosList = () => {
 
               {expanded[edificio.idedificios] && (
                 <div className="edificio-details">
-                  <p><strong>Descripción:</strong> {edificio.Description}</p>
+                  <p><strong>Descripción:</strong> {edificio.descripcion}</p>
                   <p><strong>Capacidad:</strong> {edificio.capacidad_maxima} personas</p>
                   <p><strong>Disponibilidad:</strong> {edificio.disponibilidad ? "Disponible" : "No disponible"}</p>
                   <p><strong>Costo por Hora:</strong> ${edificio.costo_hora}</p>
