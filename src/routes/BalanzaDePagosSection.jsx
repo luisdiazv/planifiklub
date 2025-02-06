@@ -1,6 +1,7 @@
 import EventDetails from './BalanzaDePagosContent/Event.jsx';
 import OurServices from './BalanzaDePagosContent/OurServices.jsx';
 import PlaceSelector from './BalanzaDePagosContent/PlaceSelector.jsx';
+import ResumenCotizacion from './BalanzaDePagosContent/ResumenCotizacion.jsx';
 
 export const sections = [
     {
@@ -19,7 +20,8 @@ export const sections = [
         content: <OurServices />
     },
     {
-        title: "Resumen Final"
+        title: "Resumen Final",
+        content: <ResumenCotizacion />
     },
 
 ];

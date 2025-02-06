@@ -158,8 +158,9 @@ const Balanzadepagos = () => {
 
                             <>{section.content}</>
 
-                            {/* Mostrar el bloque extra solo si es el último elemento */}
-                            {index === sections.length - 1 && (
+                            {/* Mostrar el bloque extra solo si es el último elemento. Agregar un index+1 para quitar este submenu,
+                            quitar el +1 de lo contrario */}
+                            {index+1 === sections.length - 1 && (    
                                 <div className="card-product-container">
                                     <div className="card-product">
                                         <div className="card">
