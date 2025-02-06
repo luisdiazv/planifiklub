@@ -1,8 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-import EdificiosList from "./edificios";
-
 const PurchaseSummary = () => {
     const location = useLocation();
     const { selectedServices, serviceQuantities, totalPrice } = location.state || {};
