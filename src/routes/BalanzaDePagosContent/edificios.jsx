@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getAllEdificio } from "../../Ctrl/EdificiosCtrl";
 import { getAllMontajeEdificio } from "../../Ctrl/MontajesEdificioCtrl";
+import { getNombreMontajeByIdMontaje } from "../../Ctrl/MontajesCtrl";
 import "./edificiosStyles.css";
 import SmallCallendar from "../../Components/smallCallendar";
 import HourSelector from "../../Components/hourSelector";
@@ -8,6 +9,7 @@ import HourSelector from "../../Components/hourSelector";
 const EdificiosList = () => {
     const [edificios, setEdificios] = useState([]);
     const [montajes, setMontajes] = useState([]);
+    const [montajesNombres, setMontajesNombres] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expanded, setExpanded] = useState({});
@@ -24,6 +26,12 @@ const EdificiosList = () => {
 
                 const montajesData = await getAllMontajeEdificio();
                 setMontajes(montajesData);
+
+                const nombres = {};
+                for (const montaje of montajesData) {
+                    nombres[montaje.id_montajes] = await getNombreMontajeByIdMontaje(montaje.id_montajes);
+                }
+                setMontajesNombres(nombres);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -108,7 +116,7 @@ const EdificiosList = () => {
                                     {montajesFiltrados.length > 0 ? (
                                         montajesFiltrados.map(montaje => (
                                             <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
-                                                {montaje.id_montajes}
+                                                {montajesNombres[montaje.id_montajes] || "Cargando..."}
                                             </option>
                                         ))
                                     ) : (

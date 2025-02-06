@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigat
 import { getEventType } from "../Ctrl/TiposEventosCtrl";
 import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import {getPedidosByIdEvento} from "../Ctrl/PedidoCtrl";
-import { getEdificiosByIdEvento } from "../Ctrl/Edificios.Ctrl";
+import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import "./ShowEventStyles.css";
 
 import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
