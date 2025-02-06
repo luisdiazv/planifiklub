@@ -28,6 +28,7 @@ export const MenuItems = [
 export const dropdownOptions = [
     { path: "/app/payment", label: "Nuestros Servicios" },
     { path: "/app/EditProfile", label: "Editar perfil" },
+    { path: "/app/ChangePassword", label: "Cambiar contraseña" },
     { path: "/app/CalendarioEventos", label: "Eventos y cotizaciones [ADMIN]" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
 ];

@@ -71,7 +71,7 @@ const LogIn = () => {
                 <Link className="new-account" to='/app/SignUp'>
                     ¿Aún no tienes cuenta?
                 </Link>
-                <Link className="forgot-password-link" onClick={() => alert("Redirigir a recuperación de contraseña")}>
+                <Link className="forgot-password-link" to='/app/changePassword'>
                     ¿Olvidaste tu contraseña?
                 </Link>
             </div>
