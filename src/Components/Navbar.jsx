@@ -83,9 +83,6 @@ class Navbar extends Component {
                     {
                         MenuItems.map((item, index) => {
                             if (index == 3 && !isAppPage) {
-                                if (currentUser !== null) {
-                                    return null;
-                                }
                                 return (
                                     <li key={index}>
                                         <Link

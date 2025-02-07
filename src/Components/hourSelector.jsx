@@ -1,97 +1,80 @@
 import "rc-time-picker/assets/index.css";
-import React from "react";
-import moment from "moment";
+import React, { useState } from "react";
 import TimePicker from "rc-time-picker";
-
-import './hourSelectorStyles.css';
+import moment from "moment";
+import "./hourSelectorStyles.css";
 
 const isBeforeTime = (time1, time2) =>
-    time1.minutes() + time1.hours() * 60 < time2.minutes() + time2.hours();
+    time1 && time2 && time1.minutes() + time1.hours() * 60 < time2.minutes() + time2.hours() * 60;
 
-export default class HourSelector extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value1: props.value ? props.value.clone() : null,
-            value2: props.value ? props.value.clone().add(props.minuteStep, "minutes") : null
-        };
-    }
+export default function HourSelector({ value, onChange, disabledHours, minuteStep = 30 }) {
+    const [value1, setValue1] = useState(value ? value.clone() : null);
+    const [value2, setValue2] = useState(value ? value.clone().add(minuteStep, "minutes") : null);
 
-    handleValueChange1 = (value1) => {
-        if (!value1) {
-            this.setState({
-                value1
-            });
+    const handleValueChange1 = (newValue1) => {
+        if (!newValue1) {
+            setValue1(null);
+            setValue2(null);
+            onChange(null, null);
             return;
         }
 
-        if (this.state.value2 && isBeforeTime(value1, this.state.value2)) {
-            this.setState({
-                value1: value1.clone(),
-                value2: value1.clone().add(this.props.minuteStep, "minutes")
-            });
-        } else {
-            this.setState({
-                value1: value1.clone(),
-            });
-        }
+        const adjustedValue2 = newValue1.clone().add(minuteStep, "minutes");
 
-        this.props.onChange(value1, this.state.value2);
+        setValue1(newValue1.clone());
+        setValue2(adjustedValue2);
+        onChange(newValue1, adjustedValue2);
     };
 
-    handleValueChange2 = (value2) => {
-        if (!value2) {
-            this.setState({
-                value2
-            });
-            return;
+    const handleValueChange2 = (newValue2) => {
+        if (!value1 || !newValue2 || !isBeforeTime(value1, newValue2)) {
+            return; // Bloquea la selección si `value1` no está definido o si `value2` no es mayor.
         }
 
-
-        if (this.state.value1 && isBeforeTime(this.state.value1, value2)) {
-            this.setState({
-                value2: value2.clone(),
-                value1: value2.clone().subtract(this.props.minuteStep, "minutes")
-            });
-        } else {
-            this.setState({
-                value2: value2.clone(),
-            });
-        }
-
-        this.props.onChange(this.state.value1, value2);
+        setValue2(newValue2.clone());
+        onChange(value1, newValue2);
     };
 
-    render() {
-        const { value1, value2 } = this.state;
+    // 🔹 Deshabilitar todas las horas menores o iguales a `value1`
+    const getDisabledHoursForValue2 = () => {
+        if (!value1) return disabledHours;
+        const selectedHour = value1.hour();
+        return [...new Set([...disabledHours, ...Array.from({ length: selectedHour + 1 }, (_, i) => i)])];
+    };
 
-        return (
-            <div className="hourSelector-container">
-                <p>hora de inicio del evento:</p>
+    return (
+        <div className="hourSelector-container">
+            <div className="hourSelector-field">
+                <label className="hourSelector-label">Hora de inicio del evento:</label>
                 <TimePicker
                     value={value1}
-                    disabledHours={() => this.props.disabledHours}
-                    minuteStep={30}
+                    disabledHours={() => disabledHours}
+                    minuteStep={minuteStep}
                     showSecond={false}
-                    onChange={this.handleValueChange1}
+                    onChange={handleValueChange1}
                     format="hh:mm A"
-                />
-                <p>hora final del evento:</p>
-                <TimePicker
-                    value={value2}
-                    disabledHours={() => this.props.disabledHours}
-                    minuteStep={30}
-                    showSecond={false}
-                    onChange={this.handleValueChange2}
-                    format="hh:mm A"
+                    className="hourSelector-input"
                 />
             </div>
-        );
-    }
+            <div className="hourSelector-field">
+                <label className="hourSelector-label">Hora final del evento:</label>
+                <TimePicker
+                    value={value2}
+                    disabledHours={getDisabledHoursForValue2} // 🔹 Aplica la restricción a value2
+                    minuteStep={minuteStep}
+                    showSecond={false}
+                    onChange={handleValueChange2}
+                    format="hh:mm A"
+                    className="hourSelector-input"
+                    disabled={!value1} // 🔹 Bloquea hasta que value1 tenga un valor
+                />
+            </div>
+        </div>
+    );
 }
 
 HourSelector.defaultProps = {
-    disabledHours: [1, 2, 3, 4],
+    disabledHours: [0, 1, 2, 3, 4], // 🔹 Horas deshabilitadas iniciales
     value: null,
-    minuteStep: 30, // Aseguramos que el paso de minutos sea de 30 en 30
+    minuteStep: 30,
 };

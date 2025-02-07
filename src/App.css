@@ -71,7 +71,8 @@ h2 {
 }
 
 p,
-p1 {
+p1,
+label {
   font-family: 'ScheherazadeNew';
   font-size: 1.8rem;
   line-height: 1.5;
