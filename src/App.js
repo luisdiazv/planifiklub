@@ -1,56 +1,71 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
+//Componentes basicos
 import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
-import Home from './routes/Home.jsx';  // Asegúrate de que la importación sea correcta
-import AboutUs from './routes/AboutUs.jsx';  // Asegúrate de que la importación sea correcta
-import AboutPk from './routes/AboutPk.jsx';  // Asegúrate de que la importación sea correcta
-import LogIn from './routes/LogIn.jsx';  // Asegúrate de que la importación sea correcta
-import SignUp from './routes/SignUp.jsx';  // Asegúrate de que la importación sea correcta
-import EditProfile from './routes/editProfile.jsx';
-import Balanzadepagos from './routes/BalanzaDePagos.jsx';
-import AppHome from './routes/AppHome.jsx';
-import NotFound from './routes/NotFound.jsx';
+//Empresa
+import Home from './routes/Home.jsx'; 
+import AboutUs from './routes/AboutUs.jsx'; 
+import AboutPk from './routes/AboutPk.jsx'; 
 
-import EventDetails from './routes/BalanzaDePagosContent/Event.jsx';
+//App
+import AppHome from './routes/AppHome.jsx';
+
+//App manejo de usuarios
+import LogIn from './routes/LogIn.jsx'; 
+import SignUp from './routes/SignUp.jsx'; 
+import EditProfile from './routes/editProfile.jsx';
+
+// Manejo de eventos
+import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 
-import CalendarioEventos from './routes/CalendarioEventos.jsx';
-
+//Configuradores
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
-import ChangePassword from './routes/changePassword.jsx';
+
+//Ruta no encontrada
+import NotFound from './routes/NotFound.jsx';
 
 function App() {
   return (
     <>
-
       <div className="App">
         <Navbar />
         <div className="App-container">
           <Routes>
+            {/* Empresa */}
             <Route path="/" element={<Home />} />
-
+            <Route path="/app" element={<AppHome />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
+
+            {/* App */}
             <Route path="/app" element={<AppHome />} />
-            <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
-            <Route path="/app/changePassword" element={<ChangePassword />} />  
-            <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
+
+            {/* Manejo de usuarios */}
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
-            <Route path="/app/ShowEvent" element={<ShowEvent />} />
-            <Route path="/app/RolesService" element={<ConfiguradorRoles />} />
-            <Route path="/app/payment" element={<Balanzadepagos />} />
-            <Route path="*" element={<NotFound />} />  {/* Ruta no encontrada */}
+            <Route path="/app/changePassword" element={<ChangePassword />} />  
 
+            {/* Manejo de eventos */}
+            <Route path="/app/reservation" element={<Reservation />} />
+            <Route path="/app/ShowEvent" element={<ShowEvent />} />
+            <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
+            <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+
+            {/* Configuradores */}
+            <Route path="/app/rolesService" element={<ConfiguradorRoles />} />
+
+            {/* Ruta no encontrada */}
+            <Route path="*" element={<NotFound />} />
+            
           </Routes>
         </div>
         <Footer />
       </div>
-
     </>
   );
 }
