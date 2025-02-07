@@ -3,8 +3,16 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height:90vh;
+    width: 97vw;
 }
 
+.calendar-container{
+    //display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
 .rbc-toolbar {
     background-color: #7C0A01;
     color: white;

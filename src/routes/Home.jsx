@@ -9,6 +9,7 @@ import contentImg1 from '../Components/imgs/homeSliderImage1.jpg'
 
 import { Link } from "react-router-dom";
 //import contentImg2 from '../Components/imgs/homeSliderImage1.jpg'
+//import contentImg1 from '../Components/imgs/why.jpeg' //PRE-MERGE
 
 const images = [
     {
@@ -108,8 +109,6 @@ const Home = () => {
                     </Link>
 
                 </div>
-
-
             </div>
         </div>
     );

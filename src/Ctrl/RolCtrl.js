@@ -15,3 +15,23 @@ export const getAllRoles = async () => {
     throw new Error("FATAL ERROR: No se pudo verificar los roles");
   }
 };
+
+export const getAllAdmins = async () => {
+  try {
+    const { data: usuarios, error: errorUsuarios } = await supabase.from('usuario').select('correo').eq('idusuario', 
+      supabase.from('accesos').select('id_usuario').eq('id_rol', 
+      supabase.from('roles').select('idroles').eq('nombre_rol', 'Administrativo')
+      )
+    );
+
+    if (errorUsuarios) {
+      console.error('Error al obtener los correos:', errorUsuarios);
+    } else {
+      console.log('Correos de usuarios administrativos:', usuarios);
+    }
+
+  } catch (error) {
+    console.error("Error interno:", error);
+    throw new Error("FATAL ERROR: No se pudo obtener los administradores");
+  }
+}

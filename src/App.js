@@ -20,6 +20,7 @@ import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
+import ChangePassword from './routes/changePassword.jsx';
 
 function App() {
   return (
@@ -33,10 +34,9 @@ function App() {
 
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/AboutPk" element={<AboutPk />} />
-
-            <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
-
             <Route path="/app" element={<AppHome />} />
+            <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+            <Route path="/app/changePassword" element={<ChangePassword />} />  
             <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />

@@ -106,7 +106,7 @@ const ShowEvent = () => {
         try {
             await updateEventStatus(id, "Confirmado"); // Actualiza el estado a Confirmado
             setEventInfo({ ...eventInfo, estado: "Confirmado" }); // Actualiza el estado local
-            navigate("/CalendarioEventos"); // Redirige al calendario
+            navigate("/app/CalendarioEventos"); // Redirige al calendario
         } catch (err) {
             console.error("Error al cambiar el estado del evento:", err);
         }
