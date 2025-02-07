@@ -82,7 +82,24 @@ class Navbar extends Component {
                 <ul className="nav-menu">
                     {
                         MenuItems.map((item, index) => {
-                            if (index === 3 && isAppPage) {
+                            if (index == 3 && !isAppPage) {
+                                if (currentUser !== null) {
+                                    return null;
+                                }
+                                return (
+                                    <li key={index}>
+                                        <Link
+                                            to={item.url}
+                                            style={{ textDecoration: "none" }}
+                                            onClick={this.closeDropdown}
+                                        >
+                                            <button className={item.cName}>{item.title}</button>
+                                        </Link>
+                                    </li>
+                                );
+                            }
+
+                            if (index == 4 && isAppPage) {
                                 if (currentUser !== null) {
                                     return null;
                                 }
@@ -100,8 +117,11 @@ class Navbar extends Component {
                             }
 
 
+                            if ((index === 0 || index === 1 || index === 3) && isAppPage) {
+                                return null;
+                            }
 
-                            if ((index === 2 || index === 3) && !isAppPage) {
+                            if ((index === 2 || index === 4) && !isAppPage) {
                                 return null;
                             }
                             if (index === 2 && currentUser !== null) {

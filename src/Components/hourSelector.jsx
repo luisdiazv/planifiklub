@@ -25,11 +25,10 @@ export default class HourSelector extends React.Component {
             return;
         }
 
-        // Si value2 es menor que value1, ajustamos value2 para que sea mayor
         if (this.state.value2 && isBeforeTime(value1, this.state.value2)) {
             this.setState({
                 value1: value1.clone(),
-                value2: value1.clone().add(this.props.minuteStep, "minutes") // Ajustamos value2 a un valor mayor
+                value2: value1.clone().add(this.props.minuteStep, "minutes")
             });
         } else {
             this.setState({
@@ -37,7 +36,6 @@ export default class HourSelector extends React.Component {
             });
         }
 
-        // Llamamos a onChange solo con value1
         this.props.onChange(value1, this.state.value2);
     };
 
@@ -49,11 +47,11 @@ export default class HourSelector extends React.Component {
             return;
         }
 
-        // Si value1 es mayor que value2, ajustamos value1 para que sea menor
+
         if (this.state.value1 && isBeforeTime(this.state.value1, value2)) {
             this.setState({
                 value2: value2.clone(),
-                value1: value2.clone().subtract(this.props.minuteStep, "minutes") // Ajustamos value1 a un valor menor
+                value1: value2.clone().subtract(this.props.minuteStep, "minutes")
             });
         } else {
             this.setState({
@@ -61,16 +59,15 @@ export default class HourSelector extends React.Component {
             });
         }
 
-        // Llamamos a onChange solo con value2
         this.props.onChange(this.state.value1, value2);
     };
 
     render() {
         const { value1, value2 } = this.state;
 
-        // Si los valores son nulos, renderiza el TimePicker sin valores predeterminados.
         return (
             <div className="hourSelector-container">
+                <p>hora de inicio del evento:</p>
                 <TimePicker
                     value={value1}
                     disabledHours={() => this.props.disabledHours}
@@ -79,6 +76,7 @@ export default class HourSelector extends React.Component {
                     onChange={this.handleValueChange1}
                     format="hh:mm A"
                 />
+                <p>hora final del evento:</p>
                 <TimePicker
                     value={value2}
                     disabledHours={() => this.props.disabledHours}
