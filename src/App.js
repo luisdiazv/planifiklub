@@ -17,10 +17,12 @@ import AppHome from './routes/AppHome.jsx';
 import LogIn from './routes/LogIn.jsx'; 
 import SignUp from './routes/SignUp.jsx'; 
 import EditProfile from './routes/editProfile.jsx';
+import ChangePassword from './routes/ChangePassword.jsx';
 
 // Manejo de eventos
 import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
+import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
 //Configuradores
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
