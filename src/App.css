@@ -71,13 +71,21 @@ h2 {
 }
 
 p,
-p1,
-label {
+p1 {
   font-family: 'ScheherazadeNew';
   font-size: 1.8rem;
   line-height: 1.5;
   font-weight: normal;
   color: var(--secondary-text-color);
+  padding: 0.5rem 0 2rem 0;
+}
+
+label {
+  font-family: 'ScheherazadeNew';
+  font-size: 1.8rem;
+  line-height: 1.5;
+  font-weight: normal;
+  color: var(--text-color);
   padding: 0.5rem 0 2rem 0;
 }
 

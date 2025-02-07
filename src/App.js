@@ -17,7 +17,7 @@ import AppHome from './routes/AppHome.jsx';
 import LogIn from './routes/LogIn.jsx'; 
 import SignUp from './routes/SignUp.jsx'; 
 import EditProfile from './routes/editProfile.jsx';
-import ChangePassword from './routes/ChangePassword.jsx';
+import ChangePassword from './routes/changePassword.jsx';
 
 // Manejo de eventos
 import Reservation from './routes/Reservation.jsx';
@@ -50,7 +50,7 @@ function App() {
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
-            <Route path="/app/changePassword" element={<ChangePassword />} />  
+            <Route path="/app/ChangePassword" element={<ChangePassword />} />  
 
             {/* Manejo de eventos */}
             <Route path="/app/reservation" element={<Reservation />} />
