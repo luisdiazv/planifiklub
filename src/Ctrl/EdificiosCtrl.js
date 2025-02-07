@@ -30,7 +30,7 @@ export const getEdificiosByIdEvento = async (eventId) => {
         }
 
         if (data.length > 0) {
-            const info = await getInfoEdificios(data); // Usar await aquí
+            const info = await getInfoEdificios(data);
             return info;
         } else {
             return "Edificios del Evento Desconocido";

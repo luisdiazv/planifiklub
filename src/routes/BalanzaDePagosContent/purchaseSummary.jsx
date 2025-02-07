@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { getAllAdmins } from "../../Ctrl/RolCtrl";
 
@@ -15,7 +16,6 @@ const PurchaseSummary = () => {
                 { headers: { "Content-Type": "application/json" } }
             );
             console.log("Respuesta del servidor:", response.data);
-            setIsPopupVisible(true);
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -31,7 +31,6 @@ const PurchaseSummary = () => {
                 { headers: { "Content-Type": "application/json" } }
             );
             console.log("Respuesta del servidor:", response.data);
-            setIsPopupVisible(true);
         } catch (error) {
             console.error("Error en la petición:", error);
         }
