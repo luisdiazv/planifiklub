@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
+
 import { getAllEventIds, getEventInfo, getEdificios } from "../Ctrl/EventosCtrl";
 import { getUsuarioByID } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ const Calendario = () => {
 
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
-                    const event = await getEventInfo(id);
+                    const event = await getEventById(id);
                     if (!event || (event.estado !== "Confirmado" && event.estado !== "Pendiente")) {
                         console.warn(`Evento con ID ${id} tiene un estado no válido.`);
                         return null;

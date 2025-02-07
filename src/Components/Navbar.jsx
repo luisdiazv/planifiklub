@@ -67,10 +67,12 @@ class Navbar extends Component {
 
     render() {
         const { isDropdownVisible, currentUser } = this.state;
+        const location = window.location.pathname;
+        const isAppPage = location.startsWith("/app");
 
         return (
             <nav className="NavbarItems">
-                <Link className="nav-link-logo" to="/app" onClick={this.closeDropdown}>
+                <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
                     <div className="logoContainer">
                         <img src={logo} alt="Logo" />
                         <h1 className="navbar-logo">PlanifiKlub</h1>
@@ -78,71 +80,93 @@ class Navbar extends Component {
                 </Link>
                 <div className="menu-icons"></div>
                 <ul className="nav-menu">
-                    {MenuItems.map((item, index) => {
-                        if (index === 3) {
-                            if (currentUser !== null) {
-                                // Mostrar este enlace solo si el usuario está autenticado
+                    {
+                        MenuItems.map((item, index) => {
+                            if (index == 3 && !isAppPage) {
+                                return (
+                                    <li key={index}>
+                                        <Link
+                                            to={item.url}
+                                            style={{ textDecoration: "none" }}
+                                            onClick={this.closeDropdown}
+                                        >
+                                            <button className={item.cName}>{item.title}</button>
+                                        </Link>
+                                    </li>
+                                );
+                            }
+
+                            if (index == 4 && isAppPage) {
+                                if (currentUser !== null) {
+                                    return null;
+                                }
+                                return (
+                                    <li key={index}>
+                                        <Link
+                                            to={item.url}
+                                            style={{ textDecoration: "none" }}
+                                            onClick={this.closeDropdown}
+                                        >
+                                            <button className={item.cName}>{item.title}</button>
+                                        </Link>
+                                    </li>
+                                );
+                            }
+
+
+                            if ((index === 0 || index === 1 || index === 3) && isAppPage) {
                                 return null;
                             }
+
+                            if ((index === 2 || index === 4) && !isAppPage) {
+                                return null;
+                            }
+                            if (index === 2 && currentUser !== null) {
+                                return null;
+                            }
+
                             return (
                                 <li key={index}>
                                     <Link
+                                        className={item.cName}
                                         to={item.url}
-                                        style={{ textDecoration: "none" }}
                                         onClick={this.closeDropdown}
                                     >
-                                        <button className={item.cName}>{item.title}</button>
+                                        {item.title}
                                     </Link>
                                 </li>
                             );
-                        }
-
-                        if (index === 2 && currentUser !== null) {
-                            // No mostrar el enlace en el índice 2 si el usuario está autenticado
-                            return null;
-                        }
-
-                        return (
-                            <li key={index}>
-                                <Link
-                                    className={item.cName}
-                                    to={item.url}
-                                    onClick={this.closeDropdown}
+                        })}
+                    {currentUser !== null && isAppPage &&
+                        (
+                            <div className="user-menu-container" ref={this.menuRef}>
+                                <button
+                                    className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
+                                    onClick={this.toggleDropdown}
                                 >
-                                    {item.title}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                    {currentUser !== null && (
-                        <div className="user-menu-container" ref={this.menuRef}>
-                            <button
-                                className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
-                                onClick={this.toggleDropdown}
-                            >
-                                <i className="fa-solid fa-circle-user"></i>
-                            </button>
-                            {isDropdownVisible && (
-                                <div className="dropdown-menu">
-                                    {dropdownOptions.map((option, idx) => (
-                                        <Link
-                                            key={idx}
-                                            to={option.path}
-                                            className="dropdown-item"
-                                            onClick={() => {
-                                                if (option.label === "Cerrar sesión") {
-                                                    this.handleLogout(); // Llama a la función local
-                                                }
-                                                this.closeDropdown(); // Cierra el menú
-                                            }}
-                                        >
-                                            {option.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                    <i className="fa-solid fa-circle-user"></i>
+                                </button>
+                                {isDropdownVisible && (
+                                    <div className="dropdown-menu">
+                                        {dropdownOptions.map((option, idx) => (
+                                            <Link
+                                                key={idx}
+                                                to={option.path}
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    if (option.label === "Cerrar sesión") {
+                                                        this.handleLogout();
+                                                    }
+                                                    this.closeDropdown();
+                                                }}
+                                            >
+                                                {option.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                 </ul>
             </nav>
         );

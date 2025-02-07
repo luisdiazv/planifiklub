@@ -2,9 +2,7 @@
     display: flex;
     flex-direction: column;
     margin: 0;
-    /* Remove any extra margin */
     padding: 0;
-    /* Remove any extra padding */
 }
 
 .home-content {
@@ -23,6 +21,10 @@
     gap: 20px;
     font-weight: 600;
     padding: 2rem 5rem 3rem 5rem;
+
+    h1 {
+        border-bottom: 3px inset var(--secondary-text-color);
+    }
 }
 
 
@@ -33,6 +35,10 @@
     gap: 20px;
     font-weight: 600;
     padding: 2rem 5rem 5rem 3rem;
+
+    h1 {
+        border-bottom: 3px inset var(--secondary-text-color);
+    }
 
     .home-image-content {
         display: block;
@@ -49,6 +55,8 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+
+
 
 
     p1 {
@@ -68,13 +76,17 @@
     font-weight: 600;
     padding: 2rem 5rem 5rem 3rem;
 
+    h1 {
+        border-bottom: 3px inset var(--secondary-text-color);
+    }
+
     .image-content {
         display: block;
         width: 20%;
         margin-left: 100px;
         object-fit: cover;
         opacity: 0.8;
-        mask-image: linear-gradient(to right, #05161A 50%, transparent 100%);
+        mask-image: linear-gradient(to left, #1a0505 50%, transparent 100%);
     }
 
     .res-image {
@@ -93,17 +105,11 @@
 }
 
 .prove-PK {
-    background-color: #DDAD41;
     border: none;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.prove-PK:hover {
-    background-color: #CC9901;
 }

@@ -1,0 +1,50 @@
+.custom-calendar {
+    font-size: 2rem;
+    color: var(--text-color);
+    background-color: var(--secondary-container-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.custom-calendar .MuiButtonBase-root {
+    color: var(--text-color);
+}
+
+.custom-calendar .MuiButtonBase-root:hover {
+    color: var(--button-color);
+}
+
+.custom-calendar .MuiButtonBase-root:disabled {
+    color: var(--secondary-container-color);
+}
+
+.custom-calendar .css-17f9e7e-MuiTypography-root-MuiDayCalendar-weekDayLabel {
+    color: var(--text-color);
+}
+
+.custom-calendar .css-emir30-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+    border: 1px solid var(--button-color);
+}
+
+.custom-calendar .css-17f9e7e-MuiTypography-root-MuiDayCalendar-weekDayLabel {
+    color: var(--text-color);
+}
+
+.custom-calendar .css-qct7wd-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+    border: 2px solid var(--button-color);
+}
+
+.custom-calendar .css-4k4mmf-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+    background-color: var(--button-color) !important;
+    font-weight: 600;
+}
+
+.custom-calendar .css-4k4mmf-MuiButtonBase-root-MuiPickersDay-root.Mui-selected:hover {
+    will-change: var(--text-color);
+    color: var(--secondary-text-color);
+    background-color: var(--secondary-button-color) !important;
+}
+
+.custom-calendar .Mui-selected:hover {
+    background-color: var(--secondary-button-color) !important;
+}

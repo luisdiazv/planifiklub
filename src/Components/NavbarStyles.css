@@ -3,9 +3,9 @@
     height: 60px;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 5px 15px 0 #560601;
+    box-shadow: 0 5px 15px 0 var(--secondary-container-color);
     width: 100%;
-    background-color: #7C0A01;
+    background-color: var(--container-color);
     position: fixed;
     top: 0;
     left: 50%;
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #DDAD41;
+    color: var(--button-color);
     cursor: pointer;
     height: 100%;
 }
@@ -38,20 +38,24 @@
 
 .navbar-logo {
     font-size: 3rem;
-    color: #DDAD41;
+    color: var(--button-color);
     font-family: 'FoghlihtenNo01';
     font-weight: lighter;
+}
+
+.navbar-logo:hover {
+    color: var(--secondary-button-color);
 }
 
 .menu-icons {
     display: block;
     cursor: pointer;
-    color: white;
+    color: var(--text-color);
 }
 
 .menu-icons i {
     font-size: 1.8rem;
-    color: white;
+    color: var(--text-color);
 }
 
 .nav-menu {
@@ -65,12 +69,15 @@
 }
 
 .nav-menu li {
+    display: flex;
     margin: 0 15px;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-links {
     text-decoration: none;
-    color: white;
+    color: var(--text-color);
     font-family: 'FoghlihtenNo01';
     font-size: 1.3rem;
     display: flex;
@@ -82,18 +89,19 @@
 
 
 .nav-links:hover {
-    color: #DDAD41;
+    color: var(--secondary-button-color);
     border-radius: 4px;
     transition: all 0.3s ease-in-out;
 }
 
 .nav-links-button {
+    margin-top: 0%;
     width: 100%;
     padding: 1.2rem;
     font-size: 1.3rem;
     font-weight: bold;
-    background-color: #3D0C01;
-    color: white;
+    background-color: var(--secondary-container-color);
+    color: var(--text-color);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -107,8 +115,8 @@
 
 .nav-links-button:hover {
     transition: all 0.3s ease-in-out;
-    background-color: #CC9901;
-    color: #3D0C01;
+    background-color: var(--button-color);
+    color: var(--secondary-container-color);
 }
 
 .user-button-menu {
@@ -122,17 +130,18 @@
     justify-content: center;
     margin: auto;
     font-size: 2.5rem;
-    color: #CC9901;
+    color: var(--button-color);
 }
 
 .user-button-menu.active {
-    color: white;
+    color: var(--text-color);
     /* Cambia el color del ícono a blanco */
 }
 
 
 .user-button-menu:hover {
-    color: white;
+    color: var(--text-color);
+    background-color: transparent;
     /* Cambia el color al pasar el mouse */
 }
 
@@ -142,8 +151,8 @@
     top: 100%;
     right: 0;
     border: none;
-    background-color: #7C0A01;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--container-color);
+    box-shadow: 0 4px 8px var(--secondary-container-color);
     z-index: 1000;
     padding: 10px;
 }
@@ -153,12 +162,12 @@
     display: block;
     padding: 8px 16px;
     text-decoration: none;
-    color: white;
+    color: var(--text-color);
     font-size: 1rem;
     transition: background-color 0.3s;
     text-align: start;
 }
 
 .dropdown-item:hover {
-    background-color: #3D0C01;
+    background-color: var(--secondary-container-color);
 }

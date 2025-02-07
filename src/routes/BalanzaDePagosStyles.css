@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
 }
 
 .timeline {
@@ -25,20 +24,17 @@
 .timeline-line {
     position: absolute;
     top: 50%;
-    /* Centers the line vertically */
     transform: translateY(-50%);
-    /* Adjusts for the exact center */
     left: 0;
     right: 0;
     height: 4px;
-    /* Thickness of the line */
-    background-color: var(--primary-color);
+    background-color: var(--container-color);
     z-index: 0;
 }
 
 .timeline-progress {
     height: 100%;
-    background-color: var(--secondary-color);
+    background-color: var(--button-color);
     transition: width 0.3s;
 }
 
@@ -47,14 +43,10 @@
     justify-content: space-between;
     align-items: center;
     position: absolute;
-    /* Position relative to the parent container */
     top: 50%;
-    /* Center vertically */
     transform: translateY(-50%);
-    /* Adjust for exact vertical centering */
     width: 100%;
     z-index: 1;
-    /* Ensure it's above the line */
 }
 
 .timeline-point {
@@ -64,20 +56,18 @@
     cursor: pointer;
     position: relative;
     z-index: 1;
-    /* Ensures points are above the line */
 }
 
 .timeline-point span {
     margin-top: 2rem;
     font-size: 1rem;
     text-align: center;
-    color: var(--primary-color);
     white-space: nowrap;
     position: absolute;
 }
 
 .timeline-point.active {
-    color: white;
+    color: var(--button-color);
     transform: scale(1.2);
 }
 
@@ -85,22 +75,22 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+    background-color: var(--secondary-container-color);
+    border: 2px solid var(--secondary-container-color);
     ;
     transition: background-color 0.3s, border-color 0.3s;
 
 }
 
 .timeline-point.active .circle {
-    background-color: var(--secondary-color);
+    background-color: var(--button-color);
     /* Color activo */
-    border-color: var(--secondary-color);
+    border-color: var(--button-color);
 }
 
 .timeline-point.completed .circle {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: var(--button-color);
+    border-color: var(--button-color);
 }
 
 
@@ -112,28 +102,24 @@
     scroll-behavior: smooth;
     height: auto;
     width: 100%;
-    /* Asegura que ocupe todo el ancho disponible */
 
 
     >* {
         scroll-snap-align: center;
-        /* Los elementos se centran al desplazarse */
         flex-shrink: 0;
-        /* Previene que los hijos cambien de tamaño */
     }
 }
 
 .section {
+    align-items: center;
+    justify-content: center;
     flex: 0 0 100%;
-    /* Cada sección toma el 100% del contenedor */
     box-sizing: border-box;
     border: none;
     height: auto;
     transition: width 0.3s;
-    /* Para una transición suave */
 }
 
-/* Formulario de pago */
 .card-product-container {
     margin-top: 20px;
 }
@@ -142,7 +128,7 @@
     width: 100%;
     max-width: 800px;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--text-color);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -153,7 +139,6 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    /* Agregado un poco de espacio alrededor */
 }
 
 .navigation-buttons button {
@@ -163,9 +148,7 @@
 }
 
 .navigation-buttons button:disabled {
-    background-color: #333;
+    background-color: var(--disabled-color);
     opacity: 0.5;
-    /* Desactivar botón con opacidad */
     cursor: not-allowed;
-    /* Cambiar el cursor cuando está deshabilitado */
 }

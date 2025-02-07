@@ -18,11 +18,19 @@ export const MenuItems = [
         icon: ""
     },
     {
+        title: "Ingresar a App",
+        url: "/app",
+        cName: "nav-links-button",
+        icon: ""
+    },
+    {
         title: "Registrarse",
         url: "/app/SignUp",
         cName: "nav-links-button",
         icon: ""
-    }
+    },
+
+
 ];
 
 export const dropdownOptions = [

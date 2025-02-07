@@ -44,6 +44,7 @@ const PurchaseSummary = () => {
 
     return (
         <div>
+
             <h2>Resumen de Compra</h2>
             <div>
                 <h3>Servicios seleccionados:</h3>

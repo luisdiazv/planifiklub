@@ -1,10 +1,8 @@
-.home-Container {
+/* .home-Container {
     display: flex;
     flex-direction: column;
     margin: 0;
-    /* Remove any extra margin */
     padding: 0;
-    /* Remove any extra padding */
 }
 
 .home-content {
@@ -107,4 +105,4 @@
 
 .prove-PK:hover {
     background-color: #CC9901;
-}
+} */

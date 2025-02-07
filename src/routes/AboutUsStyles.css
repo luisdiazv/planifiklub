@@ -1,7 +1,7 @@
 .Ustitle {
     font-size: 5rem;
     font-weight: normal;
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
     text-align: center;
     padding: 0.5rem 0;
 }
@@ -31,7 +31,7 @@
 }
 
 .Uscard {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-container-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     overflow: hidden;
@@ -53,7 +53,7 @@
 
 /* Información del miembro */
 .person-container {
-    background-color: var(--background-color);
+    background-color: var(--secondary-container-color);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -66,25 +66,19 @@
     margin: 0.5rem 0;
     line-height: normal;
     vertical-align: top;
+    border-bottom: 3px inset var(--button-color);
 
 }
 
 .person-container .title {
-    color: white;
+    color: var(--text-color);
     font-weight: bold;
 }
 
 .person-container p {
+    color: var(--text-color);
     margin: 0.3rem 0;
     font-size: 1.5rem;
-}
-
-/* Sección de fondo opcional */
-.about-section {
-    padding: 50px;
-    text-align: center;
-    background-color: var(--background-color);
-    color: var(--text-color);
 }
 
 /* Responsividad */
