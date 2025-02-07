@@ -19,20 +19,18 @@ const Footer = () => {
                                 </Link>
 
                             </div>
-                            {/* <div className="User-Manual" >
-                            <p1>
-                                <Link to="https://seen-ear-f66.notion.site/Manual-de-usuario-Compostify-13ee1dfa63fe406b877961e63e50c8dd?pvs=4" target="_blank" rel="noopener noreferrer" onClick={() => setTermsAccepted(true)}>
-                                    Manual de usuario
-                                </Link>
-                            </p1>
-                        </div> */}
-                            {/* <div className="User-Manual" >
-                            <p1>
-                                <Link to="https://seen-ear-f66.notion.site/Manual-t-cnico-Compostify-a845c8fe673b4ecca1cbdbce83ef30c4?pvs=4" target="_blank" rel="noopener noreferrer" onClick={() => setTermsAccepted(true)}>
-                                    Manual Técnico
-                                </Link>
-                            </p1>
-                        </div> */}
+                            <div className="User-Manual" >
+                                <p1>
+                                    <Link to="https://seen-ear-f66.notion.site/Manual-de-usuario-Compostify-13ee1dfa63fe406b877961e63e50c8dd?pvs=4" target="_blank" rel="noopener noreferrer">
+                                        Manual de usuario
+                                    </Link>
+                                </p1>
+                                <p1>
+                                    <Link to="https://seen-ear-f66.notion.site/Manual-t-cnico-Compostify-a845c8fe673b4ecca1cbdbce83ef30c4?pvs=4" target="_blank" rel="noopener noreferrer">
+                                        Manual Técnico
+                                    </Link>
+                                </p1>
+                            </div>
 
                         </div>
                     </div>
@@ -45,15 +43,23 @@ const Footer = () => {
                                     <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
                                     </Link>
+                                    <Link to="https://www.instagram.com/planifiklub/" target="_blank" rel="noopener noreferrer">
+                                        <i class="fa-brands fa-square-instagram"></i>
+                                    </Link>
+                                    <Link to="https://x.com/PlanifiKlub" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-square-x-twitter"></i>
+                                    </Link>
 
                                 </div>
                             </div>
                             <div style={{ textAlign: 'end' }}>
                                 <h1>Contáctanos: </h1>
                                 <div className="mails">
-                                    <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
-                                        <p1>Nuestro Correo</p1>
-                                    </Link>
+                                    <p1>
+                                        <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+                                            PlanifiKlub
+                                        </Link>
+                                    </p1>
                                 </div>
                             </div>
 

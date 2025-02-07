@@ -1,6 +1,6 @@
-import EventDetails from './BalanzaDePagosContent/Event.jsx';
-import OurServices from './BalanzaDePagosContent/OurServices.jsx';
-import PlaceSelector from './BalanzaDePagosContent/PlaceSelector.jsx';
+import EventDetails from './FlujoReservaContent/Event.jsx';
+import OurServices from './FlujoReservaContent/OurServices.jsx';
+import PlaceSelector from './FlujoReservaContent/PlaceSelector.jsx';
 
 export const sections = [
     {

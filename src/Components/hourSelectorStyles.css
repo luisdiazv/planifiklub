@@ -1,0 +1,111 @@
+.hourSelector-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--secondary-container-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--secondary-container-color);
+    margin-top: auto;
+    margin-bottom: auto;
+    min-width: 400px;
+}
+
+.hourSelector-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hourSelector-label {
+    padding: 0;
+    text-align: start;
+    color: var(--text-color);
+}
+
+.hourSelector-input {
+    border: 3px solid var(--button-color);
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    background-color: var(--button-color);
+    transition: border 0.3s ease-in-out;
+}
+
+.rc-time-picker-input {
+    border: none;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    font-size: large;
+    font-weight: bold;
+    padding: 8px;
+    width: 100%;
+}
+
+.rc-time-picker * {
+    box-sizing: border-box;
+    color: var(--text-color);
+}
+
+.rc-time-picker-clear {
+    position: absolute;
+    right: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 30px;
+    top: 3px;
+    margin: 0;
+}
+
+.rc-time-picker-panel-inner {
+    background-color: var(--secondary-container-color);
+    color: var(--text-color);
+}
+
+.rc-time-picker-panel-input-wrap {
+    box-sizing: border-box;
+    position: relative;
+    border-bottom: 1px solid var(--button-color);
+    padding: 0;
+}
+
+.rc-time-picker-panel-select li:hover {
+    background: var(--secondary-button-color);
+}
+
+.rc-time-picker-panel-input {
+    font-size: 2rem;
+    width: auto;
+    background-color: var(--button-color);
+    color: var(--text-color);
+}
+
+li.rc-time-picker-panel-select-option-selected {
+    background: var(--button-color);
+    font-weight: bold;
+}
+
+li.rc-time-picker-panel-select-option-disabled {
+    color: var(--disabled-color);
+}
+
+.rc-time-picker-clear-icon:after {
+    content: "x";
+    font-size: 20px;
+    font-style: normal;
+    color: var(--text-color);
+    display: inline-block;
+    line-height: 1;
+    height: 20px;
+    width: 20px;
+    transition: color 0.3s ease;
+}
+
+.hourSelector-input:hover,
+.hourSelector-input:focus {
+    border-color: var(--button-color);
+    outline: none;
+}

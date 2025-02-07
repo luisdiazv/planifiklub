@@ -2,11 +2,11 @@
     width: 50%;
     margin: auto;
     padding: 3rem;
-    border: 1px solid #3D0C01;
+    border: 1px solid var(--secondary-container-color);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #3D0C01;
-    color: #CC9901;
+    background-color: var(--secondary-container-color);
+    color: var(--text-color);
     align-items: center;
     align-content: center;
 
@@ -14,7 +14,6 @@
         text-align: center;
         margin: 0;
         padding-bottom: 1rem;
-        color: #CC9901;
         font-size: 4rem;
 
     }
@@ -23,22 +22,11 @@
 .login-button {
     width: 100%;
     padding: 1rem;
-    font-size: 1rem;
     font-weight: bold;
-    background-color: #CC9901;
-    color: #3D0C01;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
-
-.login-button:hover {
-    background-color: #DAA520;
-    color: white;
-}
-
-
-
 
 .forgot-password {
     font-size: 1rem;
@@ -50,7 +38,7 @@
 
 .new-account,
 .forgot-password-link {
-    color: white;
+    color: var(--button-color);
     text-decoration: none;
 }
 
@@ -58,11 +46,11 @@
 .new-account:active,
 .forgot-password-link:visited,
 .forgot-password-link:active {
-    color: white;
+    color: var(--button-color);
 }
 
 .new-account:hover,
 .forgot-password-link:hover {
-    color: #DAA520;
+    color: var(--secondary-button-color);
     text-decoration: underline;
 }

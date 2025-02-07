@@ -18,18 +18,25 @@ export const MenuItems = [
         icon: ""
     },
     {
+        title: "Ingresar a App",
+        url: "/app",
+        cName: "nav-links-button",
+        icon: ""
+    },
+    {
         title: "Registrarse",
         url: "/app/SignUp",
         cName: "nav-links-button",
         icon: ""
-    }
+    },
+
+
 ];
 
 export const dropdownOptions = [
-    { path: "/payment", label: "Nuestros Servicios" },
-    { path: "/EditProfile", label: "Editar perfil" },
-    { path: "/app/payment", label: "Nuestros Servicios" },
+    { path: "/app/reservation", label: "Reservar" },
     { path: "/app/EditProfile", label: "Editar perfil" },
-    { path: "/CalendarioEventos", label: "Eventos y cotizaciones" },
+    { path: "/app/ChangePassword", label: "Cambiar contraseña" },
+    { path: "/app/CalendarioEventos", label: "Eventos y cotizaciones [ADMIN]" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
 ];

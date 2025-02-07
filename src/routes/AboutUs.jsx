@@ -59,7 +59,7 @@ function AboutUs() {
 
     return (
         <div className="Us-container">
-            <h2 className='Ustitle'>Nuestro equipo</h2>
+            <h1 className='Ustitle'>Nuestro equipo</h1>
             <div className="Uscontent">
                 {teamMembers.map((member, index) => (
                     <TeamMemberCard

@@ -1,8 +1,8 @@
 .footer {
     position: static;
     display: flex;
-    background: #1B1811;
-    color: #CC9901;
+    background: var(--footer-color);
+    color: var(--text-color);
     font-size: 0.8rem;
     width: 100%;
     height: auto;
@@ -24,8 +24,10 @@
 }
 
 .bottom h1 {
-    align-self: flex-end;
-    color: #CC9901;
+
+    font-size: 2.5rem;
+    text-align: end;
+    color: var(--text-color);
     font-family: 'FoghlihtenNo01';
 }
 
@@ -85,13 +87,13 @@
 }
 
 .bottom i {
-    color: white;
+    color: var(--button-color);
     font-size: 2.5rem;
     margin-left: 1.5rem;
 }
 
 .bottom i:hover {
-    color: #DAA520;
+    color: var(--secondary-button-color);
 }
 
 .mails {
@@ -103,7 +105,7 @@
 
 .mails a {
     text-decoration: none;
-    color: white;
+    color: var(--button-color);
     gap: 20px;
 }
 
@@ -111,26 +113,28 @@
     font-size: 1.3rem;
 }
 
-.mails a:hover i {
-    color: #DAA520;
+.mails a:hover {
+    color: var(--secondary-button-color);
 }
 
 .mails a:hover {
-    color: #DAA520;
+    color: var(--secondary-button-color);
 }
 
 .User-Manual {
+    display: flex;
+    flex-direction: column;
     padding: 1.5rem;
 
     a {
         text-decoration: none;
         width: 100%;
-        color: white;
+        color: var(--button-color);
 
     }
 }
 
 .User-Manual a:hover {
-    color: #DAA520;
+    color: var(--secondary-button-color);
 
 }

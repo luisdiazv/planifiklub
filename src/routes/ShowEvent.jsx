@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { getEventType } from "../Ctrl/TiposEventosCtrl";
+import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
+import {getPedidosByIdEvento} from "../Ctrl/PedidoCtrl";
+import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import "./ShowEventStyles.css";
 
-import { getEventInfo, getUserName, getEventType, getPedidos, getEdificios, updateEventStatus } from "../Ctrl/EventosCtrl";
+import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
 //import pdfMake from "../Util/FontsForPDFS";
 import htmlToPdfMake from "html-to-pdfmake";
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -27,7 +31,7 @@ const ShowEvent = () => {
     useEffect(() => {
         const fetchEventInfo = async () => {
             try {
-                const data = await getEventInfo(id);
+                const data = await getEventById(id);
                 setEventInfo(data);
             } catch (err) {
                 console.error("Error obteniendo los datos del evento:", err);
@@ -41,7 +45,7 @@ const ShowEvent = () => {
         if (eventInfo?.id_usuario) {
             const fetchUserName = async () => {
                 try {
-                    const fullName = await getUserName(eventInfo.id_usuario);
+                    const fullName = await getNombresApellidosById(eventInfo.id_usuario);
                     setUserName(fullName);
                 } catch (err) {
                     console.error("Error obteniendo el nombre del usuario:", err);
@@ -71,7 +75,7 @@ const ShowEvent = () => {
         if (eventInfo?.idevento) {
             const fetchPedidos = async () => {
                 try {
-                    const pedidos = await getPedidos(eventInfo.idevento);
+                    const pedidos = await getPedidosByIdEvento(eventInfo.idevento);
                     setPedidos(pedidos);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
@@ -86,7 +90,7 @@ const ShowEvent = () => {
         if (eventInfo?.idevento) {
             const fetchEdificios = async () => {
                 try {
-                    const ListEdificios = await getEdificios(eventInfo.idevento);
+                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.idevento);
                     setEdificios(ListEdificios);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
@@ -102,7 +106,7 @@ const ShowEvent = () => {
         try {
             await updateEventStatus(id, "Confirmado"); // Actualiza el estado a Confirmado
             setEventInfo({ ...eventInfo, estado: "Confirmado" }); // Actualiza el estado local
-            navigate("/CalendarioEventos"); // Redirige al calendario
+            navigate("/app/CalendarioEventos"); // Redirige al calendario
         } catch (err) {
             console.error("Error al cambiar el estado del evento:", err);
         }

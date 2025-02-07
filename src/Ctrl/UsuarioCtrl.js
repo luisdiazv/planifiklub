@@ -82,4 +82,48 @@ export const getUsuarioByID = async (id) => {
   }
 };
 
-export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario , getUsuarioByID};
+export const getNombresApellidosById = async (userId) => {
+    try {
+        const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("idusuario", userId);
+
+        if (error) {
+            console.error("Error obteniendo el usuario:", error.message);
+            throw new Error("No se pudo obtener el usuario: " + error.message);
+        }
+
+        if (data.length > 0) { return `${data[0].nombres} ${data[0].apellidos}`;
+        } else { return "Usuario desconocido"; }
+
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
+    }
+};
+
+export const actualizarPassword = async (email, newPassword) => {
+  try {
+    const { data, error, count } = await supabase
+      .from("usuario")
+      .update({ password: newPassword })
+      .eq("correo", email)
+      .select("*", { count: "exact" }); // Habilitamos el conteo exacto
+
+    if (error) {
+      console.error("Error actualizando contraseña:", error.message);
+      throw new Error("No se pudo actualizar la contraseña: " + error.message);
+    }
+
+    if (count === 0) {
+      console.warn("No se encontró un usuario con el correo proporcionado.");
+      return false; // No se actualizó ningún registro
+    }
+
+    console.log("Contraseña actualizada con éxito:", data);
+    return true; // Contraseña actualizada exitosamente
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al actualizar la contraseña: " + error.message);
+  }
+};
+
+export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario , getUsuarioByID, actualizarPassword, getNombresApellidosById};
