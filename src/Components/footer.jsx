@@ -45,6 +45,12 @@ const Footer = () => {
                                     <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
                                     </Link>
+                                    <Link to="https://www.instagram.com/planifiklub/" target="_blank" rel="noopener noreferrer">
+                                        <i class="fa-brands fa-square-instagram"></i>
+                                    </Link>
+                                    <Link to="https://x.com/PlanifiKlub" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-square-x-twitter"></i>
+                                    </Link>
 
                                 </div>
                             </div>
