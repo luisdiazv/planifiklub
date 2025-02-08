@@ -18,10 +18,10 @@ const EditProfile = () => {
     const navegar = useNavigate();
 
     const tiposDocumento = [
-        "Cedula de Ciudadanía",
+        "Cedula de Ciudadania",
         "NIT",
         "Pasaporte",
-        "Cedula de Extranjería",
+        "Cedula de Extranjeria",
     ];
 
     // Cargar datos del usuario al montar el componente

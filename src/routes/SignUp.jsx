@@ -24,10 +24,10 @@ const Register = () => {
     const navegar = useNavigate();
 
     const tiposDocumento = [
-        "Cédula de Ciudadanía",
+        "Cedula de Ciudadania",
         "NIT",
         "Pasaporte",
-        "Cédula de Extranjería",
+        "Cedula de Extranjeria",
     ];
 
     const validarPassword = (password) => {
