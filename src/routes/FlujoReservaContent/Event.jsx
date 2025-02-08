@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getEventTypes } from "../../Ctrl/TiposEventosCtrl";
 import "./EventStyles.css";
+import SmallCallendar from "../../Components/smallCallendar";
+import HourSelector from "../../Components/hourSelector";
 
 const EventDetails = () => {
     const [eventTypes, setEventTypes] = useState([]); // Estado para almacenar los tipos de eventos
@@ -10,6 +12,8 @@ const EventDetails = () => {
     const [selectedIndex, setSelectedIndex] = useState(null); // Índice del checkbox seleccionado
     const [selectedEventId, setSelectedEventId] = useState(null); // Estado para almacenar el idtipos_eventos seleccionado
     const [checkboxError, setCheckboxError] = useState(false); // Estado para manejar el error del checkbox
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedHours, setSelectedHours] = useState({ start: null, end: null });
 
     useEffect(() => {
         const fetchEventTypes = async () => {
@@ -25,6 +29,9 @@ const EventDetails = () => {
         fetchEventTypes(); // Llama a la función cuando el componente se monte
     }, []);
 
+    const handleDateChange = (newDate) => setSelectedDate(newDate);
+
+    const handleHourChange = (start, end) => setSelectedHours({ start, end });
 
     const handleInfoClick = (index) => {
         // Alterna la descripción al hacer clic en +Info
@@ -67,6 +74,10 @@ const EventDetails = () => {
 
             <form onSubmit={handleSubmit}>
                 <div>
+                    <div className="calendar-container" >
+                        <SmallCallendar onDateChange={handleDateChange} />
+                        <HourSelector onChange={handleHourChange} />
+                    </div>
                     <label>Tipos de Eventos</label>
                     <div className="event-type-list">
                         {eventTypes.length > 0 ? (

@@ -25,7 +25,7 @@ const Footer = () => {
                                         Manual de usuario
                                     </Link>
                                 </p1>
-                                <p1>
+                                <p1 hidden>
                                     <Link to="https://seen-ear-f66.notion.site/Manual-t-cnico-Compostify-a845c8fe673b4ecca1cbdbce83ef30c4?pvs=4" target="_blank" rel="noopener noreferrer">
                                         Manual Técnico
                                     </Link>
