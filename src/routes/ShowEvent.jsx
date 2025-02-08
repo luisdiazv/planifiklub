@@ -104,8 +104,8 @@ const ShowEvent = () => {
     // Función para cambiar el estado a "Confirmado" y redirigir al calendario
     const handleGenerarEvento = async () => {
         try {
-            await updateEventStatus(id, "Confirmado"); // Actualiza el estado a Confirmado
-            setEventInfo({ ...eventInfo, estado: "Confirmado" }); // Actualiza el estado local
+            await updateEventStatus(id, "Aprobado"); // Actualiza el estado a Confirmado
+            setEventInfo({ ...eventInfo, estado: "Aprobado" }); // Actualiza el estado local
             navigate("/app/CalendarioEventos"); // Redirige al calendario
         } catch (err) {
             console.error("Error al cambiar el estado del evento:", err);
@@ -253,7 +253,7 @@ const ShowEvent = () => {
                         <p>No hay pedidos registrados para este evento.</p>
                     )}
 
-                    {eventInfo.estado === "Pendiente" && (
+                    {eventInfo.estado === "En Cotizacion" && (
                         <button className="generate-event-button" onClick={handleGenerarEvento}>Generar evento</button>
                     )}
                 </div>

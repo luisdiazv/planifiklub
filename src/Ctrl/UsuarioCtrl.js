@@ -118,7 +118,7 @@ export const actualizarPassword = async (email, newPassword) => {
       return false; // No se actualizó ningún registro
     }
 
-    console.log("Contraseña actualizada con éxito:", data);
+    console.log("Contraseña actualizada con éxito");
     return true; // Contraseña actualizada exitosamente
   } catch (error) {
     console.error("Error interno:", error.message);

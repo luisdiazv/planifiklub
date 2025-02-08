@@ -4,6 +4,7 @@ import hash from "../Util/Hash";
 import axios from "axios";
 import { actualizarPassword, getUsuarioByEmail } from "../Ctrl/UsuarioCtrl";
 import { codigoAuth } from "../Util/EmailService";
+import userControl from "../Util/UserControl"
 import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {
@@ -31,9 +32,6 @@ const ChangePassword = ({ userEmail }) => {
 
         try {
             const codigo = codigoAuth();
-            if(true){
-                console.log(codigo);
-            }
             setAuthCode(codigo);
 
             const emailSent = await enviarCodigoAuth(email, codigo);
@@ -82,33 +80,45 @@ const ChangePassword = ({ userEmail }) => {
         }
       };
 
-    const handleCodeVerification = async () => {
-        if (inputCode === authCode.toString()) {
-            try {
-                const hashedNewPassword = await hash(newPassword);
-                const updateSuccess = await actualizarPassword(email, hashedNewPassword);
+      const handleCodeVerification = async () => {
+    if (inputCode === authCode.toString()) {
+        try {
+            const hashedNewPassword = await hash(newPassword);
+            const updateSuccess = await actualizarPassword(email, hashedNewPassword);
 
-                if (updateSuccess) {
-                    setSuccessMessage("Contraseña actualizada correctamente.");
-                    setErrorMessage("");
-                    setEmail("");
-                    setNewPassword("");
-                    setConfirmPassword("");
-                    setInputCode("");
-                    setIsPopupVisible(false);
-                    alert("Cambio de contraseña confirmado: La contraseña se ha actualizado correctamente.");
-                    navegar("/app");
+            if (updateSuccess) {
+                setSuccessMessage("Contraseña actualizada correctamente.");
+                setErrorMessage("");
+                setEmail("");
+                setNewPassword("");
+                setConfirmPassword("");
+                setInputCode("");
+                setIsPopupVisible(false);
+                alert("Cambio de contraseña confirmado: La contraseña se ha actualizado correctamente.");
+
+                // Cerrar sesión manualmente sin modificar UserControl
+                if (userControl.getCurrentUser()) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    // Recargar la página para aplicar cambios
+                    window.location.href = "/app";
                 } else {
-                    setErrorMessage("Hubo un problema al actualizar la contraseña. Por favor, inténtalo de nuevo.");
+                    navegar("/app");
                 }
-            } catch (error) {
-                console.error("Error al actualizar la contraseña:", error);
-                setErrorMessage("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.");
+            } else {
+                setErrorMessage("Hubo un problema al actualizar la contraseña. Por favor, inténtalo de nuevo.");
             }
-        } else {
-            setErrorMessage("El código de verificación es incorrecto.");
+        } catch (error) {
+            console.error("Error al actualizar la contraseña:", error);
+            setErrorMessage("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.");
         }
-    };
+    } else {
+        setErrorMessage("El código de verificación es incorrecto.");
+    }
+};
+
+
+    
 
     return (
         <div className="change-password-container">

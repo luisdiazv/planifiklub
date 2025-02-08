@@ -5,7 +5,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
 import {getEdificiosByIdEvento} from "../Ctrl/EdificiosCtrl";
-import { getAllEventIds, getEventInfo } from "../Ctrl/EventosCtrl";
+import { getAllEventIds, getEventById } from "../Ctrl/EventosCtrl";
 import { getUsuarioByID } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
@@ -28,9 +28,11 @@ const Calendario = () => {
 
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
-                    const event = await getEdificiosByIdEvento(id);
-                    if (!event || (event.estado !== "Confirmado" && event.estado !== "Pendiente")) {
+                    const event = await getEventById(id);
+                    console.log(event)
+                    if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion")) {
                         console.warn(`Evento con ID ${id} tiene un estado no válido.`);
+                        console.log(event.estado)
                         return null;
                     }
 
@@ -45,7 +47,7 @@ const Calendario = () => {
                     return {
                         ...event,
                         title: `${user.nombres} ${user.apellidos} - ${edificioName}`,
-                        color: event.estado === "Confirmado" ? "#CC9901" : "#7C0A01",
+                        color: event.estado === "Aprobado" ? "#CC9901" : "#7C0A01",
                         estado:event.estado
                     };
                 })
@@ -79,7 +81,7 @@ const Calendario = () => {
     const handleEventClick = (event) => {
         console.log(event.id); // Verifica que el evento tenga un id
         if (event.id) {
-            navigate(`/evento/${event.id}`);
+            navigate(`/app/evento/${event.id}`);
         } else {
             console.error("El evento no tiene un ID válido.");
         }
@@ -135,8 +137,8 @@ const Calendario = () => {
             {/* Filtro de eventos */}
             <div className="filter-buttons">
                 <button onClick={() => handleFilterChange('todos')}>Eventos y cotizaciones</button>
-                <button onClick={() => handleFilterChange('Confirmado')}>Eventos</button>
-                <button onClick={() => handleFilterChange('Pendiente')}>Cotizaciones</button>
+                <button onClick={() => handleFilterChange('Aprobado')}>Eventos</button>
+                <button onClick={() => handleFilterChange('En Cotizacion')}>Cotizaciones</button>
             </div>
 
             <div>
