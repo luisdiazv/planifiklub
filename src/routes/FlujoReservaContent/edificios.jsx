@@ -3,8 +3,6 @@ import { getAllEdificio } from "../../Ctrl/EdificiosCtrl";
 import { getAllMontajeEdificio } from "../../Ctrl/MontajesEdificioCtrl";
 import { getNombreMontajeByIdMontaje } from "../../Ctrl/MontajesCtrl";
 import "./edificiosStyles.css";
-import SmallCallendar from "../../Components/smallCallendar";
-import HourSelector from "../../Components/hourSelector";
 
 const EdificiosList = () => {
   const [edificios, setEdificios] = useState([]);
@@ -69,10 +67,6 @@ const EdificiosList = () => {
 
   return (
     <div className="edificios-container">
-      <div className="calendar-container">
-        <SmallCallendar onDateChange={handleDateChange} />
-        <HourSelector onChange={handleHourChange} />
-      </div>
       {edificios.map((edificio) => {
         const montajesFiltrados = montajes.filter((m) => m.id_edifcio === edificio.idedificios);
         return (
