@@ -13,17 +13,17 @@ class UserControl {
 
     Login = async (userEmail) => {
         const user = await getUsuarioByEmail(userEmail);
-        localStorage.setItem("currentUser", JSON.stringify(user));
+        sessionStorage.setItem("currentUser", JSON.stringify(user));
         this.currentUser = user;
     }
 
     Logout = () => {
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
         this.currentUser = null;
     }
 
     getCurrentUser() {
-        const userObject = JSON.parse(localStorage.getItem('currentUser'));
+        const userObject = JSON.parse(sessionStorage.getItem('currentUser'));
         if (!userObject) {
             return null;
         }

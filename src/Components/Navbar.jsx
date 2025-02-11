@@ -19,7 +19,7 @@ class Navbar extends Component {
         document.addEventListener("mousedown", this.handleClickOutside);
 
         // Verifica el usuario al montar
-        const user = localStorage.getItem("currentUser");
+        const user = sessionStorage.getItem("currentUser");
         if (user) {
             this.setState({ currentUser: user });
         }

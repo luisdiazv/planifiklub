@@ -98,7 +98,7 @@ const ChangePassword = ({ userEmail }) => {
 
                 // Cerrar sesión manualmente sin modificar UserControl
                 if (userControl.getCurrentUser()) {
-                    localStorage.clear();
+                    sessionStorage.clear();
                     sessionStorage.clear();
                     // Recargar la página para aplicar cambios
                     window.location.href = "/app";
