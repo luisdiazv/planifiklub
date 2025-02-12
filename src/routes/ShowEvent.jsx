@@ -71,10 +71,10 @@ const ShowEvent = () => {
     }, [eventInfo]);  
 
     useEffect(() => {
-        if (eventInfo?.idevento) {
+        if (eventInfo?.id) {
             const fetchPedidos = async () => {
                 try {
-                    const pedidos = await getPedidosByIdEvento(eventInfo.idevento);
+                    const pedidos = await getPedidosByIdEvento(eventInfo.id);
                     setPedidos(pedidos);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
@@ -86,10 +86,10 @@ const ShowEvent = () => {
     }, [eventInfo]);   
 
     useEffect(() => {
-        if (eventInfo?.idevento) {
+        if (eventInfo?.id) {
             const fetchEdificios = async () => {
                 try {
-                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.idevento);
+                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.id);
                     setEdificios(ListEdificios);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
