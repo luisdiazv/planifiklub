@@ -47,9 +47,11 @@ const Footer = () => {
                                         <i class="fa-brands fa-square-instagram"></i>
                                     </Link>
                                     <Link to="https://x.com/PlanifiKlub" target="_blank" rel="noopener noreferrer">
-                                    <i class="fa-brands fa-square-x-twitter"></i>
+                                        <i class="fa-brands fa-square-x-twitter"></i>
                                     </Link>
-
+                                    <Link to="https://www.facebook.com/profile.php?id=61573060075793" target="_blank" rel="noopener noreferrer">
+                                        <i class="fa-brands fa-square-facebook"></i>
+                                    </Link>
                                 </div>
                             </div>
                             <div style={{ textAlign: 'end' }}>
