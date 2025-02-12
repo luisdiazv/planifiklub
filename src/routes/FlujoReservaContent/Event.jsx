@@ -61,10 +61,10 @@ const EventDetails = () => {
             saldo_pendiente: ''
         };
 
-        if (localStorage.getItem("eventoDummy") != null) {
-            localStorage.removeItem("eventoDummy");
+        if (sessionStorage.getItem("eventoDummy") != null) {
+            sessionStorage.removeItem("eventoDummy");
         }
-        localStorage.setItem("eventoDummy", JSON.stringify(evento));
+        sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
         console.log(evento);
     };
 
