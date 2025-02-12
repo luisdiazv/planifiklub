@@ -198,12 +198,38 @@ const ShowEvent = () => {
     const generateBill = async () => {
         try {
             setLoading(true);
-            const info = getPagosbyEventID(id);
-            console.log(info);
+            const facturas = await getPagosbyEventID(id);
     
             // Construye el contenido HTML dinámico basado en la información del evento
             const htmlContent = `
-                test
+                <h1 style="text-align: center;">Facturación General del Evento</h1>
+                <h3>Detalles del Evento</h3>
+                <p><strong>Nombre del Usuario:</strong> ${userName || "Usuario desconocido"}</p>
+                <p><strong>Fecha:</strong> ${eventInfo?.fecha || "No especificada"}</p>
+                <p><strong>Hora de Inicio:</strong> ${eventInfo?.hora_inicio || "No especificada"}</p>
+                <p><strong>Hora de Fin:</strong> ${eventInfo?.hora_fin || "No especificada"}</p>
+                <p><strong>Estado:</strong> ${eventInfo?.estado || "No especificado"}</p>
+                <p><strong>Costo Total:</strong> $${eventInfo?.costo_total || 0}</p>
+                <p><strong>Saldo Pendiente:</strong> $${eventInfo?.saldo_pendiente || 0}</p>
+
+                <h3>Lista de Facturas</h3>
+                ${
+                    facturas && facturas.length > 0
+                        ? facturas
+                              .map(
+                                  (factura) => `
+                        <div>
+                            <p><strong>Detalles:</strong> ${factura.detalles || "Desconocido"}</p>
+                            <p><strong>Fecha de Pago:</strong> ${factura.fecha_pago || "Desconocido"}</p>
+                            <p><strong>Método:</strong> ${factura.metodo || "Desconocido"}</p>
+                            <p><strong>Monto Pagado:</strong> ${factura.monto || "Desconocido"}</p>
+                            <hr/>
+                        </div>
+                    `
+                              )
+                              .join("")
+                        : "<p>No hay edificios registrados para este evento.</p>"
+                }
             `;
     
             // Convierte el contenido HTML a formato PDFMake
