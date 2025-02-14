@@ -264,10 +264,15 @@ const ShowEvent = () => {
                     )}
 
                     {eventInfo.estado === "En Cotizacion" && (
-                        <button className="generate-event-button" onClick={handleGenerarEvento}>Generar evento</button>
-                    )} 
+                        <div>
+                            <button className="generate-event-button" onClick={handleGenerarEvento}>Aprobar Cotizacion</button>
+                            <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar Cotizacion</button>
+                        </div>
+                    )}
                     {eventInfo.estado != "En Cotizacion" && (
-                        <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar evento</button>
+                        <div>
+                            <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                        </div>
                     )}
                 </div>
             ) : (
