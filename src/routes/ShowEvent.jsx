@@ -111,6 +111,16 @@ const ShowEvent = () => {
             console.error("Error al cambiar el estado del evento:", err);
         }
     };
+
+    const handleCancelarEvento = async () => {
+        try {
+            await updateEventStatus(id, "Cancelado"); // Actualiza el estado a Cancelado
+            setEventInfo({ ...eventInfo, estado: "Cancelado" }); // Actualiza el estado local
+            navigate("/app/CalendarioEventos"); // Redirige al calendario
+        } catch (err) {
+            console.error("Error al cambiar el estado del evento:", err);
+        }
+    };
   
     const [loading, setLoading] = useState(false);
 
@@ -255,6 +265,9 @@ const ShowEvent = () => {
 
                     {eventInfo.estado === "En Cotizacion" && (
                         <button className="generate-event-button" onClick={handleGenerarEvento}>Generar evento</button>
+                    )} 
+                    {eventInfo.estado != "En Cotizacion" && (
+                        <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar evento</button>
                     )}
                 </div>
             ) : (
