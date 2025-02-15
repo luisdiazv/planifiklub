@@ -11,7 +11,7 @@ export const getFotoProducto = async (id) => {
         }
 
         if (data) {
-            console.log('URL:', data.signedUrl);
+            // console.log('URL:', data.signedUrl);
             return data.signedUrl;
         } else {
             console.error('No file found.');

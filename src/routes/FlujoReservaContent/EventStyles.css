@@ -1,3 +1,24 @@
+.event-container {
+  width: 50%;
+  margin: auto;
+  padding: 3rem;
+  border: 1px solid var(--secondary-container-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--secondary-container-color);
+  color: var(--text-color);
+  align-items: center;
+  align-content: center;
+
+  h2 {
+      text-align: center;
+      margin: 0;
+      padding-bottom: 1rem;
+      font-size: 4rem;
+
+  }
+}
+
 .event-type-list {
   margin: 20px 0;
 }
@@ -17,4 +38,36 @@
 
 .event-type-item input[type="checkbox"] {
   margin-left: 10px;
+}
+
+.calendar-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.custom-textarea {
+  width: 100%; /* Se adapta al contenedor */
+  padding: 8px; /* Espacio interno del texto */
+  border: 1px solid #ccc; /* Borde delgado y gris */
+  border-radius: 8px; /* Bordes curveados */
+  resize: none; /* Evita redimensionado manual */
+  overflow: hidden; /* Oculta el scrollbar vertical */
+  font-size: 14px; /* Tamaño de texto */
+  margin-top: 5px; /* Espacio entre el label y el textarea */
+  outline: none; /* Elimina el borde azul predeterminado */
+  transition: border 0.3s ease-in-out; /* Suaviza cambios en el borde */
+}
+
+.custom-textarea:focus {
+  border: 1px solid #4A90E2; /* Resalta el borde al hacer clic */
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5); /* Efecto de sombra al enfocarse */
+}
+
+/* Estilos opcionales para el label */
+.textarea-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
