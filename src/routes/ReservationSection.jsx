@@ -18,7 +18,6 @@ export const sections = [
     {
         title: "Nuestros servicios",
         description: "Aquí podrás elegir los productos que pedirás para tu evento.",
-        description: "Contenido de Elso",
         content: <OurServices />
     },
     {
