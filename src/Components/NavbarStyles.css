@@ -1,6 +1,6 @@
 .NavbarItems {
     display: flex;
-    height: 60px;
+    height: 75px;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px 0 var(--secondary-container-color);
@@ -37,7 +37,7 @@
 }
 
 .navbar-logo {
-    font-size: 3rem;
+    font-size: 3.5rem;
     color: var(--button-color);
     font-family: 'FoghlihtenNo01';
     font-weight: lighter;
@@ -79,7 +79,7 @@
     text-decoration: none;
     color: var(--text-color);
     font-family: 'FoghlihtenNo01';
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
     height: 100%;
@@ -98,7 +98,7 @@
     margin-top: 0%;
     width: 100%;
     padding: 1.2rem;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     font-weight: bold;
     background-color: var(--secondary-container-color);
     color: var(--text-color);
@@ -129,7 +129,7 @@
     align-items: center;
     justify-content: center;
     margin: auto;
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--button-color);
 }
 
@@ -144,6 +144,11 @@
     background-color: transparent;
     /* Cambia el color al pasar el mouse */
 }
+
+
+
+
+
 
 /* Estilo para el menú desplegable */
 .dropdown-menu {
@@ -163,11 +168,109 @@
     padding: 8px 16px;
     text-decoration: none;
     color: var(--text-color);
-    font-size: 1rem;
+    font-size: 1.8rem;
     transition: background-color 0.3s;
     text-align: start;
 }
 
 .dropdown-item:hover {
     background-color: var(--secondary-container-color);
+}
+
+.burguer-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border: none;
+    background-color: var(--container-color);
+    box-shadow: 0 4px 8px var(--secondary-container-color);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.burguer-button-menu {
+    display: none;
+}
+
+.burguer-button-menu-isIn {
+    display: none;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .nav-menu {
+        display: none;
+    }
+
+    .burguer-button-menu {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        font-size: 3rem;
+        color: var(--button-color);
+    }
+
+    .burguer-button-menu.active {
+        color: var(--text-color);
+        /* Cambia el color del ícono a blanco */
+    }
+
+
+    .burguer-button-menu:hover {
+        color: var(--text-color);
+        background-color: transparent;
+        /* Cambia el color al pasar el mouse */
+    }
+
+
+
+
+
+
+    .nav-links {
+        display: block;
+        padding: 8px 16px;
+        text-decoration: none;
+        color: var(--text-color);
+        font-size: 1.8rem;
+        transition: background-color 0.3s;
+        text-align: start;
+    }
+
+
+
+    .nav-links:hover {
+        background-color: var(--secondary-container-color);
+    }
+
+    .nav-links-button {
+        margin-top: 0%;
+        width: 100%;
+        padding: 1.2rem;
+        font-size: 1.8rem;
+        font-weight: bold;
+        background-color: var(--secondary-container-color);
+        color: var(--text-color);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        text-decoration: none;
+        font-family: 'FoghlihtenNo01';
+    }
+
+    .nav-links-button:hover {
+        transition: all 0.3s ease-in-out;
+        background-color: var(--button-color);
+        color: var(--secondary-container-color);
+    }
 }
