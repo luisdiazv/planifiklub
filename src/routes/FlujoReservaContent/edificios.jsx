@@ -74,13 +74,12 @@ const EdificiosList = () => {
       const edificio = edificios.find((e) => e.idedificios === idEdificio);
       const idMontaje = montajeSeleccionado[idEdificio];
 
-      // Validar que cada edificio tenga un montaje seleccionado
       if (!idMontaje) {
           window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
           return;
       }
 
-      const subtotal = edificio ? edificio.costo_hora * time : 0;
+      const subtotal = edificio.costo_hora * time;
 
       return {
           id_edificio: idEdificio,
