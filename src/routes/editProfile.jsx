@@ -101,12 +101,12 @@ const EditProfile = () => {
                 if (respuesta.tipo_documento) setTipo_documento(respuesta.tipo_documento);
                 if (respuesta.documento) setDocumento(respuesta.documento);
 
-                // Actualizar sessionStorage con los nuevos datos sin modificar el correo
+                // Actualizar localStorage con los nuevos datos sin modificar el correo
                 const usuarioActualizadoLocal = {
                     ...usuarioActualizado,
                     correo: respuesta.correo || correo, // Mantén el correo original
                 };
-                sessionStorage.setItem("currentUser", JSON.stringify(usuarioActualizadoLocal));
+                localStorage.setItem("currentUser", JSON.stringify(usuarioActualizadoLocal));
 
                 alert("Perfil actualizado exitosamente.");
 

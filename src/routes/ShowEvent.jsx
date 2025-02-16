@@ -4,6 +4,7 @@ import { getEventType } from "../Ctrl/TiposEventosCtrl";
 import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import {getPedidosByIdEvento} from "../Ctrl/PedidoCtrl";
 import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
+import { getPagosbyEventID } from "../Ctrl/PagosCtrl";
 import "./ShowEventStyles.css";
 
 import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
@@ -13,8 +14,6 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts;
-
-const event_ID = 2;
 
 //pdfMake.vfs = { ...pdfFonts, ...customFonts };
 
@@ -72,10 +71,10 @@ const ShowEvent = () => {
     }, [eventInfo]);  
 
     useEffect(() => {
-        if (eventInfo?.idevento) {
+        if (eventInfo?.id) {
             const fetchPedidos = async () => {
                 try {
-                    const pedidos = await getPedidosByIdEvento(eventInfo.idevento);
+                    const pedidos = await getPedidosByIdEvento(eventInfo.id);
                     setPedidos(pedidos);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
@@ -87,10 +86,10 @@ const ShowEvent = () => {
     }, [eventInfo]);   
 
     useEffect(() => {
-        if (eventInfo?.idevento) {
+        if (eventInfo?.id) {
             const fetchEdificios = async () => {
                 try {
-                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.idevento);
+                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.id);
                     setEdificios(ListEdificios);
                 } catch (err) {
                     console.error("Error obteniendo el tipo de evento:", err);
@@ -117,7 +116,6 @@ const ShowEvent = () => {
     const generatePDF = async () => {
         try {
             setLoading(true);
-            console.log(pdfMake.vfs);
     
             // Construye el contenido HTML dinámico basado en la información del evento
             const htmlContent = `
@@ -180,18 +178,79 @@ const ShowEvent = () => {
             const documentDefinition = {
                 content: pdfContent,
                 styles: {
-                    header: { fontSize: 18, margin: [0, 10, 0, 10], font: "ScheherazadeNew-Regular" },
-                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5], font: "ScheherazadeNew-Regular" },
-                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5], font: "ScheherazadeNew-Regular" },
+                    header: { fontSize: 18, margin: [0, 10, 0, 10]},
+                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5]},
+                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5]},
                 },
             };
     
             // Genera y descarga el PDF
-            pdfMake.createPdf(documentDefinition).download(`Reporte_Evento_${event_ID}.pdf`);
+            pdfMake.createPdf(documentDefinition).download(`Reporte_Evento_${id}.pdf`);
     
         } catch (error) {
             console.error("Error generando el reporte en PDF:", error.message);
             alert("Ocurrió un error al generar el reporte. Inténtalo nuevamente.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const generateBill = async () => {
+        try {
+            setLoading(true);
+            const facturas = await getPagosbyEventID(id);
+    
+            // Construye el contenido HTML dinámico basado en la información del evento
+            const htmlContent = `
+                <h1 style="text-align: center;">Facturación General del Evento</h1>
+                <h3>Detalles del Evento</h3>
+                <p><strong>Nombre del Usuario:</strong> ${userName || "Usuario desconocido"}</p>
+                <p><strong>Fecha:</strong> ${eventInfo?.fecha || "No especificada"}</p>
+                <p><strong>Hora de Inicio:</strong> ${eventInfo?.hora_inicio || "No especificada"}</p>
+                <p><strong>Hora de Fin:</strong> ${eventInfo?.hora_fin || "No especificada"}</p>
+                <p><strong>Estado:</strong> ${eventInfo?.estado || "No especificado"}</p>
+                <p><strong>Costo Total:</strong> $${eventInfo?.costo_total || 0}</p>
+                <p><strong>Saldo Pendiente:</strong> $${eventInfo?.saldo_pendiente || 0}</p>
+
+                <h3>Lista de Facturas</h3>
+                ${
+                    facturas && facturas.length > 0
+                        ? facturas
+                              .map(
+                                  (factura) => `
+                        <div>
+                            <p><strong>Detalles:</strong> ${factura.detalles || "Desconocido"}</p>
+                            <p><strong>Fecha de Pago:</strong> ${factura.fecha_pago || "Desconocido"}</p>
+                            <p><strong>Método:</strong> ${factura.metodo || "Desconocido"}</p>
+                            <p><strong>Monto Pagado:</strong> ${factura.monto || "Desconocido"}</p>
+                            <hr/>
+                        </div>
+                    `
+                              )
+                              .join("")
+                        : "<p>No hay edificios registrados para este evento.</p>"
+                }
+            `;
+    
+            // Convierte el contenido HTML a formato PDFMake
+            const pdfContent = htmlToPdfMake(htmlContent);
+    
+            // Configuración básica del documento PDF
+            const documentDefinition = {
+                content: pdfContent,
+                styles: {
+                    header: { fontSize: 18, margin: [0, 10, 0, 10]},
+                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5]},
+                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5]},
+                },
+            };
+    
+            // Genera y descarga el PDF
+            pdfMake.createPdf(documentDefinition).download(`Facturacion_Evento_${id}.pdf`);
+    
+        } catch (error) {
+            console.error("Error generando la facturación en PDF:", error.message);
+            alert("Ocurrió un error al generar la facturacion. Inténtalo nuevamente.");
         } finally {
             setLoading(false);
         }
@@ -270,6 +329,17 @@ const ShowEvent = () => {
             }}
         >
             {loading ? "Generando PDF..." : "Generar Reporte en PDF"}
+        </button>
+
+        <button
+            onClick={generateBill}
+            disabled={loading} // Deshabilitar el botón mientras se genera el PDF
+            style={{
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.6 : 1,
+            }}
+        >
+            {loading ? "Generando Facturación..." : "Generar Facturación en PDF"}
         </button>
 
         </div>
