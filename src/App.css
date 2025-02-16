@@ -11,9 +11,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 75px;
+  padding-top: 65px;
   justify-content: center;
   justify-items: stretch;
+
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -74,7 +75,7 @@ h2 {
 p,
 p1 {
   font-family: 'ScheherazadeNew';
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   line-height: 1.5;
   font-weight: normal;
   color: var(--secondary-text-color);
