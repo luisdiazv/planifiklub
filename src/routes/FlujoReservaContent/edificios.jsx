@@ -13,8 +13,6 @@ const EdificiosList = () => {
   const [error, setError] = useState(null);
   const [expanded, setExpanded] = useState({});
   const [selectedEdificios, setSelectedEdificios] = useState(new Set());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedHours, setSelectedHours] = useState({ start: null, end: null });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,10 +51,6 @@ const EdificiosList = () => {
       return updated;
     });
   };
-
-  const handleDateChange = (newDate) => setSelectedDate(newDate);
-
-  const handleHourChange = (start, end) => setSelectedHours({ start, end });
 
   const handleMontajeChange = (edificioId, montajeId) => {
     setMontajeSeleccionado((prev) => ({ ...prev, [edificioId]: montajeId }));

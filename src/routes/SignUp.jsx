@@ -55,13 +55,8 @@ const Register = () => {
             return;
         }
 
-        if (documento.length < 10 || !/^\d{10,}$/.test(documento)) {
-            setErrorMessage("El número de documento debe contener al menos 10 dígitos.");
-            return;
-        }
-
         if (!validarPassword(password)) {
-            setErrorMessage("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo especial.");
+            setErrorMessage("La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo especial (! @ # $ % ^ & ( ) _ + [ ] { } | ; : ' \" , . < > ? / \\ - ).");
             return;
         }
 
@@ -163,7 +158,7 @@ const Register = () => {
                     <div className="form-group">
                         <label>Número de Documento *</label>
                         <input
-                            type="number"
+                            type="text"
                             value={documento}
                             onChange={(e) => setDocumento(e.target.value)}
                             required
