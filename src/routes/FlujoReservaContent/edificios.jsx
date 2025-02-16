@@ -71,17 +71,24 @@ const EdificiosList = () => {
 
     // Crear lista de edificios seleccionados con montajes y subtotales
     const edificiosEvento = Array.from(selectedEdificios).map((idEdificio) => {
-        const edificio = edificios.find((e) => e.idedificios === idEdificio);
-        const idMontaje = montajeSeleccionado[idEdificio];
-        const subtotal = edificio.costo_hora * time;
+      const edificio = edificios.find((e) => e.idedificios === idEdificio);
+      const idMontaje = montajeSeleccionado[idEdificio];
 
-        return {
-            id_edificio: idEdificio,
-            id_evento: null,
-            id_montaje_elegido: idMontaje,
-            subtotal_alquiler: subtotal,
-        };
-    });
+      // Validar que cada edificio tenga un montaje seleccionado
+      if (!idMontaje) {
+          window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
+          return;
+      }
+
+      const subtotal = edificio ? edificio.costo_hora * time : 0;
+
+      return {
+          id_edificio: idEdificio,
+          id_evento: null,
+          id_montaje_elegido: idMontaje,
+          subtotal_alquiler: subtotal,
+      };
+  });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
       sessionStorage.removeItem("edificiosDummy");
