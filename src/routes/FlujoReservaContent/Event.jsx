@@ -64,13 +64,9 @@ const EventDetails = () => {
         const evento = {
             id_usuario: userControl.getCurrentUser().idusuario,
             id_tipo_evento: selectedEventId,
-            fecha: selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : null, // YYYY-MM-DD
-            hora_inicio: selectedHours.start 
-                ? new Date(selectedHours.start).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' 
-                : null, // Formato HH:MM:00
-            hora_fin: selectedHours.end 
-                ? new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' 
-                : null, // Formato HH:MM:00
+            fecha: new Date(selectedDate).toISOString().split('T')[0], // YYYY-MM-DD
+            hora_inicio: new Date(selectedHours.start).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+            hora_fin: new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' , // Formato HH:MM:00
             detalles: description,
             personas: parseInt(invitados, 10),
             estado: 'En Cotizacion',
