@@ -5,18 +5,19 @@ import EdificiosList from './FlujoReservaContent/edificios.jsx';
 
 export const sections = [
     {
-        title: "Tipo de Evento ",
-        description: "Selecciona que tipo de evento(s) quieres hacer en nuestro club.",
+        title: "Detalles Generales del Evento",
+        description: "Aquí podrás definir los detalles principales del evento.",
         content: <EventDetails />
 
     },
     {
         title: "Lugar del evento",
+        description: "Aquí podrás elegir los edificios que quiere reservar para tu evento.",
         content: <EdificiosList />,
     },
     {
         title: "Nuestros servicios",
-        description: "Contenido de Elso",
+        description: "Aquí podrás elegir los productos que pedirás para tu evento.",
         content: <OurServices />
     },
     {

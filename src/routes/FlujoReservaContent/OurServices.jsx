@@ -51,14 +51,18 @@ const OurProducts = () => {
     const handleCheckboxChange = (productId, isSelected) => {
         setSelectedProducts((prevSelected) => {
             const newSelected = { ...prevSelected, [productId]: isSelected };
-            if (!isSelected) {
+            if (isSelected) {
                 setProductQuantities((prevQuantities) => {
-                    const newQuantities = { ...prevQuantities, [productId]: 0 };
+                    const newQuantities = { ...prevQuantities, [productId]: 1 };
                     calculateTotalPrice(newQuantities);
                     return newQuantities;
                 });
             } else {
-                calculateTotalPrice(productQuantities);
+                setProductQuantities((prevQuantities) => {
+                    const { [productId]: _, ...newQuantities } = prevQuantities;
+                    calculateTotalPrice(newQuantities);
+                    return newQuantities;
+                });
             }
             return newSelected;
         });
@@ -74,26 +78,91 @@ const OurProducts = () => {
         setTotalPrice(total);
     };
 
-    const handleBuy = () => {
-        setShowSummary(true);
-    };
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-    const handleUpload = async () => {
-        if (file && file.type.startsWith("image/")) {
-            try {
-                await uploadFotoProducto(1, file);
-                alert("Foto subida con éxito");
-            } catch (error) {
-                console.error("Error al subir la foto:", error);
-                alert("Hubo un error al subir la foto");
+    const seleccionFinal = () => {
+        const newSelectedProducts = selectedProducts
+        Object.keys(newSelectedProducts).forEach(key => {
+            if (newSelectedProducts[key] === false) {
+              delete newSelectedProducts[key];
             }
-        } else {
-            alert("Por favor, selecciona una imagen válida");
+        });
+        return Object.keys(newSelectedProducts);
+    }
+
+    const completitudDiccionarios = () => {
+        let errores = [];
+        const seleccionados = seleccionFinal();
+    
+        seleccionados.forEach(llave => {
+            if (!productQuantities.hasOwnProperty(llave)) {
+                errores.push(llave);
+            }
+        });
+        if (errores.length > 0) {
+            throw new Error("Faltan productos por asignar cantidad: " + errores.join(", "));
         }
+    };    
+
+    const calcularSubtotales = () => {
+        const subtotals = {};
+        
+        Object.keys(selectedProducts).forEach((productIdKey) => {
+          if (selectedProducts[productIdKey]) { 
+            const productId = parseInt(productIdKey, 10);
+            const product = products.find((p) => p.idproducto === productId); 
+            
+            if (product) {
+              const quantity = productQuantities[productIdKey] || 0; 
+              const subtotal = quantity * product.precio; 
+              subtotals[productId] = subtotal;
+            }
+          }
+        });
+        
+        return subtotals;
+    };
+
+    const getStringPedidosAdicionales = () => {
+        return extraServices.filter(item => item.trim() !== "").join("%%");
+    }
+
+    const handleDummy = (e) => {
+        completitudDiccionarios();
+
+        const pedido = {
+            id_evento: null,//Se genera en la BD (response)
+            fecha_pedido: new Date().toISOString().split("T")[0],
+            costo_total: parseFloat(totalPrice.toFixed(2)),
+            pedidos_adicionales: getStringPedidosAdicionales()
+        };
+
+        const productoPedido = {
+            idproducto_pedido: null, //Se genera en la BD
+            id_pedido: null, //Se genera en la BD (response)
+            id_producto: seleccionFinal(),
+            cantidad: productQuantities,
+            subtotal: calcularSubtotales(),
+        };
+
+        if (sessionStorage.getItem("pedidoDummy") != null) {
+            sessionStorage.removeItem("pedidoDummy");
+        }
+        if (sessionStorage.getItem("productoPedidoDummy") != null) {
+            sessionStorage.removeItem("productoPedidoDummy");
+        }
+
+        sessionStorage.setItem("pedidoDummy", JSON.stringify(pedido));
+        sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedido));
+        
+
+        console.log("Productos",JSON.parse(sessionStorage.getItem("pedidoDummy")))
+        console.log("Cantidad",JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
+
+        console.log("Pedido temporalmente guardado");
+    };
+
+    const handleSubmit  = async (e) => {
+        e.preventDefault();
+        handleDummy();
     };
 
     const addExtraService = () => {
@@ -115,55 +184,77 @@ const OurProducts = () => {
     return (
         <div className="card-product-container">
             <div className="card-product">
-                <h3>Productos Disponibles</h3>
-                {products.map((product) => (
-                    <div key={product.idproducto} className="card" style={{ border: "3px solid black", padding: "10px", margin: "10px 0" }}>
-                        <img src={product.imagenUrl} alt={product.nombre} className="product-image" style={{ width: "100px", height: "100px", objectFit: "cover" }} />
-                        <div className="product-details">
-                            <h4>{product.nombre}</h4>
-                            <p>{product.descripcion}</p>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedProducts[product.idproducto] || false}
-                                    onChange={(e) => handleCheckboxChange(product.idproducto, e.target.checked)}
-                                />
-                                Seleccionar - {product.precio} $
-                            </label>
-                            {selectedProducts[product.idproducto] && (
-                                <input
-                                    type="number"
-                                    min="0"
-                                    value={productQuantities[product.idproducto] || 0}
-                                    onChange={(e) => handleQuantityChange(product.idproducto, parseInt(e.target.value) || 0)}
-                                />
-                            )}
-                        </div>
-                    </div>
-                ))}
-                <div className="card-extra-services">
-                        <h3>Servicios Adicionales</h3>
+                <div className="card">
+                    <h3>Productos Disponibles</h3>
+                    <ul>
+                        {products.length > 0 ? (
+                            products.map((product) => (
+                                <li key={product.idproducto} style={{ display: "flex", alignItems: "center", marginBottom: "10px", backgroundColor: "#800000" }}>
+                                    <img
+                                        src={product.imagenUrl}
+                                        alt={product.nombre}
+                                        className="product-image"
+                                        style={{ width: "50px", height: "50px", objectFit: "cover", marginRight: "10px" }}
+                                    />
+                                    <label style={{ flex: 1 }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedProducts[product.idproducto] || false}
+                                            onChange={(e) => handleCheckboxChange(product.idproducto, e.target.checked)}
+                                        />
+                                        {product.nombre} - {product.precio} $
+                                    </label>
+                                    {selectedProducts[product.idproducto] && (
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={productQuantities[product.idproducto] || 1}
+                                            onChange={(e) => handleQuantityChange(product.idproducto, parseInt(e.target.value) || 1)}
+                                            style={{ width: "50px", marginLeft: "10px" }}
+                                        />
+                                    )}
+                                </li>
+                            ))
+                        ) : (
+                            <p>Cargando productos...</p>
+                        )}
+                    </ul>
+    
+                    <h4>Servicios Adicionales o Personalizados</h4>
+                    <ul>
                         {extraServices.map((service, index) => (
-                            <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                            <li key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                                 <input
                                     type="text"
                                     placeholder="Ingrese un servicio adicional"
                                     value={service}
                                     onChange={(e) => handleExtraServiceChange(index, e.target.value)}
-                                    style={{ padding: "5px", flex: "1", marginRight: "10px" }}
+                                    style={{ flex: 1, padding: "5px", marginRight: "10px" }}
                                 />
-                                <button onClick={() => removeExtraService(index)} style={{ padding: "5px 10px", cursor: "pointer", backgroundColor: "red", color: "white", border: "none", borderRadius: "5px" }}>
+                                <button
+                                    onClick={() => removeExtraService(index)}
+                                    style={{ backgroundColor: "red", color: "white", border: "none", borderRadius: "5px", padding: "5px 10px", cursor: "pointer" }}
+                                >
                                     X
                                 </button>
-                            </div>
+                            </li>
                         ))}
-                        <button onClick={addExtraService} style={{ padding: "5px 10px", cursor: "pointer", marginTop: "10px" }}>
-                            + Agregar Servicio
-                        </button>
-                    </div>
+                    </ul>
+                    <button
+                        onClick={addExtraService}
+                        style={{ padding: "5px 10px", cursor: "pointer", marginTop: "10px" }}
+                    >
+                        + Agregar Servicio
+                    </button>
+                    <h4 hidden>Precio total de productos y servicios: {totalPrice} $</h4>
                 </div>
+                
+                <button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", fontSize: "16px" }} >
+                    Siguiente
+                </button>
             </div>
+        </div>
     );
-};
+};    
 
 export default OurProducts;
