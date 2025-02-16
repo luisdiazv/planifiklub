@@ -56,65 +56,90 @@ const EdificiosList = () => {
     setMontajeSeleccionado((prev) => ({ ...prev, [edificioId]: montajeId }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (false) {
+        window.alert("Debes seleccionar la fecha y horas del evento.");
+        return;
+    }
+    
+    const edificios = {
+        
+    };
+
+    if (sessionStorage.getItem("edificiosDummy") != null) {
+        sessionStorage.removeItem("edificios");
+    }
+    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificios));
+    // console.log(evento);
+  };
+
   if (loading) return <p>Cargando edificios...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="edificios-container">
-      {edificios.map((edificio) => {
-        const montajesFiltrados = montajes.filter((m) => m.id_edifcio === edificio.idedificios);
-        return (
-          <div key={edificio.idedificios} className="edificio-card">
-            <div className="edificio-foto">
-              <img src={edificio.foto} alt={edificio.nombre} className="edificio-image" />
-            </div>
-            <div className="edificio-info">
-              <h2>{edificio.nombre}</h2>
-              {expanded[edificio.idedificios] && (
-                <div className="edificio-details">
-                  <p><strong>Descripción:</strong> {edificio.descripcion}</p>
-                  <p><strong>Capacidad:</strong> {edificio.capacidad_maxima} personas</p>
-                  <p><strong>Disponibilidad:</strong> {edificio.disponibilidad ? "Disponible" : "No disponible"}</p>
-                  <p><strong>Costo por Hora:</strong> ${edificio.costo_hora}</p>
+      <form onSubmit={handleSubmit}>
+        {edificios.map((edificio) => {
+          const montajesFiltrados = montajes.filter((m) => m.id_edifcio === edificio.idedificios);
+          return (
+            <div key={edificio.idedificios} className="edificio-card">
+              <div className="edificio-foto">
+                <img src={edificio.foto} alt={edificio.nombre} className="edificio-image" />
+              </div>
+              <div className="edificio-info">
+                <h2>{edificio.nombre}</h2>
+                {expanded[edificio.idedificios] && (
+                  <div className="edificio-details">
+                    <p><strong>Descripción:</strong> {edificio.descripcion}</p>
+                    <p><strong>Capacidad:</strong> {edificio.capacidad_maxima} personas</p>
+                    <p><strong>Disponibilidad:</strong> {edificio.disponibilidad ? "Disponible" : "No disponible"}</p>
+                    <p><strong>Costo por Hora:</strong> ${edificio.costo_hora}</p>
+                  </div>
+                )}
+                <div className="button-container">
+                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                    {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
+                  </button>
+                  <label className="edificio-checker-container">
+                    <input
+                      className="edificio-checker"
+                      type="checkbox"
+                      checked={selectedEdificios.has(edificio.idedificios)}
+                      onChange={() => handleSelectionChange(edificio.idedificios)}
+                    />
+                  </label>
                 </div>
-              )}
-              <div className="button-container">
-                <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
-                  {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
-                </button>
-                <label className="edificio-checker-container">
-                  <input
-                    className="edificio-checker"
-                    type="checkbox"
-                    checked={selectedEdificios.has(edificio.idedificios)}
-                    onChange={() => handleSelectionChange(edificio.idedificios)}
-                  />
-                </label>
-              </div>
-              <div className="montajes-dropdown">
-                <label>Montajes disponibles:</label>
-                <select
-                  value={montajeSeleccionado[edificio.idedificios] || ""}
-                  onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
-                >
-                  {montajesFiltrados.length > 0 ? (
-                    <>
-                      <option value="" disabled>Seleccione un montaje</option>
-                      {montajesFiltrados.map((montaje) => (
-                        <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
-                          {montajesNombres[montaje.id_montajes] || "Cargando..."}
-                        </option>
-                      ))}
-                    </>
-                  ) : (
-                    <option>No hay montajes</option>
-                  )}
-                </select>
+                <div className="montajes-dropdown">
+                  <label>Montajes disponibles:</label>
+                  <select
+                    value={montajeSeleccionado[edificio.idedificios] || ""}
+                    onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
+                  >
+                    {montajesFiltrados.length > 0 ? (
+                      <>
+                        <option value="" disabled>Seleccione un montaje</option>
+                        {montajesFiltrados.map((montaje) => (
+                          <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
+                            {montajesNombres[montaje.id_montajes] || "Cargando..."}
+                          </option>
+                        ))}
+                      </>
+                    ) : (
+                      <option>No hay montajes</option>
+                    )}
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+
+        <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
+
+      </form>
+
     </div>
   );
 };
