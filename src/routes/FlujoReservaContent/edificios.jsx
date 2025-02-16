@@ -59,21 +59,36 @@ const EdificiosList = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (false) {
-        window.alert("Debes seleccionar la fecha y horas del evento.");
+    if (selectedEdificios.size === 0) {
+        window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
         return;
     }
-    
-    const edificios = {
-        
-    };
+
+    const eventoDumm = JSON.parse(sessionStorage.getItem("eventoDummy"));
+    const time = Math.round(
+        (new Date(`2025-02-17T${eventoDumm.hora_fin}`) - new Date(`2025-02-17T${eventoDumm.hora_inicio}`)) / 3600000
+    );
+
+    // Crear lista de edificios seleccionados con montajes y subtotales
+    const edificiosEvento = Array.from(selectedEdificios).map((idEdificio) => {
+        const edificio = edificios.find((e) => e.idedificios === idEdificio);
+        const idMontaje = montajeSeleccionado[idEdificio];
+        const subtotal = edificio.costo_hora * time;
+
+        return {
+            id_edificio: idEdificio,
+            id_evento: null,
+            id_montaje_elegido: idMontaje,
+            subtotal_alquiler: subtotal,
+        };
+    });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
-        sessionStorage.removeItem("edificios");
+      sessionStorage.removeItem("edificiosDummy");
     }
-    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificios));
-    // console.log(evento);
+    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
   };
+
 
   if (loading) return <p>Cargando edificios...</p>;
   if (error) return <p>Error: {error}</p>;
