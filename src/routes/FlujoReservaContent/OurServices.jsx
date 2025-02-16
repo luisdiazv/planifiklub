@@ -85,20 +85,24 @@ const OurProducts = () => {
               delete newSelectedProducts[key];
             }
         });
-        return newSelectedProducts;
+        //return newSelectedProducts;
+        console.log(Object.keys(newSelectedProducts));
+        return Object.keys(newSelectedProducts);
     }
 
     const completitudDiccionarios = () => {
         let errores = [];
-        for (let llave in seleccionFinal()) {
-          if (!productQuantities.hasOwnProperty(llave)) {
-            errores.push(llave);
-          }
-        }
-        if (errores.length > 0) {
-            throw new Error("Faltan productos por asignar cantidad: " + errores);
+        const seleccionados = seleccionFinal();
+    
+        seleccionados.forEach(llave => {
+            if (!productQuantities.hasOwnProperty(llave)) {
+                errores.push(llave);
             }
-      }
+        });
+        if (errores.length > 0) {
+            throw new Error("Faltan productos por asignar cantidad: " + errores.join(", "));
+        }
+    };    
 
     const calcularSubtotales = () => {
         const subtotals = {};
@@ -130,7 +134,7 @@ const OurProducts = () => {
             idpedido: null, //Se genera en la BD
             id_evento: null,//Se genera en la BD (response)
             fecha_pedido: new Date().toLocaleDateString("es-CO"),
-            costo_total: totalPrice,
+            costo_total: parseFloat(totalPrice.toFixed(2)),
             pedidos_adicionales: getStringPedidosAdicionales()
         };
 
@@ -179,7 +183,6 @@ const OurProducts = () => {
         const updatedServices = extraServices.filter((_, i) => i !== index);
         setExtraServices(updatedServices);
     };
-
 
     return (
         <div className="card-product-container">
