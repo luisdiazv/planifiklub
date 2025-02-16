@@ -85,8 +85,6 @@ const OurProducts = () => {
               delete newSelectedProducts[key];
             }
         });
-        //return newSelectedProducts;
-        console.log(Object.keys(newSelectedProducts));
         return Object.keys(newSelectedProducts);
     }
 
@@ -131,9 +129,8 @@ const OurProducts = () => {
         completitudDiccionarios();
 
         const pedido = {
-            idpedido: null, //Se genera en la BD
             id_evento: null,//Se genera en la BD (response)
-            fecha_pedido: new Date().toLocaleDateString("es-CO"),
+            fecha_pedido: new Date().toISOString().split("T")[0],
             costo_total: parseFloat(totalPrice.toFixed(2)),
             pedidos_adicionales: getStringPedidosAdicionales()
         };
