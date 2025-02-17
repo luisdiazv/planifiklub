@@ -71,34 +71,34 @@ const ShowEvent = () => {
     }, [eventInfo]);  
 
     useEffect(() => {
-        if (eventInfo?.id) {
-            const fetchPedidos = async () => {
-                try {
-                    const pedidos = await getPedidosByIdEvento(eventInfo.id);
-                    setPedidos(pedidos);
-                } catch (err) {
-                    console.error("Error obteniendo el tipo de evento:", err);
-                    setPedidos("Evento desconocido");
-                }
-            };
-            fetchPedidos();
-        }
-    }, [eventInfo]);   
+        if (!id) return;
+        const fetchPedidos = async () => {
+            try {
+                const pedidos = await getPedidosByIdEvento(id);
+                setPedidos(pedidos);
+            } catch (err) {
+                console.error("Error obteniendo pedidos:", err);
+                setPedidos([]);
+            }
+        };
+        fetchPedidos();
+    }, [id]);
+       
 
     useEffect(() => {
-        if (eventInfo?.id) {
-            const fetchEdificios = async () => {
-                try {
-                    const ListEdificios = await getEdificiosByIdEvento(eventInfo.id);
-                    setEdificios(ListEdificios);
-                } catch (err) {
-                    console.error("Error obteniendo el tipo de evento:", err);
-                    setEdificios("Evento desconocido");
-                }
-            };
-            fetchEdificios();
-        }
-    }, [eventInfo]);   
+        if (!id) return;
+        const fetchEdificios = async () => {
+            try {
+                const ListEdificios = await getEdificiosByIdEvento(id);
+                setEdificios(ListEdificios);
+            } catch (err) {
+                console.error("Error obteniendo edificios:", err);
+                setEdificios([]);
+            }
+        };
+        fetchEdificios();
+    }, [id]);
+       
 
     // Función para cambiar el estado a "Confirmado" y redirigir al calendario
     const handleGenerarEvento = async () => {
@@ -151,6 +151,8 @@ const ShowEvent = () => {
                         <div>
                             <p><strong>Edificio:</strong> ${edificio.nombre_edificio || "Desconocido"}</p>
                             <p><strong>Montaje:</strong> ${edificio.nombre_montaje || "Desconocido"}</p>
+                            <p><strong>Hora de Inicio:</strong> ${edificio.hora_inicio || "No especificada"}</p>
+                            <p><strong>Hora de Fin:</strong> ${edificio.hora_fin || "No especificada"}</p>
                             <p><strong>Subtotal:</strong> $${edificio.subtotal_alquiler || 0}</p>
                             <hr/>
                         </div>
@@ -292,6 +294,8 @@ const ShowEvent = () => {
                                     <p><strong>Edificio:</strong> {edificio.nombre_edificio}</p>
                                     <p><strong>Montaje:</strong> {edificio.nombre_montaje}</p>
                                     <p><strong>Subtotal:</strong> {edificio.subtotal_alquiler}</p>
+                                    <p><strong>Hora de Inicio:</strong> {edificio.hora_inicio}</p>
+                                    <p><strong>Hora de Fin:</strong> {edificio.hora_fin}</p>
                                     <p>-.-.-.-.-.-.-.-.-</p>
                                 </li>
                             ))}
