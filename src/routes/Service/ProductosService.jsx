@@ -185,12 +185,14 @@ const ConfiguradorProductos = () => {
           />
 
           <p style={styles.label}>Descripción:</p>
-          <textarea
+          <div
             name="descripcion"
-            value={productoInfo.descripcion}
-            onChange={handleChange}
-            style={styles.textarea}
-          />
+            contentEditable="true"
+            onInput={(e) => handleChange({ target: { name: 'descripcion', value: e.currentTarget.textContent } })}
+            style={styles.inputEditable}
+          >
+            {productoInfo.descripcion}
+          </div>
 
           <p style={styles.label}>Precio:</p>
           <input
@@ -280,19 +282,23 @@ const styles = {
   },
   input: {
     width: '100%',
-    marginBottom: '5px',
     padding: '8px',
     borderRadius: '4px',
     border: '1px solid #ccc',
+    marginBottom: '5px',
+    overflowWrap: 'break-word',
+    fontSize: '16px',
   },
   textarea: {
     width: '100%',
-    height: '120px',
+    height: '120px', // Aunque es inusual tener un input tan alto, se usará según tus requerimientos.
     padding: '8px',
     borderRadius: '4px',
     border: '1px solid #ccc',
     marginBottom: '5px',
-    resize: 'none',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
   },
   button: {
     padding: '8px 16px',
@@ -355,6 +361,18 @@ const styles = {
     justifyContent: 'center',
     marginTop: '10px',
   },
+  inputEditable: {
+    width: '100%',
+    minHeight: '120px',
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    marginBottom: '5px',
+    overflowWrap: 'break-word',
+    fontSize: '16px',
+    textAlign: 'left',
+  },
+  
 };
 
 export default ConfiguradorProductos;
