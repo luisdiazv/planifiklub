@@ -8,10 +8,12 @@ export const getPedidosByIdEvento = async (eventId) => {
           console.error("Error obteniendo el id del pedido:", error.message);
           throw new Error("No se pudo obtener el id del pedido: " + error.message);
       }
-
-      if (data.length > 0) {return getListaPedidos(data[0].idpedido);
+      if (data.length > 0) {
+        console.log(eventId);
+        console.log(data[0]);
+        return await getListaPedidos(data[0].idpedido);
       } else { return "ID de Pedido Desconocido"; }
-
+      
   } catch (error) {
       console.error("Error interno:", error.message);
       throw new Error("Ocurrió un error al obtener el id del pedido: " + error.message);
