@@ -19,7 +19,11 @@ export const getAllProducto = async () => {
 // Obtiene un producto por su ID
 export const getProductoByID = async (id) => {
   try {
-    const { data, error } = await supabase.from("producto").select("*").eq("idproducto", id).single();
+    const { data, error } = await supabase
+      .from("producto")
+      .select("*")
+      .eq("idproducto", id)
+      .single();
     if (error) {
       console.error("Error obteniendo el producto por ID:", error);
       throw new Error("No se pudo obtener el producto");
@@ -64,5 +68,43 @@ export const updateProducto = async (id, producto) => {
   } catch (error) {
     console.error("Error interno:", error);
     throw new Error("FATAL ERROR: No se pudo actualizar el producto");
+  }
+};
+
+// Elimina un producto por su ID
+export const deleteProducto = async (id) => {
+  try {
+    const { data, error } = await supabase
+      .from("producto")
+      .delete()
+      .eq("idproducto", id);
+    if (error) {
+      console.error("Error eliminando el producto:", error);
+      throw new Error("No se pudo eliminar el producto");
+    }
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error);
+    throw new Error("FATAL ERROR: No se pudo eliminar el producto");
+  }
+};
+
+// Crea un nuevo producto
+export const createProducto = async (producto) => {
+  try {
+    // Se inserta el producto y se devuelve el producto creado
+    const { data, error } = await supabase
+      .from("producto")
+      .insert([producto])
+      .select();
+    if (error) {
+      console.error("Error creando el producto:", error);
+      throw new Error("No se pudo crear el producto");
+    }
+    // data es un array, se retorna el primer elemento
+    return data[0];
+  } catch (error) {
+    console.error("Error interno:", error);
+    throw new Error("FATAL ERROR: No se pudo crear el producto");
   }
 };
