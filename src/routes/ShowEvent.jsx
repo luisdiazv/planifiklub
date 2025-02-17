@@ -24,7 +24,7 @@ const ShowEvent = () => {
     const [userName, setUserName] = useState("");
     const [eventType, setEventType] = useState("");
     const [edificios, setEdificios] = useState([]);
-    const [pedidos, setPedidos] = useState();
+    const [pedidos, setPedidos] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const ShowEvent = () => {
         const fetchPedidos = async () => {
             try {
                 const pedidos = await getPedidosByIdEvento(id);
-                setPedidos(pedidos);
+                setPedidos(Array.isArray(pedidos) ? pedidos : []);
             } catch (err) {
                 console.error("Error obteniendo pedidos:", err);
                 setPedidos([]);
@@ -90,7 +90,7 @@ const ShowEvent = () => {
         const fetchEdificios = async () => {
             try {
                 const ListEdificios = await getEdificiosByIdEvento(id);
-                setEdificios(ListEdificios);
+                setEdificios(Array.isArray(ListEdificios) ? ListEdificios : []);
             } catch (err) {
                 console.error("Error obteniendo edificios:", err);
                 setEdificios([]);
@@ -144,7 +144,7 @@ const ShowEvent = () => {
                 
                 <h3>Lista de Edificios</h3>
                 ${
-                    edificios && edificios.length > 0
+                    Array.isArray(edificios) && edificios.length > 0
                         ? edificios
                               .map(
                                   (edificio) => `
@@ -164,7 +164,7 @@ const ShowEvent = () => {
     
                 <h3>Lista de Pedidos</h3>
                 ${
-                    pedidos && pedidos.length > 0
+                    Array.isArray(pedidos) && pedidos.length > 0
                         ? pedidos
                               .map(
                                   (pedido) => `
