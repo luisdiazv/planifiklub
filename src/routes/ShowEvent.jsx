@@ -151,6 +151,8 @@ const ShowEvent = () => {
                         <div>
                             <p><strong>Edificio:</strong> ${edificio.nombre_edificio || "Desconocido"}</p>
                             <p><strong>Montaje:</strong> ${edificio.nombre_montaje || "Desconocido"}</p>
+                            <p><strong>Hora de Inicio:</strong> ${edificio.hora_inicio || "No especificada"}</p>
+                            <p><strong>Hora de Fin:</strong> ${edificio.hora_fin || "No especificada"}</p>
                             <p><strong>Subtotal:</strong> $${edificio.subtotal_alquiler || 0}</p>
                             <hr/>
                         </div>
@@ -292,6 +294,8 @@ const ShowEvent = () => {
                                     <p><strong>Edificio:</strong> {edificio.nombre_edificio}</p>
                                     <p><strong>Montaje:</strong> {edificio.nombre_montaje}</p>
                                     <p><strong>Subtotal:</strong> {edificio.subtotal_alquiler}</p>
+                                    <p><strong>Hora de Inicio:</strong> {edificio.hora_inicio}</p>
+                                    <p><strong>Hora de Fin:</strong> {edificio.hora_fin}</p>
                                     <p>-.-.-.-.-.-.-.-.-</p>
                                 </li>
                             ))}
