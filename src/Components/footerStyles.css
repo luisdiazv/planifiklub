@@ -3,7 +3,6 @@
     display: flex;
     background: var(--footer-color);
     color: var(--text-color);
-    font-size: 0.8rem;
     width: 100%;
     height: auto;
     margin-top: auto;
@@ -23,9 +22,7 @@
     flex: 1;
 }
 
-.bottom h1 {
-
-    font-size: 2.5rem;
+.bottom h2 {
     text-align: end;
     color: var(--text-color);
     font-family: 'FoghlihtenNo01';
@@ -78,6 +75,7 @@
 
 .social-links {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-end;
     width: 100%;
@@ -87,7 +85,7 @@
 
 .bottom i {
     color: var(--button-color);
-    font-size: 2.5rem;
+    font-size: 3.5rem;
 }
 
 .bottom i:hover {
@@ -107,9 +105,6 @@
     gap: 20px;
 }
 
-.mails a i {
-    font-size: 1.3rem;
-}
 
 .mails a:hover {
     color: var(--secondary-button-color);
@@ -181,12 +176,7 @@
     }
 
     .bottom h1 {
-        font-size: 1.5rem;
         text-align: center;
-    }
-
-    .bottom i {
-        font-size: 3rem;
     }
 }
 
@@ -194,14 +184,6 @@
 
     .footer-columns {
         gap: 10px;
-    }
-
-    .bottom h1 {
-        font-size: 1.2rem;
-    }
-
-    .bottom i {
-        font-size: 3rem;
     }
 
     .top img {

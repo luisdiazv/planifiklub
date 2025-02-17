@@ -38,7 +38,7 @@ const Footer = () => {
                     <div className="our-socials">
                         <div className="footer-columns">
                             <div>
-                                <h1>Nuestras Redes: </h1>
+                                <h2>Nuestras Redes: </h2>
                                 <div className="social-links">
                                     <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
@@ -55,7 +55,7 @@ const Footer = () => {
                                 </div>
                             </div>
                             <div style={{ textAlign: 'end' }}>
-                                <h1>Contáctanos: </h1>
+                                <h2>Contáctanos: </h2>
                                 <div className="mails">
                                     <p1>
                                         <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">

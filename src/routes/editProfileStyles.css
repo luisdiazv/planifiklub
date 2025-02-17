@@ -1,11 +1,12 @@
 .edit-container {
     display: flex;
     justify-content: space-between;
-
+    width: auto;
+    max-width: 90%;
 }
 
 .editter-container {
-    width: 45%;
+    width: 90%;
     margin: 50px auto;
     padding: 3rem;
     border: 1px solid var(--secondary-container-color);
@@ -19,20 +20,28 @@
         padding-bottom: 1rem;
         color: var(--text-color);
         font-weight: lighter;
-        border-bottom: 3px inset var(--button-color);
+    }
+}
+
+.form-name-grouper {
+    display: flex;
+    align-items: center;
+    gap: 3%;
+    width: 100%;
+
+    .form-group {
+        width: 100%;
     }
 }
 
 .form-grouper {
     color: var(--text-color);
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 3%;
 }
 
 .register-button {
-    font-size: 1.4rem;
     width: 100%;
     padding: 10px;
     border: none;
@@ -89,4 +98,24 @@
 
 .popup button:hover {
     background: var(--secondary-button-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .editter-container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 1150px) {
+
+    .form-name-grouper,
+    .form-grouper {
+        flex-direction: column;
+    }
+
+    .register-button {
+        padding: 12px;
+    }
 }

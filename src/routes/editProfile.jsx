@@ -133,7 +133,7 @@ const EditProfile = () => {
             <div className="editter-container">
                 <h2>Editar Información de Usuario</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="form-grouper">
+                    <div className="form-name-grouper">
                         <div className="form-group">
                             <label>Nombre:</label>
                             <input
@@ -165,7 +165,7 @@ const EditProfile = () => {
                         />
                     </div>
                     <div className="form-grouper">
-                        <div className="form-group" style={{ width: "10%" }}>
+                        <div className="ID-form-group">
                             <label>ID:</label>
                             <select
                                 id="tipo_documento"

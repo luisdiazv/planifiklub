@@ -116,7 +116,7 @@
 .nav-links-button:hover {
     transition: all 0.3s ease-in-out;
     background-color: var(--secondary-button-color);
-    color: var(--secondary-container-color);
+    color: var(--text-color);
 }
 
 .user-button-menu {
@@ -202,6 +202,11 @@
         display: none;
     }
 
+    .navbar-logo {
+        display: none;
+    }
+
+
     .burguer-button-menu {
         background: none;
         border: none;
@@ -268,9 +273,4 @@
         font-family: 'FoghlihtenNo01';
     }
 
-    .nav-links-button:hover {
-        transition: all 0.3s ease-in-out;
-        background-color: var(--button-color);
-        color: var(--secondary-container-color);
-    }
 }

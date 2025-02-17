@@ -3,10 +3,11 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    width: auto;
 }
 
 .timeline-container {
-    width: 100%;
+    width: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,7 +102,7 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     height: auto;
-    width: 100%;
+    width: auto;
 
 
     >* {
@@ -118,6 +119,7 @@
     border: none;
     height: auto;
     transition: width 0.3s;
+    width: auto;
 }
 
 .card-product-container {
@@ -135,7 +137,8 @@
 
 
 .navigation-buttons {
-    width: 100%;
+    width: auto;
+    min-width: 70%;
     display: flex;
     justify-content: space-between;
     padding: 10px;

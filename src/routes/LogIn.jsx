@@ -41,7 +41,7 @@ const LogIn = () => {
             <h2>Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="email">Correo Electrónico</label>
+                    <label htmlFor="email">Correo Electrónico: </label>
                     <input
                         type="email"
                         id="email"
@@ -52,7 +52,7 @@ const LogIn = () => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="password">Contraseña</label>
+                    <label htmlFor="password">Contraseña: </label>
                     <input
                         type="password"
                         id="password"

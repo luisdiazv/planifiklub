@@ -59,27 +59,27 @@ const Home = () => {
                     <div className="why-PK-content">
                         <h1>¿Por qué usar PlanifiKlub?</h1>
                         <p1>
-                            <strong>Especialización en Clubes Campestres:</strong>
+                            <strong>Especialización en Clubes Campestres: </strong>
                             PlanifiKlub está diseñado para satisfacer las necesidades únicas
                             de los clubes campestres, ofreciendo funcionalidades específicas
                             como la reserva de instalaciones y la personalización detallada
                             de eventos.
                         </p1>
                         <p1>
-                            <strong>Eficiencia y Optimización:</strong>
+                            <strong>Eficiencia y Optimización: </strong>
                             Simplificamos los procesos de reserva y gestión, eliminando
                             tareas manuales que consumen tiempo y son propensas a errores,
                             asegurando una operación más ágil y efectiva.
                         </p1>
                         <p1>
-                            <strong>Mejor Experiencia para los Socios:</strong>
+                            <strong>Mejor Experiencia para los Socios: </strong>
                             Los socios disfrutan de una experiencia más personalizada y
                             sencilla al organizar sus eventos, con opciones para ajustar
                             cada detalle y recibir un servicio de alta calidad que supera
                             sus expectativas.
                         </p1>
                         <p1>
-                            <strong>Facilidad para el Personal Administrativo:</strong>
+                            <strong>Facilidad para el Personal Administrativo: </strong>
                             El equipo administrativo puede gestionar eventos de manera más
                             eficiente, accediendo a información clave en tiempo real para
                             garantizar una ejecución impecable en cada ocasión.

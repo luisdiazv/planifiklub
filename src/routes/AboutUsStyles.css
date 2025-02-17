@@ -11,6 +11,7 @@
     flex-direction: column;
     min-height: 100vh;
     font-size: 1.3rem;
+    width: 100%;
 }
 
 .Uscontent {
@@ -23,21 +24,22 @@
 }
 
 .Uscolumn {
-    flex: 1 1 30%;
+    flex: 1 1 20%;
     margin: 1rem;
     max-width: 300px;
     display: flex;
     justify-content: center;
+    border-radius: 8px;
 }
 
 .Uscard {
     background-color: var(--secondary-container-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    overflow: hidden;
     text-align: center;
     color: var(--text-color);
     transition: transform 0.3s;
+    height: auto;
 }
 
 .Uscard:hover {
@@ -47,8 +49,13 @@
 
 .teamImg {
     width: 100%;
-    height: auto;
+    /* Ocupa el 100% del ancho del contenedor */
+    height: 50%;
+    /* Ocupa el 100% de la altura del contenedor */
     object-fit: cover;
+    /* Mantiene la proporción de la imagen sin deformarla */
+    border-radius: 8px;
+    /* Si deseas bordes redondeados */
 }
 
 /* Información del miembro */
@@ -89,8 +96,7 @@
     }
 
     .Uscolumn {
-        flex: 1 1 80%;
-        /* Aumenta el ancho en pantallas pequeñas */
+        flex: 1 1 80% !important;
     }
 
     .teamImg {
