@@ -268,98 +268,143 @@ const ShowEvent = () => {
   
     return (
         <div className="showevent-container">
-            <h2>Informe General del Evento</h2>
-            {error && <p className="error">{error}</p>}
+            <h2 className="event-title">Informe General del Evento</h2>
+            {error && <p className="error-message">{error}</p>}
             {eventInfo ? (
                 <div className="event-details">
-                    <h3>Detalles del Evento</h3>
-                    <p><strong>Nombre del Usuario:</strong> {userName}</p>
-                    <p><strong>Tipo de Evento:</strong> {eventType}</p>
-                    <p><strong>Fecha:</strong> {eventInfo.fecha}</p>
-                    <p><strong>Hora de Inicio:</strong> {eventInfo.hora_inicio}</p>
-                    <p><strong>Hora de Fin:</strong> {eventInfo.hora_fin}</p>
-                    <p><strong>Detalles:</strong> {eventInfo.detalles}</p>
-                    <p><strong>Número de Personas:</strong> {eventInfo.personas}</p>
-                    <p><strong>Estado:</strong> {eventInfo.estado}</p>
-                    <p><strong>Costo Total:</strong> ${eventInfo.costo_total}</p>
-                    <p><strong>Saldo Pendiente:</strong> ${eventInfo.saldo_pendiente}</p>
-
-                    <p>--------------------------------------------</p>
-
-                    <h3>Lista de Edificios</h3>
-                    {edificios && edificios.length > 0 ? (
-                        <ul className="pedido-list">
-                            {edificios.map((edificio) => (
-                                <li key={edificio.idedificio} className="pedido-item">
-                                    <p><strong>Edificio:</strong> {edificio.nombre_edificio}</p>
-                                    <p><strong>Montaje:</strong> {edificio.nombre_montaje}</p>
-                                    <p><strong>Subtotal:</strong> {edificio.subtotal_alquiler}</p>
-                                    <p><strong>Hora de Inicio:</strong> {edificio.hora_inicio}</p>
-                                    <p><strong>Hora de Fin:</strong> {edificio.hora_fin}</p>
-                                    <p>-.-.-.-.-.-.-.-.-</p>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No hay pedidos registrados para este evento.</p>
-                    )}
-
-                    <p>--------------------------------------------</p>
-
-                    <h3>Lista de Pedidos</h3>
-                    {pedidos && pedidos.length > 0 ? (
-                        <ul className="pedido-list">
-                            {pedidos.map((pedido) => (
-                                <li key={pedido.idproducto_pedido} className="pedido-item">
-                                    <p><strong>Producto:</strong> {pedido.nombre_producto}</p>
-                                    <p><strong>Cantidad:</strong> {pedido.cantidad}</p>
-                                    <p><strong>Subtotal:</strong> ${pedido.subtotal}</p>
-                                    <p>-.-.-.-.-.-.-.-.-</p>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No hay pedidos registrados para este evento.</p>
-                    )}
-
-                    {eventInfo.estado === "En Cotizacion" && (
-                        <div>
-                            <button className="generate-event-button" onClick={handleGenerarEvento}>Aprobar Cotizacion</button>
-                            <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar Cotizacion</button>
+                    {/* Sección de Detalles del Evento */}
+                    <div className="event-section">
+                        <h3 className="section-title">Detalles del Evento</h3>
+                        <div className="detail-item">
+                            <span className="detail-label">Nombre del Usuario:</span>
+                            <span className="detail-value">{userName}</span>
                         </div>
-                    )}
-                    {eventInfo.estado != "En Cotizacion" && (
-                        <div>
-                            <button className="generate-event-button" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                        <div className="detail-item">
+                            <span className="detail-label">Tipo de Evento:</span>
+                            <span className="detail-value">{eventType}</span>
                         </div>
-                    )}
+                        <div className="detail-item">
+                            <span className="detail-label">Fecha:</span>
+                            <span className="detail-value">{eventInfo.fecha}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Hora de Inicio:</span>
+                            <span className="detail-value">{eventInfo.hora_inicio}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Hora de Fin:</span>
+                            <span className="detail-value">{eventInfo.hora_fin}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Detalles:</span>
+                            <span className="detail-value">{eventInfo.detalles}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Número de Personas:</span>
+                            <span className="detail-value">{eventInfo.personas}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Estado:</span>
+                            <span className="detail-value">{eventInfo.estado}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Costo Total:</span>
+                            <span className="detail-value">${eventInfo.costo_total}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Saldo Pendiente:</span>
+                            <span className="detail-value">${eventInfo.saldo_pendiente}</span>
+                        </div>
+                    </div>
+    
+                    {/* Sección de Edificios */}
+                    <div className="event-section">
+                        <h3 className="section-title">Lista de Edificios</h3>
+                        {edificios && edificios.length > 0 ? (
+                            <ul className="list-container">
+                                {edificios.map((edificio) => (
+                                    <li key={edificio.idedificio} className="list-item">
+                                        <div className="detail-item">
+                                            <span className="detail-label">Edificio:</span>
+                                            <span className="detail-value">{edificio.nombre_edificio}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">Montaje:</span>
+                                            <span className="detail-value">{edificio.nombre_montaje}</span>
+                                        </div>                                        
+                                        <div className="detail-item">
+                                            <span className="detail-label">Subtotal:</span>
+                                            <span className="detail-value">${edificio.subtotal_alquiler}</span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="no-data-message">No hay edificios registrados para este evento.</p>
+                        )}
+                    </div>
+    
+                    {/* Sección de Pedidos */}
+                    <div className="event-section">
+                        <h3 className="section-title">Lista de Pedidos</h3>
+                        {pedidos && pedidos.length > 0 ? (
+                            <ul className="list-container">
+                                {pedidos.map((pedido) => (
+                                    <li key={pedido.idproducto_pedido} className="list-item">
+                                        <div className="detail-item">
+                                            <span className="detail-label">Producto:</span>
+                                            <span className="detail-value">{pedido.nombre_producto}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">Cantidad:</span>
+                                            <span className="detail-value">{pedido.cantidad}</span>
+                                        </div>
+                                        <div className="detail-item">
+                                            <span className="detail-label">Subtotal:</span>
+                                            <span className="detail-value">${pedido.subtotal}</span>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="no-data-message">No hay pedidos registrados para este evento.</p>
+                        )}
+                    </div>
+    
+                    {/* Botones de Acción */}
+                    <div className="action-buttons">
+                        {eventInfo.estado === "En Cotizacion" && (
+                            <>
+                                <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
+                                <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                            </>
+                        )}
+                        {eventInfo.estado !== "En Cotizacion" && (
+                            <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                        )}
+                    </div>
                 </div>
             ) : (
-                <p>Cargando información del evento...</p>
+                <p className="loading-message">Cargando información del evento...</p>
             )}
-
-        <button
-            onClick={generatePDF}
-            disabled={loading} // Deshabilitar el botón mientras se genera el PDF
-            style={{
-                cursor: loading ? "not-allowed" : "pointer",
-                opacity: loading ? 0.6 : 1,
-            }}
-        >
-            {loading ? "Generando PDF..." : "Generar Reporte en PDF"}
-        </button>
-
-        <button
-            onClick={generateBill}
-            disabled={loading} // Deshabilitar el botón mientras se genera el PDF
-            style={{
-                cursor: loading ? "not-allowed" : "pointer",
-                opacity: loading ? 0.6 : 1,
-            }}
-        >
-            {loading ? "Generando Facturación..." : "Generar Facturación en PDF"}
-        </button>
-
+    
+            {/* Botones de Generación de PDF */}
+            <div className="pdf-buttons">
+                <button
+                    onClick={generatePDF}
+                    disabled={loading}
+                    className="btn-pdf"
+                >
+                    {loading ? "Generando PDF..." : "Generar Reporte en PDF"}
+                </button>
+                <button
+                    onClick={generateBill}
+                    disabled={loading}
+                    className="btn-pdf"
+                >
+                    {loading ? "Generando Facturación..." : "Generar Facturación en PDF"}
+                </button>
+            </div>
         </div>
     );
 };
