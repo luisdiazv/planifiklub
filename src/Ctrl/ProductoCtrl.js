@@ -1,4 +1,5 @@
 import { supabase } from "../API/SupabaseAPI";
+import { deleteFotoProducto } from "../API/StorageAPI";
 
 // Obtiene todos los productos
 export const getAllProducto = async () => {
@@ -78,9 +79,14 @@ export const deleteProducto = async (id) => {
       .from("producto")
       .delete()
       .eq("idproducto", id);
+    const { imageData, imageError } = await deleteFotoProducto(id);
     if (error) {
       console.error("Error eliminando el producto:", error);
       throw new Error("No se pudo eliminar el producto");
+    }
+    if (imageError) {
+      console.error("Error eliminando la imagen asociada al producto:", error);
+      throw new Error("No se pudo eliminar la imagen asociada al producto");
     }
     return data;
   } catch (error) {

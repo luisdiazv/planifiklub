@@ -16,6 +16,8 @@ const ConfiguradorProductos = () => {
   const [successMsg, setSuccessMsg] = useState('');
   // Estado para almacenar la imagen redimensionada (blob) que se subirá
   const [newFoto, setNewFoto] = useState(null);
+  // Estado para almacenar la URL de _preview_ de la imagen (no se guarda en la BD)
+  const [previewFoto, setPreviewFoto] = useState(null);
 
   const handleSearchByNombre = async () => {
     setError('');
@@ -35,21 +37,29 @@ const ConfiguradorProductos = () => {
     }
   };
 
-  const handleSelectProducto = (producto) => {
+  const handleSelectProducto = async (producto) => {
     setProductoInfo(producto);
     setProductos([]); // Oculta la lista de productos
+    // Opcional: obtener la foto existente desde storage para mostrarla en el preview
+    try {
+      const url = await getFotoProducto(producto.idproducto);
+      setPreviewFoto(url);
+    } catch (error) {
+      console.error('Error al obtener la foto del producto:', error.message);
+      setPreviewFoto(null);
+    }
   };
 
   const handleCreateNew = () => {
-    // Se abre el formulario con valores iniciales vacíos
+    // Se abre el formulario con valores iniciales vacíos (sin campo foto)
     setProductoInfo({
       nombre: '',
       descripcion: '',
-      precio: 0,
-      foto: ''
+      precio: 0
     });
     setError('');
     setSuccessMsg('');
+    setPreviewFoto(null);
   };
 
   const handleChange = (e) => {
@@ -81,7 +91,7 @@ const ConfiguradorProductos = () => {
       (resizedBlob) => {
         // Se crea una URL de vista previa a partir del blob redimensionado
         const previewUrl = URL.createObjectURL(resizedBlob);
-        setProductoInfo(prev => ({ ...prev, foto: previewUrl }));
+        setPreviewFoto(previewUrl);
         // Se guarda el blob para su posterior subida a Supabase
         setNewFoto(resizedBlob);
       },
@@ -96,25 +106,28 @@ const ConfiguradorProductos = () => {
 
       if (productoInfo.idproducto) {
         // Producto existente: actualizar
+        await updateProducto(productoInfo.idproducto, updatedInfo);
+        // Si se seleccionó una nueva foto, se sube de forma separada
         if (newFoto) {
           await uploadFotoProducto(productoInfo.idproducto, newFoto);
+          // Opcional: se puede obtener la nueva URL para mostrarla en el preview
           const newUrl = await getFotoProducto(productoInfo.idproducto);
-          updatedInfo.foto = newUrl;
+          setPreviewFoto(newUrl);
         }
-        await updateProducto(productoInfo.idproducto, updatedInfo);
         setSuccessMsg('Producto actualizado exitosamente.');
       } else {
         // Nuevo producto: crear
         const createdProduct = await createProducto(updatedInfo);
+        // Si se seleccionó una foto, se sube
         if (newFoto) {
           await uploadFotoProducto(createdProduct.idproducto, newFoto);
+          // Opcional: obtener la URL para mostrarla
           const newUrl = await getFotoProducto(createdProduct.idproducto);
-          updatedInfo.foto = newUrl;
+          setPreviewFoto(newUrl);
         }
-        // Se actualiza el producto recién creado con la URL de la foto (si se subió)
-        await updateProducto(createdProduct.idproducto, updatedInfo);
         setSuccessMsg('Producto creado exitosamente.');
       }
+      // Reiniciamos los estados de foto y formulario
       setNewFoto(null);
       setProductoInfo(null);
     } catch (error) {
@@ -128,6 +141,7 @@ const ConfiguradorProductos = () => {
     setSuccessMsg('');
     setError('');
     setNewFoto(null);
+    setPreviewFoto(null);
   };
 
   const handleDelete = async () => {
@@ -139,6 +153,7 @@ const ConfiguradorProductos = () => {
         setSuccessMsg('Producto eliminado exitosamente.');
         setProductoInfo(null);
         setNewFoto(null);
+        setPreviewFoto(null);
       } catch (error) {
         console.error('Error al eliminar el producto:', error.message);
         setError('Ocurrió un error al eliminar el producto.');
@@ -185,14 +200,12 @@ const ConfiguradorProductos = () => {
           />
 
           <p style={styles.label}>Descripción:</p>
-          <div
+          <textarea
             name="descripcion"
-            contentEditable="true"
-            onInput={(e) => handleChange({ target: { name: 'descripcion', value: e.currentTarget.textContent } })}
-            style={styles.inputEditable}
-          >
-            {productoInfo.descripcion}
-          </div>
+            value={productoInfo.descripcion}
+            onChange={handleChange}
+            style={styles.textarea}
+          />
 
           <p style={styles.label}>Precio:</p>
           <input
@@ -211,9 +224,9 @@ const ConfiguradorProductos = () => {
             onChange={handleImageChange}
             style={styles.input}
           />
-          {productoInfo.foto && (
+          {previewFoto && (
             <img
-              src={productoInfo.foto}
+              src={previewFoto}
               alt="Preview"
               style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
             />
@@ -282,23 +295,19 @@ const styles = {
   },
   input: {
     width: '100%',
+    marginBottom: '5px',
     padding: '8px',
     borderRadius: '4px',
     border: '1px solid #ccc',
-    marginBottom: '5px',
-    overflowWrap: 'break-word',
-    fontSize: '16px',
   },
   textarea: {
     width: '100%',
-    height: '120px', // Aunque es inusual tener un input tan alto, se usará según tus requerimientos.
+    height: '120px',
     padding: '8px',
     borderRadius: '4px',
     border: '1px solid #ccc',
     marginBottom: '5px',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
+    resize: 'none',
   },
   button: {
     padding: '8px 16px',
@@ -361,18 +370,6 @@ const styles = {
     justifyContent: 'center',
     marginTop: '10px',
   },
-  inputEditable: {
-    width: '100%',
-    minHeight: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '5px',
-    overflowWrap: 'break-word',
-    fontSize: '16px',
-    textAlign: 'left',
-  },
-  
 };
 
 export default ConfiguradorProductos;
