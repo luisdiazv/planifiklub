@@ -24,7 +24,7 @@ const ShowEvent = () => {
     const [userName, setUserName] = useState("");
     const [eventType, setEventType] = useState("");
     const [edificios, setEdificios] = useState([]);
-    const [pedidos, setPedidos] = useState([]);
+    const [pedidos, setPedidos] = useState();
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -75,7 +75,7 @@ const ShowEvent = () => {
         const fetchPedidos = async () => {
             try {
                 const pedidos = await getPedidosByIdEvento(id);
-                setPedidos(Array.isArray(pedidos) ? pedidos : []);
+                setPedidos(pedidos);
             } catch (err) {
                 console.error("Error obteniendo pedidos:", err);
                 setPedidos([]);
@@ -90,7 +90,7 @@ const ShowEvent = () => {
         const fetchEdificios = async () => {
             try {
                 const ListEdificios = await getEdificiosByIdEvento(id);
-                setEdificios(Array.isArray(ListEdificios) ? ListEdificios : []);
+                setEdificios(ListEdificios);
             } catch (err) {
                 console.error("Error obteniendo edificios:", err);
                 setEdificios([]);
