@@ -60,13 +60,13 @@ const EventDetails = () => {
             window.alert("Debes ingresar la cantidad de asistentes que tendrá el evento.");
             return;
         }
-        
+
         const evento = {
             id_usuario: userControl.getCurrentUser().idusuario,
             id_tipo_evento: selectedEventId,
             fecha: new Date(selectedDate).toISOString().split('T')[0], // YYYY-MM-DD
             hora_inicio: new Date(selectedHours.start).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
-            hora_fin: new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' , // Formato HH:MM:00
+            hora_fin: new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
             detalles: description,
             personas: parseInt(invitados, 10),
             estado: 'En Cotizacion',
@@ -80,13 +80,13 @@ const EventDetails = () => {
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
         // console.log(evento);
 
-        
+
     };
 
     return (
         <div className="event-container">
             {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form className="event-detail-container" onSubmit={handleSubmit}>
                 <div>
                     <div className="calendar-container">
                         <SmallCallendar onDateChange={handleDateChange} />
@@ -155,7 +155,7 @@ const EventDetails = () => {
 
                 <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
             </form>
-        </div>
+        </div >
     );
 };
 

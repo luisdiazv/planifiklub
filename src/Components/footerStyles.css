@@ -85,7 +85,7 @@
 
 .bottom i {
     color: var(--button-color);
-    font-size: 3.5rem;
+    font-size: calc(15px + 5vmin);
 }
 
 .bottom i:hover {

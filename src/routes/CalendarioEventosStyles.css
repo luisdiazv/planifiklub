@@ -3,16 +3,10 @@
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height:90vh;
+    height: 90vh;
     width: 97vw;
 }
 
-.calendar-container{
-    //display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
 .rbc-toolbar {
     background-color: #7C0A01;
     color: white;
@@ -41,16 +35,18 @@
 /* Estilo base para los eventos sin definir el color de fondo */
 .rbc-event {
     background-color: white;
-    color: #3D0C01;  /* Color del texto */
+    color: #3D0C01;
+    /* Color del texto */
     border: none;
     border-radius: 4px;
     padding: 2px 5px;
     text-align: left;
 }
 
-.rbc-event-selected{
+.rbc-event-selected {
     background-color: white;
-    color: #3D0C01;  /* Color del texto */
+    color: #3D0C01;
+    /* Color del texto */
     border: none;
     border-radius: 4px;
     padding: 2px 5px;
@@ -64,6 +60,7 @@
 .event-button:hover {
     background: #9b1305;
 }
+
 /* Filtro de eventos */
 .filter-buttons {
     display: flex;
@@ -85,5 +82,3 @@
 .filter-buttons button:hover {
     background-color: #9b1305;
 }
-
-
