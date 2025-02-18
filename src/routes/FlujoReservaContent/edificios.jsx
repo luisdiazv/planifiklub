@@ -120,7 +120,7 @@ const EdificiosList = () => {
                   </div>
                 )}
                 <div className="button-container">
-                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                  <button type="button" className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
                     {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
                   </button>
                   <label className="edificio-checker-container">
