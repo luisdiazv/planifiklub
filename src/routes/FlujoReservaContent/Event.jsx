@@ -98,7 +98,7 @@ const EventDetails = () => {
                             eventTypes.map((eventType, index) => (
                                 <div key={index} className="event-type-item">
                                     <span>{eventType.nombre}</span>
-                                    <button onClick={() => handleInfoClick(index)}>
+                                    <button type="button" onClick={() => handleInfoClick(index)}>
                                         ↓
                                     </button>
                                     <input
