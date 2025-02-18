@@ -30,7 +30,6 @@ import ConfiguradorSocio from './routes/Service/MemberService.jsx';
 import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 
-
 //Ruta no encontrada
 import NotFound from './routes/NotFound.jsx';
 

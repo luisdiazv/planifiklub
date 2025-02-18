@@ -35,6 +35,7 @@ export const getEventById = async (eventId) => {
         console.error("Error obteniendo el evento:", error.message);
         throw new Error("No se pudo obtener el evento: " + error.message);
       }
+      
   
       if (!data || data.length === 0) {
         throw new Error("No se encontró el evento con el ID proporcionado.");

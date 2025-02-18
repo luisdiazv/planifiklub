@@ -5,7 +5,6 @@ import { deleteFotoProducto } from "../API/StorageAPI";
 export const getAllProducto = async () => {
   try {
     const { data, error } = await supabase.from("producto").select("*");
-    console.log("Productos obtenidos:", data);
     if (error) {
       console.error("Error obteniendo todos los productos:", error);
       throw new Error("No se pudo obtener los productos");
