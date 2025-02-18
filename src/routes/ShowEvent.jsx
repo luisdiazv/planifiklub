@@ -127,76 +127,83 @@ const ShowEvent = () => {
         try {
             setLoading(true);
     
-            // Construye el contenido HTML dinámico basado en la información del evento
-            const htmlContent = `
-                <h1 style="text-align: center;">Informe General del Evento</h1>
-                <h3>Detalles del Evento</h3>
-                <p><strong>Nombre del Usuario:</strong> ${userName || "Usuario desconocido"}</p>
-                <p><strong>Tipo de Evento:</strong> ${eventType || "Evento desconocido"}</p>
-                <p><strong>Fecha:</strong> ${eventInfo?.fecha || "No especificada"}</p>
-                <p><strong>Hora de Inicio:</strong> ${eventInfo?.hora_inicio || "No especificada"}</p>
-                <p><strong>Hora de Fin:</strong> ${eventInfo?.hora_fin || "No especificada"}</p>
-                <p><strong>Detalles:</strong> ${eventInfo?.detalles || "Sin detalles"}</p>
-                <p><strong>Número de Personas:</strong> ${eventInfo?.personas || "No especificado"}</p>
-                <p><strong>Estado:</strong> ${eventInfo?.estado || "No especificado"}</p>
-                <p><strong>Costo Total:</strong> $${eventInfo?.costo_total || 0}</p>
-                <p><strong>Saldo Pendiente:</strong> $${eventInfo?.saldo_pendiente || 0}</p>
-                
-                <h3>Lista de Edificios</h3>
-                ${
-                    Array.isArray(edificios) && edificios.length > 0
-                        ? edificios
-                              .map(
-                                  (edificio) => `
-                        <div>
-                            <p><strong>Edificio:</strong> ${edificio.nombre_edificio || "Desconocido"}</p>
-                            <p><strong>Montaje:</strong> ${edificio.nombre_montaje || "Desconocido"}</p>
-                            <p><strong>Hora de Inicio:</strong> ${edificio.hora_inicio || "No especificada"}</p>
-                            <p><strong>Hora de Fin:</strong> ${edificio.hora_fin || "No especificada"}</p>
-                            <p><strong>Subtotal:</strong> $${edificio.subtotal_alquiler || 0}</p>
-                            <hr/>
-                        </div>
-                    `
-                              )
-                              .join("")
-                        : "<p>No hay edificios registrados para este evento.</p>"
-                }
+            // Construye el contenido PDFMake basado en la información del evento
+            const content = [
+                { text: 'Informe General del Evento', style: 'eventTitle' },
+                error ? { text: error, style: 'errorMessage' } : {},
+                eventInfo ? (
+                    [
+                        { text: 'Detalles del Evento', style: 'sectionTitle' },
+                        {
+                            table: {
+                                widths: ['50%', '50%'],
+                                body: [
+                                    ['Nombre del Usuario:', userName],
+                                    ['Tipo de Evento:', eventType],
+                                    ['Fecha:', eventInfo.fecha],
+                                    ['Hora de Inicio:', eventInfo.hora_inicio],
+                                    ['Hora de Fin:', eventInfo.hora_fin],
+                                    ['Detalles:', eventInfo.detalles],
+                                    ['Número de Personas:', eventInfo.personas],
+                                    ['Estado:', eventInfo.estado],
+                                    ['Costo Total:', `$${eventInfo.costo_total}`],
+                                    ['Saldo Pendiente:', `$${eventInfo.saldo_pendiente}`],
+                                ],
+                            },
+                            layout: 'lightHorizontalLines'
+                        },
+                        { text: '', margin: [0, 10] },
+                        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
+                        { text: 'Lista de Edificios', style: 'sectionTitle' },
+                        edificios && edificios.length > 0 ? {
+                            table: {
+                                widths: ['40%', '40%', '20%'],
+                                body: [
+                                    ['Edificio', 'Montaje', 'Subtotal'],
+                                    ...edificios.map(edificio => [
+                                        edificio.nombre_edificio,
+                                        edificio.nombre_montaje,
+                                        `$${edificio.subtotal_alquiler}`
+                                    ])
+                                ]
+                            },
+                            layout: 'lightHorizontalLines'
+                        } : { text: 'No hay edificios registrados para este evento.', style: 'noDataMessage' },
+                        { text: '', margin: [0, 10] },
+                        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
+                        { text: 'Lista de Pedidos', style: 'sectionTitle' },
+                        pedidos && pedidos.length > 0 ? {
+                            table: {
+                                widths: ['40%', '30%', '30%'],
+                                body: [
+                                    ['Producto', 'Cantidad', 'Subtotal'],
+                                    ...pedidos.map(pedido => [
+                                        pedido.nombre_producto,
+                                        pedido.cantidad,
+                                        `$${pedido.subtotal}`
+                                    ])
+                                ]
+                            },
+                            layout: 'lightHorizontalLines'
+                        } : { text: 'No hay pedidos registrados para este evento.', style: 'noDataMessage' }
+                    ]
+                ) : { text: 'Cargando información del evento...', style: 'loadingMessage' }
+            ];
     
-                <h3>Lista de Pedidos</h3>
-                ${
-                    Array.isArray(pedidos) && pedidos.length > 0
-                        ? pedidos
-                              .map(
-                                  (pedido) => `
-                        <div>
-                            <p><strong>Producto:</strong> ${pedido.nombre_producto || "Desconocido"}</p>
-                            <p><strong>Cantidad:</strong> ${pedido.cantidad || 0}</p>
-                            <p><strong>Subtotal:</strong> $${pedido.subtotal || 0}</p>
-                            <hr/>
-                        </div>
-                    `
-                              )
-                              .join("")
-                        : "<p>No hay pedidos registrados para este evento.</p>"
-                }
-            `;
-    
-            // Convierte el contenido HTML a formato PDFMake
-            const pdfContent = htmlToPdfMake(htmlContent);
-    
-            // Configuración básica del documento PDF
+            // Definición del documento con estilos
             const documentDefinition = {
-                content: pdfContent,
+                content,
                 styles: {
-                    header: { fontSize: 18, margin: [0, 10, 0, 10]},
-                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5]},
-                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5]},
-                },
+                    eventTitle: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 10] },
+                    errorMessage: { color: '#dc3545', alignment: 'center', margin: [0, 0, 0, 10] },
+                    sectionTitle: { fontSize: 14, bold: true, color: '#333', margin: [0, 10, 0, 5] },
+                    noDataMessage: { fontSize: 12, color: '#777', italics: true, alignment: 'center', margin: [0, 5, 0, 5] },
+                    loadingMessage: { fontSize: 12, color: '#555', alignment: 'center', margin: [0, 5, 0, 5] }
+                }
             };
     
             // Genera y descarga el PDF
             pdfMake.createPdf(documentDefinition).download(`Reporte_Evento_${id}.pdf`);
-    
         } catch (error) {
             console.error("Error generando el reporte en PDF:", error.message);
             alert("Ocurrió un error al generar el reporte. Inténtalo nuevamente.");
@@ -204,67 +211,70 @@ const ShowEvent = () => {
             setLoading(false);
         }
     };
-
+    
+    
     const generateBill = async () => {
         try {
             setLoading(true);
             const facturas = await getPagosbyEventID(id);
     
-            // Construye el contenido HTML dinámico basado en la información del evento
-            const htmlContent = `
-                <h1 style="text-align: center;">Facturación General del Evento</h1>
-                <h3>Detalles del Evento</h3>
-                <p><strong>Nombre del Usuario:</strong> ${userName || "Usuario desconocido"}</p>
-                <p><strong>Fecha:</strong> ${eventInfo?.fecha || "No especificada"}</p>
-                <p><strong>Hora de Inicio:</strong> ${eventInfo?.hora_inicio || "No especificada"}</p>
-                <p><strong>Hora de Fin:</strong> ${eventInfo?.hora_fin || "No especificada"}</p>
-                <p><strong>Estado:</strong> ${eventInfo?.estado || "No especificado"}</p>
-                <p><strong>Costo Total:</strong> $${eventInfo?.costo_total || 0}</p>
-                <p><strong>Saldo Pendiente:</strong> $${eventInfo?.saldo_pendiente || 0}</p>
-
-                <h3>Lista de Facturas</h3>
-                ${
-                    facturas && facturas.length > 0
-                        ? facturas
-                              .map(
-                                  (factura) => `
-                        <div>
-                            <p><strong>Detalles:</strong> ${factura.detalles || "Desconocido"}</p>
-                            <p><strong>Fecha de Pago:</strong> ${factura.fecha_pago || "Desconocido"}</p>
-                            <p><strong>Método:</strong> ${factura.metodo || "Desconocido"}</p>
-                            <p><strong>Monto Pagado:</strong> ${factura.monto || "Desconocido"}</p>
-                            <hr/>
-                        </div>
-                    `
-                              )
-                              .join("")
-                        : "<p>No hay edificios registrados para este evento.</p>"
-                }
-            `;
-    
-            // Convierte el contenido HTML a formato PDFMake
-            const pdfContent = htmlToPdfMake(htmlContent);
-    
-            // Configuración básica del documento PDF
+            // Configuración del contenido en formato PDFMake
             const documentDefinition = {
-                content: pdfContent,
+                content: [
+                    { text: 'Facturación General del Evento', style: 'header' },
+                    { text: 'Detalles del Evento', style: 'subheader' },
+                    {
+                        table: {
+                            widths: ['30%', '70%'],
+                            body: [
+                                ['Nombre del Usuario:', userName || 'Usuario desconocido'],
+                                ['Fecha:', eventInfo?.fecha || 'No especificada'],
+                                ['Hora de Inicio:', eventInfo?.hora_inicio || 'No especificada'],
+                                ['Hora de Fin:', eventInfo?.hora_fin || 'No especificada'],
+                                ['Estado:', eventInfo?.estado || 'No especificado'],
+                                ['Costo Total:', `$${eventInfo?.costo_total || 0}`],
+                                ['Saldo Pendiente:', `$${eventInfo?.saldo_pendiente || 0}`],
+                            ],
+                        },
+                        layout: 'lightHorizontalLines',
+                        margin: [0, 0, 0, 20],
+                    },
+                    { text: 'Lista de Facturas', style: 'subheader' },
+                    facturas && facturas.length > 0
+                        ? {
+                              table: {
+                                  headerRows: 1,
+                                  widths: ['30%', '20%', '20%', '30%'],
+                                  body: [
+                                      ['Detalles', 'Fecha de Pago', 'Método', 'Monto Pagado'],
+                                      ...facturas.map(factura => [
+                                          factura.detalles || 'Desconocido',
+                                          factura.fecha_pago || 'Desconocido',
+                                          factura.metodo || 'Desconocido',
+                                          `$${factura.monto || 'Desconocido'}`,
+                                      ]),
+                                  ],
+                              },
+                              layout: 'lightHorizontalLines',
+                          }
+                        : { text: 'No hay facturas registradas para este evento.', style: 'noData' },
+                ],
                 styles: {
-                    header: { fontSize: 18, margin: [0, 10, 0, 10]},
-                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5]},
-                    paragraph: { fontSize: 12, margin: [0, 5, 0, 5]},
+                    header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10], alignment: 'center' },
+                    subheader: { fontSize: 14, bold: true, margin: [0, 10, 0, 5] },
+                    noData: { fontSize: 12, italics: true, margin: [0, 5, 0, 10], alignment: 'center' },
                 },
             };
     
             // Genera y descarga el PDF
             pdfMake.createPdf(documentDefinition).download(`Facturacion_Evento_${id}.pdf`);
-    
         } catch (error) {
-            console.error("Error generando la facturación en PDF:", error.message);
-            alert("Ocurrió un error al generar la facturacion. Inténtalo nuevamente.");
+            console.error('Error generando la facturación en PDF:', error.message);
+            alert('Ocurrió un error al generar la facturación. Inténtalo nuevamente.');
         } finally {
             setLoading(false);
         }
-    };
+    }; 
   
     return (
         <div className="showevent-container">
@@ -370,23 +380,23 @@ const ShowEvent = () => {
                             <p className="no-data-message">No hay pedidos registrados para este evento.</p>
                         )}
                     </div>
-    
-                    {/* Botones de Acción */}
-                    <div className="action-buttons">
-                        {eventInfo.estado === "En Cotizacion" && (
-                            <>
-                                <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
-                                <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
-                            </>
-                        )}
-                        {eventInfo.estado !== "En Cotizacion" && (
-                            <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
-                        )}
-                    </div>
                 </div>
             ) : (
                 <p className="loading-message">Cargando información del evento...</p>
             )}
+
+            {/* Botones de Acción */}
+            <div className="pdf-buttons">
+                {eventInfo.estado === "En Cotizacion" && (
+                    <>
+                        <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
+                        <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                    </>
+                )}
+                {eventInfo.estado !== "En Cotizacion" && (
+                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                )}
+            </div>
     
             {/* Botones de Generación de PDF */}
             <div className="pdf-buttons">
