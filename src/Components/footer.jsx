@@ -11,8 +11,8 @@ const Footer = () => {
                 <div className="bottom">
                     <div className="resp-footer1">
                         <div className="top">
-                            <div>
-                                <Link className="nav-link-logo" to="/">
+                            <div className="top-logo">
+                                <Link className="footer-link-logo" to="/">
                                     <div className="logoContainer">
                                         <img src={logo} alt="Logo" />
                                     </div>
@@ -21,12 +21,12 @@ const Footer = () => {
                             </div>
                             <div className="User-Manual" >
                                 <p1>
-                                    <Link to="https://seen-ear-f66.notion.site/Manual-de-usuario-Compostify-13ee1dfa63fe406b877961e63e50c8dd?pvs=4" target="_blank" rel="noopener noreferrer">
+                                    <Link to="https://docs.google.com/document/d/1n4JS3Ke9gTIIR-10sE-4V9YJec0WZIC2al5KvctchUI/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
                                         Manual de usuario
                                     </Link>
                                 </p1>
                                 <p1 hidden>
-                                    <Link to="https://seen-ear-f66.notion.site/Manual-t-cnico-Compostify-a845c8fe673b4ecca1cbdbce83ef30c4?pvs=4" target="_blank" rel="noopener noreferrer">
+                                    <Link to="https://docs.google.com/document/d/1MvUpBaPm59VxERRFsAt8oHMgo0Podxdf8UvQZuP3s0k/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
                                         Manual Técnico
                                     </Link>
                                 </p1>
@@ -38,7 +38,7 @@ const Footer = () => {
                     <div className="our-socials">
                         <div className="footer-columns">
                             <div>
-                                <h1>Nuestras Redes: </h1>
+                                <h2>Nuestras Redes: </h2>
                                 <div className="social-links">
                                     <Link to="https://github.com/luisdiazv/planifiklub/tree/deploy" target="_blank" rel="noopener noreferrer">
                                         <i className="fa-brands fa-square-github"></i>
@@ -55,7 +55,7 @@ const Footer = () => {
                                 </div>
                             </div>
                             <div style={{ textAlign: 'end' }}>
-                                <h1>Contáctanos: </h1>
+                                <h2>Contáctanos: </h2>
                                 <div className="mails">
                                     <p1>
                                         <Link to={`mailto:${email}`} target="_blank" rel="noopener noreferrer">

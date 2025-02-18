@@ -11,21 +11,26 @@
         text-align: center;
         margin: 0;
         padding-bottom: 1rem;
-        color: var(--button-color);
-        font-size: 4rem;
+        color: var(--text-color);
         font-weight: lighter;
     }
 
     p {
-        font-size: 1rem;
         text-align: end;
         color: var(--button-color);
     }
 }
 
-.form-grouper {
+.form-name-grouper {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 3%;
+    width: auto;
+}
+
+.form-grouper {
+    width: 100%;
+    display: flex;
     align-items: center;
     gap: 3%;
 
@@ -82,4 +87,22 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 1560px) {
+
+    .form-name-grouper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 3%;
+        width: auto;
+
+        .form-group {
+            width: 100%;
+        }
+    }
+
+
 }

@@ -1,5 +1,6 @@
 .login-container {
-    width: 50%;
+    width: 80%;
+    max-width: 90%;
     margin: auto;
     padding: 3rem;
     border: 1px solid var(--secondary-container-color);
@@ -9,14 +10,12 @@
     color: var(--text-color);
     align-items: center;
     align-content: center;
+}
 
-    h2 {
-        text-align: center;
-        margin: 0;
-        padding-bottom: 1rem;
-        font-size: 4rem;
-
-    }
+.login-container h2 {
+    text-align: center;
+    margin: 0;
+    padding-bottom: 1rem;
 }
 
 .login-button {
@@ -29,7 +28,6 @@
 }
 
 .forgot-password {
-    font-size: 1rem;
     text-align: end;
     padding-top: 0.5rem;
     display: flex;
@@ -53,4 +51,43 @@
 .forgot-password-link:hover {
     color: var(--secondary-button-color);
     text-decoration: underline;
+}
+
+.error-message {
+    font-style: italic;
+    text-align: end;
+    color: var(--button-color);
+    font-size: calc((8px + 2vmin));
+}
+
+
+@media (max-width: 1000px) {
+    .login-container {
+        padding: 2rem;
+    }
+
+    .login-button {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 1.5rem;
+    }
+
+    .login-container h2 {
+        font-size: 2.5rem;
+    }
+
+    .forgot-password {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .new-account,
+    .forgot-password-link {
+        padding: 0.2rem 0;
+    }
 }

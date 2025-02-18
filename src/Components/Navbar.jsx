@@ -3,29 +3,26 @@ import "./NavbarStyles.css";
 import { MenuItems, dropdownOptions } from "./NBMenuItems";
 import { Link } from "react-router-dom";
 import logo from "./imgs/LogoGolden.gif";
-import userControl from "../Util/UserControl"; // Importa userControl
+import userControl from "../Util/UserControl";
 
 class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isDropdownVisible: false, // Controla la visibilidad del menú desplegable
-            currentUser: null, // Estado para el usuario actual
+            isDropdownVisible: false,
+            currentUser: null,
         };
-        this.menuRef = createRef(); // Referencia al menú desplegable
+        this.menuRef = createRef();
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         document.addEventListener("mousedown", this.handleClickOutside);
+        window.addEventListener("userChanged", this.updateCurrentUser);
 
-        // Verifica el usuario al montar
         const user = sessionStorage.getItem("currentUser");
         if (user) {
             this.setState({ currentUser: user });
         }
-
-        // Escucha cambios en el usuario
-        window.addEventListener("userChanged", this.updateCurrentUser);
     }
 
     componentWillUnmount() {
@@ -33,22 +30,19 @@ class Navbar extends Component {
         window.removeEventListener("userChanged", this.updateCurrentUser);
     }
 
-    updateCurrentUser = async () => {
+    updateCurrentUser = () => {
         const user = userControl.getCurrentUser();
         this.setState({ currentUser: user });
     };
 
     handleClickOutside = (event) => {
-        // Cierra el menú si el clic ocurre fuera de este
         if (this.menuRef.current && !this.menuRef.current.contains(event.target)) {
             this.setState({ isDropdownVisible: false });
         }
     };
 
     toggleDropdown = () => {
-        this.setState((prevState) => ({
-            isDropdownVisible: !prevState.isDropdownVisible,
-        }));
+        this.setState((prevState) => ({ isDropdownVisible: !prevState.isDropdownVisible }));
     };
 
     closeDropdown = () => {
@@ -56,13 +50,39 @@ class Navbar extends Component {
     };
 
     handleLogout = () => {
-        // Limpiar el usuario en userControl
         userControl.Logout();
-        // Limpiar el estado local
         this.setState({ currentUser: null });
-
-        // Redirigir a la página de inicio de sesión
         window.location.href = "/app/login";
+    };
+
+    renderMenuItems = () => {
+        const { currentUser } = this.state;
+        const location = window.location.pathname;
+        const isAppPage = location.startsWith("/app");
+
+        return MenuItems.map((item, index) => {
+            if ((index === 3 && !isAppPage) || (index === 4 && isAppPage && !currentUser)) {
+                return (
+                    <li key={index}>
+                        <Link to={item.url} style={{ textDecoration: "none" }} onClick={this.closeDropdown}>
+                            <button className={item.cName}>{item.title}</button>
+                        </Link>
+                    </li>
+                );
+            }
+
+            if ((index === 0 || index === 1 || index === 3) && isAppPage) return null;
+            if ((index === 2 || index === 4) && !isAppPage) return null;
+            if ((index === 2 || index === 4) && currentUser) return null;
+
+            return (
+                <li key={index}>
+                    <Link className={item.cName} to={item.url} onClick={this.closeDropdown}>
+                        {item.title}
+                    </Link>
+                </li>
+            );
+        });
     };
 
     render() {
@@ -78,96 +98,56 @@ class Navbar extends Component {
                         <h1 className="navbar-logo">PlanifiKlub</h1>
                     </div>
                 </Link>
-                <div className="menu-icons"></div>
+                <div className="burguer-menu-container" ref={this.menuRef}>
+                    <button
+                        className={`${isAppPage && currentUser ? "burguer-button-menu-isIn" : "burguer-button-menu"
+                            } ${isDropdownVisible ? "active" : ""}`}
+                        onClick={this.toggleDropdown}
+                    >
+                        <i className="fa-solid fa-bars"></i>
+                    </button>
+
+                    {isDropdownVisible && (
+                        <div className="burguer-dropdown-menu">
+                            {this.renderMenuItems()}
+                        </div>
+                    )}
+                </div>
+
+
                 <ul className="nav-menu">
-                    {
-                        MenuItems.map((item, index) => {
-                            if (index == 3 && !isAppPage) {
-                                return (
-                                    <li key={index}>
-                                        <Link
-                                            to={item.url}
-                                            style={{ textDecoration: "none" }}
-                                            onClick={this.closeDropdown}
-                                        >
-                                            <button className={item.cName}>{item.title}</button>
-                                        </Link>
-                                    </li>
-                                );
-                            }
-
-                            if (index == 4 && isAppPage) {
-                                if (currentUser !== null) {
-                                    return null;
-                                }
-                                return (
-                                    <li key={index}>
-                                        <Link
-                                            to={item.url}
-                                            style={{ textDecoration: "none" }}
-                                            onClick={this.closeDropdown}
-                                        >
-                                            <button className={item.cName}>{item.title}</button>
-                                        </Link>
-                                    </li>
-                                );
-                            }
+                    {this.renderMenuItems()}
+                </ul>
 
 
-                            if ((index === 0 || index === 1 || index === 3) && isAppPage) {
-                                return null;
-                            }
-
-                            if ((index === 2 || index === 4) && !isAppPage) {
-                                return null;
-                            }
-                            if (index === 2 && currentUser !== null) {
-                                return null;
-                            }
-
-                            return (
-                                <li key={index}>
+                {currentUser && isAppPage && (
+                    <div className="user-menu-container" ref={this.menuRef}>
+                        <button
+                            className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
+                            onClick={this.toggleDropdown}
+                        >
+                            <i className="fa-solid fa-circle-user"></i>
+                        </button>
+                        {isDropdownVisible && (
+                            <div className="dropdown-menu">
+                                {dropdownOptions.map((option, idx) => (
                                     <Link
-                                        className={item.cName}
-                                        to={item.url}
-                                        onClick={this.closeDropdown}
+                                        key={idx}
+                                        to={option.path}
+                                        className="dropdown-item"
+                                        onClick={() => {
+                                            if (option.label === "Cerrar sesión") this.handleLogout();
+                                            this.closeDropdown();
+                                        }}
                                     >
-                                        {item.title}
+                                        {option.label}
                                     </Link>
-                                </li>
-                            );
-                        })}
-                    {currentUser !== null && isAppPage &&
-                        (
-                            <div className="user-menu-container" ref={this.menuRef}>
-                                <button
-                                    className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
-                                    onClick={this.toggleDropdown}
-                                >
-                                    <i className="fa-solid fa-circle-user"></i>
-                                </button>
-                                {isDropdownVisible && (
-                                    <div className="dropdown-menu">
-                                        {dropdownOptions.map((option, idx) => (
-                                            <Link
-                                                key={idx}
-                                                to={option.path}
-                                                className="dropdown-item"
-                                                onClick={() => {
-                                                    if (option.label === "Cerrar sesión") {
-                                                        this.handleLogout();
-                                                    }
-                                                    this.closeDropdown();
-                                                }}
-                                            >
-                                                {option.label}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
+                                ))}
                             </div>
                         )}
-                </ul>
+                    </div>
+                )}
+
             </nav>
         );
     }

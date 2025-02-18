@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-size: 1.5rem;
     margin-top: 0;
     padding: 0;
 }
@@ -18,15 +17,15 @@
     text-align: justify;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     font-weight: 600;
-    padding: 2rem 5rem 3rem 5rem;
+    padding: 2rem 2rem;
+
 
     h1 {
         border-bottom: 3px inset var(--secondary-text-color);
     }
 }
-
 
 .why-PK {
     display: flex;
@@ -34,7 +33,8 @@
     justify-content: space-between;
     gap: 20px;
     font-weight: 600;
-    padding: 2rem 5rem 5rem 3rem;
+    padding: 2rem 2rem;
+
 
     h1 {
         border-bottom: 3px inset var(--secondary-text-color);
@@ -46,7 +46,6 @@
         margin-right: 100px;
         object-fit: cover;
         opacity: 0.8;
-        mask-image: linear-gradient(to right, #05161A 50%, transparent 100%);
     }
 
 }
@@ -55,14 +54,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
-
-
-
-
-    p1 {
-        margin-top: 20px;
-        margin-left: 50px;
-    }
+    gap: 15px;
 }
 
 
@@ -74,7 +66,7 @@
     justify-content: space-between;
     gap: 20px;
     font-weight: 600;
-    padding: 2rem 5rem 5rem 3rem;
+    padding: 2rem 2rem;
 
     h1 {
         border-bottom: 3px inset var(--secondary-text-color);
@@ -86,7 +78,6 @@
         margin-left: 100px;
         object-fit: cover;
         opacity: 0.8;
-        mask-image: linear-gradient(to left, #1a0505 50%, transparent 100%);
     }
 
     .res-image {
@@ -112,4 +103,41 @@
     display: inline-block;
     border-radius: 4px;
     cursor: pointer;
+}
+
+
+@media screen and (max-width: 1200px) {
+    .what-is-PK {
+        text-align: center !important;
+    }
+
+    .demo-PK-container {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 2rem;
+    }
+
+    .why-PK {
+        flex-direction: column;
+    }
+
+    .why-PK-content {
+        text-align: center !important;
+    }
+
+    .home-content {
+        text-align: center !important;
+    }
+
+    .home-image-content {
+        width: 100% !important;
+        margin-right: 0px !important;
+        opacity: 1 !important;
+        mask-image: none !important;
+    }
+
+    .image-description p {
+        font-size: calc(10px + 2vmin);
+    }
+
 }

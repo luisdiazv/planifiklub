@@ -3,7 +3,6 @@
     display: flex;
     background: var(--footer-color);
     color: var(--text-color);
-    font-size: 0.8rem;
     width: 100%;
     height: auto;
     margin-top: auto;
@@ -23,9 +22,7 @@
     flex: 1;
 }
 
-.bottom h1 {
-
-    font-size: 2.5rem;
+.bottom h2 {
     text-align: end;
     color: var(--text-color);
     font-family: 'FoghlihtenNo01';
@@ -39,15 +36,12 @@
     flex: 1;
 }
 
-.top>div {
+.top-logo {
     display: flex;
     gap: 15px;
 }
 
-.top>div>div {
-    display: flex;
-    flex-direction: column;
-}
+
 
 .top img {
     width: 85px;
@@ -81,15 +75,17 @@
 
 .social-links {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-end;
     width: 100%;
+    gap: 2.5rem;
+
 }
 
 .bottom i {
     color: var(--button-color);
-    font-size: 2.5rem;
-    margin-left: 1.5rem;
+    font-size: 3.5rem;
 }
 
 .bottom i:hover {
@@ -109,9 +105,6 @@
     gap: 20px;
 }
 
-.mails a i {
-    font-size: 1.3rem;
-}
 
 .mails a:hover {
     color: var(--secondary-button-color);
@@ -137,4 +130,63 @@
 .User-Manual a:hover {
     color: var(--secondary-button-color);
 
+}
+
+
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .top-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .bottom {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .footer-columns {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    .mails {
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .top {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .top img {
+        width: 70px;
+    }
+
+    .bottom h1 {
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    .footer-columns {
+        gap: 10px;
+    }
+
+    .top img {
+        width: 60px;
+    }
 }

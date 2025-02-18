@@ -5,15 +5,17 @@
   color: var(--secondary-text-color);
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .App-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 65px;
   justify-content: center;
-  justify-items: stretch;
+  align-items: center;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -21,7 +23,6 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 
 @keyframes App-logo-spin {
   from {
@@ -34,74 +35,67 @@
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   color: var(--text-color);
-
-  select {
-    padding: 0.6rem;
-  }
+  width: 100%;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  text-align: start;
+.ID-form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  width: 10%;
 }
 
+.form-group select,
+.ID-form-group select,
 .form-group input {
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: auto;
+  font-size: calc(5px + 3vmin);
+}
+
+h1,
+h2 {
+  font-weight: lighter;
+  text-align: center;
 }
 
 h1 {
   font-family: 'FoghlihtenNo01';
-  font-size: 3.5rem;
-  font-weight: lighter;
+  font-size: calc(20px + 8vmin);
+  ;
+  border-bottom: var(--secondary-text-color);
 }
 
 h2 {
-  width: auto;
-  font-size: 2.5rem;
+  font-size: calc(15px + 6vmin);
   font-family: 'DMSerifText-Regular';
-  font-weight: lighter;
   border-bottom: 3px inset var(--secondary-text-color);
 }
 
-p,
-p1 {
+p {
   font-family: 'ScheherazadeNew';
-  font-size: 1.8rem;
-  line-height: 1.5;
-  font-weight: normal;
+  font-size: calc(10px + 3vmin);
+  line-height: 1.3;
   color: var(--secondary-text-color);
-  padding: 0.5rem 0 2rem 0;
 }
 
 label {
+  text-align: start;
   font-family: 'ScheherazadeNew';
-  font-size: 1.8rem;
-  line-height: 1.5;
-  font-weight: normal;
+  font-size: calc(10px + 3.5vmin);
   color: var(--text-color);
-  padding: 0.5rem 0 2rem 0;
-}
-
-a {
-  text-decoration: none;
-  color: var(--button-color);
-}
-
-a:hover {
-  color: var(--secondary-button-color);
 }
 
 button {
-
   font-family: 'FoghLihtenNo01';
-  font-size: 1.3rem;
+  font-size: calc(10px + 3vmin);
   margin-top: 20px;
   padding: 10px 20px;
   background-color: var(--button-color);
@@ -114,12 +108,38 @@ button {
 button:hover {
   background-color: var(--secondary-button-color);
   color: var(--text-color);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+a {
+  text-decoration: none;
+  color: var(--button-color);
+}
+
+a:hover {
+  color: var(--text-color);
+}
+
+
+
+
+@media screen and (max-width: 1150px) {
+  .App-container {
+    padding-top: 50px;
+  }
+
+  .ID-form-group {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+
+  button {
+    padding: 8px 16px;
+  }
 }

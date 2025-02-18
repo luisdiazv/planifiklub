@@ -41,12 +41,12 @@ const Register = () => {
         e.preventDefault();
 
         if (!/^[A-Za-z\s]+$/.test(nombres)) {
-            setErrorMessage(`${tipo_documento === "NIT" ? "El nombre de la empresa" : "El nombre"} solo puede contener letras y espacios.`);            
+            setErrorMessage(`${tipo_documento === "NIT" ? "El nombre de la empresa" : "El nombre"} solo puede contener letras y espacios.`);
             return;
         }
 
         if (!/^[A-Za-z\s]+$/.test(apellidos)) {
-            setErrorMessage(`${tipo_documento === "NIT" ? "El nombre del encargado" : "Los apellidos"} solo puede contener letras y espacios.`);            
+            setErrorMessage(`${tipo_documento === "NIT" ? "El nombre del encargado" : "Los apellidos"} solo puede contener letras y espacios.`);
             return;
         }
 
@@ -67,7 +67,7 @@ const Register = () => {
 
         try {
             const code = codigoAuth();
-            if(true){
+            if (true) {
                 console.log(code);
             }
             setAuthCode(code);
@@ -99,9 +99,9 @@ const Register = () => {
         <div className="register-container">
             <h2>Registro de Nuevo Usuario</h2>
             <form onSubmit={handleSubmit}>
-                <div className="form-grouper">
+                <div className="form-name-grouper">
                     <div className="form-group">
-                        <label>{tipo_documento === "NIT" ? "Nombre de la Empresa" : "Nombre"} *</label>
+                        <label>{tipo_documento === "NIT" ? "Nombre de la Empresa" : "Nombre"}:<span style={{ color: '#DAA520' }}>*</span></label>
                         <input
                             type="text"
                             value={nombres}
@@ -110,7 +110,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>{tipo_documento === "NIT" ? "Persona Encargada" : "Apellidos"}</label>
+                        <label>{tipo_documento === "NIT" ? "Persona Encargada" : "Apellidos:"}</label>
                         <input
                             type="text"
                             value={apellidos}
@@ -120,7 +120,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Correo Electrónico *</label>
+                    <label>Correo Electrónico:<span style={{ color: '#DAA520' }}>*</span></label>
                     <input
                         type="email"
                         value={correo}
@@ -129,7 +129,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Teléfono *</label>
+                    <label>Teléfono:<span style={{ color: '#DAA520' }}>*</span></label>
                     <input
                         type="number"
                         value={teléfono}
@@ -138,8 +138,8 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-grouper">
-                    <div className="form-group" style={{ width: "10%" }}>
-                        <label>ID *</label>
+                    <div className="ID-form-group">
+                        <label>ID:<span style={{ color: '#DAA520' }}>*</span></label>
                         <select
                             value={tipo_documento}
                             onChange={(e) => setTipo_documento(e.target.value)}
@@ -156,7 +156,7 @@ const Register = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Número de Documento *</label>
+                        <label>Número de Documento:<span style={{ color: '#DAA520' }}>*</span></label>
                         <input
                             type="text"
                             value={documento}
@@ -167,7 +167,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Contraseña *</label>
+                    <label>Contraseña:<span style={{ color: '#DAA520' }}>*</span></label>
                     <input
                         type="password"
                         value={password}
@@ -177,7 +177,7 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Confirmar Contraseña *</label>
+                    <label>Confirmar Contraseña:<span style={{ color: '#DAA520' }}>*</span></label>
                     <input
                         type="password"
                         value={confirmPassword}
@@ -192,7 +192,7 @@ const Register = () => {
                 <button type="submit" className="register-button">
                     Registrarme
                 </button>
-            </form>
+            </form >
 
             {isPopupVisible && (
                 <div className="popup-container">
@@ -234,7 +234,7 @@ const Register = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </div >
     );
 };
 

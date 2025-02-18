@@ -24,8 +24,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 65%;
-    padding-left: 5%;
+    width: 75%;
+    padding: 1rem 1rem 1rem 1rem;
 }
 
 .title {
@@ -52,4 +52,38 @@
     padding: 0.5rem 0 2rem 0;
     text-align: left;
     white-space: pre-line;
+}
+
+@media screen and (max-width: 1200px) {
+    .About-PK-content {
+        flex-direction: column-reverse;
+        align-content: center;
+        text-align: center !important;
+
+    }
+
+    .textContent {
+        width: auto;
+        text-align: center !important;
+    }
+
+    .title {
+        text-align: center !important;
+    }
+
+    .text {
+        text-align: center !important;
+    }
+
+    .image {
+        position: static;
+        display: block;
+        width: calc(45%);
+        height: calc(100% - 6rem);
+        object-fit: cover;
+        opacity: 1;
+        mask-image: none;
+        align-items: center;
+        margin: auto;
+    }
 }
