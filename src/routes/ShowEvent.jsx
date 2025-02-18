@@ -387,16 +387,25 @@ const ShowEvent = () => {
 
             {/* Botones de Acción */}
             <div className="pdf-buttons">
-                {eventInfo.estado === "En Cotizacion" && (
+                {eventInfo?.estado && (
                     <>
-                        <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
-                        <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                        {eventInfo.estado === "En Cotizacion" ? (
+                            <>
+                                <div>
+                                <button className="btn-approve" onClick={console.log("Debe poder modificar")}>Modificar Cotización</button>
+                                </div>
+                                <div>
+                                    <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
+                                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                                </div>
+                            </>
+                        ) : (
+                            <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                        )}
                     </>
                 )}
-                {eventInfo.estado !== "En Cotizacion" && (
-                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
-                )}
             </div>
+
     
             {/* Botones de Generación de PDF */}
             <div className="pdf-buttons">
