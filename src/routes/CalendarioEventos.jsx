@@ -32,7 +32,7 @@ const Calendario = () => {
         try {
             const eventIds = await getAllEventIds();
             if (!eventIds || eventIds.length === 0) {
-                console.warn("No se encontraron eventos en la base de datos.");
+                console.warn("No se encontraron eventos en la base de datos."); 
                 return;
             }
 
@@ -40,7 +40,7 @@ const Calendario = () => {
                 eventIds.map(async (id) => {
                     const event = await getEventById(id);
                     //console.log(event)
-                    if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion")) {
+                    if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion" && event.estado !== "En Curso")) {
                         console.warn(`Evento con ID ${id} tiene un estado no válido.`);
                         console.log(event.estado)
                         return null;
@@ -57,7 +57,7 @@ const Calendario = () => {
                     return {
                         ...event,
                         title: `${user.nombres} ${user.apellidos} - ${edificioName}`,
-                        color: event.estado === "Aprobado" ? "#CC9901" : "#7C0A01",
+                        color: event.estado === "En Cotizacion" ? "#7C0A01" : "##CC9901",
                         estado:event.estado
                     };
                 })
@@ -234,7 +234,7 @@ const Calendario = () => {
             {/* Filtro de eventos */}
             <div className="filter-buttons">
                 <button onClick={() => handleFilterChange('todos')}>Eventos y cotizaciones</button>
-                <button onClick={() => handleFilterChange('Aprobado')}>Eventos</button>
+                <button onClick={() => handleFilterChange('Aprobado' && 'En Curso')}>Eventos</button>
                 <button onClick={() => handleFilterChange('En Cotizacion')}>Cotizaciones</button>
             </div>
 
