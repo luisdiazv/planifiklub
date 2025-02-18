@@ -143,7 +143,7 @@ const ChangePassword = ({ userEmail }) => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Confirmar Nueva Contraseña</label>
+                    <label>Confirme Nueva Contraseña</label>
                     <input
                         type="password"
                         value={confirmPassword}
