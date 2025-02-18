@@ -93,3 +93,96 @@ const getInfoEdificios = async (data) => {
     }
 };
 
+export const getEdificiosByNombre = async (nombre) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios")
+            .select("*")
+            .ilike("nombre", `%${nombre}%`); // Uso de ilike para búsqueda insensible a mayúsculas/minúsculas
+
+        if (error) {
+            console.error("Error obteniendo edificios por nombre:", error.message);
+            throw new Error("No se pudo obtener los edificios por nombre: " + error.message);
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener edificios por nombre: " + error.message);
+    }
+};
+
+export const getEdificiosByID = async (id) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios")
+            .select("*")
+            .ilike("idedificios", id);
+
+        if (error) {
+            console.error("Error obteniendo edificios por id:", error.message);
+            throw new Error("No se pudo obtener los edificios por id: " + error.message);
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener edificios por id: " + error.message);
+    }
+};
+
+export const updateEdificio = async (id, updatedInfo) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios")
+            .update(updatedInfo)
+            .eq("idedificios", id);
+
+        if (error) {
+            console.error("Error actualizando el edificio:", error.message);
+            throw new Error("No se pudo actualizar el edificio: " + error.message);
+        }
+
+        return data; // Regresamos los datos del edificio actualizado
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al actualizar el edificio: " + error.message);
+    }
+};
+
+export const createEdificio = async (newEdificio) => {
+    try {
+        const { data, error } = await supabase.from("edificios").insert(newEdificio);
+
+        if (error) {
+            console.error("Error creando el edificio:", error.message);
+            throw new Error("No se pudo crear el edificio: " + error.message);
+        }
+        
+        const { dataSelect, } = await getEdificiosByID(newEdificio.idedificios);
+        return dataSelect;
+
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al crear el edificio: " + error.message);
+    }
+};
+
+export const deleteEdificio = async (id) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios")
+            .delete()
+            .eq("idedificios", id);
+
+        if (error) {
+            console.error("Error eliminando el edificio:", error.message);
+            throw new Error("No se pudo eliminar el edificio: " + error.message);
+        }
+
+        return data; // Regresamos los datos del edificio eliminado
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al eliminar el edificio: " + error.message);
+    }
+};
