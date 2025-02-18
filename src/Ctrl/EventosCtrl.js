@@ -1,4 +1,31 @@
 import { supabase } from "../API/SupabaseAPI";
+import dayjs from "dayjs"; 
+import "dayjs/locale/es";
+
+export const getAllEventIdsByMonth = async (currentMonth) => {
+  try {
+    dayjs.locale("es");
+
+    // Formatea las fechas de inicio y fin del mes actual
+    const startDate = `${currentMonth}-01`; // Primer día del mes
+    const endDate = dayjs(currentMonth).endOf("month").format("YYYY-MM-DD"); // Último día del mes
+
+    const { data, error } = await supabase.from("evento").select("*")
+      .gte("fecha", startDate) // Fecha mayor o igual al inicio del mes
+      .lte("fecha", endDate);  // Fecha menor o igual al final del mes
+
+    if (error) {
+      console.error("Error obteniendo los IDs de los eventos:", error.message);
+      throw new Error("No se pudo obtener los IDs de los eventos: " + error.message);
+    }
+
+    return data; // Devuelve un array con los IDs
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los IDs de los eventos: " + error.message);
+  }
+};
+
 
 export const getEventById = async (eventId) => {
     try {
@@ -8,6 +35,7 @@ export const getEventById = async (eventId) => {
         console.error("Error obteniendo el evento:", error.message);
         throw new Error("No se pudo obtener el evento: " + error.message);
       }
+      
   
       if (!data || data.length === 0) {
         throw new Error("No se encontró el evento con el ID proporcionado.");
@@ -64,6 +92,3 @@ export const updateEventStatus = async (eventId, newStatus) => {
         throw new Error("Ocurrió un error al actualizar el estado del evento: " + error.message);
     }
 };
-
-  
-  

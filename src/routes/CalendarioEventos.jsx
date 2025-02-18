@@ -5,10 +5,16 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
 import {getEdificiosByIdEvento} from "../Ctrl/EdificiosCtrl";
-import { getAllEventIds, getEventById } from "../Ctrl/EventosCtrl";
-import { getUsuarioByID } from "../Ctrl/UsuarioCtrl";
+import { getAllEventIds, getEventById, getAllEventIdsByMonth } from "../Ctrl/EventosCtrl";
+import { getUsuarioByID, getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
+
+import htmlToPdfMake from "html-to-pdfmake";
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts;
 
 dayjs.locale("es");
 
@@ -16,21 +22,25 @@ const Calendario = () => {
     const localizer = dayjsLocalizer(dayjs);
     const [events, setEvents] = useState([]);
     const [filter, setFilter] = useState('todos');  // Filtro para los eventos
+    const [currentMonth, setCurrentMonth] = useState(dayjs().format("YYYY-MM")); 
+    const [isButtonVisible, setIsButtonVisible] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [currentView, setCurrentView] = useState("month");
     const navigate = useNavigate();
 
     const fetchEvents = async () => {
         try {
             const eventIds = await getAllEventIds();
             if (!eventIds || eventIds.length === 0) {
-                console.warn("No se encontraron eventos en la base de datos.");
+                console.warn("No se encontraron eventos en la base de datos."); 
                 return;
             }
 
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
                     const event = await getEventById(id);
-                    console.log(event)
-                    if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion")) {
+                    //console.log(event)
+                    if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion" && event.estado !== "En Curso")) {
                         console.warn(`Evento con ID ${id} tiene un estado no válido.`);
                         console.log(event.estado)
                         return null;
@@ -47,7 +57,7 @@ const Calendario = () => {
                     return {
                         ...event,
                         title: `${user.nombres} ${user.apellidos} - ${edificioName}`,
-                        color: event.estado === "Aprobado" ? "#CC9901" : "#7C0A01",
+                        color: event.estado === "En Cotizacion" ? "#7C0A01" : "##CC9901",
                         estado:event.estado
                     };
                 })
@@ -72,6 +82,82 @@ const Calendario = () => {
             console.error("Error cargando eventos:", error.message);
         }
     };
+
+    useEffect(() => {
+        fetchEvents(currentMonth);
+    }, [filter, currentMonth]);
+
+    const handleNavigate = (date) => {
+        if (currentView === "month") {
+            setCurrentMonth(dayjs(date).format("YYYY-MM"));
+            console.log(currentMonth);
+        }
+    };
+
+    const handleViewChange = (view) => {
+        setCurrentView(view);
+        setIsButtonVisible(view === "month");
+    };
+
+    const generateBill = async () => {
+        try {
+            setLoading(true);
+            const eventos = await getAllEventIdsByMonth(currentMonth);
+    
+            if (!eventos || eventos.length === 0) {
+                alert("No hay eventos para facturar este mes.");
+                setLoading(false);
+                return;
+            }
+    
+            const eventosConUsuarios = await Promise.all(
+                eventos.map(async (evento) => {
+                    const usuario = await getNombresApellidosById(evento.id_usuario);
+                    return {
+                        ...evento,
+                        usuario: usuario || "No especificada",
+                    };
+                })
+            );
+    
+            // Construcción del contenido PDF en formato tabla
+            const tableBody = [
+                ["Persona", "Fecha", "Costo Total", "Saldo Pendiente", "Estado"],
+                ...eventosConUsuarios.map(evento => [
+                    evento.usuario,
+                    evento.fecha || "No especificada",
+                    `$${evento.costo_total || "0.00"}`,
+                    `$${evento.saldo_pendiente || "0.00"}`,
+                    evento.estado || "No especificado"
+                ])
+            ];
+    
+            const documentDefinition = {
+                content: [
+                    { text: "Facturación General del Mes", style: "header", alignment: "center" },
+                    { text: "\n" },
+                    {
+                        table: {
+                            headerRows: 1,
+                            widths: ["20%", "20%", "20%", "20%", "20%"],
+                            body: tableBody,
+                        },
+                        layout: "lightHorizontalLines"
+                    }
+                ],
+                styles: {
+                    header: { fontSize: 18, bold: true, margin: [0, 10, 0, 10] },
+                }
+            };
+    
+            pdfMake.createPdf(documentDefinition).download(`Facturacion_${currentMonth}.pdf`);
+        } catch (error) {
+            console.error("Error generando la facturación en PDF:", error.message);
+            alert("Ocurrió un error al generar la facturación. Inténtalo nuevamente.");
+        } finally {
+            setLoading(false);
+        }
+    };    
 
     // Llamamos a la función de obtención de eventos al montar el componente
     useEffect(() => {
@@ -137,7 +223,7 @@ const Calendario = () => {
             {/* Filtro de eventos */}
             <div className="filter-buttons">
                 <button onClick={() => handleFilterChange('todos')}>Eventos y cotizaciones</button>
-                <button onClick={() => handleFilterChange('Aprobado')}>Eventos</button>
+                <button onClick={() => handleFilterChange('Aprobado' && 'En Curso')}>Eventos</button>
                 <button onClick={() => handleFilterChange('En Cotizacion')}>Cotizaciones</button>
             </div>
 
@@ -148,9 +234,26 @@ const Calendario = () => {
                     views={["month", "day", "agenda"]}
                     components={components}
                     messages={messages}
+                    onNavigate={handleNavigate}
+                    onView={handleViewChange}
                     onSelectEvent={handleEventClick}
                 />
             </div>
+
+            {isButtonVisible && (
+                <button
+                    onClick={generateBill}
+                    disabled={loading} // Deshabilitar el botón mientras se genera el PDF
+                    style={{
+                        cursor: loading ? "not-allowed" : "pointer",
+                        opacity: loading ? 0.6 : 1,
+                    }}
+                >
+                    {loading 
+                        ? `Generando Facturación de ${dayjs(currentMonth).format("MMMM [del] YYYY")}...` 
+                        : `Generar Facturación de ${dayjs(currentMonth).format("MMMM [del] YYYY")} en PDF`}
+                </button>
+            )}
         </div>
     );
 };

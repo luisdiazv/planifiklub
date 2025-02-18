@@ -3,16 +3,18 @@ import { getEventTypes } from "../../Ctrl/TiposEventosCtrl";
 import "./EventStyles.css";
 import SmallCallendar from "../../Components/smallCallendar";
 import HourSelector from "../../Components/hourSelector";
+import userControl from "../../Util/UserControl";
 
 const EventDetails = () => {
     const [eventTypes, setEventTypes] = useState([]);
     const [expandedIndex, setExpandedIndex] = useState(null);
-    const [invitados, setInvitados] = useState("");
+    const [invitados, setInvitados] = useState(null);
     const [error, setError] = useState("");
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedHours, setSelectedHours] = useState({ start: null, end: null });
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
         const fetchEventTypes = async () => {
@@ -43,33 +45,46 @@ const EventDetails = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (selectedDate === null || selectedHours.start === null || selectedHours.end === null) {
+            window.alert("Debes seleccionar la fecha y horas del evento.");
+            return;
+        }
+
         if (selectedIndex === null) {
             window.alert("Debes seleccionar al menos un tipo de evento.");
             return;
         }
 
+        if (invitados === null) {
+            window.alert("Debes ingresar la cantidad de asistentes que tendrá el evento.");
+            return;
+        }
+        
         const evento = {
-            id_usuario: '',
+            id_usuario: userControl.getCurrentUser().idusuario,
             id_tipo_evento: selectedEventId,
-            fecha: '',
-            hora_inicio: '',
-            hora_fin: '',
-            detalles: '',
+            fecha: new Date(selectedDate).toISOString().split('T')[0], // YYYY-MM-DD
+            hora_inicio: new Date(selectedHours.start).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+            hora_fin: new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' , // Formato HH:MM:00
+            detalles: description,
             personas: parseInt(invitados, 10),
-            estado: '',
-            costo_total: '',
-            saldo_pendiente: ''
+            estado: 'En Cotizacion',
+            costo_total: 0,
+            saldo_pendiente: 0
         };
 
         if (sessionStorage.getItem("eventoDummy") != null) {
             sessionStorage.removeItem("eventoDummy");
         }
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
-        console.log(evento);
+        // console.log(evento);
+
+        
     };
 
     return (
-        <div className="login-container">
+        <div className="event-container">
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
@@ -83,7 +98,7 @@ const EventDetails = () => {
                             eventTypes.map((eventType, index) => (
                                 <div key={index} className="event-type-item">
                                     <span>{eventType.nombre}</span>
-                                    <button onClick={() => handleInfoClick(index)}>
+                                    <button type="button" onClick={() => handleInfoClick(index)}>
                                         ↓
                                     </button>
                                     <input
@@ -113,13 +128,32 @@ const EventDetails = () => {
                             id="Invitados"
                             value={invitados}
                             onChange={(e) => setInvitados(e.target.value)}
-                            required
                             min="1"
                             step="1"
                         />
                     </div>
                 </div>
-                <button type="submit">Enviar</button>
+
+                <div className="form-grouper">
+                    <div className="form-group">
+                        <label className="textarea-label">Descripción Adicional del Evento</label>
+                        <textarea
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            onInput={(e) => {
+                                e.target.style.height = "auto";
+                                e.target.style.height = `${e.target.scrollHeight}px`;
+                            }}
+                            rows="1"
+                            className="custom-textarea"
+                        />
+                    </div>
+                </div>
+
+
+
+                <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
             </form>
         </div>
     );
