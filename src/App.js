@@ -27,6 +27,7 @@ import CalendarioEventos from './routes/CalendarioEventos.jsx';
 //Configuradores
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
 import ConfiguradorSocio from './routes/Service/MemberService.jsx';
+import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 
 //Ruta no encontrada
 import NotFound from './routes/NotFound.jsx';
@@ -61,7 +62,8 @@ function App() {
 
             {/* Configuradores */}
             <Route path="/app/RolesService" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
-            <Route path="/app/MemberService" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
+            <Route path="/app/SociosService" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
+            <Route path="/app/ProductosService" element={<ConfiguradorProductos />} /> {/*Solo Admin */}
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
