@@ -279,10 +279,18 @@ const ConfiguradorEdificios = () => {
                 style={styles.productoItem}
                 onClick={() => handleSelectEdificio(edificio)}
               >
-                <span>
-                  <strong>{edificio.nombre}</strong> - {edificio.capacidad_maxima} personas - ${edificio.costo_hora} por hora
+                <div>
+                  <div>
+                    <strong>{edificio.nombre}</strong>
+                  </div>
+                  <div>
+                    <span>Capacidad: {edificio.capacidad_maxima} personas</span>
+                  </div>
+                  <div>
+                    <span>Precio: ${edificio.costo_hora} por hora</span>
+                  </div>
                   <button style={styles.button}>Seleccionar</button>
-                </span>
+                </div>
               </div>
             ))}
           </div>
