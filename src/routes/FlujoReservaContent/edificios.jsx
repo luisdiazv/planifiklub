@@ -114,7 +114,7 @@ const EdificiosList = () => {
   return (
     <div className="edificios-container">
       {edificios.map((edificio) => {
-        const montajesFiltrados = montajes.filter((m) => m.id_edifcio === edificio.idedificios);
+        const montajesFiltrados = montajes.filter((m) => m.id_edificio === edificio.idedificios);
         return (
           <div key={edificio.idedificios} className="edificio-card">
             <div className="edificio-foto">

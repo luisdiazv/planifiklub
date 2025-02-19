@@ -8,14 +8,10 @@ import { getPagosbyEventID } from "../Ctrl/PagosCtrl";
 import "./ShowEventStyles.css";
 
 import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
-//import pdfMake from "../Util/FontsForPDFS";
-import htmlToPdfMake from "html-to-pdfmake";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts;
-
-//pdfMake.vfs = { ...pdfFonts, ...customFonts };
 
 const ShowEvent = () => {
     const { id } = useParams();
@@ -387,16 +383,27 @@ const ShowEvent = () => {
 
             {/* Botones de Acción */}
             <div className="pdf-buttons">
-                {eventInfo.estado === "En Cotizacion" && (
+                {eventInfo?.estado && (
                     <>
-                        <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
-                        <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                        {eventInfo.estado === "En Cotizacion" ? (
+                            <>
+                                <div>
+                                <button className="btn-approve" onClick={console.log("Debe poder modificar")}>Modificar Cotización</button>
+                                </div>
+                                <div>
+                                    <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
+                                </div>
+                                <div>
+                                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+                                </div>
+                            </>
+                        ) : (
+                            <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
+                        )}
                     </>
                 )}
-                {eventInfo.estado !== "En Cotizacion" && (
-                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
-                )}
             </div>
+
     
             {/* Botones de Generación de PDF */}
             <div className="pdf-buttons">
