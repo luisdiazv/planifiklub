@@ -42,7 +42,7 @@ export const getMontajeById = async (montajeId) => {
     }
 };
 
-export const getMontajes = async () => {
+export const getAllMontajes = async () => {
     try {
         const { data, error } = await supabase.from("montajes").select("*");
         if (error) throw new Error(error.message);
