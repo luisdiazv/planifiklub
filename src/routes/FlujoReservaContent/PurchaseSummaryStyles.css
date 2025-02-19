@@ -1,5 +1,5 @@
 /* Estilos generales */
-.showevent-container {
+.purchase-summary-container {
     width: 60%;
     margin: 0 auto;
     padding: 20px;
@@ -8,16 +8,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.event-title {
+.summary-title {
     text-align: center;
     color: #333;
-    margin-bottom: 20px;
-    
-}
-
-.error-message {
-    color: #dc3545;
-    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -33,7 +26,6 @@
     color: #333;
     margin-bottom: 15px;
     font-size: 1.9rem;
-    
 }
 
 .detail-item {
@@ -43,7 +35,7 @@
 }
 
 .detail-label {
-    //font-weight: bold;
+    font-weight: bold;
     color: #555;
 }
 
@@ -68,52 +60,3 @@
     text-align: center;
     color: #777;
 }
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-approve, .btn-cancel, .btn-pdf {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-approve {
-    background: #CC9901;
-    color: #fff;
-}
-
-.btn-cancel {
-    background: #7C0A01;
-    color: #fff;
-}
-
-
-.btn-pdf {
-    background: #CC9901;
-    color: #fff;
-}
-
-.btn-pdf:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-.loading-message {
-    text-align: center;
-    color: #555;
-}
-
-.pdf-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: center;
-}
-

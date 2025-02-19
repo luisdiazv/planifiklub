@@ -284,7 +284,7 @@ const ShowEvent = () => {
                 <div className="event-details">
                     {/* Sección de Detalles del Evento */}
                     <div className="event-section">
-                        <h3 className="section-title">Detalles del Evento</h3>
+                        <h2 className="section-title">Detalles del Evento</h2>
                         <div className="detail-item">
                             <span className="detail-label">Nombre del Usuario:</span>
                             <span className="detail-value">{userName}</span>
@@ -329,7 +329,7 @@ const ShowEvent = () => {
     
                     {/* Sección de Edificios */}
                     <div className="event-section">
-                        <h3 className="section-title">Lista de Edificios</h3>
+                        <h2 className="section-title">Lista de Edificios</h2>
                         {edificios && edificios.length > 0 ? (
                             <ul className="list-container">
                                 {edificios.map((edificio) => (
@@ -356,7 +356,7 @@ const ShowEvent = () => {
     
                     {/* Sección de Pedidos */}
                     <div className="event-section">
-                        <h3 className="section-title">Lista de Pedidos</h3>
+                        <h2 className="section-title">Lista de Pedidos</h2>
                         {pedidos && pedidos.length > 0 ? (
                             <ul className="list-container">
                                 {pedidos.map((pedido) => (
