@@ -32,7 +32,8 @@ import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
 
 //Ruta no encontrada
-import NotFound from './routes/NotFound.jsx';
+import NotFound from './routes/NotFound.jsx'; //404
+//TODO SERGIO: No Autorizado <-- 502
 
 function App() {
   return (
