@@ -1,13 +1,119 @@
-.generate-event-button button {
-    background-color: #7C0A01;
-    color: white;
+/* Estilos generales */
+.showevent-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.event-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+    
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    //font-weight: bold;
+    color: #555;
+}
+
+.detail-value {
+    color: #333;
+}
+
+.list-container {
+    list-style: none;
+    padding: 0;
+}
+
+.list-item {
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-message {
+    text-align: center;
+    color: #777;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-approve, .btn-cancel, .btn-pdf {
+    padding: 10px 20px;
     border: none;
-    padding: 10px;
-    margin: 0 10px;
+    border-radius: 4px;
     cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
-.generate-event-button{
-    padding:10px
+
+.btn-approve {
+    background: #CC9901;
+    color: #fff;
 }
+
+.btn-cancel {
+    background: #7C0A01;
+    color: #fff;
+}
+
+
+.btn-pdf {
+    background: #CC9901;
+    color: #fff;
+}
+
+.btn-pdf:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.loading-message {
+    text-align: center;
+    color: #555;
+}
+
+.pdf-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
