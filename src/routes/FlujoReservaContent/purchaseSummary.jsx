@@ -34,7 +34,6 @@ const PurchaseSummary = () => {
       );
 
       useEffect(() => {
-        console.log("Limpiando sessionStorage...");
         sessionStorage.removeItem("eventoDummy");
         sessionStorage.removeItem("edificiosDummy");
         sessionStorage.removeItem("pedidoDummy");
@@ -60,7 +59,6 @@ const PurchaseSummary = () => {
       useEffect(() => {
         // Obtener los edificios guardados en sessionStorage
         const edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
-        console.log("Edificios Dummy:", edificiosDummy);
     
         // Calcular la suma de los subtotales de los edificios
         const subtotalEdificios = edificiosDummy.reduce((sum, edificio) => sum + (edificio.subtotal_alquiler || 0), 0);
@@ -70,11 +68,9 @@ const PurchaseSummary = () => {
         
         // Asegurar que `costo_total` sea un número válido
         const subtotalProductos = pedidoDummy.costo_total ? Number(pedidoDummy.costo_total) : 0;
-        console.log("Suma productos:", subtotalProductos);
     
         // Calcular el costo total
         const total = subtotalEdificios + subtotalProductos;
-        console.log("Costo Total Calculado:", total);
     
         setTotalCost(total);
     
@@ -163,7 +159,6 @@ const PurchaseSummary = () => {
             
             await Promise.all(
                 edificiosDummy.map(async (edificio) => {
-                    console.log("Insertando edificio:", edificio);
                     if (!edificio.id_edificio) {
                         console.error("Error: id_edificio es null o undefined en", edificio);
                     }
@@ -173,9 +168,7 @@ const PurchaseSummary = () => {
             
             // Insertar el pedido en la base de datos
             if (pedidoDummy) {
-                console.log("Insertando pedido:", pedidoDummy);
                 const pedidoId = await createPedido(pedidoDummy);
-                console.log("ID del pedido creado:", pedidoId);
             
                 // Actualizar el pedidoDummy con el nuevo ID y guardarlo en sessionStorage
                 pedidoDummy.id_pedido = pedidoId;
@@ -185,20 +178,17 @@ const PurchaseSummary = () => {
             
                 // Recuperar datos del sessionStorage
                 const productoPedidoDummy = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || {};
-                console.log("ProductoPedidoDummy Recuperado:", productoPedidoDummy);
 
                 if (!productoPedidoDummy || !pedidoId) {
                     console.error("Error: productoPedidoDummy o pedidoId no están definidos.");
                 } else {
-                    console.log("ID del pedido:", pedidoId);
 
                     await Promise.all(
                         Object.keys(productoPedidoDummy.cantidad || {}).map(async (productId) => {
                             const cantidad = productoPedidoDummy.cantidad?.[productId] ?? null;
                             const subtotal = productoPedidoDummy.subtotal?.[productId] ?? null;
 
-                            console.log(`🔹 Verificando producto ID: ${productId} | Cantidad: ${cantidad} | Subtotal: ${subtotal}`);
-
+                           
                             if (cantidad === null || cantidad <= 0) {
                                 console.error(`Error: cantidad inválida para el producto ${productId}:`, cantidad);
                                 return; // Evitar inserciones con cantidad inválida
@@ -224,7 +214,6 @@ const PurchaseSummary = () => {
                             subtotalLimpio
                         };
 
-                        console.log("Insertando en producto_pedido:", productoPedidoLimpio);
                         await createProductoPedido(productoPedidoLimpio);
                         })
                     );
