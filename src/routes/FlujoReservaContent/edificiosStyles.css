@@ -4,6 +4,10 @@
     align-items: center;
     margin: auto;
     gap: 2rem;
+
+    form {
+        width: 100%;
+    }
 }
 
 

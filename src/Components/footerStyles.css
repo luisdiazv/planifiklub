@@ -171,10 +171,6 @@
         align-items: center;
     }
 
-    .top img {
-        width: 70px;
-    }
-
     .bottom h1 {
         text-align: center;
     }
@@ -184,9 +180,5 @@
 
     .footer-columns {
         gap: 10px;
-    }
-
-    .top img {
-        width: 60px;
     }
 }
