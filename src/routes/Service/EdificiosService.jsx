@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import Resizer from 'react-image-file-resizer';
-import { 
-  getEdificiosByNombre,
-  updateEdificio, 
-  createEdificio, 
-  deleteEdificio 
-} from '../../Ctrl/EdificiosCtrl';
-import { getFotoEdificio, uploadFotoEdificio } from '../../API/StorageAPI'; // Ajusta la ruta según tu proyecto
+import { getEdificiosByNombre, updateEdificio, createEdificio, deleteEdificio } from '../../Ctrl/EdificiosCtrl';
+import { getFotoEdificio, uploadFotoEdificio } from '../../API/StorageAPI';
+import { getMontajesByEdificio, saveMontajesEdificio } from '../../Ctrl/MontajesEdificioCtrl';
+import { getAllMontajes } from '../../Ctrl/MontajesCtrl';
 
 const ConfiguradorEdificios = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,10 +11,48 @@ const ConfiguradorEdificios = () => {
   const [edificios, setEdificios] = useState([]);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  // Estado para almacenar la imagen redimensionada (blob) que se subirá
+  // Estado para la imagen redimensionada (blob) que se subirá
   const [newFoto, setNewFoto] = useState(null);
-  // Estado para almacenar la URL de _preview_ de la imagen (no se guarda en la BD)
+  // Estado para la URL de vista previa de la imagen
   const [previewFoto, setPreviewFoto] = useState(null);
+
+  // Estados para los montajes
+  const [availableMontajes, setAvailableMontajes] = useState([]);
+  const [selectedMontajes, setSelectedMontajes] = useState([]);
+
+  // Cargar los montajes disponibles desde la base de datos (tabla "montajes")
+  useEffect(() => {
+    const fetchMontajesDisponibles = async () => {
+      try {
+        const montajes = await getAllMontajes();
+        setAvailableMontajes(montajes);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchMontajesDisponibles();
+  }, []);
+
+  // Cuando se selecciona un edificio para editar, se obtienen los montajes asignados
+  const handleSelectEdificio = async (edificio) => {
+    setEdificioInfo(edificio);
+    setEdificios([]); // Oculta la lista de edificios
+    try {
+      const url = await getFotoEdificio(edificio.idedificios);
+      setPreviewFoto(url);
+    } catch (error) {
+      console.error('Error al obtener la foto del edificio:', error.message);
+      setPreviewFoto(null);
+    }
+    // Obtener los montajes asignados al edificio
+    try {
+      const montajesAsignados = await getMontajesByEdificio(edificio.idedificios);
+      setSelectedMontajes(montajesAsignados);
+    } catch (error) {
+      console.error('Error al obtener montajes asignados:', error.message);
+      setSelectedMontajes([]);
+    }
+  };
 
   const handleSearchByNombre = async () => {
     setError('');
@@ -37,21 +72,8 @@ const ConfiguradorEdificios = () => {
     }
   };
 
-  const handleSelectEdificio = async (edificio) => {
-    setEdificioInfo(edificio);
-    setEdificios([]); // Oculta la lista de edificios
-    // Opcional: obtener la foto existente desde storage para mostrarla en el preview
-    try {
-      const url = await getFotoEdificio(edificio.idedificios);
-      setPreviewFoto(url);
-    } catch (error) {
-      console.error('Error al obtener la foto del edificio:', error.message);
-      setPreviewFoto(null);
-    }
-  };
-
   const handleCreateNew = () => {
-    // Se abre el formulario con valores iniciales vacíos (sin campo foto)
+    // Abrir el formulario con valores iniciales y sin montajes asignados
     setEdificioInfo({
       nombre: '',
       capacidad_maxima: 0,
@@ -62,15 +84,15 @@ const ConfiguradorEdificios = () => {
     setError('');
     setSuccessMsg('');
     setPreviewFoto(null);
+    setSelectedMontajes([]);
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, _, checked } = e.target; // eslint-disable-line no-unused-vars
     if (name === 'disponibilidad') {
       setEdificioInfo(prev => ({ ...prev, [name]: checked }));
       return;
     }
-
     if (name === 'costo_hora') {
       const regex = /^\d+(\.\d{0,2})?$/;
       if (!regex.test(value) && value !== '') return;
@@ -79,15 +101,13 @@ const ConfiguradorEdificios = () => {
       setEdificioInfo(prev => ({ ...prev, [name]: parsedValue }));
       return;
     }
-
     setEdificioInfo(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    // Se redimensiona la imagen para que su lado más largo sea de 300px
+    // Redimensionar la imagen para que el lado mayor tenga 300px
     Resizer.imageFileResizer(
       file,
       300,
@@ -96,46 +116,62 @@ const ConfiguradorEdificios = () => {
       100,
       0,
       (resizedBlob) => {
-        // Se crea una URL de vista previa a partir del blob redimensionado
         const previewUrl = URL.createObjectURL(resizedBlob);
         setPreviewFoto(previewUrl);
-        // Se guarda el blob para su posterior subida a Supabase
         setNewFoto(resizedBlob);
       },
       'blob'
     );
   };
 
+  // Maneja la selección o deselección de montajes
+  const handleMontajeChange = (e, id) => {
+    if (e.target.checked) {
+      setSelectedMontajes([...selectedMontajes, id]);
+    } else {
+      setSelectedMontajes(selectedMontajes.filter(item => item !== id));
+    }
+  };
+
   const handleSave = async () => {
     if (!edificioInfo) return;
     try {
       let updatedInfo = { ...edificioInfo };
-
+      let idEdificioGuardado = null;
       if (edificioInfo.idedificios) {
-        // Edificio existente: actualizar
+        // Actualizar edificio existente
         await updateEdificio(edificioInfo.idedificios, updatedInfo);
-        // Si se seleccionó una nueva foto, se sube de forma separada
+        idEdificioGuardado = edificioInfo.idedificios;
         if (newFoto) {
           await uploadFotoEdificio(edificioInfo.idedificios, newFoto);
-          // Opcional: se puede obtener la nueva URL para mostrarla en el preview
           const newUrl = await getFotoEdificio(edificioInfo.idedificios);
           setPreviewFoto(newUrl);
         }
         setSuccessMsg('Edificio actualizado exitosamente.');
       } else {
-        // Nuevo edificio: crear
+        // Crear nuevo edificio
         const createdEdificio = await createEdificio(updatedInfo);
-        // Si se seleccionó una foto, se sube
+        idEdificioGuardado = createdEdificio.idedificios;
         if (newFoto) {
-          await uploadFotoEdificio(updatedInfo.idedificios, newFoto);
-          // Opcional: obtener la URL para mostrarla en el preview
-          const newUrl = await getFotoEdificio(updatedInfo.idedificios);
+          await uploadFotoEdificio(createdEdificio.idedificios, newFoto);
+          const newUrl = await getFotoEdificio(createdEdificio.idedificios);
           setPreviewFoto(newUrl);
         }
         setSuccessMsg('Edificio creado exitosamente.');
       }
+
+      // Guardar la relación de montajes para el edificio
+      if (idEdificioGuardado !== null) {
+        await saveMontajesEdificio(
+          idEdificioGuardado,
+          selectedMontajes.map(id => ({ id_montajes: id }))
+        );        
+      }
+
+      // Reiniciar estados
       setNewFoto(null);
       setEdificioInfo(null);
+      setSelectedMontajes([]);
     } catch (error) {
       console.error('Error al guardar el edificio:', error.message);
       setError('Ocurrió un error al guardar el edificio.');
@@ -256,6 +292,23 @@ const ConfiguradorEdificios = () => {
             />
           )}
 
+          <p style={styles.label}>Montajes:</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {availableMontajes.map((montaje) => (
+              <div key={montaje.idmontajes} style={{ width: '50%' }}>
+                <span>
+                  <input
+                    type="checkbox"
+                    value={montaje.idmontajes}
+                    checked={selectedMontajes.includes(montaje.idmontajes)}
+                    onChange={(e) => handleMontajeChange(e, montaje.idmontajes)}
+                  />
+                  {montaje.nombre_montaje}
+                </span>
+              </div>
+            ))}
+          </div>
+
           <div style={styles.buttonContainer}>
             <button onClick={handleSave} style={styles.saveButton}>
               Guardar
@@ -280,9 +333,7 @@ const ConfiguradorEdificios = () => {
                 onClick={() => handleSelectEdificio(edificio)}
               >
                 <div>
-                  <div>
-                    <strong>{edificio.nombre}</strong>
-                  </div>
+                  <strong>{edificio.nombre}</strong>
                   <div>
                     <span>Capacidad: {edificio.capacidad_maxima} personas</span>
                   </div>
@@ -301,107 +352,107 @@ const ConfiguradorEdificios = () => {
 };
 
 const styles = {
-    container: {
-      padding: '10px',
-      maxWidth: '500px',
-      margin: '0 auto',
-      backgroundColor: '#f9f9f9',
-      borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    },
-    header: {
-      fontSize: '22px',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: '10px',
-    },
-    inputContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      marginBottom: '10px',
-    },
-    label: {
-      margin: '0 0 5px 0',
-      fontWeight: 'bold',
-    },
-    input: {
-      width: '100%',
-      marginBottom: '5px',
-      padding: '8px',
-      borderRadius: '4px',
-      border: '1px solid #ccc',
-    },
-    textarea: {
-      width: '100%',
-      height: '120px',
-      padding: '8px',
-      borderRadius: '4px',
-      border: '1px solid #ccc',
-      marginBottom: '5px',
-      resize: 'none',
-    },
-    button: {
-      padding: '8px 16px',
-      backgroundColor: '#800000',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-    },
-    saveButton: {
-      padding: '8px 16px',
-      backgroundColor: '#4CAF50',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-    },
-    exitButton: {
-      padding: '8px 16px',
-      backgroundColor: '#808080',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginLeft: '8px',
-    },
-    deleteButton: {
-      padding: '8px 16px',
-      backgroundColor: '#d9534f',
-      color: '#fff',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginLeft: '8px',
-    },
-    error: {
-      color: 'red',
-      textAlign: 'center',
-      marginBottom: '10px',
-    },
-    success: {
-      color: 'green',
-      textAlign: 'center',
-      marginBottom: '10px',
-    },
-    productoInfo: {
-      backgroundColor: '#fff',
-      padding: '10px',
-      borderRadius: '6px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    },
-    productoItem: {
-      padding: '5px',
-      borderBottom: '1px solid #ccc',
-      marginBottom: '5px',
-      cursor: 'pointer',
-    },
-    buttonContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      marginTop: '10px',
-    },
-  };
-  
+  container: {
+    padding: '10px',
+    maxWidth: '500px',
+    margin: '0 auto',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
+  header: {
+    fontSize: '22px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+  inputContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: '10px',
+  },
+  label: {
+    margin: '0 0 5px 0',
+    fontWeight: 'bold',
+  },
+  input: {
+    width: '100%',
+    marginBottom: '5px',
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+  },
+  textarea: {
+    width: '100%',
+    height: '120px',
+    padding: '8px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    marginBottom: '5px',
+    resize: 'none',
+  },
+  button: {
+    padding: '8px 16px',
+    backgroundColor: '#800000',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  saveButton: {
+    padding: '8px 16px',
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
+  exitButton: {
+    padding: '8px 16px',
+    backgroundColor: '#808080',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginLeft: '8px',
+  },
+  deleteButton: {
+    padding: '8px 16px',
+    backgroundColor: '#d9534f',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    marginLeft: '8px',
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+  success: {
+    color: 'green',
+    textAlign: 'center',
+    marginBottom: '10px',
+  },
+  productoInfo: {
+    backgroundColor: '#fff',
+    padding: '10px',
+    borderRadius: '6px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  },
+  productoItem: {
+    padding: '5px',
+    borderBottom: '1px solid #ccc',
+    marginBottom: '5px',
+    cursor: 'pointer',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '10px',
+  },
+};
+
 export default ConfiguradorEdificios;
