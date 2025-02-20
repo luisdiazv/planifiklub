@@ -95,3 +95,61 @@ const getNombresProductos = async (productIds) => {
     throw new Error("Ocurrió un error al obtener los nombres de los productos: " + error.message);
   }
 };
+
+export const createPedido = async (pedidoDummy) => {
+  try {
+      const { id_evento, costo_total, fecha_pedido,pedidos_adicionales } = pedidoDummy;
+
+      const { data, error } = await supabase
+          .from("pedido")
+          .insert([
+              {
+                  id_evento,
+                  costo_total,
+                  fecha_pedido,
+                  pedidos_adicionales
+              }
+          ])
+          .select("idpedido"); 
+
+      if (error) {
+          console.error("Error creando el pedido:", error.message);
+          throw new Error("No se pudo crear el pedido: " + error.message);
+      }
+
+      const idPedidoCreado = data?.[0]?.idpedido; // Obtiene la ID del evento insertado
+
+      console.log("Pedido creado correctamente. ID:", idPedidoCreado);
+      return idPedidoCreado; // Retorna solo la ID
+
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al crear el pedido: " + error.message);
+  }
+};
+
+export const createProductoPedido = async (dummyProducto) => {
+  try {
+      const nuevoProductoPedido = {
+          id_pedido: dummyProducto.id_pedido, 
+          id_producto: dummyProducto.id_producto,
+          cantidad: dummyProducto.cantidad, 
+          subtotal: dummyProducto.subtotal,
+      };
+
+      const { data, error } = await supabase
+          .from("producto_pedido")
+          .insert(nuevoProductoPedido)
+          .select("idproducto_pedido");
+
+      if (error) {
+          console.error("Error creando la entrada en producto_pedido:", error.message);
+          throw new Error("No se pudo crear la entrada en producto_pedido: " + error.message);
+      }
+
+      return data; // Devuelve la nueva entrada creada
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al crear la entrada en producto_pedido: " + error.message);
+  }
+};

@@ -159,7 +159,7 @@ const Reservation = () => {
                             <>{section.content}</>
 
                             {/* Mostrar el bloque extra solo si es el último elemento */}
-                            {index === sections.length - 1 && (
+                            {index === sections.length - 2 && (
                                 <div className="card-product-container">
                                     <div className="card-product">
                                         <div className="card">
