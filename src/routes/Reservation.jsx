@@ -11,7 +11,7 @@ const Reservation = () => {
 
     // Referencia al contenedor de las secciones para el deslizamiento
     const sliderRef = useRef(null);
-
+    /*
     // Lista de servicios con nombre y precio
     const services = [
         { name: "Servicio 1", price: 50000 },
@@ -69,6 +69,7 @@ const Reservation = () => {
         const service = services.find(s => s.name === serviceName);
         return sum + (service.price * quantity);
     }, 0);
+    */
 
     // Función para manejar la selección de las secciones de la línea del tiempo
     const handleSectionClick = (index) => {
@@ -159,38 +160,38 @@ const Reservation = () => {
                             <>{section.content}</>
 
                             {/* Mostrar el bloque extra solo si es el último elemento */}
-                            {index === sections.length - 2 && (
-                                <div className="card-product-container">
-                                    <div className="card-product">
-                                        <div className="card">
-                                            <h3>Servicios disponibles</h3>
-                                            <ul>
-                                                {services.map((service, index) => (
-                                                    <li key={index}>
-                                                        <label>
-                                                            {service.name} - {service.price} $
-                                                            <input
-                                                                type="number"
-                                                                min="0"
-                                                                value={serviceQuantities[service.name] || 0}
-                                                                onChange={(e) => handleQuantityChange(service.name, parseInt(e.target.value))}
-                                                            />
-                                                        </label>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            <h4>Total a pagar: {totalPrice} $</h4>
-                                            <button onClick={handleBuy} disabled={totalPrice === 0}>Pagar</button>
-                                            {preferenceId && (
-                                                <Wallet
-                                                    initialization={{ preferenceId, redirectMode: "modal" }}
-                                                    customization={{ texts: { valueProp: 'smart_option' } }}
-                                                />
-                                            )}
-                                        </div>
+                            {/*
+                            <div className="card-product-container">
+                                <div className="card-product">
+                                    <div className="card">
+                                        <h3>Servicios disponibles</h3>
+                                        <ul>
+                                            {services.map((service, index) => (
+                                                <li key={index}>
+                                                    <label>
+                                                        {service.name} - {service.price} $
+                                                        <input
+                                                            type="number"
+                                                            min="0"
+                                                            value={serviceQuantities[service.name] || 0}
+                                                            onChange={(e) => handleQuantityChange(service.name, parseInt(e.target.value))}
+                                                        />
+                                                    </label>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <h4>Total a pagar: {totalPrice} $</h4>
+                                        <button onClick={handleBuy} disabled={totalPrice === 0}>Pagar</button>
+                                        {preferenceId && (
+                                            <Wallet
+                                                initialization={{ preferenceId, redirectMode: "modal" }}
+                                                customization={{ texts: { valueProp: 'smart_option' } }}
+                                            />
+                                        )}
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                            */}
                         </div>
                     ))}
                 </div>
