@@ -186,3 +186,30 @@ export const deleteEdificio = async (id) => {
         throw new Error("Ocurrió un error al eliminar el edificio: " + error.message);
     }
 };
+
+export const createEdificioEvento = async (dummyEdificio) => {
+    try {
+        const nuevoEdificioEvento = {
+            id_evento: dummyEdificio.id_evento, 
+            id_edificio: dummyEdificio.id_edificio,
+            id_montaje_elegido: dummyEdificio.id_montaje_elegido, 
+            subtotal_alquiler: dummyEdificio.subtotal_alquiler,
+        };
+
+        const { data, error } = await supabase
+            .from("edificios_evento")
+            .insert(nuevoEdificioEvento)
+            .select();
+
+        if (error) {
+            console.error("Error creando la entrada en edificios_evento:", error.message);
+            throw new Error("No se pudo crear la entrada en edificios_evento: " + error.message);
+        }
+
+        return data; // Devuelve la nueva entrada creada
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al crear la entrada en edificios_evento: " + error.message);
+    }
+};
+
