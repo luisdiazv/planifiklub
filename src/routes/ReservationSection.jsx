@@ -2,6 +2,7 @@ import EventDetails from './FlujoReservaContent/Event.jsx';
 import OurServices from './FlujoReservaContent/OurServices.jsx';
 import PlaceSelector from './FlujoReservaContent/PlaceSelector.jsx';
 import EdificiosList from './FlujoReservaContent/edificios.jsx';
+import PurchaseSummary from './FlujoReservaContent/purchaseSummary.jsx'
 
 export const sections = [
     {
@@ -21,7 +22,8 @@ export const sections = [
         content: <OurServices />
     },
     {
-        title: "Resumen Final"
-    },
+        title: "Resumen Final",
+        content: <PurchaseSummary/>
+    }
 
 ];
