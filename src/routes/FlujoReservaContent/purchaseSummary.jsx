@@ -106,7 +106,34 @@ const PurchaseSummary = () => {
         return <p className="no-data-message">No hay información del evento disponible.</p>;
     }
 
-    
+    const enviarCorreoSocio = async (correo, nombres) => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_conf`;
+            const response = await axios.post(
+                API_URL,
+                { correo, nombres },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
+
+    const enviarCorreoAdmin = async () => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_admin`;
+            const correos = getAllAdmins();
+            const response = await axios.post(
+                API_URL,
+                { correos },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
 
     const handleConfirmarCotizacion = async () => {
         setLoading(true);
@@ -219,9 +246,15 @@ const PurchaseSummary = () => {
 
 
             }
-            
-                
+            const nombre = sessionStorage.getItem("currentUser").nombres;
+            const apellido = sessionStorage.getItem("currentUser").apellidos;
+            const correo = sessionStorage.getItem("currentUser").correo;
+            console.log(nombre)
+
             alert("Cotización confirmada.");
+            enviarCorreoSocio(correo, `${nombre} ${apellido}`);
+            enviarCorreoAdmin();
+
             sessionStorage.removeItem("eventoDummy");
             sessionStorage.removeItem("edificiosDummy");
             sessionStorage.removeItem("pedidoDummy");
