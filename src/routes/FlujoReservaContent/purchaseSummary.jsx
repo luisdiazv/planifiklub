@@ -62,11 +62,9 @@ const PurchaseSummary = () => {
     
         // Calcular la suma de los subtotales de los edificios
         const subtotalEdificios = edificiosDummy.reduce((sum, edificio) => sum + (edificio.subtotal_alquiler || 0), 0);
-    
-        // Obtener los productos guardados en sessionStorage
+
         const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
-        
-        // Asegurar que `costo_total` sea un número válido
+            
         const subtotalProductos = pedidoDummy.costo_total ? Number(pedidoDummy.costo_total) : 0;
     
         // Calcular el costo total
