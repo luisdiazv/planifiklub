@@ -4,6 +4,7 @@ import { getAllMontajeEdificio } from "../../Ctrl/MontajesEdificioCtrl";
 import { getNombreMontajeByIdMontaje } from "../../Ctrl/MontajesCtrl";
 import {getFotoEdificio} from "../../API/StorageAPI";
 import "./edificiosStyles.css";
+import { formatCurrency } from "../../Util/MoneyFormat";
 
 const EdificiosList = () => {
   const [edificios, setEdificios] = useState([]);
@@ -14,8 +15,6 @@ const EdificiosList = () => {
   const [error, setError] = useState(null);
   const [expanded, setExpanded] = useState({});
   const [selectedEdificios, setSelectedEdificios] = useState(new Set());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedHours, setSelectedHours] = useState({ start: null, end: null });
   const [edificioFotos, setEdificioFotos] = useState({});
 
   useEffect(() => {
@@ -133,7 +132,7 @@ const EdificiosList = () => {
                     <p><strong>Descripción:</strong> {edificio.descripcion}</p>
                     <p><strong>Capacidad:</strong> {edificio.capacidad_maxima} personas</p>
                     <p><strong>Disponibilidad:</strong> {edificio.disponibilidad ? "Disponible" : "No disponible"}</p>
-                    <p><strong>Costo por Hora:</strong> ${edificio.costo_hora}</p>
+                    <p><strong>Costo por Hora:</strong> {formatCurrency(edificio.costo_hora)}</p>
                   </div>
                 )}
                 <div className="button-container">
@@ -173,8 +172,8 @@ const EdificiosList = () => {
             </div>
           );
         })}
-          <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
-        </form>
+        <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
+      </form>
     </div>
   );
 };

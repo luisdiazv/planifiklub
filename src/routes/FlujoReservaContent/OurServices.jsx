@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAllProducto } from "../../Ctrl/ProductoCtrl";
 import { getFotoProducto, uploadFotoProducto } from "../../API/StorageAPI";
 import './OurServicesStyles.css';
+import { formatCurrency } from "../../Util/MoneyFormat";
 
 const OurProducts = () => {
     const [products, setProducts] = useState([]);
@@ -202,7 +203,7 @@ const OurProducts = () => {
                                             checked={selectedProducts[product.idproducto] || false}
                                             onChange={(e) => handleCheckboxChange(product.idproducto, e.target.checked)}
                                         />
-                                        {product.nombre} - {product.precio} $
+                                        {product.nombre} - {formatCurrency(product.precio)} $
                                     </label>
                                     {selectedProducts[product.idproducto] && (
                                         <input
@@ -246,7 +247,7 @@ const OurProducts = () => {
                     >
                         + Agregar Servicio
                     </button>
-                    <h4 hidden>Precio total de productos y servicios: {totalPrice} $</h4>
+                    <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
                 </div>
                 
                 <button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", fontSize: "16px" }} >

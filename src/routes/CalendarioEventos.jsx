@@ -9,8 +9,8 @@ import { getAllEventIds, getEventById, getAllEventIdsByMonth } from "../Ctrl/Eve
 import { getUsuarioByID, getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
+import { formatCurrency } from "../Util/MoneyFormat";
 
-import htmlToPdfMake from "html-to-pdfmake";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
@@ -126,8 +126,8 @@ const Calendario = () => {
                 ...eventosConUsuarios.map(evento => [
                     evento.usuario,
                     evento.fecha || "No especificada",
-                    `$${evento.costo_total || "0.00"}`,
-                    `$${evento.saldo_pendiente || "0.00"}`,
+                    `${formatCurrency(evento.costo_total) || "0.00"}`,
+                    `${formatCurrency(evento.saldo_pendiente) || "0.00"}`,
                     evento.estado || "No especificado"
                 ])
             ];
