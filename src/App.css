@@ -16,7 +16,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 150px;
+  padding-top: 70px;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -92,6 +92,7 @@
 input {
   font-size: calc(10px + 2vmin);
   font-family: 'DMSerifText-Regular';
+  color: var(--secondary-text-color) !important;
 }
 
 input[type="number"] {
