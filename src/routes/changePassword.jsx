@@ -4,7 +4,7 @@ import hash from "../Util/Hash";
 import { actualizarPassword, getUsuarioByEmail, getNombresApellidosByEmail } from "../Ctrl/UsuarioCtrl";
 import { codigoAuth } from "../Util/EmailService";
 import userControl from "../Util/UserControl";
-import enviarCodigoAuth from "../API/NodeMailer";
+import { enviarCodigoAuth } from "../API/NodeMailer";
 import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {

@@ -30,6 +30,7 @@ import ConfiguradorSocio from './routes/Service/MemberService.jsx';
 import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
+import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
 //Ruta no encontrada
 import NotFound from './routes/NotFound.jsx'; //404
@@ -69,6 +70,7 @@ function App() {
             <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/*Solo Admin */}
             <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/*Solo Admin */}
             <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/*Solo Admin */}
+            <Route path="/app/tiposeventoConfig" element={<ConfiguradorTipoEventos />} /> {/*Solo Admin */}
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
