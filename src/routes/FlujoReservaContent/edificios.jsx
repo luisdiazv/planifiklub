@@ -68,7 +68,7 @@ const EdificiosList = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
 
     if (selectedEdificios.size === 0) {
       window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
@@ -87,17 +87,18 @@ const EdificiosList = () => {
 
       if (!idMontaje) {
         window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
-        return;
+        return undefined;
       }
 
       const subtotal = edificio.costo_hora * time;
-
-      return {
-        id_edificio: idEdificio,
-        id_evento: null,
-        id_montaje_elegido: idMontaje,
-        subtotal_alquiler: subtotal,
-      };
+      if (!(selectedEdificios.size === 0 || !idMontaje)){
+        return {
+          id_edificio: idEdificio,
+          id_evento: null,
+          id_montaje_elegido: idMontaje,
+          subtotal_alquiler: subtotal,
+        };
+      }
     });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
