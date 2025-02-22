@@ -68,7 +68,7 @@ const EdificiosList = () => {
   };
 
   const handleSubmit = (e) => {
-    //e.preventDefault();
+    e.preventDefault();
 
     if (selectedEdificios.size === 0) {
       window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
