@@ -1,8 +1,6 @@
 .NavbarItems {
     display: flex;
-    height: auto;
-    max-height: 200px;
-    min-height: 100px;
+    height: 70px;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px 0 var(--secondary-container-color);
@@ -30,12 +28,10 @@
     justify-content: center;
     color: var(--button-color);
     cursor: pointer;
-    height: 20%;
 }
 
 .logoContainer img {
-    height: 100px;
-    padding: 0.5rem;
+    height: 60px;
 }
 
 .navbar-logo {

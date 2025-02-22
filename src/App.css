@@ -104,8 +104,27 @@ span {
 label {
   text-align: start;
   font-family: 'ScheherazadeNew';
-  font-size: calc(10px + 3.5vmin);
+  font-size: calc(10px + 2.5vmin);
   color: var(--text-color);
+  line-height: calc(10px + 2.5vmin);
+}
+
+select {
+  font-family: 'ScheherazadeNew';
+  font-size: calc(10px + 2vmin);
+  color: var(--secondary-text-color);
+}
+
+/* Cambia el color de fondo de todas las opciones */
+option {
+  background-color: var(--text-color);
+  color: var(--secondary-text-color);
+  /* Color del texto */
+}
+
+
+select:focus option {
+  background-color: var(--text-color);
 }
 
 button {

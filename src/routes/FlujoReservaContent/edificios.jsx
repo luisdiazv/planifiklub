@@ -126,7 +126,13 @@ const EdificiosList = () => {
                 )}
               </div>
               <div className="edificio-info">
-                <h2>{edificio.nombre}</h2>
+                <div className="titleContainer">
+                  <h2>{edificio.nombre}</h2>
+                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                    {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
+                  </button>
+                </div>
+
                 {expanded[edificio.idedificios] && (
                   <div className="edificio-details">
                     <p><strong>Descripción:</strong> {edificio.descripcion}</p>
@@ -136,38 +142,36 @@ const EdificiosList = () => {
                   </div>
                 )}
                 <div className="button-container">
-                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
-                    {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
-                  </button>
-                  <label className="edificio-checker-container">
+                  <div className="montajes-dropdown">
+                    <label>Montajes disponibles:</label>
+                    <select className="montajes-drop-select"
+                      value={montajeSeleccionado[edificio.idedificios] || ""}
+                      onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
+                    >
+                      {montajesFiltrados.length > 0 ? (
+                        <>
+                          <option value="" disabled>Seleccione un montaje</option>
+                          {montajesFiltrados.map((montaje) => (
+                            <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
+                              {montajesNombres[montaje.id_montajes] || "Cargando..."}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
+                        <option>No hay montajes</option>
+                      )}
+                    </select>
+                  </div>
+                  <div className="edificio-checker-container">
                     <input
                       className="edificio-checker"
                       type="checkbox"
                       checked={selectedEdificios.has(edificio.idedificios)}
                       onChange={() => handleSelectionChange(edificio.idedificios)}
                     />
-                  </label>
+                  </div>
                 </div>
-                <div className="montajes-dropdown">
-                  <label>Montajes disponibles:</label>
-                  <select
-                    value={montajeSeleccionado[edificio.idedificios] || ""}
-                    onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
-                  >
-                    {montajesFiltrados.length > 0 ? (
-                      <>
-                        <option value="" disabled>Seleccione un montaje</option>
-                        {montajesFiltrados.map((montaje) => (
-                          <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
-                            {montajesNombres[montaje.id_montajes] || "Cargando..."}
-                          </option>
-                        ))}
-                      </>
-                    ) : (
-                      <option>No hay montajes</option>
-                    )}
-                  </select>
-                </div>
+
               </div>
             </div>
           );
