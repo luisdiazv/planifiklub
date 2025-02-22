@@ -162,9 +162,9 @@ const EdificiosList = () => {
                       )}
                     </select>
                   </div>
-                  <div className="edificio-checker-container">
+                  <div className="basic-input-checkbox-container">
                     <input
-                      className="edificio-checker"
+                      className="basic-input-checkbox"
                       type="checkbox"
                       checked={selectedEdificios.has(edificio.idedificios)}
                       onChange={() => handleSelectionChange(edificio.idedificios)}

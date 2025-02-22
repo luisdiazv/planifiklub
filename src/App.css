@@ -22,6 +22,41 @@
   width: 100%;
 }
 
+.basic-input-checkbox-container {
+  height: 60px;
+}
+
+.basic-input-checkbox {
+  margin: 0;
+  appearance: none;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: var(--text-color);
+}
+
+/* Cambia el color cuando está marcado */
+.basic-input-checkbox:checked {
+  background-color: var(--button-color);
+}
+
+/* Agrega un ícono de check cuando está marcado */
+.basic-input-checkbox::after {
+  content: '✔';
+  color: var(--text-color);
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -54,14 +89,18 @@
   width: 10%;
 }
 
-.form-group select,
-.ID-form-group select,
-.form-group input {
+input {
+  font-size: calc(10px + 2vmin);
+  font-family: 'DMSerifText-Regular';
+}
+
+input[type="number"] {
+  text-align: center;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
-  font-size: calc(5px + 3vmin);
+
 }
 
 h1,
@@ -86,7 +125,12 @@ h2 {
 h3 {
   font-size: calc(8px + 4vmin);
   font-family: 'DMSerifText-Regular';
-  border-bottom: 3px inset var(--secondary-text-color);
+  font-weight: normal;
+  margin: 0;
+}
+
+h4 {
+  margin: 0;
 }
 
 p,
@@ -111,6 +155,9 @@ label {
 
 select {
   font-family: 'ScheherazadeNew';
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
   font-size: calc(10px + 2vmin);
   color: var(--secondary-text-color);
 }
@@ -130,7 +177,6 @@ select:focus option {
 button {
   font-family: 'FoghLihtenNo01';
   font-size: calc(10px + 2vmin);
-  margin-top: 20px;
   padding: 10px 20px;
   background-color: var(--button-color);
   color: var(--secondary-text-color);

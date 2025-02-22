@@ -95,36 +95,6 @@
     align-self: flex-end;
 }
 
-.edificio-checker {
-    margin: 0;
-    appearance: none;
-    height: 100%;
-    aspect-ratio: 1/1;
-    border: none;
-    border-radius: 4px;
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    background-color: var(--text-color);
-}
-
-/* Cambia el color cuando está marcado */
-.edificio-checker:checked {
-    background-color: var(--button-color);
-}
-
-/* Agrega un ícono de check cuando está marcado */
-.edificio-checker::after {
-    content: '✔';
-    color: var(--text-color);
-    font-size: 2rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-}
-
 .montajes-dropdown {
     display: flex;
     flex: 9;
@@ -135,7 +105,7 @@
 }
 
 .montajes-drop-select {
-    align-self: flex-end;
+    align-self: flex-start;
     width: 100%;
     box-sizing: border-box;
 }
@@ -161,9 +131,6 @@
         max-width: 300px;
     }
 
-    .edificio-info {
-        width: 100%;
-    }
 
     .button-container {
         flex-direction: column;
