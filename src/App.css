@@ -124,6 +124,7 @@ h2 {
 }
 
 h3 {
+  color: var(--text-color);
   font-size: calc(8px + 4vmin);
   font-family: 'DMSerifText-Regular';
   font-weight: normal;

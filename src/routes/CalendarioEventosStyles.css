@@ -77,4 +77,12 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    gap: 1rem;
+
+    button {
+        margin: auto;
+    }
 }
