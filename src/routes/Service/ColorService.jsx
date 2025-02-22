@@ -1,6 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getColors, setColors } from '../../Util/Colors';
-import { restoreBackup } from '../../Ctrl/InformacionClubCtrl';
+import { 
+  getBackupInfoClub, 
+  getActualNombreClubInfo, 
+  getActualDescripcionClubInfo, 
+  getActualColorList 
+} from '../../Ctrl/InformacionClubCtrl';
+import { 
+  getActualLogoClub, 
+  uploadActualLogoClub, 
+  getBackupLogoClub 
+} from '../../API/StorageAPI';
+import './ColorServiceStyles.css';
 
 const ConfiguradorPaginaClub = () => {
   
@@ -23,7 +34,7 @@ const ConfiguradorPaginaClub = () => {
     colorDesc8: 'Descripción del color 8',
     colorName9: 'Color 9',
     colorDesc9: 'Descripción del color 9'
-  }
+  };
   
   const initialClubInfo = {
     nombre: '',
@@ -42,8 +53,52 @@ const ConfiguradorPaginaClub = () => {
   const [clubInfo, setClubInfo] = useState(initialClubInfo);
   const [newLogo, setNewLogo] = useState(null);
   const [previewLogo, setPreviewLogo] = useState(null);
+  const [currentLogo, setCurrentLogo] = useState(null);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Cargar el logo actual al montar el componente
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const url = await getActualLogoClub();
+        setCurrentLogo(url);
+      } catch (err) {
+        console.error("Error al obtener el logo actual:", err.message);
+      }
+    };
+    fetchLogo();
+  }, []);
+
+  // Cargar la información actual del club (nombre, descripción y colores) al montar el componente
+  useEffect(() => {
+    const fetchClubInfo = async () => {
+      try {
+        const nombre = await getActualNombreClubInfo();
+        const descripcion = await getActualDescripcionClubInfo();
+        const coloresArray = await getActualColorList();
+  
+        setClubInfo({
+          nombre: nombre || '',
+          descripcion: descripcion || '',
+          color1: coloresArray[0] || '#ffffff',
+          color2: coloresArray[1] || '#ffffff',
+          color3: coloresArray[2] || '#ffffff',
+          color4: coloresArray[3] || '#ffffff',
+          color5: coloresArray[4] || '#ffffff',
+          color6: coloresArray[5] || '#ffffff',
+          color7: coloresArray[6] || '#ffffff',
+          color8: coloresArray[7] || '#ffffff',
+          color9: coloresArray[8] || '#ffffff'
+        });
+      } catch (error) {
+        console.error("Error al cargar la información del club:", error);
+        setError("Error al cargar la información del club");
+      }
+    };
+
+    fetchClubInfo();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +119,7 @@ const ConfiguradorPaginaClub = () => {
     setNewLogo(file);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const colors = [
       clubInfo.color1,
       clubInfo.color2,
@@ -80,7 +135,14 @@ const ConfiguradorPaginaClub = () => {
     try {
       console.log("Colores: ", colors);
       setColors(colors);
-      console.log("aaa",getColors());
+      console.log("Colores seteados:", getColors());
+
+      // Si se seleccionó un nuevo logo, se sube
+      if (newLogo) {
+        const uploadResult = await uploadActualLogoClub(newLogo);
+        console.log("Logo actualizado:", uploadResult);
+      }
+      
       console.log('Guardando configuración del club:', clubInfo, newLogo);
       setSuccessMsg('Configuración guardada exitosamente.');
     } catch (err) {
@@ -88,12 +150,39 @@ const ConfiguradorPaginaClub = () => {
     }
     
     console.log('INFO:', clubInfo);
+    window.location.reload();
   };
 
   const handleReset = async () => {
-    await restoreBackup();
-    setNewLogo(null);
-    window.location.reload();
+    try {
+      const backupData = await getBackupInfoClub();
+      const coloresArray = backupData.colores.split("%%");
+      setClubInfo({
+        nombre: backupData.nombre_club || '',
+        descripcion: backupData.descripcion_club || '',
+        color1: coloresArray[0] || '#ffffff',
+        color2: coloresArray[1] || '#ffffff',
+        color3: coloresArray[2] || '#ffffff',
+        color4: coloresArray[3] || '#ffffff',
+        color5: coloresArray[4] || '#ffffff',
+        color6: coloresArray[5] || '#ffffff',
+        color7: coloresArray[6] || '#ffffff',
+        color8: coloresArray[7] || '#ffffff',
+        color9: coloresArray[8] || '#ffffff'
+      });
+      
+      const backupLogoUrl = await getBackupLogoClub();
+      if (backupLogoUrl) {
+        setCurrentLogo(backupLogoUrl);
+      }
+      
+      setNewLogo(null);
+      setPreviewLogo(null);
+      setSuccessMsg('Información de respaldo cargada correctamente.');
+    } catch (error) {
+      console.error("Error al restaurar información de respaldo:", error);
+      setError("Error al restaurar la información de respaldo");
+    }
   };
 
   const handleCancel = () => {
@@ -102,47 +191,48 @@ const ConfiguradorPaginaClub = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>Configurador de Página del Club</header>
+    <div className="container">
+      <header className="header">Configurador de Página del Club</header>
 
-      {error && <span style={styles.error}>{error}</span>}
-      {successMsg && <span style={styles.success}>{successMsg}</span>}
+      {error && <span className="error">{error}</span>}
+      {successMsg && <span className="success">{successMsg}</span>}
 
-      <div style={styles.productoInfo}>
-        <p style={styles.label}>Nombre del Club:</p>
+      <div className="productoInfo">
+        <p className="label">Nombre del Club:</p>
         <input
           type="text"
           name="nombre"
           value={clubInfo.nombre}
           onChange={handleChange}
-          style={styles.input}
+          className="input"
         />
 
-        <p style={styles.label}>Descripción del Club (opcional):</p>
+        <p className="label">Descripción del Club (opcional):</p>
         <textarea
           name="descripcion"
           value={clubInfo.descripcion}
           onChange={handleChange}
-          style={styles.textarea}
+          className="textarea"
         />
 
-        <p style={styles.label}>Configuración de Colores:</p>
+        <p className="label">Configuración de Colores:</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {Array.from({ length: 9 }, (_, i) => {
             const index = i + 1;
             return (
               <div key={`color${index}`} style={{ marginBottom: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
                 <div>
-                  <label style={styles.subTitle}>{labelInfo[`colorName${index}`]}</label>
+                  <label className="subTitle">{labelInfo[`colorName${index}`]}</label>
                 </div>
                 <div>
-                  <label style={styles.subDescription}>{labelInfo[`colorDesc${index}`]}</label>
+                  <label className="subDescription">{labelInfo[`colorDesc${index}`]}</label>
                   <input
                     type="color"
                     name={`color${index}`}
                     value={clubInfo[`color${index}`]}
                     onChange={handleChange}
-                    style={{ ...styles.input, padding: '0', height: '40px' }}
+                    className="input"
+                    style={{ padding: '0', height: '40px' }}
                   />
                 </div>
               </div>
@@ -150,30 +240,36 @@ const ConfiguradorPaginaClub = () => {
           })}
         </div>
 
-        <p style={styles.label}>Logo del Club (.svg):</p>
+        <p className="label">Logo del Club (.svg):</p>
         <input
           type="file"
           accept=".svg"
           onChange={handleLogoChange}
-          style={styles.input}
+          className="input"
         />
-        {previewLogo && (
+        {previewLogo ? (
           <img
             src={previewLogo}
             alt="Preview Logo"
             style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
           />
-        )}
+        ) : currentLogo ? (
+          <img
+            src={currentLogo}
+            alt="Logo Actual"
+            style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
+          />
+        ) : null}
 
-        <div style={styles.buttonContainer}>
-          <button onClick={handleSave} style={styles.saveButton}>
+        <div className="buttonContainer">
+          <button onClick={handleSave} className="saveButton">
             Guardar
           </button>
-          <button onClick={handleCancel} style={styles.cancelButton}>
-            Salir sin guardaar
+          <button onClick={handleCancel} className="cancelButton">
+            Salir sin guardar
           </button>
           <div>
-            <button onClick={handleReset} style={styles.exitButton}>
+            <button onClick={handleReset} className="exitButton">
                 Reiniciar
             </button>
           </div>
@@ -181,105 +277,6 @@ const ConfiguradorPaginaClub = () => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '10px',
-    margin: '0 auto',
-    width: '100%',
-    maxWidth: '600px',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '10px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  label: {
-    margin: '0 0 5px 0',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '10px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    height: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '10px',
-    resize: 'none',
-  },
-  saveButton: {
-    padding: '8px 16px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  exitButton: {
-    padding: '8px 16px',
-    backgroundColor: '#808080',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  cancelButton: {
-    padding: '8px 16px',
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  productoInfo: {
-    backgroundColor: '#fff',
-    padding: '10px',
-    borderRadius: '6px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  },
-  subTitle: {
-    margin: '0 0 2px 0',
-    fontWeight: 'bold',
-    fontSize: '20px',
-    color: '#555'
-  },
-  subDescription: {
-    margin: '0 0 5px 0',
-    fontSize: '16px',
-    color: '#555'
-  },
 };
 
 export default ConfiguradorPaginaClub;

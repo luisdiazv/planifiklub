@@ -1,4 +1,5 @@
 import { supabase } from "../API/SupabaseAPI";
+import { restoreBackupLogoClub } from "../API/StorageAPI";
 
 export const getActualNombreClubInfo = async () => {
   try {
@@ -59,6 +60,26 @@ export const getActualColorList = async () => {
   }
 };
 
+export const getBackupInfoClub = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("informacion_club")
+      .select("nombre_club, descripcion_club, colores")
+      .eq("id_info_club", 1)
+      .single();
+
+    if (error) {
+      console.error("Error al obtener los datos de respaldo:", error);
+      throw new Error("No se pudo obtener la información de respaldo del club");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno en getBackupInfoClub:", error);
+    throw new Error("No se pudo obtener la información de respaldo del club");
+  }
+};
+
 export const restoreBackup = async () => {
   try {
     const { data: backupData, error: backupError } = await supabase
@@ -67,7 +88,6 @@ export const restoreBackup = async () => {
       .eq("id_info_club", 1)
       .single();
 
-      console.log(backupData);
     if (backupError) {
       console.error("Error al obtener los datos de respaldo:", backupError);
       throw new Error("No se pudo obtener la información de respaldo del club");
@@ -83,6 +103,8 @@ export const restoreBackup = async () => {
       console.error("Error al restaurar la información del club desde respaldo:", updateError);
       throw new Error("No se pudo restaurar la información del club desde respaldo");
     }
+
+    await restoreBackupLogoClub();
     return updateData;
   } catch (error) {
     console.error("Error interno en restoreBackup:", error);
@@ -137,3 +159,22 @@ export const updateActualColors = async (newColorsArray) => {
     throw new Error("No se pudo actualizar los colores actuales");
   }
 };
+
+export const getActualInfoClub = async () => {
+  try {
+    const { data, error } = await supabase
+      .from("informacion_club")
+      .select("nombre_club, descripcion_club, colores")
+      .eq("id_info_club", 2);
+
+    if (error) {
+      console.error("Error al obtener la información del club:", error);
+      throw new Error("No se pudo obtener la información del club");
+    }
+
+    return data[0];
+  } catch (error) {
+    console.error("Error interno en getActualInfoClub:", error);
+    throw new Error("No se pudo obtener la información del club");
+  }
+}

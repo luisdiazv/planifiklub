@@ -389,9 +389,6 @@ const ShowEvent = () => {
                         {eventInfo.estado === "En Cotizacion" ? (
                             <>
                                 <div>
-                                <button className="btn-approve" onClick={console.log("Debe poder modificar")}>Modificar Cotización</button>
-                                </div>
-                                <div>
                                     <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
                                 </div>
                                 <div>

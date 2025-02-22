@@ -43,7 +43,6 @@ function App() {
   //Manejo de los colores de la pagina
   useEffect(() => {
     var colors = getColors();
-    console.log("Colores obtenidos: ", colors);
     document.documentElement.style.setProperty('--container-color', colors[0]);
     document.documentElement.style.setProperty('--secondary-container-color', colors[1]);
     document.documentElement.style.setProperty('--text-color', colors[2]);
