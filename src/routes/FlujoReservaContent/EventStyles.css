@@ -7,7 +7,7 @@
   display: flex;
   width: auto;
   margin: auto;
-  max-width: 90%;
+  max-width: 100%;
   padding: 1rem;
   border: 1px solid var(--secondary-container-color);
   border-radius: 8px;
