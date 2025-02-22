@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import hash from "../Util/Hash";
 import "./SignUpStyles.css";
 import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
 import { codigoAuth } from "../Util/EmailService";
+import { enviarCodigoAuth } from "../API/NodeMailer";
 
 const Register = () => {
     const [nombres, setNombres] = useState("");
@@ -71,27 +71,20 @@ const Register = () => {
                 console.log(code);
             }
             setAuthCode(code);
-            await enviarCodigoAuth(correo, nombres, code);
+            const emailSent = await enviarCodigoAuth(correo, nombres, code);
+
+            if (emailSent) {
+                setIsPopupVisible(true);
+                setErrorMessage("");
+            } else {
+                setErrorMessage("No se pudo enviar el código de verificación. Inténtalo de nuevo.");
+            }
+
             //setIsPopupVisible(true);  //Desconmentar para activar el popup de verificación de ser necesario, correos no funcionando
         } catch (error) {
             console.error("Error durante el registro del usuario:", error);
             setErrorMessage("Hubo un problema al verificar las credenciales");
             alert(errorMessage);
-        }
-    };
-
-    const enviarCodigoAuth = async (correo, nombres, codigo) => {
-        try {
-            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_auth_code`;
-            const response = await axios.post(
-                API_URL,
-                { correo, nombres, codigo },
-                { headers: { "Content-Type": "application/json" } }
-            );
-            console.log("Respuesta del servidor:", response.data);
-            setIsPopupVisible(true);
-        } catch (error) {
-            console.error("Error en la petición:", error);
         }
     };
 

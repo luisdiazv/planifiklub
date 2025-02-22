@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import { supabase } from "../API/SupabaseAPI";
 
 export const getAllRoles = async () => {
@@ -29,6 +30,8 @@ export const getAllAdmins = async () => {
     } else {
       console.log('Correos de usuarios administrativos:', usuarios);
     }
+
+    return data;
 
   } catch (error) {
     console.error("Error interno:", error);
