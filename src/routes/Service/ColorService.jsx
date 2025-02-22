@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getColors, setColors } from '../../Util/Colors';
 import { 
   getBackupInfoClub, 
   getActualNombreClubInfo, 
   getActualDescripcionClubInfo, 
-  getActualColorList 
+  getActualColorList ,
+  updateActualInfoClub
 } from '../../Ctrl/InformacionClubCtrl';
 import { 
   getActualLogoClub, 
@@ -131,24 +131,29 @@ const ConfiguradorPaginaClub = () => {
       clubInfo.color8,
       clubInfo.color9,
     ];
-    
+  
     try {
       console.log("Colores: ", colors);
-      setColors(colors);
-      console.log("Colores seteados:", getColors());
-
+      // Se actualiza la información del club (nombre, descripción y colores)
+      const updateResponse = await updateActualInfoClub(
+        clubInfo.nombre,
+        clubInfo.descripcion,
+        colors
+      );
+      console.log('Información del club actualizada:', updateResponse);
+  
       // Si se seleccionó un nuevo logo, se sube
       if (newLogo) {
         const uploadResult = await uploadActualLogoClub(newLogo);
         console.log("Logo actualizado:", uploadResult);
       }
-      
+  
       console.log('Guardando configuración del club:', clubInfo, newLogo);
       setSuccessMsg('Configuración guardada exitosamente.');
     } catch (err) {
       setError(err.message);
     }
-    
+  
     console.log('INFO:', clubInfo);
     window.location.reload();
   };

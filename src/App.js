@@ -40,7 +40,6 @@ import NotFound from './routes/NotFound.jsx'; //404
 
 function App() {
 
-  //Manejo de los colores de la pagina
   useEffect(() => {
     var colors = getColors();
     document.documentElement.style.setProperty('--container-color', colors[0]);

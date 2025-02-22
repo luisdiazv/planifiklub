@@ -2,8 +2,9 @@ import React, { Component, createRef } from "react";
 import "./NavbarStyles.css";
 import { MenuItems, dropdownOptions } from "./NBMenuItems";
 import { Link } from "react-router-dom";
-import logo from "./imgs/LogoGolden.gif";
 import userControl from "../Util/UserControl";
+import { getActualLogoClub } from "../API/StorageAPI"; 
+import { getActualNombreClubInfo } from "../Ctrl/InformacionClubCtrl";
 
 class Navbar extends Component {
     constructor(props) {
@@ -11,6 +12,8 @@ class Navbar extends Component {
         this.state = {
             isDropdownVisible: false,
             currentUser: null,
+            logo: null,        // URL del logo obtenido desde StorageAPI
+            clubName: "", // Valor por defecto, se actualizará al obtener el dato real
         };
         this.menuRef = createRef();
     }
@@ -23,6 +26,25 @@ class Navbar extends Component {
         if (user) {
             this.setState({ currentUser: user });
         }
+
+        // Función asíncrona para cargar logo y nombre del club
+        const fetchData = async () => {
+            try {
+                const logoUrl = await getActualLogoClub();
+                this.setState({ logo: logoUrl });
+            } catch (err) {
+                console.error("Error al obtener el logo desde StorageAPI:", err.message);
+            }
+
+            try {
+                const clubName = await getActualNombreClubInfo();
+                this.setState({ clubName });
+            } catch (err) {
+                console.error("Error al obtener el nombre del club:", err.message);
+            }
+        };
+
+        fetchData();
     }
 
     componentWillUnmount() {
@@ -86,7 +108,7 @@ class Navbar extends Component {
     };
 
     render() {
-        const { isDropdownVisible, currentUser } = this.state;
+        const { isDropdownVisible, currentUser, logo, clubName } = this.state;
         const location = window.location.pathname;
         const isAppPage = location.startsWith("/app");
 
@@ -94,8 +116,9 @@ class Navbar extends Component {
             <nav className="NavbarItems">
                 <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
                     <div className="logoContainer">
-                        <img src={logo} alt="Logo" />
-                        <h1 className="navbar-logo">PlanifiKlub</h1>
+                        {logo && <img src={logo} alt="Logo" />}
+                        {/* Se muestra el nombre del club obtenido desde el backend */}
+                        <h1 className="navbar-logo"> {clubName}</h1>
                     </div>
                 </Link>
                 <div className="burguer-menu-container" ref={this.menuRef}>
@@ -114,11 +137,9 @@ class Navbar extends Component {
                     )}
                 </div>
 
-
                 <ul className="nav-menu">
                     {this.renderMenuItems()}
                 </ul>
-
 
                 {currentUser && isAppPage && (
                     <div className="user-menu-container" ref={this.menuRef}>
@@ -147,7 +168,6 @@ class Navbar extends Component {
                         )}
                     </div>
                 )}
-
             </nav>
         );
     }
