@@ -1,6 +1,6 @@
 .NavbarItems {
     display: flex;
-    height: 65px;
+    height: 70px;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px 0 var(--secondary-container-color);
@@ -28,16 +28,14 @@
     justify-content: center;
     color: var(--button-color);
     cursor: pointer;
-    height: 100%;
 }
 
 .logoContainer img {
-    height: 80%;
-    padding: 0.5rem;
+    height: 60px;
 }
 
 .navbar-logo {
-    font-size: 2.8rem;
+    font-size: calc(15px + 5vmin);
     color: var(--button-color);
     font-family: 'FoghlihtenNo01';
     font-weight: lighter;
@@ -54,7 +52,6 @@
 }
 
 .menu-icons i {
-    font-size: 1.8rem;
     color: var(--text-color);
 }
 
@@ -79,7 +76,6 @@
     text-decoration: none;
     color: var(--text-color);
     font-family: 'FoghlihtenNo01';
-    font-size: 1.5rem;
     display: flex;
     align-items: center;
     height: 100%;
@@ -98,7 +94,6 @@
     margin-top: 0%;
     width: 100%;
     padding: 1.2rem;
-    font-size: 1.65rem;
     font-weight: bold;
     background-color: var(--button-color);
     color: var(--secondary-text-color);
@@ -129,7 +124,6 @@
     align-items: center;
     justify-content: center;
     margin: auto;
-    font-size: 3rem;
     color: var(--button-color);
 }
 
@@ -168,7 +162,6 @@
     padding: 8px 16px;
     text-decoration: none;
     color: var(--text-color);
-    font-size: 1.8rem;
     transition: background-color 0.3s;
     text-align: start;
 }
@@ -196,6 +189,10 @@
     display: none;
 }
 
+.fa-solid {
+    font-size: max(calc(10px + 5vmin), 50px);
+}
+
 
 @media screen and (max-width: 1200px) {
     .nav-menu {
@@ -217,7 +214,7 @@
         align-items: center;
         justify-content: center;
         margin: auto;
-        font-size: 3rem;
+        font-size: calc(10px + 5vmin);
         color: var(--button-color);
     }
 
@@ -243,7 +240,6 @@
         padding: 8px 16px;
         text-decoration: none;
         color: var(--text-color);
-        font-size: 1.8rem;
         transition: background-color 0.3s;
         text-align: start;
     }
@@ -258,7 +254,6 @@
         margin-top: 0%;
         width: 100%;
         padding: 1.2rem;
-        font-size: 1.5rem;
         font-weight: bold;
         background-color: var(--secondary-container-color);
         color: var(--text-color);

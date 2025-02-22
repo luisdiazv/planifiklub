@@ -6,6 +6,7 @@ import {getPedidosByIdEvento} from "../Ctrl/PedidoCtrl";
 import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import { getPagosbyEventID } from "../Ctrl/PagosCtrl";
 import "./ShowEventStyles.css";
+import { formatCurrency } from "../Util/MoneyFormat";
 
 import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -20,7 +21,7 @@ const ShowEvent = () => {
     const [userName, setUserName] = useState("");
     const [eventType, setEventType] = useState("");
     const [edificios, setEdificios] = useState([]);
-    const [pedidos, setPedidos] = useState([]);
+    const [pedidos, setPedidos] = useState();
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const ShowEvent = () => {
         const fetchPedidos = async () => {
             try {
                 const pedidos = await getPedidosByIdEvento(id);
-                setPedidos(Array.isArray(pedidos) ? pedidos : []);
+                setPedidos(pedidos);
             } catch (err) {
                 console.error("Error obteniendo pedidos:", err);
                 setPedidos([]);
@@ -86,7 +87,7 @@ const ShowEvent = () => {
         const fetchEdificios = async () => {
             try {
                 const ListEdificios = await getEdificiosByIdEvento(id);
-                setEdificios(Array.isArray(ListEdificios) ? ListEdificios : []);
+                setEdificios(ListEdificios);
             } catch (err) {
                 console.error("Error obteniendo edificios:", err);
                 setEdificios([]);
@@ -142,8 +143,8 @@ const ShowEvent = () => {
                                     ['Detalles:', eventInfo.detalles],
                                     ['Número de Personas:', eventInfo.personas],
                                     ['Estado:', eventInfo.estado],
-                                    ['Costo Total:', `$${eventInfo.costo_total}`],
-                                    ['Saldo Pendiente:', `$${eventInfo.saldo_pendiente}`],
+                                    ['Costo Total:', `${formatCurrency(eventInfo.costo_total)}`],
+                                    ['Saldo Pendiente:', `${formatCurrency(eventInfo.saldo_pendiente)}`],
                                 ],
                             },
                             layout: 'lightHorizontalLines'
@@ -159,7 +160,7 @@ const ShowEvent = () => {
                                     ...edificios.map(edificio => [
                                         edificio.nombre_edificio,
                                         edificio.nombre_montaje,
-                                        `$${edificio.subtotal_alquiler}`
+                                        `${formatCurrency(edificio.subtotal_alquiler)}`
                                     ])
                                 ]
                             },
@@ -176,7 +177,7 @@ const ShowEvent = () => {
                                     ...pedidos.map(pedido => [
                                         pedido.nombre_producto,
                                         pedido.cantidad,
-                                        `$${pedido.subtotal}`
+                                        `${formatCurrency(pedido.subtotal)}`
                                     ])
                                 ]
                             },
@@ -228,8 +229,8 @@ const ShowEvent = () => {
                                 ['Hora de Inicio:', eventInfo?.hora_inicio || 'No especificada'],
                                 ['Hora de Fin:', eventInfo?.hora_fin || 'No especificada'],
                                 ['Estado:', eventInfo?.estado || 'No especificado'],
-                                ['Costo Total:', `$${eventInfo?.costo_total || 0}`],
-                                ['Saldo Pendiente:', `$${eventInfo?.saldo_pendiente || 0}`],
+                                ['Costo Total:', `${formatCurrency(eventInfo.costo_total)}`],
+                                ['Saldo Pendiente:', `${formatCurrency(eventInfo.saldo_pendiente)}`],
                             ],
                         },
                         layout: 'lightHorizontalLines',
@@ -247,7 +248,7 @@ const ShowEvent = () => {
                                           factura.detalles || 'Desconocido',
                                           factura.fecha_pago || 'Desconocido',
                                           factura.metodo || 'Desconocido',
-                                          `$${factura.monto || 'Desconocido'}`,
+                                          `${formatCurrency(factura.monto) || 'Desconocido'}`,
                                       ]),
                                   ],
                               },
@@ -280,7 +281,7 @@ const ShowEvent = () => {
                 <div className="event-details">
                     {/* Sección de Detalles del Evento */}
                     <div className="event-section">
-                        <h3 className="section-title">Detalles del Evento</h3>
+                        <h2 className="section-title">Detalles del Evento</h2>
                         <div className="detail-item">
                             <span className="detail-label">Nombre del Usuario:</span>
                             <span className="detail-value">{userName}</span>
@@ -315,17 +316,17 @@ const ShowEvent = () => {
                         </div>
                         <div className="detail-item">
                             <span className="detail-label">Costo Total:</span>
-                            <span className="detail-value">${eventInfo.costo_total}</span>
+                            <span className="detail-value">{formatCurrency(eventInfo.costo_total)}</span>
                         </div>
                         <div className="detail-item">
                             <span className="detail-label">Saldo Pendiente:</span>
-                            <span className="detail-value">${eventInfo.saldo_pendiente}</span>
+                            <span className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</span>
                         </div>
                     </div>
     
                     {/* Sección de Edificios */}
                     <div className="event-section">
-                        <h3 className="section-title">Lista de Edificios</h3>
+                        <h2 className="section-title">Lista de Edificios</h2>
                         {edificios && edificios.length > 0 ? (
                             <ul className="list-container">
                                 {edificios.map((edificio) => (
@@ -340,7 +341,7 @@ const ShowEvent = () => {
                                         </div>                                        
                                         <div className="detail-item">
                                             <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">${edificio.subtotal_alquiler}</span>
+                                            <span className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</span>
                                         </div>
                                     </li>
                                 ))}
@@ -352,7 +353,7 @@ const ShowEvent = () => {
     
                     {/* Sección de Pedidos */}
                     <div className="event-section">
-                        <h3 className="section-title">Lista de Pedidos</h3>
+                        <h2 className="section-title">Lista de Pedidos</h2>
                         {pedidos && pedidos.length > 0 ? (
                             <ul className="list-container">
                                 {pedidos.map((pedido) => (
@@ -367,7 +368,7 @@ const ShowEvent = () => {
                                         </div>
                                         <div className="detail-item">
                                             <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">${pedido.subtotal}</span>
+                                            <span className="detail-value">{formatCurrency(pedido.subtotal)}</span>
                                         </div>
                                     </li>
                                 ))}

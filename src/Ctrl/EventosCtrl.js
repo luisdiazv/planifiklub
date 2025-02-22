@@ -92,3 +92,41 @@ export const updateEventStatus = async (eventId, newStatus) => {
         throw new Error("Ocurrió un error al actualizar el estado del evento: " + error.message);
     }
 };
+
+export const createEvent = async (eventoDummy) => {
+  try {
+      const { fecha, hora_inicio, hora_fin, detalles, id_usuario, estado, id_tipo_evento, costo_total, personas } = eventoDummy;
+
+      const { data, error } = await supabase
+          .from("evento")
+          .insert([
+              {
+                  fecha,
+                  hora_inicio,
+                  hora_fin,
+                  detalles,
+                  id_usuario,
+                  estado,
+                  id_tipo_evento,
+                  costo_total,
+                  saldo_pendiente:costo_total,
+                  personas
+              }
+          ])
+          .select("idevento"); // Selecciona solo el ID del evento creado
+
+      if (error) {
+          console.error("Error creando el evento:", error.message);
+          throw new Error("No se pudo crear el evento: " + error.message);
+      }
+
+      const idEventoCreado = data?.[0]?.idevento; // Obtiene la ID del evento insertado
+
+      console.log("Evento creado correctamente. ID:", idEventoCreado);
+      return idEventoCreado; // Retorna solo la ID
+
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al crear el evento: " + error.message);
+  }
+};
