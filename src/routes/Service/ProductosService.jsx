@@ -206,9 +206,9 @@ const ConfiguradorProductos = () => {
           </div>
         ) : (
           productos.length > 0 && productos.map((producto) => (
-            <div key={producto.idproducto} className="configurador-productos-item" onClick={() => handleSelectProducto(producto)}>
-              <strong>{producto.nombre}</strong> - {producto.descripcion} - ${producto.precio}
-              <button className="configurador-productos-button">Seleccionar</button>
+            <div key={producto.idproducto} className="configurador-productos-item" >
+              <strong>{producto.nombre}</strong> * {producto.descripcion} - ${producto.precio}
+              <button className="configurador-productos-button" onClick={() => handleSelectProducto(producto)}>Seleccionar </button>
             </div>
           ))
         )}
