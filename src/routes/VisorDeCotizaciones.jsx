@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getEventIDsByUser, getEventType } from '../Ctrl/EventosCtrl'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 import './VisorDeCotizacionesStyles.css';
 
@@ -8,6 +9,7 @@ const VisorDeCotizaciones = () => {
     const [error, setError] = useState(null);
     const [userID, setUserID] = useState(null);
     const [tiposEventos, setTiposEventos] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Obtener el userID del sessionStorage
@@ -33,15 +35,22 @@ const VisorDeCotizaciones = () => {
                         return eventEndDateTime > now;
                     });
 
-                    setEventos(filteredData);
+                    // Ordenar eventos por fecha y hora de fin
+                    const sortedData = filteredData.sort((a, b) => {
+                        const aEndDateTime = new Date(`${a.fecha}T${a.hora_fin}`);
+                        const bEndDateTime = new Date(`${b.fecha}T${b.hora_fin}`);
+                        return aEndDateTime - bEndDateTime;
+                    });
+
+                    setEventos(sortedData);
 
                     // Extraer los id_tipo_evento y obtener sus nombres
-                    const tiposEventosPromises = filteredData.map(evento => getEventType(evento.id_tipo_evento));
+                    const tiposEventosPromises = sortedData.map(evento => getEventType(evento.id_tipo_evento));
                     const tiposEventosNombres = await Promise.all(tiposEventosPromises);
 
                     // Crear un objeto con los nombres de los tipos de eventos
                     const tiposEventosMap = {};
-                    filteredData.forEach((evento, index) => {
+                    sortedData.forEach((evento, index) => {
                         tiposEventosMap[evento.id_tipo_evento] = tiposEventosNombres[index];
                     });
 
@@ -57,9 +66,12 @@ const VisorDeCotizaciones = () => {
         }
     }, [userID]);
 
-    const handlePagoClick = (eventoId) => {
-        // Handler vacío de momento
-        console.log(`Pago para el evento ID: ${eventoId}`);
+    const handlePagoClick = (evento) => {
+        if (evento.idevento) {
+            navigate(`/app/ResumenPago/${evento.idevento}`);
+        } else {
+            console.error("El evento no tiene un ID válido.");
+        }
     };
 
     if (loading) {
@@ -98,10 +110,6 @@ const VisorDeCotizaciones = () => {
                                         <div className='evento-col-right'>{evento.hora_fin}</div>
                                     </div>
                                     <div className='evento-row'>
-                                        <div className='evento-col-left'>Personas:</div>
-                                        <div className='evento-col-right'>{evento.personas}</div>
-                                    </div>
-                                    <div className='evento-row'>
                                         <div className='evento-col-left'>Tipo de Evento:</div>
                                         <div className='evento-col-right'>{tiposEventos[evento.id_tipo_evento]}</div>
                                     </div>
@@ -110,7 +118,9 @@ const VisorDeCotizaciones = () => {
                                         <div className='evento-col-right'>{evento.saldo_pendiente}</div>
                                     </div>
                                     {evento.estado === 'Aprobado' && (
-                                        <button className='pago-button' onClick={() => handlePagoClick(evento.idevento)}>Pagar</button>
+                                        <>
+                                            <button className='pago-button' onClick={() => handlePagoClick(evento)}>Realizar pago</button>
+                                        </>
                                     )}
                                 </div>
                             </li>

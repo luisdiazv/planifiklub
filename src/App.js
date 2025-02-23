@@ -24,6 +24,7 @@ import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 import VisorDeCotizaciones from './routes/VisorDeCotizaciones.jsx';
+import ResumenPago from './routes/ResumenPago.jsx'; 
 
 //Configuradores
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
@@ -65,6 +66,7 @@ function App() {
             <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
             <Route path="/app/VisorDeCotizaciones" element={<VisorDeCotizaciones />} />
+            <Route path="/app/ResumenPago/:id" element={<ResumenPago />} />
 
             {/* Configuradores */}
             <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
