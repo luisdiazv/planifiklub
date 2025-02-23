@@ -162,3 +162,64 @@ export const getFotoEdificio = async (id) => {
     console.error("Error getting URL:", error.message);
   }
 };
+
+export const getFotoTipoEvento = async (id) => {
+  const path = `TipoEvento/${id}.jpg`;
+
+  try {
+    const { data, error } = await supabase.storage.from("Img").createSignedUrl(path, 60);
+    if (error) {
+      console.error(error.message);
+    }
+    if (data) {
+      return data.signedUrl;
+    } else {
+      console.error("No file found.");
+      return undefined;
+    }
+  } catch (error) {
+    console.error("Error getting URL:", error.message);
+  }
+};
+
+export const deleteFotoTipoEvento = async (id) => {
+  const path = `TipoEvento/${id}.jpg`;
+  try {
+    const { data, error } = await supabase.storage.from("Img").remove([path]);
+    if (error) {
+      console.error("Error al eliminar la imagen:", error.message);
+      throw new Error("No se pudo eliminar la imagen");
+    }
+    console.log("Imagen eliminada exitosamente:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al eliminar la imagen:", error.message);
+    throw error;
+  }
+};
+
+export const uploadFotoTipoEvento = async (id, file) => {
+  const path = `TipoEvento/${id}.jpg`;
+  
+  const resizedFile = await resizeImage(file, 300);
+  
+  const { data: existingFile, error: checkError } = await supabase.storage.from("Img").getPublicUrl(path);
+  if (checkError) {
+    console.error("Error al verificar si existe la imagen:", checkError.message);
+    throw new Error("No se pudo verificar si existe la imagen");
+  }
+  if (existingFile) {
+    const { error: deleteError } = await supabase.storage.from("Img").remove([path]);
+    if (deleteError) {
+      console.error("Error al eliminar la imagen existente:", deleteError.message);
+      throw new Error("No se pudo eliminar la imagen existente");
+    }
+  }
+
+  const { data, error } = await supabase.storage.from("Img").upload(path, resizedFile);
+  if (error) {
+    console.error("Error subiendo imagen:", error);
+    throw new Error("No se pudo subir la imagen");
+  }
+  return data;
+};

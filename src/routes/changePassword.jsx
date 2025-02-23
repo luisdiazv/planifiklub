@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import hash from "../Util/Hash";
-import axios from "axios";
-import { actualizarPassword, getUsuarioByEmail } from "../Ctrl/UsuarioCtrl";
+import { actualizarPassword, getUsuarioByEmail, getNombresApellidosByEmail } from "../Ctrl/UsuarioCtrl";
 import { codigoAuth } from "../Util/EmailService";
-import userControl from "../Util/UserControl"
+import userControl from "../Util/UserControl";
+import { enviarCodigoAuth } from "../API/NodeMailer";
 import './changePasswordStyles.css';
 
 const ChangePassword = ({ userEmail }) => {
@@ -34,7 +34,8 @@ const ChangePassword = ({ userEmail }) => {
             const codigo = codigoAuth();
             setAuthCode(codigo);
 
-            const emailSent = await enviarCodigoAuth(email, codigo);
+            const nombres = getNombresApellidosByEmail(email);
+            const emailSent = await enviarCodigoAuth(email, nombres, codigo);
             //setIsPopupVisible(true);  //Desconmentar para activar el popup de verificación de ser necesario, correos no funcionando
             if (emailSent) {
                 setIsPopupVisible(true);
@@ -45,20 +46,6 @@ const ChangePassword = ({ userEmail }) => {
         } catch (error) {
             console.error("Error al enviar el código de verificación:", error);
             setErrorMessage("Ocurrió un error inesperado. Por favor, inténtalo de nuevo más tarde.");
-        }
-    };
-    const enviarCodigoAuth = async (correo, codigo) => {
-        try {
-            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_auth_code`;
-            const response = await axios.post(
-                API_URL,
-                { correo, codigo },
-                { headers: { "Content-Type": "application/json" } }
-            );
-            console.log("Respuesta del servidor:", response.data);
-            setIsPopupVisible(true);
-        } catch (error) {
-            console.error("Error en la petición:", error);
         }
     };
 
