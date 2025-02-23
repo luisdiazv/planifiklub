@@ -5,7 +5,7 @@
 }
 
 .custom-calendar {
-    font-size: 2rem;
+    font-size: 2rem !important;
     color: var(--text-color);
     background-color: var(--secondary-container-color);
     padding: 20px;
@@ -16,7 +16,7 @@
 
 .css-1rv8zyt-MuiStack-root {
     margin: auto !important;
-    width: auto;
+    width: 100%;
 }
 
 .css-1rv8zyt-MuiStack-root>:not(style):not(style) {
@@ -29,6 +29,10 @@
 
 .custom-calendar .MuiButtonBase-root {
     color: var(--text-color);
+}
+
+.css-xb7uwb-MuiPickersArrowSwitcher-spacer {
+    width: 24px !important;
 }
 
 .custom-calendar .MuiButtonBase-root:hover {

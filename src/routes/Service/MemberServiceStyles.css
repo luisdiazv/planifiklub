@@ -89,11 +89,6 @@
 }
 
 
-.button-container {
-    display: flex;
-    justify-content: space-between;
-}
-
 .exit-button {
     background-color: var(--container-color);
     color: var(--button-color);
