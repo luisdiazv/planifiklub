@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-import { 
-  getProductosByNombre, 
-  updateProducto, 
-  createProducto, 
+
+import {
+  getProductosByNombre,
+  updateProducto,
+  createProducto,
   deleteProducto
 } from '../../Ctrl/ProductoCtrl';
 import { getFotoProducto, uploadFotoProducto } from '../../API/StorageAPI'; // Ajusta la ruta según tu proyecto
+import "./ProductosServiceStyles.css";
+
 
 const ConfiguradorProductos = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -162,214 +165,57 @@ const ConfiguradorProductos = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>Configurador de Productos</header>
-
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="Ingrese el nombre del producto"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={styles.input}
-        />
-        <button onClick={handleSearchByNombre} style={styles.button}>
-          Buscar
-        </button>
-        <button onClick={handleCreateNew} style={{ ...styles.button, marginTop: '10px' }}>
-          Crear Nuevo Producto
-        </button>
-      </div>
-
-      {error && <span style={styles.error}>{error}</span>}
-      {successMsg && <span style={styles.success}>{successMsg}</span>}
-
-      {productoInfo ? (
-        <div style={styles.productoInfo}>
-          <h3 style={styles.title}>
-            {productoInfo.idproducto ? 'Editando Producto' : 'Creando Nuevo Producto'}
-          </h3>
-
-          <p style={styles.label}>Nombre:</p>
-          <input
-            type="text"
-            name="nombre"
-            value={productoInfo.nombre}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <p style={styles.label}>Descripción:</p>
-          <textarea
-            name="descripcion"
-            value={productoInfo.descripcion}
-            onChange={handleChange}
-            style={styles.textarea}
-          />
-
-          <p style={styles.label}>Precio:</p>
-          <input
-            type="number"
-            name="precio"
-            value={productoInfo.precio}
-            onChange={handleChange}
-            style={styles.input}
-            step="0.01"
-          />
-
-          <p style={styles.label}>Foto:</p>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={styles.input}
-          />
-          {previewFoto && (
-            <img
-              src={previewFoto}
-              alt="Preview"
-              style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
-            />
-          )}
-
-          <div style={styles.buttonContainer}>
-            <button onClick={handleSave} style={styles.saveButton}>
-              Guardar
-            </button>
-            <button onClick={handleExitWithoutSaving} style={styles.exitButton}>
-              Salir sin guardar
-            </button>
-            {productoInfo.idproducto && (
-              <button onClick={handleDelete} style={styles.deleteButton}>
-                Eliminar
-              </button>
-            )}
-          </div>
+    <div className="fullProductServ-container">
+      <div className="configurador-productos-container">
+        <h2 className="configurador-productos-header">Configurador de Productos</h2>
+        <div className="configurador-productos-input-container">
+          <input type="text" placeholder="Ingrese el nombre del producto" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="configurador-productos-input" />
+          <button onClick={handleSearchByNombre} className="configurador-productos-button">Buscar</button>
+          <button onClick={handleCreateNew} className="configurador-productos-button">Crear Nuevo Producto</button>
         </div>
-      ) : (
-        productos.length > 0 && (
-          <div>
-            {productos.map((producto) => (
-              <div
-                key={producto.idproducto}
-                style={styles.productoItem}
-                onClick={() => handleSelectProducto(producto)}
-              >
-                <span>
-                  <strong>{producto.nombre}</strong> - {producto.descripcion} - ${producto.precio}
-                  <button style={styles.button}>Seleccionar</button>
-                </span>
+        {error && <span className="configurador-productos-error">{error}</span>}
+        {successMsg && <span className="configurador-productos-success">{successMsg}</span>}
+        {productoInfo ? (
+          <div className="configurador-productos-info">
+            <h3>{productoInfo.idproducto ? 'Editando Producto' : 'Creando Nuevo Producto'}</h3>
+            <div className="configurador-productos-info-section">
+              <label>Nombre:</label>
+              <input type="text" name="nombre" value={productoInfo.nombre} onChange={handleChange} className="configurador-productos-input" />
+            </div>
+            <div className="configurador-productos-info-section">
+              <label>Descripción:</label>
+              <textarea name="descripcion" value={productoInfo.descripcion} onChange={handleChange} className="configurador-productos-textarea" />
+            </div>
+            <div className="configurador-productos-info-section">
+              <label>Precio:</label>
+              <input type="number" name="precio" value={productoInfo.precio} onChange={handleChange} className="configurador-productos-input" step="0.01" />
+            </div>
+            <div className="configurador-productos-info-section">
+              <label>Foto:</label>
+              <div className='configurador-productos-preview-img-container'>
+                {previewFoto && <img src={previewFoto} alt="Preview" className="configurador-productos-preview-img" />}
               </div>
-            ))}
-          </div>
-        )
-      )}
-    </div>
-  );
-};
 
-const styles = {
-  container: {
-    padding: '10px',
-    maxWidth: '500px',
-    margin: '0 auto',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '10px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  label: {
-    margin: '0 0 5px 0',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '5px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    height: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '5px',
-    resize: 'none',
-  },
-  button: {
-    padding: '8px 16px',
-    backgroundColor: '#800000',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  saveButton: {
-    padding: '8px 16px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  exitButton: {
-    padding: '8px 16px',
-    backgroundColor: '#808080',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  deleteButton: {
-    padding: '8px 16px',
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  productoInfo: {
-    backgroundColor: '#fff',
-    padding: '10px',
-    borderRadius: '6px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  productoItem: {
-    padding: '5px',
-    borderBottom: '1px solid #ccc',
-    marginBottom: '5px',
-    cursor: 'pointer',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  },
+              <input type="file" accept="image/*" onChange={handleImageChange} className="configurador-productos-input-image" />
+            </div>
+            <div className="configurador-productos-button-container">
+              <button onClick={handleSave} className="configurador-productos-save-button">Guardar</button>
+              <button onClick={() => setProductoInfo(null)} className="configurador-productos-exit-button">Salir sin guardar</button>
+              {productoInfo.idproducto && <button onClick={() => deleteProducto(productoInfo.idproducto)} className="configurador-productos-delete-button">Eliminar</button>}
+            </div>
+          </div>
+        ) : (
+          productos.length > 0 && productos.map((producto) => (
+            <div key={producto.idproducto} className="configurador-productos-item" onClick={() => handleSelectProducto(producto)}>
+              <strong>{producto.nombre}</strong> - {producto.descripcion} - ${producto.precio}
+              <button className="configurador-productos-button">Seleccionar</button>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+
+  );
 };
 
 export default ConfiguradorProductos;

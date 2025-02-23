@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-import { 
+import {
   getMontajesByNombre,
-  updateMontaje, 
-  createMontaje, 
-  deleteMontaje 
+  updateMontaje,
+  createMontaje,
+  deleteMontaje
 } from '../../Ctrl/MontajesCtrl';
 //import { getFotoMontaje, uploadFotoMontaje } from '../../API/StorageAPI'; // Ajusta la ruta según tu proyecto
 

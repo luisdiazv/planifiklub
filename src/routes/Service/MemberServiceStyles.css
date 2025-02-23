@@ -1,9 +1,9 @@
-.fullConfig-container {
+.fullSocio-container {
     width: 100%;
     padding: 2rem;
 }
 
-.configurador-roles-container {
+.configurador-socio {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -15,15 +15,15 @@
     box-shadow: 0 4px 6px var(--secondary-container-color);
 }
 
-.configurador-roles-header {
+.configurador-header {
     color: var(--text-color);
     font-weight: bold;
     text-align: center;
     margin: 0;
 }
 
-/* Contenedor del input y botón */
-.configurador-roles-input-container {
+/* Contenedor de entrada */
+.input-container {
     display: flex;
     gap: 2rem;
     align-items: center;
@@ -32,22 +32,20 @@
     flex-wrap: wrap;
 }
 
-.configurador-roles-input {
+.input-field {
     padding: 1rem;
     width: 100%;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-/* Mensajes de error */
-.configurador-roles-error {
+
+.error-message {
     color: red;
     text-align: end;
 }
 
-/* Información del usuario */
-.configurador-roles-user-info {
-
+.user-info {
     background-color: var(--secondary-container-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--secondary-container-color);
@@ -58,59 +56,50 @@
     }
 }
 
-/* Contenedor de roles */
-.configurador-roles-roles-container {
+.roles-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     background-color: var(--secondary-container-color);
     border-radius: 8px;
     box-shadow: 0 2px 4px var(--secondary-container-color);
-}
 
-.config-roles-roles-text {
-    display: flex;
-    flex-direction: column;
-    color: var(--text-color);
-    gap: 0.5rem;
-}
-
-.configurador-roles-checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Checkboxes */
-.configurador-roles-checkbox-content {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+    p {
+        color: var(--text-color) !important;
+        margin: 0.5rem;
+    }
 
     .basic-input-checkbox-container {
         height: 35px;
     }
 }
 
-.configurador-roles-button-container {
+.roles-content {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    color: var(--text-color);
+    gap: 0.5rem;
+}
+
+/* Checkbox */
+.checkbox-container {
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    margin: auto;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 
-.configurador-roles-exit-button {
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.exit-button {
     background-color: var(--container-color);
     color: var(--button-color);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
 }
 
-.configurador-roles-exit-button:hover {
+.exit-button:hover {
     background-color: var(--container-color);
     color: var(--text-color);
 }
