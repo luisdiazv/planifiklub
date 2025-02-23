@@ -32,6 +32,7 @@ export const dropdownOptions = [
     { path: "/app/reservation", label: "Reservar" },
     { path: "/app/EditProfile", label: "Editar perfil" },
     { path: "/app/ChangePassword", label: "Cambiar contraseña" },
+    { path: "/app/VisorDeCotizaciones", label: "Mis eventos" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
     { path: "/app/CalendarioEventos", label: "Eventos y cotizaciones [ADMIN]" },
     { path: "/app/rolesConfig", label: "Configurador de roles [ADMIN]" },
