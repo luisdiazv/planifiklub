@@ -41,12 +41,6 @@
     gap: 15px;
 }
 
-
-
-.top img {
-    width: 85px;
-}
-
 .logo img {
     width: 100px;
 }
@@ -85,7 +79,7 @@
 
 .bottom i {
     color: var(--button-color);
-    font-size: 3.5rem;
+    font-size: calc(15px + 5vmin);
 }
 
 .bottom i:hover {
@@ -171,10 +165,6 @@
         align-items: center;
     }
 
-    .top img {
-        width: 70px;
-    }
-
     .bottom h1 {
         text-align: center;
     }
@@ -184,9 +174,5 @@
 
     .footer-columns {
         gap: 10px;
-    }
-
-    .top img {
-        width: 60px;
     }
 }

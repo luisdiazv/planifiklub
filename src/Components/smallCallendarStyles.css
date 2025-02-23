@@ -1,13 +1,38 @@
+.MUI-calendar-container {
+    margin: auto;
+    padding: 1rem;
+    width: 100%;
+}
+
 .custom-calendar {
-    font-size: 2rem;
+    font-size: 2rem !important;
     color: var(--text-color);
     background-color: var(--secondary-container-color);
     padding: 20px;
     border-radius: 10px;
 }
 
+.css-5wchs2-MuiDateCalendar-root {}
+
+.css-1rv8zyt-MuiStack-root {
+    margin: auto !important;
+    width: 100%;
+}
+
+.css-1rv8zyt-MuiStack-root>:not(style):not(style) {
+    margin: auto !important;
+    width: auto;
+    height: auto;
+    max-height: none;
+    font-size: larger !important;
+}
+
 .custom-calendar .MuiButtonBase-root {
     color: var(--text-color);
+}
+
+.css-xb7uwb-MuiPickersArrowSwitcher-spacer {
+    width: 24px !important;
 }
 
 .custom-calendar .MuiButtonBase-root:hover {

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
   background-color: var(--background-color);
@@ -12,11 +16,54 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 65px;
+  padding-top: 70px;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
+
+.button-container {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.basic-input-checkbox-container {
+  height: 60px;
+}
+
+.basic-input-checkbox {
+  margin: 0;
+  appearance: none;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border: none;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: var(--text-color);
+}
+
+/* Cambia el color cuando está marcado */
+.basic-input-checkbox:checked {
+  background-color: var(--button-color);
+}
+
+/* Agrega un ícono de check cuando está marcado */
+.basic-input-checkbox::after {
+  content: '✔';
+  color: var(--text-color);
+  font-size: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -50,14 +97,19 @@
   width: 10%;
 }
 
-.form-group select,
-.ID-form-group select,
-.form-group input {
+input {
+  font-size: calc(10px + 2vmin);
+  font-family: 'DMSerifText-Regular';
+  color: var(--secondary-text-color) !important;
+}
+
+input[type="number"] {
+  text-align: center;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: auto;
-  font-size: calc(5px + 3vmin);
+  width: 100%;
+
 }
 
 h1,
@@ -74,29 +126,68 @@ h1 {
 }
 
 h2 {
-  font-size: calc(15px + 6vmin);
+  font-size: calc(8px + 6vmin);
   font-family: 'DMSerifText-Regular';
   border-bottom: 3px inset var(--secondary-text-color);
 }
 
-p {
+h3 {
+  color: var(--text-color);
+  font-size: calc(8px + 4vmin);
+  font-family: 'DMSerifText-Regular';
+  font-weight: normal;
+  margin: 0;
+}
+
+h4 {
+  margin: 0;
+}
+
+p,
+p1 {
   font-family: 'ScheherazadeNew';
-  font-size: calc(10px + 3vmin);
+  font-size: calc(8px + 2vmin);
   line-height: 1.3;
   color: var(--secondary-text-color);
+}
+
+span {
+  font-family: 'ScheherazadeNew';
+  font-size: calc(8px + 1vmin);
 }
 
 label {
   text-align: start;
   font-family: 'ScheherazadeNew';
-  font-size: calc(10px + 3.5vmin);
+  font-size: calc(10px + 2.5vmin);
   color: var(--text-color);
+  line-height: calc(10px + 2.5vmin);
+}
+
+select {
+  font-family: 'ScheherazadeNew';
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: calc(10px + 2vmin);
+  color: var(--secondary-text-color);
+}
+
+/* Cambia el color de fondo de todas las opciones */
+option {
+  background-color: var(--text-color);
+  color: var(--secondary-text-color);
+  /* Color del texto */
+}
+
+
+select:focus option {
+  background-color: var(--text-color);
 }
 
 button {
   font-family: 'FoghLihtenNo01';
-  font-size: calc(10px + 3vmin);
-  margin-top: 20px;
+  font-size: calc(10px + 2vmin);
   padding: 10px 20px;
   background-color: var(--button-color);
   color: var(--secondary-text-color);
@@ -128,9 +219,6 @@ a:hover {
 
 
 @media screen and (max-width: 1150px) {
-  .App-container {
-    padding-top: 50px;
-  }
 
   .ID-form-group {
     width: 100%;
