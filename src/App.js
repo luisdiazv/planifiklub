@@ -25,6 +25,7 @@ import ChangePassword from './routes/changePassword.jsx';
 import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
+import VisorDeCotizaciones from './routes/VisorDeCotizaciones.jsx';
 
 // Configuradores
 import ConfiguradorPaginaClub from './routes/Service/ColorService.jsx';
@@ -82,6 +83,7 @@ function App() {
             <Route path="/app/ShowEvent" element={<ShowEvent />} />
             <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+            <Route path="/app/VisorDeCotizaciones" element={<VisorDeCotizaciones />} />
 
             {/* Configuradores */}
             <Route path="/app/usuarioConfig" element={<ConfiguradorUsuario />} /> {/* Solo Admin */}
