@@ -243,9 +243,8 @@ const ShowEvent = () => {
                                   headerRows: 1,
                                   widths: ['30%', '20%', '20%', '30%'],
                                   body: [
-                                      ['Detalles', 'Fecha de Pago', 'Método', 'Monto Pagado'],
+                                      ['Fecha de Pago', 'Método', 'Monto Pagado'],
                                       ...facturas.map(factura => [
-                                          factura.detalles || 'Desconocido',
                                           factura.fecha_pago || 'Desconocido',
                                           factura.metodo || 'Desconocido',
                                           `${formatCurrency(factura.monto) || 'Desconocido'}`,
