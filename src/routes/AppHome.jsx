@@ -1,41 +1,38 @@
-import React from 'react';
-import './HomeStyles.css'
-import ImageSlider from '../Components/ImageSlider';
-import logoRed from '../Components/imgs/LogoRed.png'
-import image1 from '../Components/imgs/homeSliderImage1.jpg'
-import image2 from '../Components/imgs/homeSliderImage2.jpg'
-import image3 from '../Components/imgs/homeSliderImage3.jpg'
-import contentImg1 from '../Components/imgs/why.jpeg'
-
-const images = [
-    {
-        url: logoRed,
-        description: "Optimiza las reservas de tu club privado de manera simple y eficiente.",
-        cn: "logo-image"
-    },
-    {
-        url: image1,
-        description: "Centralizamos y gestionamos toda la reserva de eventos en clubes campestres, facilitando la planificación y coordinación.",
-        cn: "slider-image"
-    },
-    {
-        url: image2,
-        description: "Facilitamos la organización de eventos de forma rápida y sencilla.",
-        cn: "slider-image"
-    },
-    {
-        url: image3,
-        description: "Digitalizamos y simplificamos la gestión operativa, concentrando en un solo lugar toda la información de logística de eventos.",
-        cn: "slider-image"
-    }
-];
+import React, { useContext, useEffect, useState } from 'react';
+import './HomeStyles.css';
+import { ClubInfoContext } from '../context/infoClubContext';
 
 const AppHome = () => {
-    return (
-        <div className="app-home-Container">
-            <p>APP HOME</p>
-        </div>
-    );
+  const { logo, clubName, clubDesc } = useContext(ClubInfoContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    console.log('Datos del club en AppHome:', { logo, clubName });
+    const user = sessionStorage.getItem('currentUser');
+    setIsLoggedIn(!!user);
+  }, [logo, clubName]);
+
+  return (
+    <div className="app-home-container">
+      <div className="logo-container">
+        {logo && <img src={logo} alt="Logo Club" className="club-logo" />}
+      </div>
+      <div className="club-info">
+        <h1>{clubName}</h1>
+        <p>{clubDesc}</p>
+      </div>
+      <div className="buttons-container">
+        {!isLoggedIn ? (
+          <>
+            <button className="btn ingresar">Ingresar</button>
+            <button className="btn registrarse">Registrarse</button>
+          </>
+        ) : (
+          <button className="btn reservar">Reservar</button>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default AppHome;

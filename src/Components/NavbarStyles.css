@@ -200,7 +200,7 @@
     }
 
     .navbar-logo {
-        display: none;
+        display: flex;
     }
 
 

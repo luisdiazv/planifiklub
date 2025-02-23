@@ -3,19 +3,19 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getColors } from './Util/Colors.js';
 
-//Componentes basicos
+// Componentes básicos
 import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
-//Empresa
+// Empresa
 import Home from './routes/Home.jsx'; 
 import AboutUs from './routes/AboutUs.jsx'; 
 import AboutPk from './routes/AboutPk.jsx'; 
 
-//App
+// App
 import AppHome from './routes/AppHome.jsx';
 
-//App manejo de usuarios
+// Manejo de usuarios
 import LogIn from './routes/LogIn.jsx'; 
 import SignUp from './routes/SignUp.jsx'; 
 import EditProfile from './routes/editProfile.jsx';
@@ -26,7 +26,7 @@ import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
-//Configuradores
+// Configuradores
 import ConfiguradorPaginaClub from './routes/Service/ColorService.jsx';
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
 import ConfiguradorSocio from './routes/Service/MemberService.jsx';
@@ -34,14 +34,16 @@ import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
 
-//Ruta no encontrada
-import NotFound from './routes/NotFound.jsx'; //404
-//TODO SERGIO: No Autorizado <-- 502
+// Ruta no encontrada
+import NotFound from './routes/NotFound.jsx';
+
+// Envolver la aplicación con el ClubInfoProvider
+import { ClubInfoProvider } from './context/infoClubContext';
 
 function App() {
 
   useEffect(() => {
-    var colors = getColors();
+    const colors = getColors();
     document.documentElement.style.setProperty('--container-color', colors[0]);
     document.documentElement.style.setProperty('--secondary-container-color', colors[1]);
     document.documentElement.style.setProperty('--text-color', colors[2]);
@@ -54,7 +56,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ClubInfoProvider>
       <div className="App">
         <Navbar />
         <div className="App-container">
@@ -81,21 +83,20 @@ function App() {
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
 
             {/* Configuradores */}
-            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
-            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
-            <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/*Solo Admin */}
-            <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/*Solo Admin */}
-            <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/*Solo Admin */}
-            <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/*Solo Admin */}
+            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/* Solo Admin */}
+            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/* Solo Admin */}
+            <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/* Solo Admin */}
+            <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/* Solo Admin */}
+            <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/* Solo Admin */}
+            <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/* Solo Admin */}
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
-            
           </Routes>
         </div>
         <Footer />
       </div>
-    </>
+    </ClubInfoProvider>
   );
 }
 
