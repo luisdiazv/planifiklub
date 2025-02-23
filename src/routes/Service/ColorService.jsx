@@ -3,18 +3,18 @@ import {
   getBackupInfoClub, 
   getActualNombreClubInfo, 
   getActualDescripcionClubInfo, 
-  getActualColorList ,
+  getActualColorList,
   updateActualInfoClub
 } from '../../Ctrl/InformacionClubCtrl';
 import { 
   getActualLogoClub, 
   uploadActualLogoClub, 
-  getBackupLogoClub 
+  restoreBackupLogoClub,
+  getBackupLogoClub
 } from '../../API/StorageAPI';
 import './ColorServiceStyles.css';
 
 const ConfiguradorPaginaClub = () => {
-  
   const labelInfo = {
     colorName1: 'Color 1',
     colorDesc1: 'Descripción del color 1',
@@ -35,7 +35,7 @@ const ConfiguradorPaginaClub = () => {
     colorName9: 'Color 9',
     colorDesc9: 'Descripción del color 9'
   };
-  
+
   const initialClubInfo = {
     nombre: '',
     descripcion: '',
@@ -77,7 +77,7 @@ const ConfiguradorPaginaClub = () => {
         const nombre = await getActualNombreClubInfo();
         const descripcion = await getActualDescripcionClubInfo();
         const coloresArray = await getActualColorList();
-  
+
         setClubInfo({
           nombre: nombre || '',
           descripcion: descripcion || '',
@@ -176,14 +176,14 @@ const ConfiguradorPaginaClub = () => {
         color9: coloresArray[8] || '#ffffff'
       });
       
-      const backupLogoUrl = await getBackupLogoClub();
-      if (backupLogoUrl) {
-        setCurrentLogo(backupLogoUrl);
-      }
+      // Restaurar el logo de respaldo y actualizar el logo actual en el almacenamiento
+      await restoreBackupLogoClub();
+      const newLogoUrl = await getActualLogoClub();
+      setCurrentLogo(newLogoUrl);
       
       setNewLogo(null);
       setPreviewLogo(null);
-      setSuccessMsg('Información de respaldo cargada correctamente.');
+      setSuccessMsg('Información de respaldo cargada y guardada correctamente.');
     } catch (error) {
       console.error("Error al restaurar información de respaldo:", error);
       setError("Error al restaurar la información de respaldo");
@@ -275,7 +275,7 @@ const ConfiguradorPaginaClub = () => {
           </button>
           <div>
             <button onClick={handleReset} className="exitButton">
-                Reiniciar
+              Reiniciar
             </button>
           </div>
         </div>
