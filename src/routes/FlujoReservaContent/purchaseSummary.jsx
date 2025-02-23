@@ -61,11 +61,9 @@ const PurchaseSummary = () => {
     
         // Calcular la suma de los subtotales de los edificios
         const subtotalEdificios = edificiosDummy.reduce((sum, edificio) => sum + (edificio.subtotal_alquiler || 0), 0);
-    
-        // Obtener los productos guardados en sessionStorage
+
         const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
-        
-        // Asegurar que `costo_total` sea un número válido
+            
         const subtotalProductos = pedidoDummy.costo_total ? Number(pedidoDummy.costo_total) : 0;
     
         // Calcular el costo total
@@ -107,7 +105,38 @@ const PurchaseSummary = () => {
         return <p className="no-data-message">No hay información del evento disponible.</p>;
     }
 
-    
+    const enviarCorreoSocio = async (correo, nombres) => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_conf`;
+            const response = await axios.post(
+                API_URL,
+                { correo, nombres },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor:", response.data);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
+
+    const enviarCorreoAdmin = async () => {
+        try {
+            const API_URL = `${process.env.REACT_APP_NODEMAILER_URL}send_cotizacion_admin`;
+            const usuarios = await getAllAdmins();
+            const correos = usuarios.map(usuario => usuario.correo);
+            if (!Array.isArray(correos) || correos.some(correo => typeof correo !== 'string')) {
+                throw new Error("La lista de correos no es válida.");
+            }
+            const response = await axios.post(
+                API_URL,
+                { correos },
+                { headers: { "Content-Type": "application/json" } }
+            );
+            console.log("Respuesta del servidor, admin:", response.data);
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    };
 
     const handleConfirmarCotizacion = async () => {
         setLoading(true);
@@ -220,9 +249,14 @@ const PurchaseSummary = () => {
 
 
             }
-            
-                
+            const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+            const nombre = currentUser.nombres;
+            const apellido = currentUser.apellidos;
+            const correo = currentUser.correo;
             alert("Cotización confirmada.");
+            enviarCorreoSocio(correo, `${nombre} ${apellido}`);
+            enviarCorreoAdmin();
+
             sessionStorage.removeItem("eventoDummy");
             sessionStorage.removeItem("edificiosDummy");
             sessionStorage.removeItem("pedidoDummy");
@@ -236,103 +270,7 @@ const PurchaseSummary = () => {
         }
     
         setLoading(false);
-    };
-    
-    
-    
-
-    const generatePDF = async () => {
-        try {
-            setLoading(true);
-    
-            // Construye el contenido PDFMake basado en la información de los dummies
-            const content = [
-                { text: 'Resumen de Cotización', style: 'eventTitle' },
-                eventoDummy ? (
-                    [
-                        { text: 'Detalles del Evento', style: 'sectionTitle' },
-                        {
-                            table: {
-                                widths: ['50%', '50%'],
-                                body: [
-                                    ['Fecha:', eventoDummy.fecha || 'No especificada'],
-                                    ['Hora de Inicio:', eventoDummy.hora_inicio || 'No especificada'],
-                                    ['Hora de Fin:', eventoDummy.hora_fin || 'No especificada'],
-                                    ['Asistentes:', eventoDummy.personas || 'No especificado'],
-                                    ['Descripción:', eventoDummy.detalles || 'Sin detalles'],
-                                ],
-                            },
-                            layout: 'lightHorizontalLines'
-                        },
-                        { text: '', margin: [0, 10] },
-                        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-                        { text: 'Edificios Seleccionados', style: 'sectionTitle' },
-                        edificiosDummy && edificiosDummy.length > 0 ? {
-                            table: {
-                                widths: ['40%', '40%', '20%'],
-                                body: [
-                                    ['ID Edificio', 'Montaje Seleccionado', 'Subtotal'],
-                                    ...edificiosDummy.map(edificio => [
-                                        edificio.id_edificio || 'Desconocido',
-                                        edificio.id_montaje_elegido || 'Desconocido',
-                                        `$${edificio.subtotal_alquiler || 0}`
-                                    ])
-                                ]
-                            },
-                            layout: 'lightHorizontalLines'
-                        } : { text: 'No hay edificios seleccionados.', style: 'noDataMessage' },
-                        { text: '', margin: [0, 10] },
-                        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-                        { text: 'Productos Seleccionados', style: 'sectionTitle' },
-                        productosPedido && Object.keys(productosPedido.cantidad || {}).length > 0 ? {
-                            table: {
-                                widths: ['40%', '30%', '30%'],
-                                body: [
-                                    ['ID Producto', 'Cantidad', 'Subtotal'],
-                                    ...Object.keys(productosPedido.cantidad).map(productId => [
-                                        productId || 'Desconocido',
-                                        productosPedido.cantidad[productId] || 0,
-                                        `$${productosPedido.subtotal[productId] || 0}`
-                                    ])
-                                ]
-                            },
-                            layout: 'lightHorizontalLines'
-                        } : { text: 'No hay productos seleccionados.', style: 'noDataMessage' },
-                        { text: '', margin: [0, 10] },
-                        { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-                        { text: 'Total de la Cotización', style: 'sectionTitle' },
-                        {
-                            table: {
-                                widths: ['50%', '50%'],
-                                body: [
-                                    ['Total:', `$${totalCost || 0}`]
-                                ]
-                            },
-                            layout: 'lightHorizontalLines'
-                        }
-                    ]
-                ) : { text: 'No hay información del evento disponible.', style: 'noDataMessage' }
-            ];
-    
-            // Definición del documento con estilos
-            const documentDefinition = {
-                content,
-                styles: {
-                    eventTitle: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 10] },
-                    sectionTitle: { fontSize: 14, bold: true, color: '#333', margin: [0, 10, 0, 5] },
-                    noDataMessage: { fontSize: 12, color: '#777', italics: true, alignment: 'center', margin: [0, 5, 0, 5] }
-                }
-            };
-    
-            // Genera y descarga el PDF
-            pdfMake.createPdf(documentDefinition).download(`Resumen_Cotizacion_${eventoDummy.id || "evento"}.pdf`);
-        } catch (error) {
-            console.error("Error generando el PDF:", error.message);
-            alert("Ocurrió un error al generar el PDF. Inténtalo nuevamente.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    }; 
 
     return (
         <div className="purchase-summary-container">
@@ -417,15 +355,7 @@ const PurchaseSummary = () => {
 
             <h3>Total de la cotización: ${totalCost}</h3>
 
-            {/* Botón para generar el PDF */}
-            <div className="pdf-buttons">
-                <button
-                    onClick={generatePDF}
-                    disabled={loading}                
-                >
-                    {loading ? "Generando PDF..." : "Generar Resumen en PDF"}
-                </button>
-            </div>
+
             <div>
                 <button onClick={handleConfirmarCotizacion} disabled={loading} className="confirm-button">
                     {loading ? "Confirmando..." : "Confirmar la cotización"}

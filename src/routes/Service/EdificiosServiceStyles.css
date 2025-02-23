@@ -1,0 +1,165 @@
+.fullEdificios-config-container {
+    width: 100%;
+    padding: 2rem;
+}
+
+.edificios-config-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    width: auto;
+    margin: 0 auto;
+    background-color: var(--secondary-container-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px var(--secondary-container-color);
+}
+
+.edificios-config-header {
+    color: var(--text-color);
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+}
+
+.edificios-config-input-container {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.edificios-config-label-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .basic-input-checkbox-container {
+        height: 35px;
+        ;
+    }
+}
+
+.edificios-config-label {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.edificios-config-preview-foto {
+    width: 100%;
+    max-width: 400px;
+    align-self: center;
+}
+
+.edificios-config-input {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.edificios-config-input-image {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: var(--text-color) !important;
+}
+
+.edificios-config-textarea {
+    padding: 1rem;
+    border-radius: 5px;
+    width: 100% !important;
+    font-family: 'ScheherazadeNew';
+    font-size: calc(8px + 2vmin);
+    line-height: 1.3;
+    color: var(--secondary-text-color);
+}
+
+
+.edificios-config-saveButton {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edificios-config-exit-button,
+.edificios-config-delete-button {
+    background-color: var(--container-color);
+    color: var(--button-color);
+
+}
+
+.edificios-config-exit-button:hover,
+.edificios-config-delete-button:hover {
+    background-color: var(--container-color);
+    color: var(--text-color);
+
+}
+
+.edificios-config-error {
+    color: red;
+    text-align: end;
+
+}
+
+.edificios-config-success {
+    color: green;
+    text-align: end;
+
+}
+
+.edificios-config-producto-info {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary-container-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--secondary-container-color);
+    gap: 1rem;
+
+    p {
+        color: var(--text-color) !important;
+        margin: 0.5rem;
+    }
+}
+
+.edificios-config-producto-item {
+    color: var(--text-color);
+    padding: 1rem;
+    border-bottom: 2px solid var(--container-color);
+
+    div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+}
+
+.edificios-config-montajes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+}
+
+.edificios-config-montaje-item {
+    display: flex;
+    align-items: center;
+
+    .basic-input-checkbox-container {
+        height: 35px;
+    }
+}
+
+.edificios-config-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}

@@ -44,6 +44,7 @@ export default function HourSelector({ value, onChange, disabledHours, minuteSte
 
     return (
         <div className="hourSelector-container">
+            <h3>¿Cuanto dura tu evento?</h3>
             <div className="hourSelector-field">
                 <label className="hourSelector-label">Hora de inicio del evento:</label>
                 <TimePicker

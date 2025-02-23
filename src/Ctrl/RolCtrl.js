@@ -19,22 +19,49 @@ export const getAllRoles = async () => {
 
 export const getAllAdmins = async () => {
   try {
-    const { data: usuarios, error: errorUsuarios } = await supabase.from('usuario').select('correo').eq('idusuario', 
-      supabase.from('accesos').select('id_usuario').eq('id_rol', 
-      supabase.from('roles').select('idroles').eq('nombre_rol', 'Administrativo')
-      )
-    );
+    // Obtener el ID del rol "Administrativo"
+    const { data: roles, error: errorRoles } = await supabase
+      .from('roles')
+      .select('idroles')
+      .eq('nombre_rol', 'Administrativo')
+      .single();
 
-    if (errorUsuarios) {
-      console.error('Error al obtener los correos:', errorUsuarios);
-    } else {
-      console.log('Correos de usuarios administrativos:', usuarios);
+    if (errorRoles) {
+      console.error('Error al obtener el rol Administrativo:', errorRoles);
+      return [];
     }
 
-    return data;
+    const idRolAdministrativo = roles.idroles;
+
+    // Obtener los IDs de los usuarios con el rol "Administrativo"
+    const { data: accesos, error: errorAccesos } = await supabase
+      .from('accesos')
+      .select('id_usuario')
+      .eq('id_rol', idRolAdministrativo);
+
+    if (errorAccesos) {
+      console.error('Error al obtener los accesos de los usuarios administrativos:', errorAccesos);
+      return [];
+    }
+
+    const idsUsuarios = accesos.map(acceso => acceso.id_usuario);
+
+    // Obtener los correos electrónicos de los usuarios administrativos
+    const { data: usuarios, error: errorUsuarios } = await supabase
+      .from('usuario')
+      .select('correo')
+      .in('idusuario', idsUsuarios);
+
+    if (errorUsuarios) {
+      console.error('Error al obtener los correos de los usuarios administrativos:', errorUsuarios);
+      return [];
+    }
+
+    console.log('Correos de usuarios administrativos:', usuarios);
+    return usuarios;
 
   } catch (error) {
     console.error("Error interno:", error);
     throw new Error("FATAL ERROR: No se pudo obtener los administradores");
   }
-}
+};

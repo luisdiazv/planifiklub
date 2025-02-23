@@ -10,16 +10,19 @@ import "./smallCallendarStyles.css";
 const SmallCallendar = ({ onDateChange }) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DateCalendar']}>
-                <DateCalendar
-                    className="custom-calendar"
-                    referenceDate={dayjs()}
-                    views={['year', 'month', 'day']}
-                    minDate={dayjs()}
-                    maxDate={dayjs().add(365, 'day')}
-                    onChange={(newDate) => onDateChange(newDate)}
-                />
-            </DemoContainer>
+            <div className='MUI-calendar-container'>
+                <h3>¡Escoge el día para tu evento!</h3>
+                <DemoContainer components={['DateCalendar']}>
+                    <DateCalendar
+                        className="custom-calendar large-font"
+                        referenceDate={dayjs()}
+                        views={['year', 'month', 'day']}
+                        minDate={dayjs()}
+                        maxDate={dayjs().add(365, 'day')}
+                        onChange={(newDate) => onDateChange(newDate)}
+                    />
+                </DemoContainer>
+            </div>
         </LocalizationProvider>
     );
 }

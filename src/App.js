@@ -6,16 +6,16 @@ import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
 //Empresa
-import Home from './routes/Home.jsx'; 
-import AboutUs from './routes/AboutUs.jsx'; 
-import AboutPk from './routes/AboutPk.jsx'; 
+import Home from './routes/Home.jsx';
+import AboutUs from './routes/AboutUs.jsx';
+import AboutPk from './routes/AboutPk.jsx';
 
 //App
 import AppHome from './routes/AppHome.jsx';
 
 //App manejo de usuarios
-import LogIn from './routes/LogIn.jsx'; 
-import SignUp from './routes/SignUp.jsx'; 
+import LogIn from './routes/LogIn.jsx';
+import SignUp from './routes/SignUp.jsx';
 import EditProfile from './routes/editProfile.jsx';
 import ChangePassword from './routes/changePassword.jsx';
 
@@ -34,6 +34,7 @@ import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
 //Ruta no encontrada
 import NotFound from './routes/NotFound.jsx'; //404
+import NotAuthorized from './routes/NotAuthorized.jsx';
 //TODO SERGIO: No Autorizado <-- 502
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
-            <Route path="/app/ChangePassword" element={<ChangePassword />} />  
+            <Route path="/app/ChangePassword" element={<ChangePassword />} />
 
             {/* Manejo de eventos */}
             <Route path="/app/reservation" element={<Reservation />} />
@@ -74,7 +75,7 @@ function App() {
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
-            
+
           </Routes>
         </div>
         <Footer />
