@@ -1,7 +1,9 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getColors } from './Util/Colors.js';
 
-//Componentes basicos
+// Componentes básicos
 import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
@@ -10,7 +12,7 @@ import Home from './routes/Home.jsx';
 import AboutUs from './routes/AboutUs.jsx';
 import AboutPk from './routes/AboutPk.jsx';
 
-//App
+// App
 import AppHome from './routes/AppHome.jsx';
 
 //App manejo de usuarios
@@ -24,7 +26,8 @@ import Reservation from './routes/Reservation.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 
-//Configuradores
+// Configuradores
+import ConfiguradorPaginaClub from './routes/Service/ColorService.jsx';
 import ConfiguradorRoles from './routes/Service/RolesService.jsx';
 import ConfiguradorSocio from './routes/Service/MemberService.jsx';
 import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
@@ -32,14 +35,30 @@ import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
 import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
-//Ruta no encontrada
-import NotFound from './routes/NotFound.jsx'; //404
+// Ruta no encontrada
+import NotFound from './routes/NotFound.jsx';
 import NotAuthorized from './routes/NotAuthorized.jsx';
-//TODO SERGIO: No Autorizado <-- 502
+
+// Envolve ClubInfoProvider
+import { ClubInfoProvider } from './context/infoClubContext';
 
 function App() {
+
+  useEffect(() => {
+    const colors = getColors();
+    document.documentElement.style.setProperty('--container-color', colors[0]);
+    document.documentElement.style.setProperty('--secondary-container-color', colors[1]);
+    document.documentElement.style.setProperty('--text-color', colors[2]);
+    document.documentElement.style.setProperty('--secondary-text-color', colors[3]);
+    document.documentElement.style.setProperty('--button-color', colors[4]);
+    document.documentElement.style.setProperty('--secondary-button-color', colors[5]);
+    document.documentElement.style.setProperty('--background-color', colors[6]);
+    document.documentElement.style.setProperty('--footer-color', colors[7]);
+    document.documentElement.style.setProperty('--disabled-color', colors[8]);
+  }, []);
+
   return (
-    <>
+    <ClubInfoProvider>
       <div className="App">
         <Navbar />
         <div className="App-container">
@@ -66,12 +85,13 @@ function App() {
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
 
             {/* Configuradores */}
-            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
-            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
-            <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/*Solo Admin */}
-            <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/*Solo Admin */}
-            <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/*Solo Admin */}
+            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/* Solo Admin */}
+            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/* Solo Admin */}
+            <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/* Solo Admin */}
+            <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/* Solo Admin */}
+            <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/* Solo Admin */}
             <Route path="/app/tiposeventoConfig" element={<ConfiguradorTipoEventos />} /> {/*Solo Admin */}
+            <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/* Solo Admin */}
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
@@ -80,7 +100,7 @@ function App() {
         </div>
         <Footer />
       </div>
-    </>
+    </ClubInfoProvider>
   );
 }
 

@@ -1,3 +1,5 @@
+import { patch } from "@mui/material";
+
 export const MenuItems = [
     {
         title: "¿Quienes somos?",
@@ -39,5 +41,6 @@ export const dropdownOptions = [
     { path: "/app/productosConfig", label: "Configurador de productos [ADMIN]" },
     { path: "/app/edificiosConfig", label: "Configurador de edificios [ADMIN]" },
     { path: "/app/montajesConfig", label: "Configurador de montajes [ADMIN]" },
+    { path: "/app/pageConfig", label: "Configurador de página del club [ADMIN]" },
 ];
 
