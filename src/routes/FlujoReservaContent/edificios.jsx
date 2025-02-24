@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllEdificio } from "../../Ctrl/EdificiosCtrl";
 import { getAllMontajeEdificio } from "../../Ctrl/MontajesEdificioCtrl";
 import { getNombreMontajeByIdMontaje } from "../../Ctrl/MontajesCtrl";
-import {getFotoEdificio} from "../../API/StorageAPI";
+import { getFotoEdificio } from "../../API/StorageAPI";
 import "./edificiosStyles.css";
 import { formatCurrency } from "../../Util/MoneyFormat";
 
@@ -71,13 +71,13 @@ const EdificiosList = () => {
     e.preventDefault();
 
     if (selectedEdificios.size === 0) {
-        window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
-        return;
+      window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
+      return;
     }
 
     const eventoDumm = JSON.parse(sessionStorage.getItem("eventoDummy"));
     const time = Math.round(
-        (new Date(`2025-02-17T${eventoDumm.hora_fin}`) - new Date(`2025-02-17T${eventoDumm.hora_inicio}`)) / 3600000
+      (new Date(`2025-02-17T${eventoDumm.hora_fin}`) - new Date(`2025-02-17T${eventoDumm.hora_inicio}`)) / 3600000
     );
 
     // Crear lista de edificios seleccionados con montajes y subtotales
@@ -86,19 +86,20 @@ const EdificiosList = () => {
       const idMontaje = montajeSeleccionado[idEdificio];
 
       if (!idMontaje) {
-          window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
-          return;
+        window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
+        return undefined;
       }
 
       const subtotal = edificio.costo_hora * time;
-
-      return {
+      if (!(selectedEdificios.size === 0 || !idMontaje)){
+        return {
           id_edificio: idEdificio,
           id_evento: null,
           id_montaje_elegido: idMontaje,
           subtotal_alquiler: subtotal,
-      };
-  });
+        };
+      }
+    });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
       sessionStorage.removeItem("edificiosDummy");
@@ -126,7 +127,13 @@ const EdificiosList = () => {
                 )}
               </div>
               <div className="edificio-info">
-                <h2>{edificio.nombre}</h2>
+                <div className="titleContainer">
+                  <h2>{edificio.nombre}</h2>
+                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                    {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
+                  </button>
+                </div>
+
                 {expanded[edificio.idedificios] && (
                   <div className="edificio-details">
                     <p><strong>Descripción:</strong> {edificio.descripcion}</p>
@@ -136,38 +143,36 @@ const EdificiosList = () => {
                   </div>
                 )}
                 <div className="button-container">
-                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
-                    {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
-                  </button>
-                  <label className="edificio-checker-container">
+                  <div className="montajes-dropdown">
+                    <label>Montajes disponibles:</label>
+                    <select className="montajes-drop-select"
+                      value={montajeSeleccionado[edificio.idedificios] || ""}
+                      onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
+                    >
+                      {montajesFiltrados.length > 0 ? (
+                        <>
+                          <option value="" disabled>Seleccione un montaje</option>
+                          {montajesFiltrados.map((montaje) => (
+                            <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
+                              {montajesNombres[montaje.id_montajes] || "Cargando..."}
+                            </option>
+                          ))}
+                        </>
+                      ) : (
+                        <option>No hay montajes</option>
+                      )}
+                    </select>
+                  </div>
+                  <div className="basic-input-checkbox-container">
                     <input
-                      className="edificio-checker"
+                      className="basic-input-checkbox"
                       type="checkbox"
                       checked={selectedEdificios.has(edificio.idedificios)}
                       onChange={() => handleSelectionChange(edificio.idedificios)}
                     />
-                  </label>
+                  </div>
                 </div>
-                <div className="montajes-dropdown">
-                  <label>Montajes disponibles:</label>
-                  <select
-                    value={montajeSeleccionado[edificio.idedificios] || ""}
-                    onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
-                  >
-                    {montajesFiltrados.length > 0 ? (
-                      <>
-                        <option value="" disabled>Seleccione un montaje</option>
-                        {montajesFiltrados.map((montaje) => (
-                          <option key={montaje.idmontajes_edificios} value={montaje.id_montajes}>
-                            {montajesNombres[montaje.id_montajes] || "Cargando..."}
-                          </option>
-                        ))}
-                      </>
-                    ) : (
-                      <option>No hay montajes</option>
-                    )}
-                  </select>
-                </div>
+
               </div>
             </div>
           );

@@ -1,13 +1,11 @@
 import './NotFoundStyles.css';
-import errorImg from '../Components/imgs/error404.png';
 import { Link } from 'react-router-dom';
 
-function NotFound() {
+function NotAuthorized() {
     return (
         <div className='error-container'>
-            <img src={errorImg} alt="Error 404" className="error-image" />
             <div>
-                <h2>error 404: Página no encontrada</h2>
+                <h2> error 502: error de autorización</h2>
                 <Link to="/">
                     <button>
                         Volver al inicio
@@ -19,4 +17,4 @@ function NotFound() {
     );
 }
 
-export default NotFound;
+export default NotAuthorized;

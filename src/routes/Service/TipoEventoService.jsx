@@ -1,112 +1,84 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-import { getEdificiosByNombre, updateEdificio, createEdificio, deleteEdificio } from '../../Ctrl/EdificiosCtrl';
-import { getTipoEventoByNombre, updateTipoEvento, createTipoEvento, deleteTipoEvento } from '../../Ctrl/TiposEventosCtrl';
-import { getFotoEdificio, uploadFotoEdificio } from '../../API/StorageAPI';
+import { 
+  getTipoEventoByNombre, 
+  updateTipoEvento, 
+  createTipoEvento, 
+  deleteTipoEvento 
+} from '../../Ctrl/TiposEventosCtrl';
+import { 
+  getFotoTipoEvento, 
+  uploadFotoTipoEvento 
+} from '../../API/StorageAPI';
 
 const ConfiguradorTipoEventos = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [edificioInfo, setEdificioInfo] = useState(null);
-  const [edificios, setEdificios] = useState([]);
+  const [tipoEventoInfo, setTipoEventoInfo] = useState(null);
+  const [tiposEvento, setTiposEvento] = useState([]);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  // Estado para la imagen redimensionada (blob) que se subirá
   const [newFoto, setNewFoto] = useState(null);
-  // Estado para la URL de vista previa de la imagen
   const [previewFoto, setPreviewFoto] = useState(null);
-
-  // Estados para los montajes
-  const [availableMontajes, setAvailableMontajes] = useState([]);
-  const [selectedMontajes, setSelectedMontajes] = useState([]);
-
-  // Cargar los montajes disponibles desde la base de datos (tabla "montajes")
-  useEffect(() => {
-    const fetchMontajesDisponibles = async () => {
-      try {
-        const montajes = await getAllMontajes();
-        setAvailableMontajes(montajes);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchMontajesDisponibles();
-  }, []);
-
-  // Cuando se selecciona un edificio para editar, se obtienen los montajes asignados
-  const handleSelectEdificio = async (edificio) => {
-    setEdificioInfo(edificio);
-    setEdificios([]); // Oculta la lista de edificios
-    try {
-      const url = await getFotoEdificio(edificio.idedificios);
-      setPreviewFoto(url);
-    } catch (error) {
-      console.error('Error al obtener la foto del edificio:', error.message);
-      setPreviewFoto(null);
-    }
-    // Obtener los montajes asignados al edificio
-    try {
-      const montajesAsignados = await getMontajesByEdificio(edificio.idedificios);
-      setSelectedMontajes(montajesAsignados);
-    } catch (error) {
-      console.error('Error al obtener montajes asignados:', error.message);
-      setSelectedMontajes([]);
-    }
-  };
 
   const handleSearchByNombre = async () => {
     setError('');
     setSuccessMsg('');
-    setEdificioInfo(null);
+    setTiposEvento([]); // Inicializa con un array vacío en lugar de null
+  
     try {
-      const filteredEdificios = await getEdificiosByNombre(searchTerm);
-      if (filteredEdificios && filteredEdificios.length > 0) {
-        setEdificios(filteredEdificios);
+      const filteredTipos = await getTipoEventoByNombre(searchTerm);
+      if (filteredTipos && filteredTipos.length > 0) {
+        setTiposEvento(filteredTipos);
       } else {
-        setEdificios([]);
-        setError('No se encontraron edificios con ese nombre.');
+        setTiposEvento([]); // Asegúrate de que siempre sea un array
+        setError('No se encontraron tipos de evento con ese nombre.');
       }
     } catch (error) {
-      console.error('Error al buscar edificios por nombre:', error.message);
-      setError('Ocurrió un error al buscar edificios.');
+      console.error('Error al buscar tipos de evento por nombre:', error.message);
+      setError('Ocurrió un error al buscar tipos de evento.');
+    }
+  };
+  
+  const handleSelectTipoEvento = async (tipoEvento) => {
+    setTipoEventoInfo(tipoEvento);
+    setTiposEvento([]);
+
+    try {
+      const url = await getFotoTipoEvento(tipoEvento.idtipos_eventos);
+      setPreviewFoto(url);
+    } catch (error) {
+      console.error('Error al obtener la foto del tipo de evento:', error.message);
+      setPreviewFoto(null);
     }
   };
 
+  const handleExitWithoutSaving = () => {
+    setTipoEventoInfo(null);
+    setSuccessMsg('');
+    setError('');
+    setNewFoto(null);
+    setPreviewFoto(null);
+  };
+
   const handleCreateNew = () => {
-    // Abrir el formulario con valores iniciales y sin montajes asignados
-    setEdificioInfo({
+    setTipoEventoInfo({
       nombre: '',
-      capacidad_maxima: 0,
-      disponibilidad: true,
-      costo_hora: 0,
       descripcion: ''
     });
     setError('');
     setSuccessMsg('');
     setPreviewFoto(null);
-    setSelectedMontajes([]);
   };
 
   const handleChange = (e) => {
-    const { name, value, _, checked } = e.target; // eslint-disable-line no-unused-vars
-    if (name === 'disponibilidad') {
-      setEdificioInfo(prev => ({ ...prev, [name]: checked }));
-      return;
-    }
-    if (name === 'costo_hora') {
-      const regex = /^\d+(\.\d{0,2})?$/;
-      if (!regex.test(value) && value !== '') return;
-      const parsedValue = parseFloat(value) || 0;
-      if (parsedValue < 0) return;
-      setEdificioInfo(prev => ({ ...prev, [name]: parsedValue }));
-      return;
-    }
-    setEdificioInfo(prev => ({ ...prev, [name]: value }));
+    const { name, value } = e.target;
+    setTipoEventoInfo(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // Redimensionar la imagen para que el lado mayor tenga 300px
+
     Resizer.imageFileResizer(
       file,
       300,
@@ -123,93 +95,82 @@ const ConfiguradorTipoEventos = () => {
     );
   };
 
-  // Maneja la selección o deselección de montajes
-  const handleMontajeChange = (e, id) => {
-    if (e.target.checked) {
-      setSelectedMontajes([...selectedMontajes, id]);
-    } else {
-      setSelectedMontajes(selectedMontajes.filter(item => item !== id));
-    }
-  };
-
   const handleSave = async () => {
-    if (!edificioInfo) return;
+    if (!tipoEventoInfo) return;
+  
     try {
-      let updatedInfo = { ...edificioInfo };
-      let idEdificioGuardado = null;
-      if (edificioInfo.idedificios) {
-        // Actualizar edificio existente
-        await updateEdificio(edificioInfo.idedificios, updatedInfo);
-        idEdificioGuardado = edificioInfo.idedificios;
+      let updatedInfo = { ...tipoEventoInfo };
+  
+      if (tipoEventoInfo.idtipos_eventos) {
+        // Actualizar tipo de evento existente
+        await updateTipoEvento(tipoEventoInfo.idtipos_eventos, updatedInfo);
+        
         if (newFoto) {
-          await uploadFotoEdificio(edificioInfo.idedificios, newFoto);
-          const newUrl = await getFotoEdificio(edificioInfo.idedificios);
+          await uploadFotoTipoEvento(tipoEventoInfo.idtipos_eventos, newFoto);
+          const newUrl = await getFotoTipoEvento(tipoEventoInfo.idtipos_eventos);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Edificio actualizado exitosamente.');
+        setSuccessMsg('Tipo de evento actualizado exitosamente.');
+        alert('¡Tipo de evento actualizado exitosamente!');
       } else {
-        // Crear nuevo edificio
-        const createdEdificio = await createEdificio(updatedInfo);
-        idEdificioGuardado = createdEdificio.idedificios;
+        // Crear nuevo tipo de evento
+        const createdTipoEvento = await createTipoEvento(updatedInfo);
+        
         if (newFoto) {
-          await uploadFotoEdificio(createdEdificio.idedificios, newFoto);
-          const newUrl = await getFotoEdificio(createdEdificio.idedificios);
+          await uploadFotoTipoEvento(createdTipoEvento.idtipos_eventos, newFoto);
+          const newUrl = await getFotoTipoEvento(createdTipoEvento.idtipos_eventos);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Edificio creado exitosamente.');
+        setSuccessMsg('Tipo de evento creado exitosamente.');
+        alert('¡Tipo de evento creado exitosamente!');
       }
-
-      // Guardar la relación de montajes para el edificio
-      if (idEdificioGuardado !== null) {
-        await saveMontajesEdificio(
-          idEdificioGuardado,
-          selectedMontajes.map(id => ({ id_montajes: id }))
-        );        
-      }
-
-      // Reiniciar estados
+  
       setNewFoto(null);
-      setEdificioInfo(null);
-      setSelectedMontajes([]);
+      setTipoEventoInfo(null);
+  
+      // Forzar recarga de la página después de guardar
+      window.location.reload();
+  
     } catch (error) {
-      console.error('Error al guardar el edificio:', error.message);
-      setError('Ocurrió un error al guardar el edificio.');
+      console.error('Error al guardar el tipo de evento:', error.message);
+      setError('Ocurrió un error al guardar el tipo de evento.');
+      alert('Error al guardar el tipo de evento: ' + error.message);
     }
   };
-
-  const handleExitWithoutSaving = () => {
-    setEdificioInfo(null);
-    setSuccessMsg('');
-    setError('');
-    setNewFoto(null);
-    setPreviewFoto(null);
-  };
-
+  
   const handleDelete = async () => {
-    if (!edificioInfo) return;
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este edificio?');
+    if (!tipoEventoInfo) return;
+  
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este tipo de evento?');
+    
     if (confirmDelete) {
       try {
-        await deleteEdificio(edificioInfo.idedificios);
-        setSuccessMsg('Edificio eliminado exitosamente.');
-        setEdificioInfo(null);
+        await deleteTipoEvento(tipoEventoInfo.idtipos_eventos);
+        setSuccessMsg('Tipo de evento eliminado exitosamente.');
+        setTipoEventoInfo(null);
         setNewFoto(null);
         setPreviewFoto(null);
+  
+        // Forzar recarga de la página después de eliminar
+        alert('¡Tipo de evento eliminado exitosamente!');
+        window.location.reload();
+  
       } catch (error) {
-        console.error('Error al eliminar el edificio:', error.message);
-        setError('Ocurrió un error al eliminar el edificio.');
+        console.error('Error al eliminar el tipo de evento:', error.message);
+        setError('Ocurrió un error al eliminar el tipo de evento.');
+        alert('Error al eliminar el tipo de evento: ' + error.message);
       }
     }
-  };
+  };  
 
   return (
     <div style={styles.container}>
-      <header style={styles.header}>Configurador de Edificios</header>
-
+      <header style={styles.header}>Configurador de Tipos de Evento</header>
+      
       <div style={styles.inputContainer}>
         <input
           type="text"
-          placeholder="Ingrese el nombre del edificio"
+          placeholder="Ingrese el nombre del tipo de evento"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={styles.input}
@@ -218,60 +179,32 @@ const ConfiguradorTipoEventos = () => {
           Buscar
         </button>
         <button onClick={handleCreateNew} style={{ ...styles.button, marginTop: '10px' }}>
-          Crear Nuevo Edificio
+          Crear Nuevo Tipo de Evento
         </button>
       </div>
 
       {error && <span style={styles.error}>{error}</span>}
       {successMsg && <span style={styles.success}>{successMsg}</span>}
 
-      {edificioInfo ? (
+      {tipoEventoInfo ? (
         <div style={styles.productoInfo}>
           <h3 style={styles.title}>
-            {edificioInfo.idedificios ? 'Editando Edificio' : 'Creando Nuevo Edificio'}
+            {tipoEventoInfo.idtipos_eventos ? 'Editando Tipo de Evento' : 'Creando Nuevo Tipo de Evento'}
           </h3>
-
+          
           <p style={styles.label}>Nombre:</p>
           <input
             type="text"
             name="nombre"
-            value={edificioInfo.nombre}
+            value={tipoEventoInfo.nombre}
             onChange={handleChange}
             style={styles.input}
-          />
-
-          <p style={styles.label}>Capacidad Máxima:</p>
-          <input
-            type="number"
-            name="capacidad_maxima"
-            value={edificioInfo.capacidad_maxima}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <p style={styles.label}>Disponibilidad:</p>
-          <input
-            type="checkbox"
-            name="disponibilidad"
-            checked={edificioInfo.disponibilidad}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <p style={styles.label}>Costo por Hora:</p>
-          <input
-            type="number"
-            name="costo_hora"
-            value={edificioInfo.costo_hora}
-            onChange={handleChange}
-            style={styles.input}
-            step="0.01"
           />
 
           <p style={styles.label}>Descripción:</p>
           <textarea
             name="descripcion"
-            value={edificioInfo.descripcion}
+            value={tipoEventoInfo.descripcion}
             onChange={handleChange}
             style={styles.textarea}
           />
@@ -283,6 +216,7 @@ const ConfiguradorTipoEventos = () => {
             onChange={handleImageChange}
             style={styles.input}
           />
+
           {previewFoto && (
             <img
               src={previewFoto}
@@ -291,23 +225,6 @@ const ConfiguradorTipoEventos = () => {
             />
           )}
 
-          <p style={styles.label}>Montajes:</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {availableMontajes.map((montaje) => (
-              <div key={montaje.idmontajes} style={{ width: '50%' }}>
-                <span>
-                  <input
-                    type="checkbox"
-                    value={montaje.idmontajes}
-                    checked={selectedMontajes.includes(montaje.idmontajes)}
-                    onChange={(e) => handleMontajeChange(e, montaje.idmontajes)}
-                  />
-                  {montaje.nombre_montaje}
-                </span>
-              </div>
-            ))}
-          </div>
-
           <div style={styles.buttonContainer}>
             <button onClick={handleSave} style={styles.saveButton}>
               Guardar
@@ -315,7 +232,7 @@ const ConfiguradorTipoEventos = () => {
             <button onClick={handleExitWithoutSaving} style={styles.exitButton}>
               Salir sin guardar
             </button>
-            {edificioInfo.idedificios && (
+            {tipoEventoInfo.idtipos_eventos && (
               <button onClick={handleDelete} style={styles.deleteButton}>
                 Eliminar
               </button>
@@ -323,22 +240,16 @@ const ConfiguradorTipoEventos = () => {
           </div>
         </div>
       ) : (
-        edificios.length > 0 && (
+        tiposEvento.length > 0 && (
           <div>
-            {edificios.map((edificio) => (
+            {tiposEvento.map((tipoEvento) => (
               <div
-                key={edificio.idedificios}
+                key={tipoEvento.idtipos_eventos}
                 style={styles.productoItem}
-                onClick={() => handleSelectEdificio(edificio)}
+                onClick={() => handleSelectTipoEvento(tipoEvento)}
               >
                 <div>
-                  <strong>{edificio.nombre}</strong>
-                  <div>
-                    <span>Capacidad: {edificio.capacidad_maxima} personas</span>
-                  </div>
-                  <div>
-                    <span>Precio: ${edificio.costo_hora} por hora</span>
-                  </div>
+                  <strong>{tipoEvento.nombre}</strong>
                   <button style={styles.button}>Seleccionar</button>
                 </div>
               </div>

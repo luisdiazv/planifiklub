@@ -243,11 +243,9 @@ const ShowEvent = () => {
                                   headerRows: 1,
                                   widths: ['30%', '20%', '20%', '30%'],
                                   body: [
-                                      ['Detalles', 'Fecha de Pago', 'Método', 'Monto Pagado'],
+                                      ['Fecha de Pago', 'Monto Pagado'],
                                       ...facturas.map(factura => [
-                                          factura.detalles || 'Desconocido',
                                           factura.fecha_pago || 'Desconocido',
-                                          factura.metodo || 'Desconocido',
                                           `${formatCurrency(factura.monto) || 'Desconocido'}`,
                                       ]),
                                   ],
@@ -388,9 +386,6 @@ const ShowEvent = () => {
                     <>
                         {eventInfo.estado === "En Cotizacion" ? (
                             <>
-                                <div>
-                                <button className="btn-approve" onClick={console.log("Debe poder modificar")}>Modificar Cotización</button>
-                                </div>
                                 <div>
                                     <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
                                 </div>

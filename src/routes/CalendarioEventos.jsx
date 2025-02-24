@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CiCalendarDate } from "react-icons/ci";
 import "dayjs/locale/es";
-import {getEdificiosByIdEvento} from "../Ctrl/EdificiosCtrl";
+import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import { getAllEventIds, getEventById, getAllEventIdsByMonth } from "../Ctrl/EventosCtrl";
 import { getUsuarioByID, getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ const Calendario = () => {
     const localizer = dayjsLocalizer(dayjs);
     const [events, setEvents] = useState([]);
     const [filter, setFilter] = useState('todos');  // Filtro para los eventos
-    const [currentMonth, setCurrentMonth] = useState(dayjs().format("YYYY-MM")); 
+    const [currentMonth, setCurrentMonth] = useState(dayjs().format("YYYY-MM"));
     const [isButtonVisible, setIsButtonVisible] = useState(true);
     const [loading, setLoading] = useState(false);
     const [currentView, setCurrentView] = useState("month");
@@ -32,7 +32,7 @@ const Calendario = () => {
         try {
             const eventIds = await getAllEventIds();
             if (!eventIds || eventIds.length === 0) {
-                console.warn("No se encontraron eventos en la base de datos."); 
+                console.warn("No se encontraron eventos en la base de datos.");
                 return;
             }
 
@@ -58,7 +58,7 @@ const Calendario = () => {
                         ...event,
                         title: `${user.nombres} ${user.apellidos} - ${edificioName}`,
                         color: event.estado === "En Cotizacion" ? "#7C0A01" : "##CC9901",
-                        estado:event.estado
+                        estado: event.estado
                     };
                 })
             );
@@ -103,13 +103,13 @@ const Calendario = () => {
         try {
             setLoading(true);
             const eventos = await getAllEventIdsByMonth(currentMonth);
-    
+
             if (!eventos || eventos.length === 0) {
                 alert("No hay eventos para facturar este mes.");
                 setLoading(false);
                 return;
             }
-    
+
             const eventosConUsuarios = await Promise.all(
                 eventos.map(async (evento) => {
                     const usuario = await getNombresApellidosById(evento.id_usuario);
@@ -119,7 +119,7 @@ const Calendario = () => {
                     };
                 })
             );
-    
+
             // Construcción del contenido PDF en formato tabla
             const tableBody = [
                 ["Persona", "Fecha", "Costo Total", "Saldo Pendiente", "Estado"],
@@ -131,7 +131,7 @@ const Calendario = () => {
                     evento.estado || "No especificado"
                 ])
             ];
-    
+
             const documentDefinition = {
                 content: [
                     { text: "Facturación General del Mes", style: "header", alignment: "center" },
@@ -144,12 +144,9 @@ const Calendario = () => {
                         },
                         layout: "lightHorizontalLines"
                     }
-                ],
-                styles: {
-                    header: { fontSize: 18, bold: true, margin: [0, 10, 0, 10] },
-                }
+                ]
             };
-    
+
             pdfMake.createPdf(documentDefinition).download(`Facturacion_${currentMonth}.pdf`);
         } catch (error) {
             console.error("Error generando la facturación en PDF:", error.message);
@@ -157,7 +154,7 @@ const Calendario = () => {
         } finally {
             setLoading(false);
         }
-    };    
+    };
 
     // Llamamos a la función de obtención de eventos al montar el componente
     useEffect(() => {
@@ -181,20 +178,20 @@ const Calendario = () => {
     const components = {
         event: props => {
             return (
-                <button 
-                    onClick={() => handleEventClick(props.event)} 
-                    style={{ 
-                        background: props.event.color, 
-                        color: "white", 
-                        border: "none", 
-                        width: "100%", 
-                        height: "100%", 
-                        textAlign: "left", 
-                        padding: "5px", 
-                        cursor: "pointer" 
+                <button
+                    onClick={() => handleEventClick(props.event)}
+                    style={{
+                        background: props.event.color,
+                        color: "white",
+                        border: "none",
+                        width: "100%",
+                        height: "100%",
+                        textAlign: "left",
+                        padding: "5px",
+                        cursor: "pointer"
                     }}
                 >
-                    <CiCalendarDate style={{ marginRight: "5px" }} />
+                    <CiCalendarDate />
                     {props.title}
                 </button>
             );
@@ -217,9 +214,9 @@ const Calendario = () => {
     };
 
     return (
-        <div className="calendar-container">
-            <h2 style={{ marginBottom: "10px" }}>Calendario de eventos y cotizaciones</h2>
-            
+        <div className="calendarEvent-container">
+            <h2>Calendario de eventos y cotizaciones</h2>
+
             {/* Filtro de eventos */}
             <div className="filter-buttons">
                 <button onClick={() => handleFilterChange('todos')}>Eventos y cotizaciones</button>
@@ -227,7 +224,7 @@ const Calendario = () => {
                 <button onClick={() => handleFilterChange('En Cotizacion')}>Cotizaciones</button>
             </div>
 
-            <div>
+            <div className='calendarEvent'>
                 <Calendar
                     localizer={localizer}
                     events={events}
@@ -249,8 +246,8 @@ const Calendario = () => {
                         opacity: loading ? 0.6 : 1,
                     }}
                 >
-                    {loading 
-                        ? `Generando Facturación de ${dayjs(currentMonth).format("MMMM [del] YYYY")}...` 
+                    {loading
+                        ? `Generando Facturación de ${dayjs(currentMonth).format("MMMM [del] YYYY")}...`
                         : `Generar Facturación de ${dayjs(currentMonth).format("MMMM [del] YYYY")} en PDF`}
                 </button>
             )}

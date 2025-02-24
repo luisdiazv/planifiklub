@@ -76,9 +76,6 @@
         padding: 1.5rem;
     }
 
-    .login-container h2 {
-        font-size: 2.5rem;
-    }
 
     .forgot-password {
         flex-direction: column;
@@ -88,6 +85,6 @@
 
     .new-account,
     .forgot-password-link {
-        padding: 0.2rem 0;
+        padding: 0.5rem 0;
     }
 }

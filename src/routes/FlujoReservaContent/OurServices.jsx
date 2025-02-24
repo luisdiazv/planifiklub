@@ -83,7 +83,7 @@ const OurProducts = () => {
         const newSelectedProducts = selectedProducts
         Object.keys(newSelectedProducts).forEach(key => {
             if (newSelectedProducts[key] === false) {
-              delete newSelectedProducts[key];
+                delete newSelectedProducts[key];
             }
         });
         return Object.keys(newSelectedProducts);
@@ -92,7 +92,7 @@ const OurProducts = () => {
     const completitudDiccionarios = () => {
         let errores = [];
         const seleccionados = seleccionFinal();
-    
+
         seleccionados.forEach(llave => {
             if (!productQuantities.hasOwnProperty(llave)) {
                 errores.push(llave);
@@ -101,24 +101,24 @@ const OurProducts = () => {
         if (errores.length > 0) {
             throw new Error("Faltan productos por asignar cantidad: " + errores.join(", "));
         }
-    };    
+    };
 
     const calcularSubtotales = () => {
         const subtotals = {};
-        
+
         Object.keys(selectedProducts).forEach((productIdKey) => {
-          if (selectedProducts[productIdKey]) { 
-            const productId = parseInt(productIdKey, 10);
-            const product = products.find((p) => p.idproducto === productId); 
-            
-            if (product) {
-              const quantity = productQuantities[productIdKey] || 0; 
-              const subtotal = quantity * product.precio; 
-              subtotals[productId] = subtotal;
+            if (selectedProducts[productIdKey]) {
+                const productId = parseInt(productIdKey, 10);
+                const product = products.find((p) => p.idproducto === productId);
+
+                if (product) {
+                    const quantity = productQuantities[productIdKey] || 0;
+                    const subtotal = quantity * product.precio;
+                    subtotals[productId] = subtotal;
+                }
             }
-          }
         });
-        
+
         return subtotals;
     };
 
@@ -153,15 +153,15 @@ const OurProducts = () => {
 
         sessionStorage.setItem("pedidoDummy", JSON.stringify(pedido));
         sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedido));
-        
 
-        console.log("Productos",JSON.parse(sessionStorage.getItem("pedidoDummy")))
-        console.log("Cantidad",JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
+
+        console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")))
+        console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
 
         console.log("Pedido temporalmente guardado");
     };
 
-    const handleSubmit  = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         handleDummy();
     };
@@ -184,78 +184,80 @@ const OurProducts = () => {
 
     return (
         <div className="card-product-container">
-            <div className="card-product">
-                <div className="card">
-                    <h3>Productos Disponibles</h3>
-                    <ul>
-                        {products.length > 0 ? (
-                            products.map((product) => (
-                                <li key={product.idproducto} style={{ display: "flex", alignItems: "center", marginBottom: "10px", backgroundColor: "#800000" }}>
-                                    <img
-                                        src={product.imagenUrl}
-                                        alt={product.nombre}
-                                        className="product-image"
-                                        style={{ width: "50px", height: "50px", objectFit: "cover", marginRight: "10px" }}
-                                    />
-                                    <label style={{ flex: 1 }}>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedProducts[product.idproducto] || false}
-                                            onChange={(e) => handleCheckboxChange(product.idproducto, e.target.checked)}
-                                        />
-                                        {product.nombre} - {formatCurrency(product.precio)} $
-                                    </label>
-                                    {selectedProducts[product.idproducto] && (
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value={productQuantities[product.idproducto] || 1}
-                                            onChange={(e) => handleQuantityChange(product.idproducto, parseInt(e.target.value) || 1)}
-                                            style={{ width: "50px", marginLeft: "10px" }}
-                                        />
-                                    )}
-                                </li>
-                            ))
-                        ) : (
-                            <p>Cargando productos...</p>
-                        )}
-                    </ul>
-    
-                    <h4>Servicios Adicionales o Personalizados</h4>
-                    <ul>
-                        {extraServices.map((service, index) => (
-                            <li key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
-                                <input
-                                    type="text"
-                                    placeholder="Ingrese un servicio adicional"
-                                    value={service}
-                                    onChange={(e) => handleExtraServiceChange(index, e.target.value)}
-                                    style={{ flex: 1, padding: "5px", marginRight: "10px" }}
+            {/* <h3>Productos Disponibles</h3> */}
+            <ul className="ourService-cards">
+                {products.length > 0 ? (
+                    products.map((product) => (
+                        <li className="ourService-card" key={product.idproducto}>
+                            <div className="ourService-foto">
+                                <img
+                                    src={product.imagenUrl}
+                                    alt={product.nombre}
+                                    className="ourService-image"
                                 />
-                                <button
-                                    onClick={() => removeExtraService(index)}
-                                    style={{ backgroundColor: "red", color: "white", border: "none", borderRadius: "5px", padding: "5px 10px", cursor: "pointer" }}
-                                >
-                                    X
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                    <button
-                        onClick={addExtraService}
-                        style={{ padding: "5px 10px", cursor: "pointer", marginTop: "10px" }}
-                    >
-                        + Agregar Servicio
-                    </button>
-                    <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
-                </div>
-                
-                <button type="submit" onClick={handleSubmit} style={{ backgroundColor: "#4CAF50", color: "white", border: "none", borderRadius: "5px", padding: "10px 20px", cursor: "pointer", fontSize: "16px" }} >
-                    Siguiente
-                </button>
-            </div>
+                            </div>
+                            <div className="ourService-info">
+                                <div className="Ourservice-product-name">
+                                    <h2>{product.nombre}</h2>
+                                    <h3>
+                                        {formatCurrency(product.precio)} $
+                                    </h3>
+                                </div>
+
+                                {selectedProducts[product.idproducto] && (
+                                    <input className="OurServices-number-Input"
+                                        type="number"
+                                        min="1"
+                                        value={productQuantities[product.idproducto] || 1}
+                                        onChange={(e) => handleQuantityChange(product.idproducto, parseInt(e.target.value) || 1)}
+                                    />
+                                )}
+                                <div className="basic-input-checkbox-container">
+                                    <input className="basic-input-checkbox"
+                                        type="checkbox"
+                                        checked={selectedProducts[product.idproducto] || false}
+                                        onChange={(e) => handleCheckboxChange(product.idproducto, e.target.checked)}
+                                    />
+                                </div>
+
+                            </div>
+                        </li>
+                    ))
+                ) : (
+                    <p>Cargando productos...</p>
+                )}
+            </ul>
+
+            <h4>Servicios Adicionales o Personalizados</h4>
+            <ul className="ourService-cards">
+                {extraServices.map((service, index) => (
+                    <li className="additionalService-card" key={index}>
+                        <input
+                            type="text"
+                            placeholder="Ingrese un servicio adicional"
+                            value={service}
+                            onChange={(e) => handleExtraServiceChange(index, e.target.value)}
+                        />
+                        <button
+                            onClick={() => removeExtraService(index)}
+                        >
+                            X
+                        </button>
+                    </li>
+                ))}
+            </ul>
+            <button
+                onClick={addExtraService}
+            >
+                + Agregar Servicio
+            </button>
+            <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
+
+            <button type="submit" onClick={handleSubmit}>
+                Siguiente
+            </button>
         </div>
     );
-};    
+};
 
 export default OurProducts;

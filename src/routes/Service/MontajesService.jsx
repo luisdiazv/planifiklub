@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-import { 
+import "./MontajesServiceStyles.css";
+
+import {
   getMontajesByNombre,
-  updateMontaje, 
-  createMontaje, 
-  deleteMontaje 
+  updateMontaje,
+  createMontaje,
+  deleteMontaje
 } from '../../Ctrl/MontajesCtrl';
 //import { getFotoMontaje, uploadFotoMontaje } from '../../API/StorageAPI'; // Ajusta la ruta según tu proyecto
 
@@ -150,52 +152,52 @@ const ConfiguradorMontajes = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>Configurador de Montajes</header>
+    <div className="fullMontaje-config-container">
+      <div className="montaje-config-container">
+        <h2 className="montaje-config-header">Configurador de Montajes</h2>
 
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="Ingrese el nombre del montaje"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={styles.input}
-        />
-        <button onClick={handleSearchByNombre} style={styles.button}>
-          Buscar
-        </button>
-        <button onClick={handleCreateNew} style={{ ...styles.button, marginTop: '10px' }}>
-          Crear Nuevo Montaje
-        </button>
-      </div>
-
-      {error && <span style={styles.error}>{error}</span>}
-      {successMsg && <span style={styles.success}>{successMsg}</span>}
-
-      {montajeInfo ? (
-        <div style={styles.productoInfo}>
-          <h3 style={styles.title}>
-            {montajeInfo.idmontajes ? 'Editando Montaje' : 'Creando Nuevo Montaje'}
-          </h3>
-
-          <p style={styles.label}>Nombre del Montaje:</p>
+        <div className="montaje-config-input-container">
           <input
             type="text"
-            name="nombre_montaje"
-            value={montajeInfo.nombre_montaje}
-            onChange={handleChange}
-            style={styles.input}
+            placeholder="Ingrese el nombre del montaje"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="montaje-config-input"
           />
+          <button onClick={handleSearchByNombre} className="montaje-config-button">
+            Buscar
+          </button>
+          <button onClick={handleCreateNew} className="montaje-config-button montajes-config-button-margin-top">
+            Crear Nuevo Montaje
+          </button>
+        </div>
 
-          <p style={styles.label}>Descripción:</p>
-          <textarea
-            name="descripcion"
-            value={montajeInfo.descripcion}
-            onChange={handleChange}
-            style={styles.textarea}
-          />
+        {error && <span className="montaje-config-error">{error}</span>}
+        {successMsg && <span className="montaje-config-success">{successMsg}</span>}
 
-          {/*
+        {montajeInfo ? (
+          <div className="montaje-config-producto-info">
+            <h3 className="montaje-config-title">
+              {montajeInfo.idmontajes ? 'Editando Montaje' : 'Creando Nuevo Montaje'}
+            </h3>
+
+            <label className="montaje-config-label">Nombre del Montaje:</label>
+            <input
+              type="text"
+              name="nombre_montaje"
+              value={montajeInfo.nombre_montaje}
+              onChange={handleChange}
+              className="montaje-config-input"
+            />
+
+            <label className="montaje-config-label">Descripción:</label>
+            <textarea
+              name="descripcion"
+              value={montajeInfo.descripcion}
+              onChange={handleChange}
+              className="montaje-config-textarea"
+            />
+            {/*
           <p style={styles.label}>Foto:</p>
           <input
             type="file"
@@ -213,152 +215,45 @@ const ConfiguradorMontajes = () => {
           )}
             
           */
-          }
+            }
 
-          <div style={styles.buttonContainer}>
-            <button onClick={handleSave} style={styles.saveButton}>
-              Guardar
-            </button>
-            <button onClick={handleExitWithoutSaving} style={styles.exitButton}>
-              Salir sin guardar
-            </button>
-            {montajeInfo.idmontajes && (
-              <button onClick={handleDelete} style={styles.deleteButton}>
-                Eliminar
+            <div className="montaje-config-button-container">
+              <button onClick={handleSave} className="montaje-config-button montaje-config-button-save">
+                Guardar
               </button>
-            )}
+              <button onClick={handleExitWithoutSaving} className="montaje-config-button-exit">
+                Salir sin guardar
+              </button>
+              {montajeInfo.idmontajes && (
+                <button onClick={handleDelete} className="montaje-config-button-delete">
+                  Eliminar
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      ) : (
-        montajes.length > 0 && (
-          <div>
-            {montajes.map((montaje) => (
-              <div
-                key={montaje.idmontajes}
-                style={styles.productoItem}
-                onClick={() => handleSelectMontaje(montaje)}
-              >
-                <span>
+        ) : (
+          montajes.length > 0 && (
+            <div>
+              {montajes.map((montaje) => (
+                <div
+                  key={montaje.idmontajes}
+                  className="montaje-config-producto-item"
+                >
                   <div>
-                    <strong>{montaje.nombre_montaje}</strong>
+                    <label>
+                      <strong>{montaje.nombre_montaje}</strong>
+                    </label>
                   </div>
-                  <button style={styles.button}>Seleccionar</button>
-                </span>
-              </div>
-            ))}
-          </div>
-        )
-      )}
+                  <button className="montaje-config-button" onClick={() => handleSelectMontaje(montaje)}>Seleccionar</button>
+
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '10px',
-    maxWidth: '500px',
-    margin: '0 auto',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '10px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  label: {
-    margin: '0 0 5px 0',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '5px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    height: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '5px',
-    resize: 'none',
-  },
-  button: {
-    padding: '8px 16px',
-    backgroundColor: '#800000',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  saveButton: {
-    padding: '8px 16px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  exitButton: {
-    padding: '8px 16px',
-    backgroundColor: '#808080',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  deleteButton: {
-    padding: '8px 16px',
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  productoInfo: {
-    backgroundColor: '#fff',
-    padding: '10px',
-    borderRadius: '6px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  productoItem: {
-    padding: '5px',
-    borderBottom: '1px solid #ccc',
-    marginBottom: '5px',
-    cursor: 'pointer',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  },
 };
 
 export default ConfiguradorMontajes;
