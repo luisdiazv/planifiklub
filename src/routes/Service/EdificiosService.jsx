@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import Resizer from 'react-image-file-resizer';
 import { getEdificiosByNombre, updateEdificio, createEdificio, deleteEdificio } from '../../Ctrl/EdificiosCtrl';
 import { getFotoEdificio, uploadFotoEdificio } from '../../API/StorageAPI';
 import { getMontajesByEdificio, saveMontajesEdificio } from '../../Ctrl/MontajesEdificioCtrl';
 import { getAllMontajes } from '../../Ctrl/MontajesCtrl';
+
+import "./EdificiosServiceStyles.css";
 
 const ConfiguradorEdificios = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -165,7 +167,7 @@ const ConfiguradorEdificios = () => {
         await saveMontajesEdificio(
           idEdificioGuardado,
           selectedMontajes.map(id => ({ id_montajes: id }))
-        );        
+        );
       }
 
       // Reiniciar estados
@@ -204,255 +206,160 @@ const ConfiguradorEdificios = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>Configurador de Edificios</header>
+    <div className="fullEdificios-config-container">
+      <div className="edificios-config-container">
+        <h2 className="edificios-config-header">Configurador de Edificios</h2>
 
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="Ingrese el nombre del edificio"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={styles.input}
-        />
-        <button onClick={handleSearchByNombre} style={styles.button}>
-          Buscar
-        </button>
-        <button onClick={handleCreateNew} style={{ ...styles.button, marginTop: '10px' }}>
-          Crear Nuevo Edificio
-        </button>
-      </div>
-
-      {error && <span style={styles.error}>{error}</span>}
-      {successMsg && <span style={styles.success}>{successMsg}</span>}
-
-      {edificioInfo ? (
-        <div style={styles.productoInfo}>
-          <h3 style={styles.title}>
-            {edificioInfo.idedificios ? 'Editando Edificio' : 'Creando Nuevo Edificio'}
-          </h3>
-
-          <p style={styles.label}>Nombre:</p>
+        <div className="edificios-config-input-container">
           <input
             type="text"
-            name="nombre"
-            value={edificioInfo.nombre}
-            onChange={handleChange}
-            style={styles.input}
+            placeholder="Ingrese el nombre del edificio"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="edificios-config-input"
           />
-
-          <p style={styles.label}>Capacidad Máxima:</p>
-          <input
-            type="number"
-            name="capacidad_maxima"
-            value={edificioInfo.capacidad_maxima}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <p style={styles.label}>Disponibilidad:</p>
-          <input
-            type="checkbox"
-            name="disponibilidad"
-            checked={edificioInfo.disponibilidad}
-            onChange={handleChange}
-            style={styles.input}
-          />
-
-          <p style={styles.label}>Costo por Hora:</p>
-          <input
-            type="number"
-            name="costo_hora"
-            value={edificioInfo.costo_hora}
-            onChange={handleChange}
-            style={styles.input}
-            step="0.01"
-          />
-
-          <p style={styles.label}>Descripción:</p>
-          <textarea
-            name="descripcion"
-            value={edificioInfo.descripcion}
-            onChange={handleChange}
-            style={styles.textarea}
-          />
-
-          <p style={styles.label}>Foto:</p>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={styles.input}
-          />
-          {previewFoto && (
-            <img
-              src={previewFoto}
-              alt="Preview"
-              style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
-            />
-          )}
-
-          <p style={styles.label}>Montajes:</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {availableMontajes.map((montaje) => (
-              <div key={montaje.idmontajes} style={{ width: '50%' }}>
-                <span>
-                  <input
-                    type="checkbox"
-                    value={montaje.idmontajes}
-                    checked={selectedMontajes.includes(montaje.idmontajes)}
-                    onChange={(e) => handleMontajeChange(e, montaje.idmontajes)}
-                  />
-                  {montaje.nombre_montaje}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div style={styles.buttonContainer}>
-            <button onClick={handleSave} style={styles.saveButton}>
-              Guardar
-            </button>
-            <button onClick={handleExitWithoutSaving} style={styles.exitButton}>
-              Salir sin guardar
-            </button>
-            {edificioInfo.idedificios && (
-              <button onClick={handleDelete} style={styles.deleteButton}>
-                Eliminar
-              </button>
-            )}
-          </div>
+          <button onClick={handleSearchByNombre} className="edificios-config-button">
+            Buscar
+          </button>
+          <button onClick={handleCreateNew} className="edificios-config-button edificios-config-button-margin">
+            Crear Nuevo Edificio
+          </button>
         </div>
-      ) : (
-        edificios.length > 0 && (
-          <div>
-            {edificios.map((edificio) => (
-              <div
-                key={edificio.idedificios}
-                style={styles.productoItem}
-                onClick={() => handleSelectEdificio(edificio)}
-              >
-                <div>
-                  <strong>{edificio.nombre}</strong>
-                  <div>
-                    <span>Capacidad: {edificio.capacidad_maxima} personas</span>
+
+        {error && <span className="edificios-config-error">{error}</span>}
+        {successMsg && <span className="edificios-config-success">{successMsg}</span>}
+
+        {edificioInfo ? (
+          <div className="edificios-config-producto-info">
+            <h3 className="edificios-config-title">
+              {edificioInfo.idedificios ? 'Editando Edificio' : 'Creando Nuevo Edificio'}
+            </h3>
+
+            <label className="edificios-config-label">Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={edificioInfo.nombre}
+              onChange={handleChange}
+              className="edificios-config-input"
+            />
+
+            <label className="edificios-config-label">Capacidad Máxima:</label>
+            <input
+              type="number"
+              name="capacidad_maxima"
+              value={edificioInfo.capacidad_maxima}
+              onChange={handleChange}
+              className="edificios-config-input"
+            />
+            <div className='edificios-config-label-container'>
+              <label className="edificios-config-label">Disponibilidad:</label>
+              <div className='basic-input-checkbox-container'>
+                <input
+                  type="checkbox"
+                  name="disponibilidad"
+                  checked={edificioInfo.disponibilidad}
+                  onChange={handleChange}
+                  className="basic-input-checkbox"
+                />
+              </div></div>
+
+
+            <label className="edificios-config-label">Costo por Hora:</label>
+            <input
+              type="number"
+              name="costo_hora"
+              value={edificioInfo.costo_hora}
+              onChange={handleChange}
+              className="edificios-config-input"
+              step="0.01"
+            />
+
+            <label className="edificios-config-label">Descripción:</label>
+            <textarea
+              name="descripcion"
+              value={edificioInfo.descripcion}
+              onChange={handleChange}
+              className="edificios-config-textarea"
+            />
+
+            <label className="edificios-config-label">Foto:</label>
+            {previewFoto && (
+              <img
+                src={previewFoto}
+                alt="Preview"
+                className="edificios-config-preview-foto"
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="edificios-config-input-image"
+            />
+
+
+            <label className="edificios-config-label">Montajes:</label>
+            <div className="edificios-config-montajes-container">
+              {availableMontajes.map((montaje) => (
+                <div key={montaje.idmontajes} className="edificios-config-montaje-item">
+                  <div className="basic-input-checkbox-container">
+                    <input
+                      className='basic-input-checkbox'
+                      type="checkbox"
+                      value={montaje.idmontajes}
+                      checked={selectedMontajes.includes(montaje.idmontajes)}
+                      onChange={(e) => handleMontajeChange(e, montaje.idmontajes)}
+                    />
                   </div>
-                  <div>
-                    <span>Precio: ${edificio.costo_hora} por hora</span>
-                  </div>
-                  <button style={styles.button}>Seleccionar</button>
+                  <p>
+                    {montaje.nombre_montaje}
+                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div className="edificios-config-button-container">
+              <button onClick={handleSave} className="edificios-config-save-button">
+                Guardar
+              </button>
+              <button onClick={handleExitWithoutSaving} className="edificios-config-exit-button">
+                Salir sin guardar
+              </button>
+              {edificioInfo.idedificios && (
+                <button onClick={handleDelete} className="edificios-config-delete-button">
+                  Eliminar
+                </button>
+              )}
+            </div>
           </div>
-        )
-      )}
+        ) : (
+          edificios.length > 0 && (
+            <div>
+              {edificios.map((edificio) => (
+                <div
+                  key={edificio.idedificios}
+                  className="edificios-config-producto-item"
+
+                >
+                  <div>
+                    <strong>{edificio.nombre}</strong>
+                    <div>
+                      <label>Capacidad: {edificio.capacidad_maxima} personas</label>
+                    </div>
+                    <div>
+                      <label>Precio: ${edificio.costo_hora} por hora</label>
+                    </div>
+                    <button className="edificios-config-button" onClick={() => handleSelectEdificio(edificio)}>Seleccionar</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: '10px',
-    maxWidth: '500px',
-    margin: '0 auto',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '10px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  label: {
-    margin: '0 0 5px 0',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '5px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    height: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '5px',
-    resize: 'none',
-  },
-  button: {
-    padding: '8px 16px',
-    backgroundColor: '#800000',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  saveButton: {
-    padding: '8px 16px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  exitButton: {
-    padding: '8px 16px',
-    backgroundColor: '#808080',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  deleteButton: {
-    padding: '8px 16px',
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  productoInfo: {
-    backgroundColor: '#fff',
-    padding: '10px',
-    borderRadius: '6px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  productoItem: {
-    padding: '5px',
-    borderBottom: '1px solid #ccc',
-    marginBottom: '5px',
-    cursor: 'pointer',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  },
 };
 
 export default ConfiguradorEdificios;

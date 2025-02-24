@@ -1,4 +1,4 @@
-/* Estilos generales */
+/* Estilos generales
 .showevent-container {
     width: 60%;
     margin: 0 auto;
@@ -12,7 +12,7 @@
     text-align: center;
     color: #333;
     margin-bottom: 20px;
-    
+
 }
 
 .error-message {
@@ -33,7 +33,7 @@
     color: #333;
     margin-bottom: 15px;
     font-size: 1.9rem;
-    
+
 }
 
 .detail-item {
@@ -43,7 +43,7 @@
 }
 
 .detail-label {
-    //font-weight: bold;
+    font-weight: bold;
     color: #555;
 }
 
@@ -75,7 +75,9 @@
     margin-top: 20px;
 }
 
-.btn-approve, .btn-cancel, .btn-pdf {
+.btn-approve,
+.btn-cancel,
+.btn-pdf {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -115,5 +117,4 @@
     gap: 10px;
     margin-top: 20px;
     justify-content: center;
-}
-
+} */

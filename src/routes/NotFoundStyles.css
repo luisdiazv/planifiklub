@@ -1,0 +1,14 @@
+.error-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    align-self: flex-start;
+    justify-self: flex-start;
+    height: 100%;
+
+}
+
+.error-image {
+    max-width: 60%;
+    align-self: center;
+}

@@ -100,6 +100,24 @@ export const getNombresApellidosById = async (userId) => {
     }
 };
 
+export const getNombresApellidosByEmail = async (email) => {
+  try {
+      const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("correo", email);
+
+      if (error) {
+          console.error("Error obteniendo el usuario:", error.message);
+          throw new Error("No se pudo obtener el usuario: " + error.message);
+      }
+
+      if (data.length > 0) { return `${data[0].nombres} ${data[0].apellidos}`;
+      } else { return "Usuario desconocido"; }
+
+  } catch (error) {
+      console.error("Error interno:", error.message);
+      throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
+  }
+};
+
 export const actualizarPassword = async (email, newPassword) => {
   try {
     const { data, error, count } = await supabase

@@ -130,3 +130,50 @@ export const createEvent = async (eventoDummy) => {
       throw new Error("Ocurrió un error al crear el evento: " + error.message);
   }
 };
+
+export const getEventIDsByUser = async (userID) => {
+  try {
+    const { data, error } = await supabase.from("evento").select("*").eq("id_evento", userID);
+
+    if (error) {
+      console.error("Error obteniendo la lista de eventos del usuario:", error.message);
+      throw new Error("No se pudo obtener la lista de eventos del usuario: " + error.message);
+    }
+    
+    if (!data || data.length === 0) {
+      throw new Error("No se encontraron eventos asociados al ID.");
+    }
+
+    return data;       
+
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error(
+      "Ocurrió un error al obtener la información del evento: " +
+        error.message
+    );
+  }
+}
+
+export const updateEventByID = async (eventID, newInfo) => {
+  /*
+  template para 
+    const newInfo = {
+      id_tipo_evento: 'tipo_de_evento',
+      fecha: new Date('fecha').toISOString().split('T')[0], // YYYY-MM-DD
+      hora_inicio: new Date('hora_de_inicio').toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+      hora_fin: new Date('hora_de_fin').toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00' , // Formato HH:MM:00
+      detalles: 'nueva_descripcion',
+      personas: parseInt('invitados', 10)
+    };
+    Lo de fecha y horas es para modificaciones, para asegurar el formato que pide supabase
+  */
+
+  const { data, error } = await supabase.from('evento').update(newInfo).eq('idevento', eventID);
+
+  if (error) {
+    console.error('Error actualizando evento:', error);
+  } else {
+    console.log('Evento actualizado:', data);
+  }
+}

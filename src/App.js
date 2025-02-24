@@ -7,17 +7,30 @@ import { getColors } from './Util/Colors.js';
 import Navbar from './Components/Navbar.jsx';
 import Footer from './Components/footer.jsx';
 
+<<<<<<< HEAD
 // Empresa
 import Home from './routes/Home.jsx'; 
 import AboutUs from './routes/AboutUs.jsx'; 
 import AboutPk from './routes/AboutPk.jsx'; 
+=======
+//Empresa
+import Home from './routes/Home.jsx';
+import AboutUs from './routes/AboutUs.jsx';
+import AboutPk from './routes/AboutPk.jsx';
+>>>>>>> 95a67280a938ff9fb231bbc322fd949c2244d7f0
 
 // App
 import AppHome from './routes/AppHome.jsx';
 
+<<<<<<< HEAD
 // Manejo de usuarios
 import LogIn from './routes/LogIn.jsx'; 
 import SignUp from './routes/SignUp.jsx'; 
+=======
+//App manejo de usuarios
+import LogIn from './routes/LogIn.jsx';
+import SignUp from './routes/SignUp.jsx';
+>>>>>>> 95a67280a938ff9fb231bbc322fd949c2244d7f0
 import EditProfile from './routes/editProfile.jsx';
 import ChangePassword from './routes/changePassword.jsx';
 
@@ -33,12 +46,20 @@ import ConfiguradorSocio from './routes/Service/MemberService.jsx';
 import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
+import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
+<<<<<<< HEAD
 // Ruta no encontrada
 import NotFound from './routes/NotFound.jsx';
 
 // Envolver la aplicación con el ClubInfoProvider
 import { ClubInfoProvider } from './context/infoClubContext';
+=======
+//Ruta no encontrada
+import NotFound from './routes/NotFound.jsx'; //404
+import NotAuthorized from './routes/NotAuthorized.jsx';
+//TODO SERGIO: No Autorizado <-- 502
+>>>>>>> 95a67280a938ff9fb231bbc322fd949c2244d7f0
 
 function App() {
 
@@ -74,7 +95,7 @@ function App() {
             <Route path="/app/LogIn" element={<LogIn />} />
             <Route path="/app/SignUp" element={<SignUp />} />
             <Route path="/app/EditProfile" element={<EditProfile />} />
-            <Route path="/app/ChangePassword" element={<ChangePassword />} />  
+            <Route path="/app/ChangePassword" element={<ChangePassword />} />
 
             {/* Manejo de eventos */}
             <Route path="/app/reservation" element={<Reservation />} />
@@ -83,6 +104,7 @@ function App() {
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
 
             {/* Configuradores */}
+<<<<<<< HEAD
             <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/* Solo Admin */}
             <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/* Solo Admin */}
             <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/* Solo Admin */}
@@ -92,6 +114,18 @@ function App() {
 
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
+=======
+            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/*Solo Admin */}
+            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/*Solo Admin */}
+            <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/*Solo Admin */}
+            <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/*Solo Admin */}
+            <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/*Solo Admin */}
+            <Route path="/app/tiposeventoConfig" element={<ConfiguradorTipoEventos />} /> {/*Solo Admin */}
+
+            {/* Ruta no encontrada */}
+            <Route path="*" element={<NotFound />} />
+
+>>>>>>> 95a67280a938ff9fb231bbc322fd949c2244d7f0
           </Routes>
         </div>
         <Footer />

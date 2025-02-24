@@ -109,7 +109,7 @@
 }
 
 .section {
-    padding: 1rem;
+    padding: 2rem;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
@@ -125,10 +125,7 @@
 
 .card-product {
     width: 100%;
-    max-width: 800px;
-    padding: 20px;
-    background-color: var(--text-color);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 
