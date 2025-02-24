@@ -41,6 +41,7 @@ export const dropdownOptions = [
     { path: "/app/productosConfig", label: "Configurador de productos [ADMIN]" },
     { path: "/app/edificiosConfig", label: "Configurador de edificios [ADMIN]" },
     { path: "/app/montajesConfig", label: "Configurador de montajes [ADMIN]" },
+    { path: "/app/tiposeventoConfig", label: "Configurador de tipos de evento [ADMIN]" },
     { path: "/app/pageConfig", label: "Configurador de página del club [ADMIN]" },
 ];
 
