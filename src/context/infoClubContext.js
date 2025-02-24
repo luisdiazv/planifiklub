@@ -21,13 +21,13 @@ export const ClubInfoProvider = ({ children }) => {
     const storedClubDesc = localStorage.getItem("clubDesc");
     if (storedLogo) setLogo(storedLogo);
     if (storedClubName) setClubName(storedClubName);
-    if (storedClubDesc) setClubName(storedClubDesc);
+    if (storedClubDesc) setClubDesc(storedClubDesc);
 
     // Obtener datos actualizados desde la API
     try {
+      const descripcion = await getActualDescripcionClubInfo();
       const logoUrl = await getActualLogoClub();
       const name = await getActualNombreClubInfo();
-      const descripcion = await getActualDescripcionClubInfo();
       setLogo(logoUrl);
       setClubName(name);
       setClubDesc(descripcion)
@@ -61,8 +61,8 @@ export const ClubInfoProvider = ({ children }) => {
             setClubName(payload.new.nombre);
             localStorage.setItem("clubName", payload.new.nombre);
           }
-          if (payload.new.nombre) {
-            setClubName(payload.new.descripcion);
+          if (payload.new.descripcion) {
+            setClubDesc(payload.new.descripcion);
             localStorage.setItem("clubDesc", payload.new.descripcion);
           }
         }
