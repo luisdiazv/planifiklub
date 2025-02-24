@@ -4,7 +4,7 @@ import { getAllAdmins } from "../../Ctrl/RolCtrl";
 import { createEvent } from "../../Ctrl/EventosCtrl"; 
 import { createEdificioEvento } from "../../Ctrl/EdificiosCtrl"; 
 import {createPedido, createProductoPedido} from "../../Ctrl/PedidoCtrl"
-import htmlToPdfMake from "html-to-pdfmake";
+import axios from "axios";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import "./PurchaseSummaryStyles.css";
