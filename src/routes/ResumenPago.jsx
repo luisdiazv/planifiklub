@@ -119,7 +119,7 @@ const ResumenPago = () => {
 
     const createPreference = async () => {
         try {
-            const request = `${process.env.REACT_APP_MERCADOPAGO_API_URL}/create_preference`;
+            const request = "https://" + process.env.REACT_APP_MERCADOPAGO_API_URL + "/create_preference";
 
             const response = await axios.post(request, {
                 title: "Reserva de evento",
@@ -244,6 +244,12 @@ const ResumenPago = () => {
                         ) : (
                             <p className="no-data-message">No hay pedidos registrados para este evento.</p>
                         )}
+                        {pedidos.length > 0 && (
+                            <div className="detail-item">
+                                <span className="detail-label">Productos y servicios adicionales:</span>
+                                <span className="detail-value">{pedidos[0].pedidos_adicionales ? formatCurrency(pedidos[0].pedidos_adicionales) : "No aplica"}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             ) : (
@@ -253,7 +259,7 @@ const ResumenPago = () => {
             <h3>Costo faltante del evento: {eventInfo && formatCurrency(eventInfo.saldo_pendiente)}</h3>
             {eventInfo && Number(eventInfo.saldo_pendiente) === Number(eventInfo.costo_total) && (
                 <div className="input-container">
-                    <label htmlFor="saldo-pendiente-input">Cantidad a pagar:</label>
+                    <label htmlFor="saldo-pendiente-input" style={{color : "#3D0C01"}}>Cantidad a pagar:</label>
                     <input
                         id="saldo-pendiente-input"
                         type="text"
@@ -263,11 +269,12 @@ const ResumenPago = () => {
                     />
                 </div>
             )}
-            <button onClick={handleBuy}>Pagar</button>
+            <button className="pagar" onClick={handleBuy}>Pagar</button>
             {preferenceId && (
                 <Wallet
                     initialization={{ preferenceId, redirectMode: "modal" }}
-                    customization={{ texts: { valueProp: 'smart_option' } }}
+                    customization={{ texts: { valueProp: 'smart_option' }, button: { label: 'Pagar', color: 'default', textColor: 'white' } }}
+                    className="mercado-pago-button"
                 />
             )}
         </div>
