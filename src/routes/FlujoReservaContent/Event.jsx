@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { getEventTypes } from "../../Ctrl/TiposEventosCtrl";
+import { getFotoTipoEvento } from "../../API/StorageAPI"; 
 import "./EventStyles.css";
 import SmallCallendar from "../../Components/smallCallendar";
 import HourSelector from "../../Components/hourSelector";
 import userControl from "../../Util/UserControl";
+
+const EventTypeImage = ({ id, alt }) => {
+  const [imgUrl, setImgUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await getFotoTipoEvento(id);
+      setImgUrl(url);
+    };
+    fetchImage();
+  }, [id]);
+
+  return <img className="event-type-image" src={imgUrl || ""} alt={alt} />;
+};
 
 const EventDetails = () => {
     const [eventTypes, setEventTypes] = useState([]);
@@ -78,9 +93,6 @@ const EventDetails = () => {
             sessionStorage.removeItem("eventoDummy");
         }
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
-        // console.log(evento);
-
-
     };
 
     return (
@@ -98,10 +110,7 @@ const EventDetails = () => {
                             eventTypes.map((eventType, index) => (
                                 <div key={index} className="event-type-item">
                                     <div className="event-type-foto">
-                                        <img
-                                            className="event-type-image"
-                                            src="https://mkwmvlaoimsijzmmrihb.supabase.co/storage/v1/object/public/Img/Edificio/5.jpg"
-                                            alt="Edificio" />
+                                        <EventTypeImage id={eventType.idtipos_eventos} alt={eventType.nombre} />
                                     </div>
                                     <div className="event-type-info">
                                         <div className="event-type-title-container">
@@ -113,7 +122,6 @@ const EventDetails = () => {
                                         {expandedIndex === index && (
                                             <div>
                                                 <p>{eventType.descripcion}</p>
-
                                             </div>
                                         )}
                                         <div className="button-container">
@@ -127,7 +135,6 @@ const EventDetails = () => {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             ))
                         ) : (
@@ -160,8 +167,8 @@ const EventDetails = () => {
                 </div>
 
                 <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
-            </form >
-        </div >
+            </form>
+        </div>
     );
 };
 
