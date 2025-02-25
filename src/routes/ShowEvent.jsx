@@ -245,7 +245,7 @@ const ShowEvent = () => {
                                   body: [
                                       ['Fecha de Pago', 'Monto Pagado'],
                                       ...facturas.map(factura => [
-                                          factura.fecha_pago || 'Desconocido'
+                                          factura.fecha_pago || 'Desconocido',
                                           `${formatCurrency(factura.monto) || 'Desconocido'}`,
                                       ]),
                                   ],
