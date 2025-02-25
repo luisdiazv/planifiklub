@@ -1,0 +1,59 @@
+/* Estilos generales */
+.purchase-summary-container {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 1.5rem;
+}
+
+.summary-title {
+    text-align: center;
+    margin: 0;
+}
+
+.event-section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+
+    margin-bottom: 15px;
+    font-size: 1.9rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: bold;
+}
+
+
+.list-container {
+    list-style: none;
+    padding: 0;
+}
+
+.list-item {
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-message {
+    text-align: center;
+    color: var(--disabled-color);
+}
