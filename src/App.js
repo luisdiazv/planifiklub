@@ -37,7 +37,12 @@ import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
 // Ruta no encontrada
 import NotFound from './routes/NotFound.jsx';
+// Ruta no autorizada
 import NotAuthorized from './routes/NotAuthorized.jsx';
+
+// Terminos y condiciones
+import TerminosCondicionesClub from './routes/TyC/Club.jsx';
+import TerminosCondicionesPlanifiKlub from './routes/TyC/PlanifiKlub.jsx';
 
 // Envolve ClubInfoProvider
 import { ClubInfoProvider } from './context/infoClubContext';
@@ -93,8 +98,15 @@ function App() {
             <Route path="/app/tiposeventoConfig" element={<ConfiguradorTipoEventos />} /> {/*Solo Admin */}
             <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/* Solo Admin */}
 
+            {/* Términos y condiciones */}
+            <Route path="/app/TerminosyCondiciones/Club" element={<TerminosCondicionesClub />} />
+            <Route path="/app/TerminosyCondiciones/PlanifiKlub" element={<TerminosCondicionesPlanifiKlub />} />
+            
             {/* Ruta no encontrada */}
             <Route path="*" element={<NotFound />} />
+
+            {/* Ruta no autorizada */}
+            <Route path="/app/502" element={<NotAuthorized />} />
 
           </Routes>
         </div>
