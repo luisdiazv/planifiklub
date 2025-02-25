@@ -202,3 +202,22 @@ export const getEventType = async (idtipos_eventos) => {
     throw new Error("Ocurrió un error al obtener el tipo de evento: " + error.message);
   }
 };
+export const updateEventCostAndBalance = async (eventID, nuevoCosto, nuevoSaldo) => {
+  try {
+    const { data, error } = await supabase
+      .from('evento')
+      .update({ costo_total: nuevoCosto, saldo_pendiente: nuevoSaldo })
+      .eq('idevento', eventID);
+
+    if (error) {
+      console.error('Error actualizando costo y saldo del evento:', error.message);
+      throw new Error('No se pudo actualizar el costo y saldo del evento: ' + error.message);
+    }
+
+    console.log('Costo y saldo del evento actualizados:', data);
+    return data;
+  } catch (error) {
+    console.error('Error interno:', error.message);
+    throw new Error('Ocurrió un error al actualizar el costo y saldo del evento: ' + error.message);
+  }
+};

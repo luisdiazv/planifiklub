@@ -22,7 +22,7 @@ export const sections = [
         content: <OurServices />
     },
     {
-        title: "Resumen Final",
+        title: "Resumen Cotización",
         content: <PurchaseSummary/>
     }
 

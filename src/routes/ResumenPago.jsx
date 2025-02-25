@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import { getEventType } from "../Ctrl/TiposEventosCtrl";
 import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
-import { getPedidosByIdEvento } from "../Ctrl/PedidoCtrl";
+import { getPedidosByIdEvento, getPedidosAdicionalesByIdPedido } from "../Ctrl/PedidoCtrl";
 import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import "./ShowEventStyles.css";
 import { formatCurrency } from "../Util/MoneyFormat";
@@ -22,6 +22,7 @@ const ResumenPago = () => {
     const [preferenceId, setPreferenceId] = useState(null);
     const [inputValue, setInputValue] = useState(""); // Estado para el valor del campo de entrada
     const [price, setPrice] = useState(0); // Estado para el valor del precio
+    const [pedidosAdicionales, setPedidosAdicionales] = useState("");
 
     initMercadoPago('APP_USR-559230ce-2f09-4179-959c-855f9d01f382', {
         locale: "es-CO"
@@ -108,6 +109,21 @@ const ResumenPago = () => {
             }
         }
     }, [eventInfo]);
+
+    useEffect(() => {
+        const fetchPedidosAdicionales = async () => {
+            if (pedidos && pedidos.length > 0) {
+                try {
+                    const adicionales = await getPedidosAdicionalesByIdPedido(pedidos[0].id_pedido);
+                    setPedidosAdicionales(adicionales || "No aplica");
+                } catch (error) {
+                    console.error("Error obteniendo pedidos adicionales:", error.message);
+                    setPedidosAdicionales("No aplica");
+                }
+            }
+        };
+        fetchPedidosAdicionales();
+    }, [pedidos]);
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -244,19 +260,20 @@ const ResumenPago = () => {
                         ) : (
                             <p className="no-data-message">No hay pedidos registrados para este evento.</p>
                         )}
-                        {pedidos.length > 0 && (
-                            <div className="detail-item">
-                                <span className="detail-label">Productos y servicios adicionales:</span>
-                                <span className="detail-value">{pedidos[0].pedidos_adicionales ? formatCurrency(pedidos[0].pedidos_adicionales) : "No aplica"}</span>
-                            </div>
-                        )}
                     </div>
                 </div>
             ) : (
                 <p className="loading-message">Cargando información del evento...</p>
             )}
+            <div className="event-section">
+                <h2 className="section-title">Pedidos Adicionales</h2>
+                <div className="detail-item">
+                    <span className="detail-label">Pedidos Adicionales:</span>
+                    <span className="detail-value">{pedidosAdicionales}</span>
+                </div>
+            </div>    
 
-            <h3>Costo faltante del evento: {eventInfo && formatCurrency(eventInfo.saldo_pendiente)}</h3>
+            <h2>Pago restante del evento: {eventInfo && formatCurrency(eventInfo.saldo_pendiente)}</h2>
             {eventInfo && Number(eventInfo.saldo_pendiente) === Number(eventInfo.costo_total) && (
                 <div className="input-container">
                     <label htmlFor="saldo-pendiente-input" style={{color : "#3D0C01"}}>Cantidad a pagar:</label>
