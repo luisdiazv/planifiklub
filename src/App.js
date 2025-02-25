@@ -23,6 +23,7 @@ import ChangePassword from './routes/changePassword.jsx';
 
 // Manejo de eventos
 import Reservation from './routes/Reservation.jsx';
+import EdicionEventos from './routes/EdicionEventos.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
 import VisorDeCotizaciones from './routes/VisorDeCotizaciones.jsx';
@@ -86,6 +87,7 @@ function App() {
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
             <Route path="/app/VisorDeCotizaciones" element={<VisorDeCotizaciones />} />
             <Route path="/app/ResumenPago/:id" element={<ResumenPago />} />
+            <Route path="/app/EdicionEventos" element={<EdicionEventos />} />
 
             {/* Configuradores */}
             <Route path="/app/usuarioConfig" element={<ConfiguradorUsuario />} /> {/* Solo Admin */}
