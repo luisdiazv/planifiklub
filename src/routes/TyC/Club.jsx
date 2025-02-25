@@ -1,4 +1,4 @@
-function TerminosCondicionesClub() {
+const TerminosCondicionesClub = () => {
     return (
         <div>
             <h1>TÉRMINOS Y CONDICIONES DE USO PARA EL USUARIO FINAL DE CLUB AFILIADO</h1>
@@ -8,3 +8,5 @@ function TerminosCondicionesClub() {
         </div>
     )
 };
+
+export default TerminosCondicionesClub;

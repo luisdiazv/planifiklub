@@ -1,4 +1,4 @@
-function TerminosCondicionesPlanifiKlub() {
+const TerminosCondicionesPlanifiKlub = () => {
     return (
         <div>
             <h1>TÉRMINOS Y CONDICIONES DE USO PARA EL USUARIO FINAL DE PLANIFIKLUB</h1>
@@ -9,14 +9,46 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>1. Definiciones y Alcance</h2>
             <p>A efectos de estos Términos y Condiciones, se entiende por:</p>
             <ul>
-                <li><strong>Plataforma:</strong> El sistema digital de PlanifiKlub accesible vía web y aplicaciones móviles, que permite la consulta, reserva, modificación y cancelación de espacios e instalaciones ofrecidos por clubes asociados.</li>
-                <li><strong>Usuario:</strong> Cualquier persona natural que accede y utiliza la Plataforma para realizar operaciones de búsqueda y gestión de reservas.</li>
-                <li><strong>Club:</strong> Establecimiento o centro deportivo, recreativo o de eventos afiliado a PlanifiKlub, encargado de ofrecer instalaciones y servicios disponibles para reserva a través de la Plataforma.</li>
-                <li><strong>Reserva:</strong> Solicitud realizada por el Usuario para utilizar una instalación o servicio en una fecha y horario determinados, sujeto a disponibilidad.</li>
-                <li><strong>Pago:</strong> Transacción monetaria que el Usuario realiza a través de la pasarela de pago integrada, la cual confirma y asegura la reserva.</li>
-                <li><strong>Datos Personales:</strong> Información que identifica o puede identificar de forma directa o indirecta a una persona, cuyo tratamiento se regirá conforme a la Ley 1581 de 2012 y demás normativas aplicables en Colombia.</li>
-                <li><strong>Datos Financieros:</strong> Información relacionada con las transacciones económicas y financieras del Usuario, la cual será tratada conforme a lo establecido en la Ley 1266 de 2008 y demás disposiciones legales vigentes en Colombia.</li>
-                <li><strong>Contrato:</strong> Acuerdo legal entre el Usuario y PlanifiKlub, y en determinados casos entre el Usuario y el Club, que regula el acceso y la prestación de servicios.</li>
+                <li>
+                    <strong>Plataforma:</strong> El sistema digital de PlanifiKlub accesible vía web y aplicaciones móviles, que permite la consulta, reserva, modificación y cancelación de espacios e instalaciones ofrecidos por clubes asociados.
+                </li>
+                <li>
+                    <strong>Usuario:</strong> Cualquier persona natural que accede y utiliza la Plataforma para realizar operaciones de búsqueda y gestión de reservas.
+                </li>
+                <li>
+                    <strong>Club:</strong> Establecimiento o centro deportivo, recreativo o de eventos afiliado a PlanifiKlub, encargado de ofrecer instalaciones y servicios disponibles para reserva a través de la Plataforma.
+                </li>
+                <li>
+                    <strong>Reserva:</strong> Solicitud realizada por el Usuario para utilizar una instalación o servicio en una fecha y horario determinados, sujeto a disponibilidad.
+                </li>
+                <li>
+                    <strong>Pago:</strong> Transacción monetaria que el Usuario realiza a través de la pasarela de pago integrada, la cual confirma y asegura la reserva.
+                </li>
+                <li>
+                    <strong>Datos Personales:</strong> Información que identifica o puede identificar de forma directa o indirecta a una persona, cuyo tratamiento se regirá conforme a la{" "}
+                    <a
+                        href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Ley 1581 de 2012
+                    </a>{" "}
+                    y demás normativas aplicables en Colombia.
+                </li>
+                <li>
+                    <strong>Datos Financieros:</strong> Información relacionada con las transacciones económicas y financieras del Usuario, la cual será tratada conforme a lo establecido en la{" "}
+                    <a
+                        href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34488"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Ley 1266 de 2008
+                    </a>{" "}
+                    y demás disposiciones legales vigentes en Colombia.
+                </li>
+                <li>
+                    <strong>Contrato:</strong> Acuerdo legal entre el Usuario y PlanifiKlub, y en determinados casos entre el Usuario y el Club, que regula el acceso y la prestación de servicios.
+                </li>
             </ul>
             <p>
                 Estos términos abarcan la totalidad de la relación contractual entre PlanifiKlub y el Usuario, definiendo derechos, obligaciones y responsabilidades de ambas partes en cada transacción realizada.
@@ -53,10 +85,18 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>4. Descripción, Funcionalidades y Alcance del Servicio</h2>
             <h3>4.1 Funcionalidades Principales</h3>
             <ul>
-                <li><strong>Búsqueda y Consulta de Disponibilidad:</strong> Visualización en tiempo real de la disponibilidad de espacios según fecha, horario y características específicas.</li>
-                <li><strong>Gestión de Reservas:</strong> Procedimientos para realizar nuevas reservas, así como para modificarlas o cancelarlas según las políticas vigentes.</li>
-                <li><strong>Notificaciones y Actualizaciones:</strong> Comunicación automática y en tiempo real de cualquier cambio en el estado de la reserva, incluyendo confirmaciones, modificaciones o cancelaciones.</li>
-                <li><strong>Seguridad y Control de Acceso:</strong> Mecanismos avanzados de autenticación y autorización que garantizan la protección de datos e información sensible.</li>
+                <li>
+                    <strong>Búsqueda y Consulta de Disponibilidad:</strong> Visualización en tiempo real de la disponibilidad de espacios según fecha, horario y características específicas.
+                </li>
+                <li>
+                    <strong>Gestión de Reservas:</strong> Procedimientos para realizar nuevas reservas, así como para modificarlas o cancelarlas según las políticas vigentes.
+                </li>
+                <li>
+                    <strong>Notificaciones y Actualizaciones:</strong> Comunicación automática y en tiempo real de cualquier cambio en el estado de la reserva, incluyendo confirmaciones, modificaciones o cancelaciones.
+                </li>
+                <li>
+                    <strong>Seguridad y Control de Acceso:</strong> Mecanismos avanzados de autenticación y autorización que garantizan la protección de datos e información sensible.
+                </li>
             </ul>
             <h3>4.2 Alcance del Servicio</h3>
             <p>
@@ -70,14 +110,24 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>5. Proceso de Gestión de Reservas</h2>
             <h3>5.1 Solicitud, Verificación y Confirmación</h3>
             <ul>
-                <li><strong>Solicitud de Reserva:</strong> El Usuario inicia el proceso de reserva seleccionando el espacio deseado, la fecha, el horario, el tipo de evento (por ejemplo, cumpleaños, bodas, etc.), el edificio para la reserva y los productos adicionales que se deseen incluir, conforme a la información mostrada en la Plataforma.</li>
-                <li><strong>Verificación en Tiempo Real:</strong> El sistema realiza una validación inmediata para comprobar que el espacio no se encuentre reservado o bloqueado por otra operación en el mismo periodo. En caso de conflicto, se notifica al Usuario y se le invita a seleccionar otra opción.</li>
-                <li><strong>Confirmación de Reserva:</strong> Una vez validada la disponibilidad y completado el proceso de pago, la reserva se confirma de manera definitiva. Esta confirmación se refleja en el historial del Usuario y se envía mediante notificaciones automáticas.</li>
+                <li>
+                    <strong>Solicitud de Reserva:</strong> El Usuario inicia el proceso de reserva seleccionando el espacio deseado, la fecha, el horario, el tipo de evento (por ejemplo, cumpleaños, bodas, etc.), el edificio para la reserva y los productos adicionales que se deseen incluir, conforme a la información mostrada en la Plataforma.
+                </li>
+                <li>
+                    <strong>Verificación en Tiempo Real:</strong> El sistema realiza una validación inmediata para comprobar que el espacio no se encuentre reservado o bloqueado por otra operación en el mismo periodo. En caso de conflicto, se notifica al Usuario y se le invita a seleccionar otra opción.
+                </li>
+                <li>
+                    <strong>Confirmación de Reserva:</strong> Una vez validada la disponibilidad y completado el proceso de pago, la reserva se confirma de manera definitiva. Esta confirmación se refleja en el historial del Usuario y se envía mediante notificaciones automáticas.
+                </li>
             </ul>
             <h3>5.2 Notificaciones y Seguimiento</h3>
             <ul>
-                <li><strong>Actualizaciones Instantáneas:</strong> Cada cambio en el estado de la reserva, ya sea por modificaciones, rechazos o confirmaciones de evento, se comunica de inmediato al Usuario mediante correos electrónicos.</li>
-                <li><strong>Registro y Seguimiento:</strong> La Plataforma mantiene un historial detallado de todas las operaciones realizadas, permitiendo al Usuario revisar y gestionar sus reservas anteriores y actuales.</li>
+                <li>
+                    <strong>Actualizaciones Instantáneas:</strong> Cada cambio en el estado de la reserva, ya sea por modificaciones, rechazos o confirmaciones de evento, se comunica de inmediato al Usuario mediante correos electrónicos.
+                </li>
+                <li>
+                    <strong>Registro y Seguimiento:</strong> La Plataforma mantiene un historial detallado de todas las operaciones realizadas, permitiendo al Usuario revisar y gestionar sus reservas anteriores y actuales.
+                </li>
             </ul>
             <h3>5.3 Cancelaciones, Reprogramaciones y Penalizaciones</h3>
             <p>
@@ -93,17 +143,27 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>6. Pagos, Modelo de Ingresos y Facturación</h2>
             <h3>6.1 Modalidades de Pago y Seguridad en las Transacciones</h3>
             <ul>
-                <li><strong>Pasarela de Pago:</strong> Todas las transacciones se realizan a través de una pasarela de pago segura y certificada, que protege la información financiera del Usuario mediante protocolos de encriptación.</li>
-                <li><strong>Confirmación del Pago:</strong> La reserva se considera definitiva únicamente tras la verificación y confirmación del pago o múltiples pagos asociados a la reserva. En caso de que los pagos no se reciban en el plazo estipulado, la reserva será cancelada automáticamente.</li>
-                <li><strong>Recibos y Facturación:</strong> Una vez realizado el pago, el Usuario recibirá un comprobante electrónico que detalla la transacción, incluyendo el desglose de cargos, impuestos y cualquier comisión aplicable.</li>
+                <li>
+                    <strong>Pasarela de Pago:</strong> Todas las transacciones se realizan a través de una pasarela de pago segura y certificada, que protege la información financiera del Usuario mediante protocolos de encriptación.
+                </li>
+                <li>
+                    <strong>Confirmación del Pago:</strong> La reserva se considera definitiva únicamente tras la verificación y confirmación del pago o múltiples pagos asociados a la reserva. En caso de que los pagos no se reciban en el plazo estipulado, la reserva será cancelada automáticamente.
+                </li>
+                <li>
+                    <strong>Recibos y Facturación:</strong> Una vez realizado el pago, el Usuario recibirá un comprobante electrónico que detalla la transacción, incluyendo el desglose de cargos, impuestos y cualquier comisión aplicable.
+                </li>
             </ul>
             <h3>6.2 Modelo de Ingresos</h3>
             <p>
                 PlanifiKlub opera bajo un esquema de doble modelo de ingresos:
             </p>
             <ul>
-                <li><strong>Comisiones por Transacción:</strong> Se aplicará un porcentaje previamente acordado sobre el total de cada reserva exitosa, alineando los intereses de la Plataforma y los clubes afiliados con el uso efectivo del servicio.</li>
-                <li><strong>Planes de Suscripción:</strong> Los clubes deben suscribirse a planes de servicio mensuales o anuales, que ofrecen beneficios adicionales dentro de la Plataforma.</li>
+                <li>
+                    <strong>Comisiones por Transacción:</strong> Se aplicará un porcentaje previamente acordado sobre el total de cada reserva exitosa, alineando los intereses de la Plataforma y los clubes afiliados con el uso efectivo del servicio.
+                </li>
+                <li>
+                    <strong>Planes de Suscripción:</strong> Los clubes deben suscribirse a planes de servicio mensuales o anuales, que ofrecen beneficios adicionales dentro de la Plataforma.
+                </li>
             </ul>
             <h3>6.3 Ajustes y Reembolsos</h3>
             <p>
@@ -134,17 +194,39 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>8. Protección de Datos, Privacidad y Seguridad de la Información</h2>
             <h3>8.1 Tratamiento de Datos Personales</h3>
             <p>
-                PlanifiKlub se compromete a proteger la información personal del Usuario mediante la implementación de políticas y procedimientos que garanticen la confidencialidad, integridad y disponibilidad de los datos. El tratamiento de los Datos Personales se realizará en conformidad con la Ley 1581 de 2012 y demás normativas aplicables en Colombia.
+                PlanifiKlub se compromete a proteger la información personal del Usuario mediante la implementación de políticas y procedimientos que garanticen la confidencialidad, integridad y disponibilidad de los datos. El tratamiento de los Datos Personales se realizará en conformidad con la{" "}
+                <a
+                    href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ley 1581 de 2012
+                </a>{" "}
+                y demás normativas aplicables en Colombia.
             </p>
             <h3>8.2 Tratamiento de Datos Financieros</h3>
             <p>
-                La información financiera, relacionada con las transacciones y movimientos económicos del Usuario, será tratada conforme a lo establecido en la Ley 1266 de 2008 y otras disposiciones legales vigentes, garantizando la seguridad y confidencialidad en cada operación.
+                La información financiera, relacionada con las transacciones y movimientos económicos del Usuario, será tratada conforme a lo establecido en la{" "}
+                <a
+                    href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34488"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ley 1266 de 2008
+                </a>{" "}
+                y otras disposiciones legales vigentes, garantizando la seguridad y confidencialidad en cada operación.
             </p>
             <h3>8.3 Medidas de Seguridad</h3>
             <ul>
-                <li><strong>Protocolos de Encriptación:</strong> Toda la información sensible transmitida entre el Usuario y la Plataforma se procesa mediante protocolos de encriptación avanzados, asegurando que los datos no sean accesibles por terceros no autorizados.</li>
-                <li><strong>Control de Acceso y Autorización:</strong> Se implementan sistemas de autenticación robustos para garantizar que solo el Usuario y el personal autorizado puedan acceder a información confidencial.</li>
-                <li><strong>Auditorías y Evaluaciones:</strong> La Plataforma se somete a auditorías internas y evaluaciones periódicas de seguridad para identificar y corregir vulnerabilidades, garantizando un entorno digital seguro.</li>
+                <li>
+                    <strong>Protocolos de Encriptación:</strong> Toda la información sensible transmitida entre el Usuario y la Plataforma se procesa mediante protocolos de encriptación avanzados, asegurando que los datos no sean accesibles por terceros no autorizados.
+                </li>
+                <li>
+                    <strong>Control de Acceso y Autorización:</strong> Se implementan sistemas de autenticación robustos para garantizar que solo el Usuario y el personal autorizado puedan acceder a información confidencial.
+                </li>
+                <li>
+                    <strong>Auditorías y Evaluaciones:</strong> La Plataforma se somete a auditorías internas y evaluaciones periódicas de seguridad para identificar y corregir vulnerabilidades, garantizando un entorno digital seguro.
+                </li>
             </ul>
             <h3>8.4 Uso de Cookies y Tecnologías Similares</h3>
             <p>
@@ -158,14 +240,24 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>9. Responsabilidades, Limitaciones y Exenciones</h2>
             <h3>9.1 Responsabilidad del Usuario</h3>
             <ul>
-                <li><strong>Uso Correcto y Legal:</strong> El Usuario se compromete a utilizar la Plataforma de manera lícita y conforme a las disposiciones aquí establecidas. Cualquier uso indebido o contravención de estos Términos puede dar lugar a sanciones, suspensión o cancelación de la cuenta.</li>
-                <li><strong>Veracidad de la Información:</strong> Es responsabilidad del Usuario proporcionar información verídica y actualizada durante el registro y el uso del servicio. La falsedad o inexactitud de los datos podría generar problemas en la gestión de reservas y otros inconvenientes operativos.</li>
+                <li>
+                    <strong>Uso Correcto y Legal:</strong> El Usuario se compromete a utilizar la Plataforma de manera lícita y conforme a las disposiciones aquí establecidas. Cualquier uso indebido o contravención de estos Términos puede dar lugar a sanciones, suspensión o cancelación de la cuenta.
+                </li>
+                <li>
+                    <strong>Veracidad de la Información:</strong> Es responsabilidad del Usuario proporcionar información verídica y actualizada durante el registro y el uso del servicio. La falsedad o inexactitud de los datos podría generar problemas en la gestión de reservas y otros inconvenientes operativos.
+                </li>
             </ul>
             <h3>9.2 Limitaciones de Responsabilidad de PlanifiKlub</h3>
             <ul>
-                <li><strong>Disponibilidad y Continuidad:</strong> Aunque se implementan todas las medidas razonables para asegurar la disponibilidad ininterrumpida de la Plataforma, PlanifiKlub no garantiza el funcionamiento continuo y libre de errores. Se reserva el derecho de realizar tareas de mantenimiento, actualizaciones o mejoras que puedan ocasionar interrupciones temporales.</li>
-                <li><strong>Fuerza Mayor y Eventos Externos:</strong> En caso de circunstancias extraordinarias, como desastres naturales, fallas en la conectividad o eventos de fuerza mayor, PlanifiKlub no se hace responsable de las interrupciones o fallos en el servicio, salvo en situaciones de negligencia comprobada.</li>
-                <li><strong>Interacción con Terceros:</strong> La calidad, integridad y cumplimiento de los servicios prestados por los clubes afiliados son responsabilidad exclusiva de estos. PlanifiKlub actúa únicamente como facilitador en la relación entre el Usuario y el Club, sin asumir responsabilidad sobre la ejecución de los servicios contratados.</li>
+                <li>
+                    <strong>Disponibilidad y Continuidad:</strong> Aunque se implementan todas las medidas razonables para asegurar la disponibilidad ininterrumpida de la Plataforma, PlanifiKlub no garantiza el funcionamiento continuo y libre de errores. Se reserva el derecho de realizar tareas de mantenimiento, actualizaciones o mejoras que puedan ocasionar interrupciones temporales.
+                </li>
+                <li>
+                    <strong>Fuerza Mayor y Eventos Externos:</strong> En caso de circunstancias extraordinarias, como desastres naturales, fallas en la conectividad o eventos de fuerza mayor, PlanifiKlub no se hace responsable de las interrupciones o fallos en el servicio, salvo en situaciones de negligencia comprobada.
+                </li>
+                <li>
+                    <strong>Interacción con Terceros:</strong> La calidad, integridad y cumplimiento de los servicios prestados por los clubes afiliados son responsabilidad exclusiva de estos. PlanifiKlub actúa únicamente como facilitador en la relación entre el Usuario y el Club, sin asumir responsabilidad sobre la ejecución de los servicios contratados.
+                </li>
             </ul>
             <h3>9.3 Indemnización</h3>
             <p>
@@ -207,7 +299,23 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>12. Legislación Aplicable y Jurisdicción Competente</h2>
             <h3>12.1 Normativa Aplicable</h3>
             <p>
-                Estos Términos y Condiciones se rigen por la legislación vigente en Colombia, en particular las normas establecidas por la Ley 1581 de 2012 para el tratamiento de datos personales y la Ley 1266 de 2008 para el tratamiento de datos financieros, entre otras disposiciones aplicables.
+                Estos Términos y Condiciones se rigen por la legislación vigente en Colombia, en particular las normas establecidas por la{" "}
+                <a
+                    href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=49981"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ley 1581 de 2012
+                </a>{" "}
+                para el tratamiento de datos personales y la{" "}
+                <a
+                    href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=34488"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ley 1266 de 2008
+                </a>{" "}
+                para el tratamiento de datos financieros, entre otras disposiciones aplicables.
             </p>
             <h3>12.2 Jurisdicción y Competencia</h3>
             <p>
@@ -263,9 +371,15 @@ function TerminosCondicionesPlanifiKlub() {
             <h2>Anexos y Consideraciones Adicionales</h2>
             <h3>Anexo A: Glosario de Términos Específicos</h3>
             <ul>
-                <li><strong>Reserva Confirmada:</strong> Estado en el cual la solicitud de reserva ha sido validada y el pago ha sido confirmado, haciendo efectiva la reserva.</li>
-                <li><strong>Reserva Pendiente:</strong> Estado en el cual la solicitud ha sido registrada, pero aún no se ha completado el proceso de verificación o pago.</li>
-                <li><strong>Notificación Automática:</strong> Mensaje enviado por el sistema a través de la Plataforma para informar al Usuario sobre cambios, confirmaciones o incidencias en sus reservas.</li>
+                <li>
+                    <strong>Reserva Confirmada:</strong> Estado en el cual la solicitud de reserva ha sido validada y el pago ha sido confirmado, haciendo efectiva la reserva.
+                </li>
+                <li>
+                    <strong>Reserva Pendiente:</strong> Estado en el cual la solicitud ha sido registrada, pero aún no se ha completado el proceso de verificación o pago.
+                </li>
+                <li>
+                    <strong>Notificación Automática:</strong> Mensaje enviado por el sistema a través de la Plataforma para informar al Usuario sobre cambios, confirmaciones o incidencias en sus reservas.
+                </li>
             </ul>
             <h3>Anexo B: Procedimiento de Reclamos y Sugerencias</h3>
             <p>
@@ -278,3 +392,5 @@ function TerminosCondicionesPlanifiKlub() {
         </div>
     );
 }
+
+export default TerminosCondicionesPlanifiKlub;
