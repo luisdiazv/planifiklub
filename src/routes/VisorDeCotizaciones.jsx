@@ -82,6 +82,14 @@ const VisorDeCotizaciones = () => {
         return <p>Error al cargar eventos: {error}</p>;
     }
 
+    const handleEditarClick = (evento) => {
+        if (evento.idevento) {
+            navigate(`/app/EdicionEventos`, { state: { idevento: evento.idevento, estado: evento.estado } });
+        } else {
+            console.error("El evento no tiene un ID válido.");
+        }
+    };
+
     return (
         <div className='container-visor'>
             <div className='container-visor-inner'>
@@ -120,6 +128,11 @@ const VisorDeCotizaciones = () => {
                                     {evento.estado === 'Aprobado' && (
                                         <>
                                             <button className='pago-button' onClick={() => handlePagoClick(evento)}>Realizar pago</button>
+                                        </>
+                                    )}
+                                    {(evento.estado === 'En Cotizacion' || evento.estado === 'Aprobado') && (
+                                        <>
+                                            <button className='editar-button' onClick={() => handleEditarClick(evento)}>Editar</button>
                                         </>
                                     )}
                                 </div>
