@@ -35,7 +35,7 @@ const Register = () => {
     ];
 
     const validarPassword = (password) => {
-        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{}|;:'",.<>?/\\-]).{8,}$/;
         return regex.test(password);
     };
 
@@ -201,69 +201,61 @@ const Register = () => {
                     />
                 </div>
 
-                {/* Checkboxes de términos y condiciones con display:flex y align-items:center 
-                    Se ajusta el tamaño del checkbox y del texto */}
-                <div
-                    className="basic-input-checkbox-container"
-                    style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}
-                >
-                    <input
-                        className="basic-input-checkbox"
-                        type="checkbox"
-                        id="tc1"
-                        checked={acceptedTC1}
-                        onChange={(e) => setAcceptedTC1(e.target.checked)}
-                        style={{
-                            transform: "scale(0.4)",
-                            transformOrigin: "center left"
-                        }}
-                    />
-                    <label
-                        htmlFor="tc1"
-                        style={{
-                            marginLeft: "5px",
-                            fontSize: "80%",
-                        }}
-                    >
-                        Acepto{" "}
-                        <Link to="/app/TerminosyCondiciones/PlanifiKlub" style={{ fontSize: "100%" }}>
-                            términos y condiciones 
-                            de PlanifiKlub
-                        </Link>{" "}
-                    </label>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {/* Contenedor TC1 */}
+                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
+                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                            <input
+                                className="basic-input-checkbox"
+                                type="checkbox"
+                                id="tc1"
+                                checked={acceptedTC1}
+                                onChange={(e) => setAcceptedTC1(e.target.checked)}
+                                style={{
+                                    position: "absolute",
+                                    transform: "scale(0.5)",
+                                }}
+                            />
+                        </div>
+                        <div style={{ flexGrow: 1, textAlign: "left" }}>
+                            <label htmlFor="tc1" style={{ fontSize: "80%" }}>
+                                Acepto{" "}
+                                <Link to="/app/TerminosyCondiciones/PlanifiKlub" style={{ fontSize: "100%" }}>
+                                    términos y condiciones de PlanifiKlub
+                                </Link>
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Contenedor TC2 */}
+                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
+                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                            <input
+                                className="basic-input-checkbox"
+                                type="checkbox"
+                                id="tc2"
+                                checked={acceptedTC2}
+                                onChange={(e) => setAcceptedTC2(e.target.checked)}
+                                style={{
+                                    position: "absolute",
+                                    transform: "scale(0.5)",
+                                }}
+                            />
+                        </div>
+                        <div style={{ flexGrow: 1, textAlign: "left" }}>
+                            <label htmlFor="tc2" style={{ fontSize: "80%" }}>
+                                Acepto{" "}
+                                <Link to="/app/TerminosyCondiciones/Club" style={{ fontSize: "100%" }}>
+                                    términos y condiciones de {clubName.toLowerCase()}
+                                </Link>
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Texto de espacio obligatorio */}
+                    <p style={{ margin: 0 }}>* Espacio obligatorio</p>
                 </div>
 
-                <div
-                    className="basic-input-checkbox-container"
-                    style={{ display: "flex", alignItems: "center" }}
-                >
-                    <input
-                        className="basic-input-checkbox"
-                        type="checkbox"
-                        id="tc2"
-                        checked={acceptedTC2}
-                        onChange={(e) => setAcceptedTC2(e.target.checked)}
-                        style={{
-                            transform: "scale(0.4)",
-                            transformOrigin: "center left"
-                        }}
-                    />
-                    <label
-                        htmlFor="tc2"
-                        style={{
-                            marginLeft: "5px",
-                            fontSize: "80%",
-                        }}
-                    >
-                        Acepto{" "}
-                        <Link to="/app/TerminosyCondiciones/Club" style={{ fontSize: "100%" }}>
-                            términos y condiciones 
-                            de {clubName.toLowerCase()}
-                        </Link>{" "}
-                    </label>
-                </div>
-
-                <p>* Espacio obligatorio</p>
                 {!isPopupVisible && errorMessage && <p className="error-message">{errorMessage}</p>}
 
                 <button type="submit" className="register-button">
