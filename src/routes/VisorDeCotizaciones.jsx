@@ -84,7 +84,7 @@ const VisorDeCotizaciones = () => {
 
     const handleEditarClick = (evento) => {
         if (evento.idevento) {
-            navigate(`/app/EdicionEventos`, { state: { idevento: evento.idevento, estado: evento.estado } });
+            navigate(`/app/EdicionEventos/${evento.idevento}`);
         } else {
             console.error("El evento no tiene un ID válido.");
         }
