@@ -11,15 +11,15 @@ const Reservation = () => {
 
     // Referencia al contenedor de las secciones para el deslizamiento
     const sliderRef = useRef(null);
+
     /*
-    // Lista de servicios con nombre y precio
+    // Código para servicios y MercadoPago (comentado)
     const services = [
         { name: "Servicio 1", price: 50000 },
         { name: "Servicio 2", price: 30000 },
         { name: "Servicio 3", price: 20000 },
     ];
 
-    // Inicialización de MercadoPago
     initMercadoPago('APP_USR-559230ce-2f09-4179-959c-855f9d01f382', {
         locale: "es-CO"
     });
@@ -40,7 +40,6 @@ const Reservation = () => {
                 price: totalPrice,
             });
 
-            //console.log("Respuesta del servidor:", response.data);
             const { id } = response.data;
             return id;
         } catch (error) {
@@ -51,19 +50,18 @@ const Reservation = () => {
     const handleBuy = async () => {
         const id = await createPreference();
         if (id) {
-            setPreferenceId(id);  // Setea el ID de la preferencia si se recibe correctamente
+            setPreferenceId(id);
         }
     };
 
     const handleQuantityChange = (serviceName, quantity) => {
-        if (quantity < 0) return; // No permitir cantidades negativas
+        if (quantity < 0) return;
         setServiceQuantities({
             ...serviceQuantities,
             [serviceName]: quantity,
         });
     };
 
-    // Calcula el total sumando los servicios seleccionados con la cantidad especificada
     const totalPrice = Object.keys(serviceQuantities).reduce((sum, serviceName) => {
         const quantity = serviceQuantities[serviceName];
         const service = services.find(s => s.name === serviceName);
@@ -129,76 +127,25 @@ const Reservation = () => {
                 </div>
                 {/* Botones de Navegación */}
                 <div className="navigation-buttons">
-                    {/* Botón de mover hacia la izquierda */}
-                    <button
-                        onClick={handlePrev}
-                        disabled={activeSection === 0}  // Deshabilitado si está en el primer timeline
-                    >
+                    <button type="button" id="prevScreenSlider" onClick={handlePrev} disabled={activeSection === 0}>
                         Anterior
                     </button>
-
-                    {/* Botón de mover hacia la derecha */}
-                    <button
-                        onClick={handleNext}
-                        disabled={activeSection === sections.length - 1}  // Deshabilitado si está en el último timeline
-                    >
+                    <button type="button" id="nextScreenSlider" onClick={handleNext} disabled={activeSection === sections.length - 1} hidden>
                         Siguiente
                     </button>
                 </div>
 
-
-
-                <div
-                    ref={sliderRef}
-                    className="ServicesSlider"
-                >
+                {/* Contenedor del slider, se muestra únicamente la sección activa */}
+                <div ref={sliderRef} className="ServicesSlider">
                     {sections.map((section, index) => (
-                        <div key={index} className="section">
+                        <div key={index} className={`section ${activeSection === index ? '' : 'hidden'}`}>
                             <h2>{section.title}</h2>
                             <p>{section.description}</p>
-
-                            <>{section.content}</>
-
-                            {/* Mostrar el bloque extra solo si es el último elemento */}
-                            {/*
-                            <div className="card-product-container">
-                                <div className="card-product">
-                                    <div className="card">
-                                        <h3>Servicios disponibles</h3>
-                                        <ul>
-                                            {services.map((service, index) => (
-                                                <li key={index}>
-                                                    <label>
-                                                        {service.name} - {service.price} $
-                                                        <input
-                                                            type="number"
-                                                            min="0"
-                                                            value={serviceQuantities[service.name] || 0}
-                                                            onChange={(e) => handleQuantityChange(service.name, parseInt(e.target.value))}
-                                                        />
-                                                    </label>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                        <h4>Total a pagar: {totalPrice} $</h4>
-                                        <button onClick={handleBuy} disabled={totalPrice === 0}>Pagar</button>
-                                        {preferenceId && (
-                                            <Wallet
-                                                initialization={{ preferenceId, redirectMode: "modal" }}
-                                                customization={{ texts: { valueProp: 'smart_option' } }}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            */}
+                            {section.content}
                         </div>
                     ))}
                 </div>
-
             </div>
-
-
 
             {/* Formulario de Pago */}
         </div>
