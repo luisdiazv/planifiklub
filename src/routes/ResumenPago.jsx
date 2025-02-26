@@ -167,44 +167,44 @@ const ResumenPago = () => {
                     <div className="event-section">
                         <h2 className="section-title">Detalles del Evento</h2>
                         <div className="detail-item">
-                            <span className="detail-label">Nombre del Usuario:</span>
-                            <span className="detail-value">{userName}</span>
+                            <p1 className="detail-label">Nombre del Usuario:</p1>
+                            <p1 className="detail-value">{userName}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Tipo de Evento:</span>
-                            <span className="detail-value">{eventType}</span>
+                            <p1 className="detail-label">Tipo de Evento:</p1>
+                            <p1 className="detail-value">{eventType}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Fecha:</span>
-                            <span className="detail-value">{eventInfo.fecha}</span>
+                            <p1 className="detail-label">Fecha:</p1>
+                            <p1 className="detail-value">{eventInfo.fecha}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Hora de Inicio:</span>
-                            <span className="detail-value">{eventInfo.hora_inicio}</span>
+                            <p1 className="detail-label">Hora de Inicio:</p1>
+                            <p1 className="detail-value">{eventInfo.hora_inicio}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Hora de Fin:</span>
-                            <span className="detail-value">{eventInfo.hora_fin}</span>
+                            <p1 className="detail-label">Hora de Fin:</p1>
+                            <p1 className="detail-value">{eventInfo.hora_fin}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Detalles:</span>
-                            <span className="detail-value">{eventInfo.detalles}</span>
+                            <p1 className="detail-label">Detalles:</p1>
+                            <p1 className="detail-value">{eventInfo.detalles}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Número de Personas:</span>
-                            <span className="detail-value">{eventInfo.personas}</span>
+                            <p1 className="detail-label">Número de Personas:</p1>
+                            <p1 className="detail-value">{eventInfo.personas}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Estado:</span>
-                            <span className="detail-value">{eventInfo.estado}</span>
+                            <p1 className="detail-label">Estado:</p1>
+                            <p1 className="detail-value">{eventInfo.estado}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Costo Total:</span>
-                            <span className="detail-value">{formatCurrency(eventInfo.costo_total)}</span>
+                            <p1 className="detail-label">Costo Total:</p1>
+                            <p1 className="detail-value">{formatCurrency(eventInfo.costo_total)}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Saldo Pendiente:</span>
-                            <span className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</span>
+                            <p1 className="detail-label">Saldo Pendiente:</p1>
+                            <p1 className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</p1>
                         </div>
                     </div>
 
@@ -216,16 +216,16 @@ const ResumenPago = () => {
                                 {edificios.map((edificio) => (
                                     <li key={edificio.idedificio} className="list-item">
                                         <div className="detail-item">
-                                            <span className="detail-label">Edificio:</span>
-                                            <span className="detail-value">{edificio.nombre_edificio}</span>
+                                            <p1 className="detail-label">Edificio:</p1>
+                                            <p1 className="detail-value">{edificio.nombre_edificio}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Montaje:</span>
-                                            <span className="detail-value">{edificio.nombre_montaje}</span>
+                                            <p1 className="detail-label">Montaje:</p1>
+                                            <p1 className="detail-value">{edificio.nombre_montaje}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</span>
+                                            <p1 className="detail-label">Subtotal:</p1>
+                                            <p1 className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p1>
                                         </div>
                                     </li>
                                 ))}
@@ -243,16 +243,16 @@ const ResumenPago = () => {
                                 {pedidos.map((pedido) => (
                                     <li key={pedido.idproducto_pedido} className="list-item">
                                         <div className="detail-item">
-                                            <span className="detail-label">Producto:</span>
-                                            <span className="detail-value">{pedido.nombre_producto}</span>
+                                            <p1 className="detail-label">Producto:</p1>
+                                            <p1 className="detail-value">{pedido.nombre_producto}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Cantidad:</span>
-                                            <span className="detail-value">{pedido.cantidad}</span>
+                                            <p1 className="detail-label">Cantidad:</p1>
+                                            <p1 className="detail-value">{pedido.cantidad}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">{formatCurrency(pedido.subtotal)}</span>
+                                            <p1 className="detail-label">Subtotal:</p1>
+                                            <p1 className="detail-value">{formatCurrency(pedido.subtotal)}</p1>
                                         </div>
                                     </li>
                                 ))}
@@ -268,8 +268,8 @@ const ResumenPago = () => {
             <div className="event-section">
                 <h2 className="section-title">Pedidos Adicionales</h2>
                 <div className="detail-item">
-                    <span className="detail-label">Pedidos Adicionales:</span>
-                    <span className="detail-value">{pedidosAdicionales}</span>
+                    <p1 className="detail-label">Pedidos Adicionales:</p1>
+                    <p1 className="detail-value">{pedidosAdicionales}</p1>
                 </div>
             </div>    
 

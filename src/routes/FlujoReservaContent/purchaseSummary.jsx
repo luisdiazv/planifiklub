@@ -330,7 +330,7 @@ const PurchaseSummary = () => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${edificio.subtotal_alquiler}</p1>
+                                    <p1 className="detail-value">${formatCurrency(edificio.subtotal_alquiler)}</p1>
                                 </div>
                             </li>
                         ))}
@@ -356,7 +356,7 @@ const PurchaseSummary = () => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${productosPedido.subtotal[productId]}</p1>
+                                    <p1 className="detail-value">${formatCurrency(productosPedido.subtotal[productId])}</p1>
                                 </div>
                             </li>
                         ))}
