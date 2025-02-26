@@ -1,14 +1,13 @@
 import EventDetailsEdicion from './FlujoEdicionEventos/Event.jsx';
 import OurServicesEdicion from './FlujoEdicionEventos/OurServices.jsx';
 import EdificiosListEdicion from './FlujoEdicionEventos/edificios.jsx';
-import PurchaseSummaryEdicion from './FlujoEdicionEventos/purchaseSummary.jsx'
+import PurchaseSummaryEdicion from './FlujoEdicionEventos/purchaseSummary.jsx';
 
-export const sections = [
+export const sections = (id) => [
     {
         title: "Detalles Generales del Evento",
         description: "Aquí podrás definir los detalles principales del evento.",
-        content: <EventDetailsEdicion />
-
+        content: <EventDetailsEdicion id={id} />
     },
     {
         title: "Lugar del evento",
@@ -24,5 +23,4 @@ export const sections = [
         title: "Resumen del evento actualizado",
         content: <PurchaseSummaryEdicion/>
     }
-
 ];
