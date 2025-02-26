@@ -31,11 +31,11 @@ const ConfiguradorTipoEventos = () => {
         setTiposEvento(filteredTipos);
       } else {
         setTiposEvento([]); // Asegúrate de que siempre sea un array
-        setError('No se encontraron tipos de evento con ese nombre.');
+        window.alert('No se encontraron tipos de evento con ese nombre.');
       }
     } catch (error) {
       console.error('Error al buscar tipos de evento por nombre:', error.message);
-      setError('Ocurrió un error al buscar tipos de evento.');
+      window.alert('Ocurrió un error al buscar tipos de evento.');
     }
   };
   
@@ -133,7 +133,7 @@ const ConfiguradorTipoEventos = () => {
   
     } catch (error) {
       console.error('Error al guardar el tipo de evento:', error.message);
-      setError('Ocurrió un error al guardar el tipo de evento.');
+      window.alert('Ocurrió un error al guardar el tipo de evento.');
       alert('Error al guardar el tipo de evento: ' + error.message);
     }
   };
@@ -157,7 +157,7 @@ const ConfiguradorTipoEventos = () => {
   
       } catch (error) {
         console.error('Error al eliminar el tipo de evento:', error.message);
-        setError('Ocurrió un error al eliminar el tipo de evento.');
+        window.alert('Ocurrió un error al eliminar el tipo de evento.');
         alert('Error al eliminar el tipo de evento: ' + error.message);
       }
     }

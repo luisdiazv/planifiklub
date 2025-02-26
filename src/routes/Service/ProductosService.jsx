@@ -32,11 +32,11 @@ const ConfiguradorProductos = () => {
         setProductos(filteredProductos);
       } else {
         setProductos([]);
-        setError('No se encontraron productos con ese nombre.');
+        window.alert('No se encontraron productos con ese nombre.');
       }
     } catch (error) {
       console.error('Error al buscar productos por nombre:', error.message);
-      setError('Ocurrió un error al buscar productos.');
+      window.alert('Ocurrió un error al buscar productos.');
     }
   };
 
@@ -117,7 +117,7 @@ const ConfiguradorProductos = () => {
           const newUrl = await getFotoProducto(productoInfo.idproducto);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Producto actualizado exitosamente.');
+        window.alert('Producto actualizado exitosamente.');
       } else {
         // Nuevo producto: crear
         const createdProduct = await createProducto(updatedInfo);
@@ -128,14 +128,14 @@ const ConfiguradorProductos = () => {
           const newUrl = await getFotoProducto(createdProduct.idproducto);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Producto creado exitosamente.');
+        window.alert('Producto creado exitosamente.');
       }
       // Reiniciamos los estados de foto y formulario
       setNewFoto(null);
       setProductoInfo(null);
     } catch (error) {
       console.error('Error al guardar el producto:', error.message);
-      setError('Ocurrió un error al guardar el producto.');
+      window.alert('Ocurrió un error al guardar el producto.');
     }
   };
 
@@ -153,13 +153,13 @@ const ConfiguradorProductos = () => {
     if (confirmDelete) {
       try {
         await deleteProducto(productoInfo.idproducto);
-        setSuccessMsg('Producto eliminado exitosamente.');
+        window.alert('Producto eliminado exitosamente.');
         setProductoInfo(null);
         setNewFoto(null);
         setPreviewFoto(null);
       } catch (error) {
         console.error('Error al eliminar el producto:', error.message);
-        setError('Ocurrió un error al eliminar el producto.');
+        window.alert('Ocurrió un error al eliminar el producto.');
       }
     }
   };
