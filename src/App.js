@@ -88,7 +88,7 @@ function App() {
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
             <Route path="/app/VisorDeCotizaciones" element={<VisorDeCotizaciones />} />
             <Route path="/app/ResumenPago/:id" element={<ResumenPago />} />
-            <Route path="/app/EdicionEventos" element={<EdicionEventos />} />
+            <Route path="/app/EdicionEventos/:id" element={<EdicionEventos />} />
 
             {/* Configuradores */}
             <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/* Solo Admin */}

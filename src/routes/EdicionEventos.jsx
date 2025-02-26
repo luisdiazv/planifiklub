@@ -1,15 +1,13 @@
 import React, { useState, useRef } from "react";
 import './ReservationStyles.css';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { sections } from "./EdicionEventosSection.jsx";
 
 const EdicionEventos = () => {
+    const { id } = useParams(); // Obtener el id de la URL
     const [activeSection, setActiveSection] = useState(0);
-    const location = useLocation();
-    const { idevento, estado } = location.state || {};
-
     const sliderRef = useRef(null);
-    
+
     // Función para manejar la selección de las secciones de la línea del tiempo
     const handleSectionClick = (index) => {
         setActiveSection(index);
@@ -21,7 +19,7 @@ const EdicionEventos = () => {
 
     // Función para mover el timeline hacia la derecha
     const handleNext = () => {
-        if (activeSection < sections.length - 1) {
+        if (activeSection < sections(id).length - 1) {
             setActiveSection(prev => prev + 1);
             sliderRef.current.scrollTo({
                 left: (activeSection + 1) * sliderRef.current.offsetWidth,
@@ -50,11 +48,11 @@ const EdicionEventos = () => {
                     <div className="timeline-line">
                         <div
                             className="timeline-progress"
-                            style={{ width: `${(activeSection / (sections.length - 1)) * 100}%` }}
+                            style={{ width: `${(activeSection / (sections(id).length - 1)) * 100}%` }}
                         />
                     </div>
                     <div className="timeline-points">
-                        {sections.map((section, index) => (
+                        {sections(id).map((section, index) => (
                             <div
                                 key={index}
                                 className={`timeline-point ${index < activeSection ? "completed" : ""} ${activeSection === index ? "active" : ""}`}
@@ -79,19 +77,17 @@ const EdicionEventos = () => {
                     {/* Botón de mover hacia la derecha */}
                     <button
                         onClick={handleNext}
-                        disabled={activeSection === sections.length - 1}  // Deshabilitado si está en el último timeline
+                        disabled={activeSection === sections(id).length - 1}  // Deshabilitado si está en el último timeline
                     >
                         Siguiente
                     </button>
                 </div>
 
-
-
                 <div
                     ref={sliderRef}
                     className="ServicesSlider"
                 >
-                    {sections.map((section, index) => (
+                    {sections(id).map((section, index) => (
                         <div key={index} className="section">
                             <h2>{section.title}</h2>
                             <p>{section.description}</p>
@@ -100,10 +96,7 @@ const EdicionEventos = () => {
                         </div>
                     ))}
                 </div>
-
             </div>
-
-
 
             {/* Formulario de Pago */}
         </div>

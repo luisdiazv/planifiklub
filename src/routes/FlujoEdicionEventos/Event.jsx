@@ -20,7 +20,7 @@ const EventTypeImage = ({ id, alt }) => {
   return <img className="event-type-image" src={imgUrl || ""} alt={alt} />;
 };
 
-const EventDetails = ({ idevento, estado }) => {
+const EventDetails = ({ id }) => {
     const [eventTypes, setEventTypes] = useState([]);
     const [expandedIndex, setExpandedIndex] = useState(null);
     const [invitados, setInvitados] = useState(null);

@@ -135,7 +135,7 @@ const ResumenPago = () => {
 
     const createPreference = async () => {
         try {
-            const request = "https://" + process.env.REACT_APP_MERCADOPAGO_API_URL + "/create_preference";
+            const request = process.env.REACT_APP_MERCADOPAGO_API_URL + "/create_preference";
 
             const response = await axios.post(request, {
                 title: "Reserva de evento",
