@@ -126,7 +126,9 @@ const OurProducts = () => {
         return extraServices.filter(item => item.trim() !== "").join("%%");
     }
 
-    const handleDummy = (e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         completitudDiccionarios();
 
         const pedido = {
@@ -159,11 +161,12 @@ const OurProducts = () => {
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
 
         console.log("Pedido temporalmente guardado");
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        handleDummy();
+        
+        // Simula el clic en el botón con id "nextScreenSlider"
+        const nextButton = document.getElementById("nextScreenSlider");
+        if (nextButton) {
+            nextButton.click();
+        }
     };
 
     const addExtraService = () => {

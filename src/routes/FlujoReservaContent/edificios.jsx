@@ -105,6 +105,12 @@ const EdificiosList = () => {
       sessionStorage.removeItem("edificiosDummy");
     }
     sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
+
+    // Simula el clic en el botón con id "nextScreenSlider"
+    const nextButton = document.getElementById("nextScreenSlider");
+    if (nextButton) {
+      nextButton.click();
+    }
   };
 
 
