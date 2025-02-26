@@ -8,7 +8,7 @@ const EditProfile = () => {
     const [correo, setCorreo] = useState("");
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
-    const [teléfono, setTeléfono] = useState("");
+    const [telefono, setTelefono] = useState("");
     const [tipo_documento, setTipo_documento] = useState("");
     const [documento, setDocumento] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -34,7 +34,7 @@ const EditProfile = () => {
                     setCorreo(usuario.correo);
                     setNombres(usuario.nombres);
                     setApellidos(usuario.apellidos);
-                    setTeléfono(usuario.teléfono);
+                    setTelefono(usuario.telefono);
                     setTipo_documento(usuario.tipo_documento);
                     setDocumento(usuario.documento);
                 }
@@ -60,7 +60,7 @@ const EditProfile = () => {
         const { id, value } = e.target;
         if (id === "nombres") setNombres(value);
         if (id === "apellidos") setApellidos(value);
-        if (id === "teléfono") setTeléfono(value);
+        if (id === "telefono") setTelefono(value);
         if (id === "tipo_documento") setTipo_documento(value);
         if (id === "documento") setDocumento(value);
     };
@@ -81,7 +81,7 @@ const EditProfile = () => {
             const usuarioActualizado = {
                 nombres,
                 apellidos,
-                teléfono,
+                telefono,
                 tipo_documento,
                 documento,
             };
@@ -95,9 +95,10 @@ const EditProfile = () => {
                 alert("Hubo un problema al actualizar el perfil.");
             } else {
                 // Actualiza los estados locales si la API devuelve los datos actualizados
+                console.log(respuesta)
                 if (respuesta.nombres) setNombres(respuesta.nombres);
                 if (respuesta.apellidos) setApellidos(respuesta.apellidos);
-                if (respuesta.teléfono) setTeléfono(respuesta.teléfono);
+                if (respuesta.telefono) setTelefono(respuesta.telefono);
                 if (respuesta.tipo_documento) setTipo_documento(respuesta.tipo_documento);
                 if (respuesta.documento) setDocumento(respuesta.documento);
 
@@ -158,8 +159,8 @@ const EditProfile = () => {
                         <label>Teléfono:</label>
                         <input
                             type="number"
-                            id="teléfono"
-                            value={teléfono}
+                            id="telefono"
+                            value={telefono}
                             onChange={handleChange}
                             required
                         />

@@ -10,7 +10,7 @@ const Register = () => {
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
     const [correo, setCorreo] = useState("");
-    const [teléfono, setTeléfono] = useState("");
+    const [telefono, setTelefono] = useState("");
     const [tipo_documento, setTipo_documento] = useState("");
     const [documento, setDocumento] = useState("");
     const [password, setPassword] = useState("");
@@ -50,8 +50,8 @@ const Register = () => {
             return;
         }
 
-        if (teléfono.length !== 10 || !/^\d{10}$/.test(teléfono)) {
-            setErrorMessage("El teléfono debe contener exactamente 10 dígitos.");
+        if (telefono.length !== 10 || !/^\d{10}$/.test(telefono)) {
+            setErrorMessage("El telefono debe contener exactamente 10 dígitos.");
             return;
         }
 
@@ -125,8 +125,8 @@ const Register = () => {
                     <label>Teléfono:<span style={{ color: '#DAA520' }}>*</span></label>
                     <input
                         type="number"
-                        value={teléfono}
-                        onChange={(e) => setTeléfono(e.target.value)}
+                        value={telefono}
+                        onChange={(e) => setTelefono(e.target.value)}
                         required
                     />
                 </div>
@@ -207,7 +207,7 @@ const Register = () => {
                                         nombres,
                                         apellidos,
                                         correo,
-                                        teléfono,
+                                        telefono,
                                         documento,
                                         tipo_documento,
                                         password: await hash(password),
