@@ -152,15 +152,14 @@ export const updateEdificio = async (id, updatedInfo) => {
 
 export const createEdificio = async (newEdificio) => {
     try {
-        const { data, error } = await supabase.from("edificios").insert(newEdificio);
+        const { data, error } = await supabase.from("edificios").insert(newEdificio).select();
 
         if (error) {
             console.error("Error creando el edificio:", error.message);
             throw new Error("No se pudo crear el edificio: " + error.message);
         }
         
-        const { dataSelect, } = await getEdificiosByID(newEdificio.idedificios);
-        return dataSelect;
+        return data[0].idedificios;
 
     } catch (error) {
         console.error("Error interno:", error.message);
