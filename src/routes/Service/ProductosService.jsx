@@ -133,6 +133,7 @@ const ConfiguradorProductos = () => {
       // Reiniciamos los estados de foto y formulario
       setNewFoto(null);
       setProductoInfo(null);
+      setProductos([]);
     } catch (error) {
       console.error('Error al guardar el producto:', error.message);
       window.alert('Ocurrió un error al guardar el producto.');

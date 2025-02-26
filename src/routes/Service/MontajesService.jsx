@@ -120,6 +120,7 @@ const ConfiguradorMontajes = () => {
       }
       setNewFoto(null);
       setMontajeInfo(null);
+      setMontajes([]);
     } catch (error) {
       console.error('Error al guardar el montaje:', error.message);
       window.alert('Ocurrió un error al guardar el montaje.');

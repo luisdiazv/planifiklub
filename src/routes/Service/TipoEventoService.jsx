@@ -127,9 +127,7 @@ const ConfiguradorTipoEventos = () => {
   
       setNewFoto(null);
       setTipoEventoInfo(null);
-  
-      // Forzar recarga de la página después de guardar
-      window.location.reload();
+      setTiposEvento([]);
   
     } catch (error) {
       console.error('Error al guardar el tipo de evento:', error.message);
@@ -150,10 +148,10 @@ const ConfiguradorTipoEventos = () => {
         setTipoEventoInfo(null);
         setNewFoto(null);
         setPreviewFoto(null);
+        setTiposEvento([]);
   
         // Forzar recarga de la página después de eliminar
         alert('¡Tipo de evento eliminado exitosamente!');
-        window.location.reload();
   
       } catch (error) {
         console.error('Error al eliminar el tipo de evento:', error.message);
