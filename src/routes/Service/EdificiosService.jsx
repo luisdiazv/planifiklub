@@ -154,6 +154,7 @@ const ConfiguradorEdificios = () => {
         // Crear nuevo edificio
         const createdEdificio = await createEdificio(updatedInfo);
         idEdificioGuardado = createdEdificio.idedificios;
+        console.log(idEdificioGuardado)
         if (newFoto) {
           await uploadFotoEdificio(createdEdificio.idedificios, newFoto);
           const newUrl = await getFotoEdificio(createdEdificio.idedificios);

@@ -159,7 +159,7 @@ export const createEdificio = async (newEdificio) => {
             throw new Error("No se pudo crear el edificio: " + error.message);
         }
         
-        return data[0].idedificios;
+        return data[0];
 
     } catch (error) {
         console.error("Error interno:", error.message);
