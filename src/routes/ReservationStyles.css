@@ -5,6 +5,10 @@
     width: 100%;
 }
 
+.hidden {
+    display: none;
+}
+
 .timeline-container {
     width: 100%;
     display: flex;
