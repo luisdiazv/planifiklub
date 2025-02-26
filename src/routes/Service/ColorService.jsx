@@ -93,7 +93,7 @@ const ConfiguradorPaginaClub = () => {
         });
       } catch (error) {
         console.error("Error al cargar la información del club:", error);
-        setError("Error al cargar la información del club");
+        window.alert("Error al cargar la información del club");
       }
     };
 
@@ -110,7 +110,7 @@ const ConfiguradorPaginaClub = () => {
     if (!file) return;
     // Validar que el archivo sea .svg
     if (file.type !== 'image/svg+xml') {
-      setError('Solo se permiten imágenes SVG.');
+      window.alert('Solo se permiten imágenes SVG.');
       return;
     }
     setError('');
@@ -149,9 +149,9 @@ const ConfiguradorPaginaClub = () => {
       }
   
       console.log('Guardando configuración del club:', clubInfo, newLogo);
-      setSuccessMsg('Configuración guardada exitosamente.');
+      window.alert('Configuración guardada exitosamente.');
     } catch (err) {
-      setError(err.message);
+      window.alert(err.message);
     }
   
     console.log('INFO:', clubInfo);
@@ -183,10 +183,10 @@ const ConfiguradorPaginaClub = () => {
       
       setNewLogo(null);
       setPreviewLogo(null);
-      setSuccessMsg('Información de respaldo cargada y guardada correctamente.');
+      window.alert('Información de respaldo cargada y guardada correctamente.');
     } catch (error) {
       console.error("Error al restaurar información de respaldo:", error);
-      setError("Error al restaurar la información de respaldo");
+      window.alert("Error al restaurar la información de respaldo");
     }
   };
 

@@ -68,12 +68,14 @@ export const getTipoEventoByNombre = async (nombre) => {
 
 export const createTipoEvento = async (newTEvento) => {
     try {
-        const { data, error } = await supabase.from("tipos_eventos").insert(newTEvento);
+        const { data, error } = await supabase.from("tipos_eventos").insert(newTEvento).select();
 
         if (error) {
             console.error("Error creando el tipo de evento:", error.message);
             throw new Error("No se pudo crear el tipo de evento: " + error.message);
         }
+
+        return data[0]
         
     } catch (error) {
         console.error("Error interno:", error.message);

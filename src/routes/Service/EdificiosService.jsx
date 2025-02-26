@@ -66,11 +66,11 @@ const ConfiguradorEdificios = () => {
         setEdificios(filteredEdificios);
       } else {
         setEdificios([]);
-        setError('No se encontraron edificios con ese nombre.');
+        window.alert('No se encontraron edificios con ese nombre.');
       }
     } catch (error) {
       console.error('Error al buscar edificios por nombre:', error.message);
-      setError('Ocurrió un error al buscar edificios.');
+      window.alert('Ocurrió un error al buscar edificios.');
     }
   };
 
@@ -149,17 +149,18 @@ const ConfiguradorEdificios = () => {
           const newUrl = await getFotoEdificio(edificioInfo.idedificios);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Edificio actualizado exitosamente.');
+        window.alert('Edificio actualizado exitosamente.');
       } else {
         // Crear nuevo edificio
         const createdEdificio = await createEdificio(updatedInfo);
         idEdificioGuardado = createdEdificio.idedificios;
+        console.log(idEdificioGuardado)
         if (newFoto) {
           await uploadFotoEdificio(createdEdificio.idedificios, newFoto);
           const newUrl = await getFotoEdificio(createdEdificio.idedificios);
           setPreviewFoto(newUrl);
         }
-        setSuccessMsg('Edificio creado exitosamente.');
+        window.alert('Edificio creado exitosamente.');
       }
 
       // Guardar la relación de montajes para el edificio
@@ -176,7 +177,7 @@ const ConfiguradorEdificios = () => {
       setSelectedMontajes([]);
     } catch (error) {
       console.error('Error al guardar el edificio:', error.message);
-      setError('Ocurrió un error al guardar el edificio.');
+      window.alert('Ocurrió un error al guardar el edificio.');
     }
   };
 
@@ -194,13 +195,13 @@ const ConfiguradorEdificios = () => {
     if (confirmDelete) {
       try {
         await deleteEdificio(edificioInfo.idedificios);
-        setSuccessMsg('Edificio eliminado exitosamente.');
+        window.alert('Edificio eliminado exitosamente.');
         setEdificioInfo(null);
         setNewFoto(null);
         setPreviewFoto(null);
       } catch (error) {
         console.error('Error al eliminar el edificio:', error.message);
-        setError('Ocurrió un error al eliminar el edificio.');
+        window.alert('Ocurrió un error al eliminar el edificio.');
       }
     }
   };

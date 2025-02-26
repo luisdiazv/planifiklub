@@ -17,10 +17,10 @@ const ConfiguradorSocio = () => {
         setUserInfo(user);
         setIsSocio(user.socio);
       } else {
-        setError('Usuario no encontrado.');
+        window.alert('Usuario no encontrado.');
       }
     } catch (error) {
-      setError('Ocurrió un error al buscar el usuario.');
+      window.alert('Ocurrió un error al buscar el usuario.');
     }
   };
 
@@ -33,13 +33,13 @@ const ConfiguradorSocio = () => {
       const updates = { socio: isSocio };
       const { data, error } = await updateUsuario(userInfo.correo, updates);
       if (error) {
-        setError('Ocurrió un error al actualizar el estado de socio.');
+        window.alert('Ocurrió un error al actualizar el estado de socio.');
         return;
       }
       setUserInfo(data);
-      setError('Estado de socio actualizado exitosamente.');
+      window.alert('Estado de socio actualizado exitosamente.');
     } catch (error) {
-      setError('Ocurrió un error al guardar los cambios.');
+      window.alert('Ocurrió un error al guardar los cambios.');
     }
   };
 

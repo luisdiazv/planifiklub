@@ -31,11 +31,11 @@ const ConfiguradorMontajes = () => {
         setMontajes(filteredMontajes);
       } else {
         setMontajes([]);
-        setError('No se encontraron montajes con ese nombre.');
+        window.alert('No se encontraron montajes con ese nombre.');
       }
     } catch (error) {
       console.error('Error al buscar montajes por nombre:', error.message);
-      setError('Ocurrió un error al buscar montajes.');
+      window.alert('Ocurrió un error al buscar montajes.');
     }
   };
 
@@ -105,7 +105,7 @@ const ConfiguradorMontajes = () => {
           setPreviewFoto(newUrl);
         }
         */
-        setSuccessMsg('Montaje actualizado exitosamente.');
+        window.alert('Montaje actualizado exitosamente.');
       } else {
         // Nuevo montaje: crear
         const createdMontaje = await createMontaje(updatedInfo);
@@ -116,13 +116,14 @@ const ConfiguradorMontajes = () => {
           setPreviewFoto(newUrl);
         }
         */
-        setSuccessMsg('Montaje creado exitosamente.');
+        window.alert('Montaje creado exitosamente.');
       }
       setNewFoto(null);
       setMontajeInfo(null);
+      setMontajes([]);
     } catch (error) {
       console.error('Error al guardar el montaje:', error.message);
-      setError('Ocurrió un error al guardar el montaje.');
+      window.alert('Ocurrió un error al guardar el montaje.');
     }
   };
 
@@ -140,13 +141,13 @@ const ConfiguradorMontajes = () => {
     if (confirmDelete) {
       try {
         await deleteMontaje(montajeInfo.idmontajes);
-        setSuccessMsg('Montaje eliminado exitosamente.');
+        window.alert('Montaje eliminado exitosamente.');
         setMontajeInfo(null);
         setNewFoto(null);
         setPreviewFoto(null);
       } catch (error) {
         console.error('Error al eliminar el montaje:', error.message);
-        setError('Ocurrió un error al eliminar el montaje.');
+        window.alert('Ocurrió un error al eliminar el montaje.');
       }
     }
   };

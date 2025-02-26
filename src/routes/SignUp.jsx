@@ -40,12 +40,12 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!/^[A-Za-z\s]+$/.test(nombres)) {
+        if (!/^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ\s]+$/.test(nombres)) {
             setErrorMessage(`${tipo_documento === "NIT" ? "El nombre de la empresa" : "El nombre"} solo puede contener letras y espacios.`);
             return;
         }
 
-        if (!/^[A-Za-z\s]+$/.test(apellidos)) {
+        if (!/^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ\s]+$/.test(apellidos)) {
             setErrorMessage(`${tipo_documento === "NIT" ? "El nombre del encargado" : "Los apellidos"} solo puede contener letras y espacios.`);
             return;
         }

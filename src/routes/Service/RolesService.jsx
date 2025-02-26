@@ -20,7 +20,7 @@ const ConfiguradorRoles = () => {
         }
       } catch (error) {
         console.error("Error al obtener los roles:", error.message);
-        setError('Ocurrió un error al obtener los roles.');
+        window.alert('Ocurrió un error al obtener los roles.');
       }
     };
 
@@ -39,11 +39,11 @@ const ConfiguradorRoles = () => {
         const userRoleIds = userRoles.map(role => role.id_rol);
         setSelectedRoles(userRoleIds); // Establecemos los roles seleccionados para el usuario
       } else {
-        setError('Usuario no encontrado.');
+        window.alert('Usuario no encontrado.');
       }
     } catch (error) {
       console.error("Error al obtener el usuario:", error.message);
-      setError('Ocurrió un error al buscar el usuario.');
+      window.alert('Ocurrió un error al buscar el usuario.');
     }
   };
 
@@ -60,7 +60,7 @@ const ConfiguradorRoles = () => {
   const handleSave = () => {
     console.log("Guardando roles:", selectedRoles);
     updateAccesos(userId, selectedRoles);
-    setError('Roles guardados exitosamente.');
+    window.alert('Roles guardados exitosamente.');
   };
 
   const handleExitWithoutSaving = () => {
