@@ -1,5 +1,6 @@
 .register-container {
-    width: 90%;
+    max-width: 90%;
+    width: auto;
     margin: 50px auto;
     padding: 3rem;
     border: 1px solid var(--secondary-container-color);
