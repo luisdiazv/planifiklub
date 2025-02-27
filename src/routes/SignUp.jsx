@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { ClubInfoContext } from "../context/infoClubContext";
 import hash from "../Util/Hash";
 import "./SignUpStyles.css";
 import { registrarUsuario } from "../Ctrl/UsuarioCtrl";
@@ -7,6 +8,7 @@ import { codigoAuth } from "../Util/EmailService";
 import { enviarCodigoAuth } from "../API/NodeMailer";
 
 const Register = () => {
+    const { logo, clubName } = useContext(ClubInfoContext);
     const [nombres, setNombres] = useState("");
     const [apellidos, setApellidos] = useState("");
     const [correo, setCorreo] = useState("");
@@ -20,6 +22,8 @@ const Register = () => {
     const [inputCode, setInputCode] = useState("");
     const [authCode, setAuthCode] = useState("");
     const [, setIsCodeValid] = useState(false);
+    const [acceptedTC1, setAcceptedTC1] = useState(false);
+    const [acceptedTC2, setAcceptedTC2] = useState(false);
 
     const navegar = useNavigate();
 
@@ -31,10 +35,8 @@ const Register = () => {
     ];
 
     const validarPassword = (password) => {
-        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
-        const testResult = regex.test(password);
-        console.log("Resultado de la prueba de password:", testResult);
-        return testResult;
+        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\[\]{}|;:'",.<>?/\\-]).{8,}$/;
+        return regex.test(password);
     };
 
     const handleSubmit = async (e) => {
@@ -65,11 +67,14 @@ const Register = () => {
             return;
         }
 
+        // Validación de aceptación de términos y condiciones
+        if (!acceptedTC1 || !acceptedTC2) {
+            setErrorMessage("Debes aceptar ambos términos y condiciones.");
+            return;
+        }
+
         try {
             const code = codigoAuth();
-            if (true) {
-                console.log(code);
-            }
             setAuthCode(code);
             const emailSent = await enviarCodigoAuth(correo, nombres, code);
 
@@ -79,8 +84,6 @@ const Register = () => {
             } else {
                 setErrorMessage("No se pudo enviar el código de verificación. Inténtalo de nuevo.");
             }
-
-            //setIsPopupVisible(true);  //Desconmentar para activar el popup de verificación de ser necesario, correos no funcionando
         } catch (error) {
             console.error("Error durante el registro del usuario:", error);
             setErrorMessage("Hubo un problema al verificar las credenciales");
@@ -94,7 +97,10 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <div className="form-name-grouper">
                     <div className="form-group">
-                        <label>{tipo_documento === "NIT" ? "Nombre de la Empresa" : "Nombre"}:<span style={{ color: '#DAA520' }}>*</span></label>
+                        <label>
+                            {tipo_documento === "NIT" ? "Nombre de la Empresa" : "Nombre"}:
+                            <span style={{ color: '#DAA520' }}>*</span>
+                        </label>
                         <input
                             type="text"
                             value={nombres}
@@ -113,7 +119,10 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Correo Electrónico:<span style={{ color: '#DAA520' }}>*</span></label>
+                    <label>
+                        Correo Electrónico:
+                        <span style={{ color: '#DAA520' }}>*</span>
+                    </label>
                     <input
                         type="email"
                         value={correo}
@@ -122,7 +131,10 @@ const Register = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Teléfono:<span style={{ color: '#DAA520' }}>*</span></label>
+                    <label>
+                        Teléfono:
+                        <span style={{ color: '#DAA520' }}>*</span>
+                    </label>
                     <input
                         type="number"
                         value={telefono}
@@ -132,15 +144,16 @@ const Register = () => {
                 </div>
                 <div className="form-grouper">
                     <div className="ID-form-group">
-                        <label>ID:<span style={{ color: '#DAA520' }}>*</span></label>
+                        <label>
+                            ID:
+                            <span style={{ color: '#DAA520' }}>*</span>
+                        </label>
                         <select
                             value={tipo_documento}
                             onChange={(e) => setTipo_documento(e.target.value)}
                             required
                         >
-                            <option value="" disabled>
-                                --
-                            </option>
+                            <option value="" disabled>--</option>
                             {tiposDocumento.map((tipo) => (
                                 <option key={tipo} value={tipo}>
                                     {tipo}
@@ -149,7 +162,10 @@ const Register = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label>Número de Documento:<span style={{ color: '#DAA520' }}>*</span></label>
+                        <label>
+                            Número de Documento:
+                            <span style={{ color: '#DAA520' }}>*</span>
+                        </label>
                         <input
                             type="text"
                             value={documento}
@@ -160,7 +176,10 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Contraseña:<span style={{ color: '#DAA520' }}>*</span></label>
+                    <label>
+                        Contraseña:
+                        <span style={{ color: '#DAA520' }}>*</span>
+                    </label>
                     <input
                         type="password"
                         value={password}
@@ -170,7 +189,10 @@ const Register = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Confirmar Contraseña:<span style={{ color: '#DAA520' }}>*</span></label>
+                    <label>
+                        Confirmar Contraseña:
+                        <span style={{ color: '#DAA520' }}>*</span>
+                    </label>
                     <input
                         type="password"
                         value={confirmPassword}
@@ -179,13 +201,67 @@ const Register = () => {
                     />
                 </div>
 
-                <p>* Espacio obligatorio</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {/* Contenedor TC1 */}
+                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
+                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                            <input
+                                className="basic-input-checkbox"
+                                type="checkbox"
+                                id="tc1"
+                                checked={acceptedTC1}
+                                onChange={(e) => setAcceptedTC1(e.target.checked)}
+                                style={{
+                                    position: "absolute",
+                                    transform: "scale(0.5)",
+                                }}
+                            />
+                        </div>
+                        <div style={{ flexGrow: 1, textAlign: "left" }}>
+                            <label htmlFor="tc1" style={{ fontSize: "80%" }}>
+                                Acepto{" "}
+                                <Link to="/app/TerminosyCondiciones/PlanifiKlub" style={{ fontSize: "100%" }}>
+                                    términos y condiciones de PlanifiKlub
+                                </Link>
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Contenedor TC2 */}
+                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
+                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                            <input
+                                className="basic-input-checkbox"
+                                type="checkbox"
+                                id="tc2"
+                                checked={acceptedTC2}
+                                onChange={(e) => setAcceptedTC2(e.target.checked)}
+                                style={{
+                                    position: "absolute",
+                                    transform: "scale(0.5)",
+                                }}
+                            />
+                        </div>
+                        <div style={{ flexGrow: 1, textAlign: "left" }}>
+                            <label htmlFor="tc2" style={{ fontSize: "80%" }}>
+                                Acepto{" "}
+                                <Link to="/app/TerminosyCondiciones/Club" style={{ fontSize: "100%" }}>
+                                    términos y condiciones de {clubName.toLowerCase()}
+                                </Link>
+                            </label>
+                        </div>
+                    </div>
+
+                    {/* Texto de espacio obligatorio */}
+                    <p style={{ margin: 0 }}>* Espacio obligatorio</p>
+                </div>
+
                 {!isPopupVisible && errorMessage && <p className="error-message">{errorMessage}</p>}
 
                 <button type="submit" className="register-button">
                     Registrarme
                 </button>
-            </form >
+            </form>
 
             {isPopupVisible && (
                 <div className="popup-container">
@@ -227,7 +303,7 @@ const Register = () => {
                     </div>
                 </div>
             )}
-        </div >
+        </div>
     );
 };
 
