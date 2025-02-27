@@ -92,6 +92,7 @@ function App() {
             <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/* Solo Admin */}
 
             {/* Ruta no encontrada */}
+            <Route path="/app/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
 
           </Routes>
