@@ -1,5 +1,27 @@
 import { supabase } from "../API/SupabaseAPI";
 
+export const getUsuariosByBusqueda = async (searchTerm) => {
+  try {
+    // Preparamos el valor de búsqueda con comodines para el patrón
+    const searchValue = `%${searchTerm}%`;
+    // Se utiliza el método 'or' para filtrar por cualquiera de las columnas deseadas
+    const { data, error } = await supabase
+      .from("usuario")
+      .select("*")
+      .or(`nombres.ilike.${searchValue},apellidos.ilike.${searchValue},correo.ilike.${searchValue},documento.ilike.${searchValue}`);
+
+    if (error) {
+      console.error("Error buscando usuario por búsqueda:", error.message);
+      throw new Error("No se pudo buscar el usuario: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno al buscar usuario:", error.message);
+    throw new Error("Ocurrió un error al buscar el usuario: " + error.message);
+  }
+};
+
 export const verificarUsuario = async (username, password) => {
 
   try {
