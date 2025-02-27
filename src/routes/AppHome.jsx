@@ -1,16 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AppHomeStyles.css';
 import { ClubInfoContext } from '../context/infoClubContext';
 
 const AppHome = () => {
   const { logo, clubName, clubDesc } = useContext(ClubInfoContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('Datos del club en AppHome:', { logo, clubName });
     const user = sessionStorage.getItem('currentUser');
     setIsLoggedIn(!!user);
   }, [logo, clubName]);
+
+  const handleIngresar = () => {
+    navigate('/app/LogIn');
+  };
+
+  const handleRegistrarse = () => {
+    navigate('/app/SignUp');
+  };
+
+  const handleReservar = () => {
+    navigate('/app/reservation');
+  };
 
   return (
     <div className="app-home-container">
@@ -25,15 +39,14 @@ const AppHome = () => {
         <div className="buttons-container">
           {!isLoggedIn ? (
             <>
-              <button className="btn ingresar">Ingresar</button>
-              <button className="btn registrarse">Registrarse</button>
+              <button className="btn ingresar" onClick={handleIngresar}>Ingresar</button>
+              <button className="btn registrarse" onClick={handleRegistrarse}>Registrarse</button>
             </>
           ) : (
-            <button className="btn reservar">Reservar</button>
+            <button className="btn reservar" onClick={handleReservar}>Reservar</button>
           )}
         </div>
       </div>
-
     </div>
   );
 };
