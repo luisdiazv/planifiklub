@@ -117,7 +117,7 @@ const Reservation = () => {
                             <div
                                 key={index}
                                 className={`timeline-point ${index < activeSection ? "completed" : ""} ${activeSection === index ? "active" : ""}`}
-                                onClick={() => handleSectionClick(index)}
+                            // onClick={() => handleSectionClick(index)}
                             >
                                 <div className="circle" />
                                 <span>{section.title}</span>

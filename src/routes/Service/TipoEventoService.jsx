@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-import { 
-  getTipoEventoByNombre, 
-  updateTipoEvento, 
-  createTipoEvento, 
-  deleteTipoEvento 
+import './TipoEventoServiceStyles.css';
+import {
+  getTipoEventoByNombre,
+  updateTipoEvento,
+  createTipoEvento,
+  deleteTipoEvento
 } from '../../Ctrl/TiposEventosCtrl';
-import { 
-  getFotoTipoEvento, 
-  uploadFotoTipoEvento 
+import {
+  getFotoTipoEvento,
+  uploadFotoTipoEvento
 } from '../../API/StorageAPI';
 
 const ConfiguradorTipoEventos = () => {
@@ -43,7 +44,7 @@ const ConfiguradorTipoEventos = () => {
       setLoading(false);
     }
   };
-  
+
   const handleSelectTipoEvento = async (tipoEvento) => {
     setTipoEventoInfo(tipoEvento);
     setTiposEvento([]);
@@ -102,14 +103,14 @@ const ConfiguradorTipoEventos = () => {
 
   const handleSave = async () => {
     if (!tipoEventoInfo) return;
-  
+
     try {
       let updatedInfo = { ...tipoEventoInfo };
-  
+
       if (tipoEventoInfo.idtipos_eventos) {
         // Actualizar tipo de evento existente
         await updateTipoEvento(tipoEventoInfo.idtipos_eventos, updatedInfo);
-        
+
         if (newFoto) {
           await uploadFotoTipoEvento(tipoEventoInfo.idtipos_eventos, newFoto);
           const newUrl = await getFotoTipoEvento(tipoEventoInfo.idtipos_eventos);
@@ -120,7 +121,7 @@ const ConfiguradorTipoEventos = () => {
       } else {
         // Crear nuevo tipo de evento
         const createdTipoEvento = await createTipoEvento(updatedInfo);
-        
+
         if (newFoto) {
           await uploadFotoTipoEvento(createdTipoEvento.idtipos_eventos, newFoto);
           const newUrl = await getFotoTipoEvento(createdTipoEvento.idtipos_eventos);
@@ -129,23 +130,23 @@ const ConfiguradorTipoEventos = () => {
         setSuccessMsg('Tipo de evento creado exitosamente.');
         alert('¡Tipo de evento creado exitosamente!');
       }
-  
+
       setNewFoto(null);
       setTipoEventoInfo(null);
       setTiposEvento([]);
-  
+
     } catch (error) {
       console.error('Error al guardar el tipo de evento:', error.message);
       window.alert('Ocurrió un error al guardar el tipo de evento.');
       alert('Error al guardar el tipo de evento: ' + error.message);
     }
   };
-  
+
   const handleDelete = async () => {
     if (!tipoEventoInfo) return;
-  
+
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este tipo de evento?');
-    
+
     if (confirmDelete) {
       try {
         await deleteTipoEvento(tipoEventoInfo.idtipos_eventos);
@@ -154,221 +155,98 @@ const ConfiguradorTipoEventos = () => {
         setNewFoto(null);
         setPreviewFoto(null);
         setTiposEvento([]);
-  
+
         // Forzar recarga de la página después de eliminar
         alert('¡Tipo de evento eliminado exitosamente!');
-  
+
       } catch (error) {
         console.error('Error al eliminar el tipo de evento:', error.message);
         window.alert('Ocurrió un error al eliminar el tipo de evento.');
         alert('Error al eliminar el tipo de evento: ' + error.message);
       }
     }
-  };  
+  };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>Configurador de Tipos de Evento</header>
-      
-      <div style={styles.inputContainer}>
-        <input
-          type="text"
-          placeholder="Ingrese el nombre del tipo de evento"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={styles.input}
-        />
-        <button onClick={handleSearchByNombre} style={styles.button}>
-          Buscar
-        </button>
-        <button onClick={handleCreateNew} style={{ ...styles.button, marginTop: '10px' }}>
-          Crear Nuevo Tipo de Evento
-        </button>
-      </div>
+    <div className="fullTipo-evento-serv-container">
+      <div className="tipo-evento-serv-container">
+        <h2 header className="tipo-evento-serv-header">Configurador de Tipos de Evento</h2>
 
-      {/* Indicador de carga */}
-      {loading && <p style={{ textAlign: 'center', marginBottom: '10px' }}>Buscando tipos de evento...</p>}
-
-      {error && <span style={styles.error}>{error}</span>}
-      {successMsg && <span style={styles.success}>{successMsg}</span>}
-
-      {tipoEventoInfo ? (
-        <div style={styles.productoInfo}>
-          <h3 style={styles.title}>
-            {tipoEventoInfo.idtipos_eventos ? 'Editando Tipo de Evento' : 'Creando Nuevo Tipo de Evento'}
-          </h3>
-          
-          <p style={styles.label}>Nombre:</p>
+        <div className="tipo-evento-serv-input-container">
           <input
             type="text"
-            name="nombre"
-            value={tipoEventoInfo.nombre}
-            onChange={handleChange}
-            style={styles.input}
+            placeholder="Ingrese el nombre del tipo de evento"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="tipo-evento-serv-input"
           />
-
-          <p style={styles.label}>Descripción:</p>
-          <textarea
-            name="descripcion"
-            value={tipoEventoInfo.descripcion}
-            onChange={handleChange}
-            style={styles.textarea}
-          />
-
-          <p style={styles.label}>Foto:</p>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            style={styles.input}
-          />
-
-          {previewFoto && (
-            <img
-              src={previewFoto}
-              alt="Preview"
-              style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
-            />
-          )}
-
-          <div style={styles.buttonContainer}>
-            <button onClick={handleSave} style={styles.saveButton}>
-              Guardar
-            </button>
-            <button onClick={handleExitWithoutSaving} style={styles.exitButton}>
-              Salir sin guardar
-            </button>
-            {tipoEventoInfo.idtipos_eventos && (
-              <button onClick={handleDelete} style={styles.deleteButton}>
-                Eliminar
-              </button>
-            )}
-          </div>
+          <button onClick={handleSearchByNombre} className="tipo-evento-serv-button">Buscar</button>
+          <button onClick={handleCreateNew} className="tipo-evento-serv-button tipo-evento-serv-button-margin">Crear Nuevo Tipo de Evento</button>
         </div>
-      ) : (
-        tiposEvento.length > 0 && (
-          <div>
-            {tiposEvento.map((tipoEvento) => (
-              <div
-                key={tipoEvento.idtipos_eventos}
-                style={styles.productoItem}
-                onClick={() => handleSelectTipoEvento(tipoEvento)}
-              >
-                <div>
-                  <strong>{tipoEvento.nombre}</strong>
-                  <button style={styles.button}>Seleccionar</button>
-                </div>
-              </div>
-            ))}
+
+        {error && <span className="tipo-evento-serv-error">{error}</span>}
+        {successMsg && <span className="tipo-evento-serv-success">{successMsg}</span>}
+
+        {tipoEventoInfo ? (
+          <div className="tipo-evento-serv-info">
+            <h3 className="tipo-evento-serv-title">
+              {tipoEventoInfo.idtipos_eventos ? 'Editando Tipo de Evento' : 'Creando Nuevo Tipo de Evento'}
+            </h3>
+
+            <label className="tipo-evento-serv-label">Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={tipoEventoInfo.nombre}
+              onChange={handleChange}
+              className="tipo-evento-serv-input"
+            />
+
+            <label className="tipo-evento-serv-label">Descripción:</label>
+            <textarea
+              name="descripcion"
+              value={tipoEventoInfo.descripcion}
+              onChange={handleChange}
+              className="tipo-evento-serv-textarea"
+            />
+
+            <label className="tipo-evento-serv-label">Foto:</label>
+            {previewFoto && <img src={previewFoto} alt="Preview" className="tipo-evento-serv-preview" />}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="tipo-evento-serv-input-image"
+            />
+            <div className="tipo-evento-serv-button-container">
+              <button onClick={handleSave} className="tipo-evento-serv-save-button">Guardar</button>
+              <button onClick={handleExitWithoutSaving} className="tipo-evento-serv-exit-button">Salir sin guardar</button>
+              {tipoEventoInfo.idtipos_eventos && <button onClick={handleDelete} className="tipo-evento-serv-delete-button">Eliminar</button>}
+            </div>
           </div>
-        )
-      )}
+        ) : (
+          tiposEvento.length > 0 && (
+            <div className='tipo-eventos-serv-container'>
+              {tiposEvento.map((tipoEvento) => (
+                <div
+                  key={tipoEvento.idtipos_eventos}
+                  className="tipo-evento-serv-item"
+                >
+                  <div>
+                    <label><strong>{tipoEvento.nombre}</strong></label>
+                  </div>
+                  <button className="tipo-evento-serv-button"
+                    onClick={() => handleSelectTipoEvento(tipoEvento)}>Seleccionar</button>
+
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 };
 
-const styles = {
-  container: {
-    padding: '10px',
-    maxWidth: '500px',
-    margin: '0 auto',
-    backgroundColor: '#f9f9f9',
-    borderRadius: '10px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-  header: {
-    fontSize: '22px',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  inputContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginBottom: '10px',
-  },
-  label: {
-    margin: '0 0 5px 0',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    marginBottom: '5px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-  },
-  textarea: {
-    width: '100%',
-    height: '120px',
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginBottom: '5px',
-    resize: 'none',
-  },
-  button: {
-    padding: '8px 16px',
-    backgroundColor: '#800000',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  saveButton: {
-    padding: '8px 16px',
-    backgroundColor: '#4CAF50',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  exitButton: {
-    padding: '8px 16px',
-    backgroundColor: '#808080',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  deleteButton: {
-    padding: '8px 16px',
-    backgroundColor: '#d9534f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginLeft: '8px',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  success: {
-    color: 'green',
-    textAlign: 'center',
-    marginBottom: '10px',
-  },
-  productoInfo: {
-    backgroundColor: '#fff',
-    padding: '10px',
-    borderRadius: '6px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-  },
-  productoItem: {
-    padding: '5px',
-    borderBottom: '1px solid #ccc',
-    marginBottom: '5px',
-    cursor: 'pointer',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '10px',
-  },
-};
-
 export default ConfiguradorTipoEventos;
+
