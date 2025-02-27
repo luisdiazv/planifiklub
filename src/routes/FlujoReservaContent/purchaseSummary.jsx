@@ -31,13 +31,6 @@ const PurchaseSummary = () => {
       const [productoPedidoDummy, setProductoPedidoDummy] = useState(() => 
         JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || []
       );
-
-      useEffect(() => {
-        sessionStorage.removeItem("eventoDummy");
-        sessionStorage.removeItem("edificiosDummy");
-        sessionStorage.removeItem("pedidoDummy");
-        sessionStorage.removeItem("productoPedidoDummy");
-      }, []);      
       
       useEffect(() => {
         const interval = setInterval(() => {
@@ -353,8 +346,7 @@ const PurchaseSummary = () => {
                 <p className="no-data-message">No hay productos seleccionados.</p>
             )}
 
-            <h3>Total de la cotización: ${totalCost}</h3>
-
+            <h3 className="value-summary-text">Total de la cotización: ${totalCost}</h3>
 
             <div>
                 <button onClick={handleConfirmarCotizacion} disabled={loading} className="confirm-button">
