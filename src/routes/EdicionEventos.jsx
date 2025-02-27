@@ -66,29 +66,19 @@ const EdicionEventos = () => {
                 </div>
                 {/* Botones de Navegación */}
                 <div className="navigation-buttons">
-                    {/* Botón de mover hacia la izquierda */}
-                    <button
-                        onClick={handlePrev}
-                        disabled={activeSection === 0}  // Deshabilitado si está en el primer timeline
-                    >
+                    <button type="button" onClick={handlePrev} disabled={activeSection === 0}>
                         Anterior
                     </button>
 
-                    {/* Botón de mover hacia la derecha */}
-                    <button
-                        onClick={handleNext}
-                        disabled={activeSection === sections(id).length - 1}  // Deshabilitado si está en el último timeline
-                    >
+                    <button type="button" onClick={handleNext} disabled={activeSection === sections.length - 1}>
                         Siguiente
                     </button>
                 </div>
 
-                <div
-                    ref={sliderRef}
-                    className="ServicesSlider"
-                >
+                {/* Contenedor del slider, se muestra únicamente la sección activa */}
+                <div ref={sliderRef} className="ServicesSlider">
                     {sections(id).map((section, index) => (
-                        <div key={index} className="section">
+                        <div key={index} className={`section ${activeSection === index ? '' : 'hidden'}`}>
                             <h2>{section.title}</h2>
                             <p>{section.description}</p>
 
