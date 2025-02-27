@@ -143,3 +143,10 @@
     gap: 1rem;
     color: var(--text-color);
 }
+
+.configurador-productos-loading{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-color);
+}
