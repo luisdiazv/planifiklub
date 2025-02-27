@@ -106,8 +106,8 @@ const EventDetails = () => {
             {error && <p className="error-message">{error}</p>}
             <form className="event-detail-container" onSubmit={handleSubmit}>
                 <div className="calendar-container">
-                    <SmallCallendar onDateChange={handleDateChange} />
-                    <HourSelector onChange={handleHourChange} />
+                <SmallCallendar onDateChange={handleDateChange} selectedDate={selectedDate} />
+                <HourSelector onChange={handleHourChange} />
                 </div>
                 <div className="event-types-container">
                     <h2>Tipos de Eventos</h2>
