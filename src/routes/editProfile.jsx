@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUsuario } from "../Ctrl/UsuarioCtrl"; // Importando la función de actualización
 import userControl from '../Util/UserControl'; // Importa userControl
+import { handleAcceso } from "../Util/AccessControl";
 import "./editProfileStyles.css";
 
 const EditProfile = () => {
@@ -23,6 +24,17 @@ const EditProfile = () => {
         "Pasaporte",
         "Cedula de Extranjeria",
     ];
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(1);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
 
     // Cargar datos del usuario al montar el componente
     useEffect(() => {

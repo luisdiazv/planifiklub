@@ -12,6 +12,7 @@ import {
   restoreBackupLogoClub,
   getBackupLogoClub
 } from '../../API/StorageAPI';
+import { handleAcceso } from '../../Util/AccessControl'
 import './ColorServiceStyles.css';
 
 const ConfiguradorPaginaClub = () => {
@@ -98,6 +99,17 @@ const ConfiguradorPaginaClub = () => {
     };
 
     fetchClubInfo();
+  }, []);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(9);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
   }, []);
 
   const handleChange = (e) => {

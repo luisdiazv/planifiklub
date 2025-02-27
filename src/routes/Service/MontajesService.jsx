@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Resizer from 'react-image-file-resizer';
 import "./MontajesServiceStyles.css";
-
+import { handleAcceso} from '../../Util/AccessControl'
 import {
   getMontajesByNombre,
   updateMontaje,
@@ -20,6 +20,17 @@ const ConfiguradorMontajes = () => {
   const [newFoto, setNewFoto] = useState(null);
   // Estado para almacenar la URL de _preview_ de la imagen
   const [previewFoto, setPreviewFoto] = useState(null);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(7);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
+}, []);
 
   const handleSearchByNombre = async () => {
     setError('');

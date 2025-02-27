@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Resizer from 'react-image-file-resizer';
+import { handleAcceso } from '../../Util/AccessControl'
 import { getEdificiosByNombre, updateEdificio, createEdificio, deleteEdificio } from '../../Ctrl/EdificiosCtrl';
 import { getFotoEdificio, uploadFotoEdificio } from '../../API/StorageAPI';
 import { getMontajesByEdificio, saveMontajesEdificio } from '../../Ctrl/MontajesEdificioCtrl';
 import { getAllMontajes } from '../../Ctrl/MontajesCtrl';
-
 import "./EdificiosServiceStyles.css";
 
 const ConfiguradorEdificios = () => {
@@ -21,6 +21,17 @@ const ConfiguradorEdificios = () => {
   // Estados para los montajes
   const [availableMontajes, setAvailableMontajes] = useState([]);
   const [selectedMontajes, setSelectedMontajes] = useState([]);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(6);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
+}, []);
 
   // Cargar los montajes disponibles desde la base de datos (tabla "montajes")
   useEffect(() => {
