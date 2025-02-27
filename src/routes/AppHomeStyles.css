@@ -21,9 +21,9 @@
 }
 
 .club-logo {
-
     width: 100%;
-
+    height: auto;
+    max-height: 80vh;
 }
 
 .app-home-content {
