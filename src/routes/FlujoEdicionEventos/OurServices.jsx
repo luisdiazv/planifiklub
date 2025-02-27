@@ -34,13 +34,16 @@ const OurProducts = ({ id }) => {
                 const pedidos = await getPedidos(id);
                 if (pedidos.length > 0) {
                     const pedidoDummy = pedidos[0]; // Asumiendo que quieres almacenar el primer pedido
-
+    
                     sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
-
+    
                     // Obtener la información de los productos asociados al pedido
                     const productosPedido = await getInfoPedidos(pedidoDummy.idpedido);
+                    
+                    
                     sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productosPedido));
-
+                    console.log(sessionStorage.getItem("productoPedidoDummy"));
+    
                     // Actualizar el estado con los datos de productoPedidoDummy
                     const selected = {};
                     const quantities = {};
@@ -51,30 +54,35 @@ const OurProducts = ({ id }) => {
                     setSelectedProducts(selected);
                     setProductQuantities(quantities);
                     calculateTotalPrice(quantities); // Asegúrate de calcular el totalPrice aquí
-
+    
                     // Crear el objeto productoPedidoDummy
                     const productoPedidoDummy = {
                         idproducto_pedido: productosPedido[0].idproducto_pedido,
                         id_pedido: pedidos[0].idpedido,
                         id_producto: Object.keys(selected),
                         cantidad: quantities,
-                        subtotal: calcularSubtotales(selected, quantities),
+                        subtotal: productosPedido[0].subtotal
                     };
+                    console.log("Datos del producto:", productoPedidoDummy);
+                    console.log("Cantidad:", productoPedidoDummy.cantidad, "Precio:", productoPedidoDummy.precio);
 
+    
                     // Guardar productoPedidoDummy en sessionStorage
                     sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedidoDummy));
-
+    
                     // Actualizar el estado con los datos de pedidos_adicionales
                     const extraServicesArray = pedidoDummy.pedidos_adicionales ? pedidoDummy.pedidos_adicionales.split("%%") : [];
                     setExtraServices(extraServicesArray);
-
+    
                     // Guardar el valor inicial de costo_total
                     setInitialCostoTotal(pedidoDummy.costo_total);
-
+    
                     // Simula el clic en el botón "Siguiente"
                     if (submitButtonRef.current) {
+                        console.log("Simulando clic en el botón 'Siguiente'");
+                        console.log("Subtotal:", productoPedidoDummy.subtotal);
+                        console.log("Total Price:", totalPrice);
                         submitButtonRef.current.click();
-                        console.log()
                     }
                 } else {
                     console.warn("No se encontraron pedidos para el evento.");
@@ -83,9 +91,14 @@ const OurProducts = ({ id }) => {
                 console.error("Error obteniendo los pedidos por id_evento:", error);
             }
         };
-
+    
         fetchPedidos();
     }, [id]);
+
+    useEffect(() => {
+        calculateTotalPrice(productQuantities);
+    }, [selectedProducts, productQuantities, products]); // Asegura que se actualice cuando los productos cambien
+    
 
     const getProductos = async () => {
         const Productos = await getAllProducto();
@@ -105,21 +118,31 @@ const OurProducts = ({ id }) => {
         if (selectedProducts[productId]) {
             setProductQuantities((prevQuantities) => {
                 const newQuantities = { ...prevQuantities, [productId]: quantity };
-                calculateTotalPrice(newQuantities);
                 return newQuantities;
             });
+    
+            // Llamar a calculateTotalPrice con los valores actualizados
+            setTimeout(() => {
+                calculateTotalPrice({ ...productQuantities, [productId]: quantity });
+            }, 0);
         }
     };
+    
 
     const calculateTotalPrice = (quantities) => {
+        if (products.length === 0) return; // Evita calcular si no hay productos cargados
+    
         let total = 0;
         products.forEach(product => {
             if (selectedProducts[product.idproducto]) {
                 total += (quantities[product.idproducto] || 0) * product.precio;
             }
         });
+    
+        console.log("Calculated Total Price:", total); // Ahora debería mostrar el total correcto
         setTotalPrice(total);
     };
+    
 
     const handleCheckboxChange = (productId, isSelected) => {
         setSelectedProducts((prevSelected) => {
@@ -166,25 +189,25 @@ const OurProducts = ({ id }) => {
     };
 
     
-const calcularSubtotales = (selectedProducts, productQuantities) => {
-    const subtotals = {};
-
-    Object.keys(selectedProducts).forEach((productIdKey) => {
-        if (selectedProducts[productIdKey]) {
-            const productId = parseInt(productIdKey, 10);
-            const product = products.find((p) => p.idproducto === productId);
-
-            if (product) {
-                const quantity = productQuantities[productIdKey] || 0;
-                const subtotal = quantity * product.precio;
-                subtotals[productId] = subtotal;
+    const calcularSubtotales = (selectedProducts, productQuantities) => {
+        const subtotals = {};
+    
+        Object.keys(selectedProducts).forEach((productIdKey) => {
+            if (selectedProducts[productIdKey]) {
+                const productId = parseInt(productIdKey, 10);
+                const product = products.find((p) => p.idproducto === productId);
+    
+                if (product) {
+                    const quantity = productQuantities[productIdKey] || 0;
+                    const subtotal = quantity * product.precio;
+                    subtotals[productId] = subtotal;
+                }
             }
-        }
-    });
-
-    return subtotals;
-};
-
+        });
+    
+        console.log("Calculated Subtotals:", subtotals);
+        return subtotals;
+    };
     const getStringPedidosAdicionales = () => {
         return extraServices.filter(item => item.trim() !== "").join("%%");
     }
@@ -222,8 +245,11 @@ const calcularSubtotales = (selectedProducts, productQuantities) => {
 
         // Reemplazar el valor de costo_total después del clic
         const updatedPedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy"));
-        updatedPedidoDummy.costo_total = initialCostoTotal;
+        updatedPedidoDummy.costo_total = parseFloat(totalPrice.toFixed(2));
         sessionStorage.setItem("pedidoDummy", JSON.stringify(updatedPedidoDummy));
+
+        console.log("Pedido actualizado:", updatedPedidoDummy);
+
     
         console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")));
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")));
