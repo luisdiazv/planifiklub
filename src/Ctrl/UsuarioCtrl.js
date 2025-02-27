@@ -106,7 +106,7 @@ export const getUsuarioByID = async (id) => {
 
 export const getNombresApellidosById = async (userId) => {
   try {
-    const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("idusuario", userId);
+    const { data, error } = await supabase.from("usuario").select("*").eq("idusuario", userId);
 
     if (error) {
       console.error("Error obteniendo el usuario:", error.message);
@@ -114,7 +114,11 @@ export const getNombresApellidosById = async (userId) => {
     }
 
     if (data.length > 0) {
-      return `${data[0].nombres} ${data[0].apellidos}`;
+      if (data[0].tipo_documento === 'NIT'){
+        return `${data[0].apellidos} Encargado de ${data[0].nombres}`
+      } else {
+        return `${data[0].nombres} ${data[0].apellidos}`;
+      }
     } else { return "Usuario desconocido"; }
 
   } catch (error) {
