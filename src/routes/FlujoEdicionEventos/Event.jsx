@@ -31,6 +31,7 @@ const EventDetails = ({ id }) => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedHours, setSelectedHours] = useState({ start: null, end: null });
     const [description, setDescription] = useState("");
+    
 
     useEffect(() => {
         const fetchEventTypes = async () => {
@@ -82,9 +83,11 @@ const EventDetails = ({ id }) => {
                     detalles: event.detalles,
                     personas: parseInt(event.personas, 10),
                     estado: event.estado,
-                    costo_total: event.costo_total,
-                    saldo_pendiente: event.saldo_pendiente
+                    costo_total_evento: event.costo_total,
+                    saldo_pendiente: event.saldo_pendiente,
                 };
+
+
     
                 if (sessionStorage.getItem("eventoDummy") != null) {
                     sessionStorage.removeItem("eventoDummy");
@@ -144,21 +147,24 @@ const EventDetails = ({ id }) => {
             id_usuario: userControl.getCurrentUser().idusuario,
             id_tipo_evento: selectedEventId,
             fecha: new Date(selectedDate).toISOString().split('T')[0], // YYYY-MM-DD
-            hora_inicio: new Date(selectedHours.start).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
-            hora_fin: new Date(selectedHours.end).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+            hora_inicio: new Date(`1970-01-01T${selectedHours.start}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+            hora_fin: new Date(`1970-01-01T${selectedHours.end}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
             detalles: description,
-            personas: parseInt(invitados, 10),
-            estado: 'En Cotizacion',
-            costo_total: 0,
-            saldo_pendiente: 0
+            personas: parseInt(invitados, 10)
         };
+        const existingDummy = JSON.parse(sessionStorage.getItem("eventoDummy"));
+        if (existingDummy) {
+            evento.estado = existingDummy.estado;
+            evento.costo_total_evento = existingDummy.costo_total_evento;
+            evento.saldo_pendiente = existingDummy.saldo_pendiente;
+        }
+
 
         if (sessionStorage.getItem("eventoDummy") != null) {
             sessionStorage.removeItem("eventoDummy");
         }
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
         const nextButton = document.getElementById("nextScreenSlider");
-        console.log(nextButton)
         if (nextButton) {
             nextButton.click();
         }

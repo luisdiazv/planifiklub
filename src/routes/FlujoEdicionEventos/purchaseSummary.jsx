@@ -74,6 +74,7 @@ const PurchaseSummary = () => {
         const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
             
         const subtotalProductos = pedidoDummy.costo_total ? Number(pedidoDummy.costo_total) : 0;
+        console.log("subtotalProductos:", subtotalProductos);
     
         // Calcular el costo total
         const total = subtotalEdificios + subtotalProductos;
@@ -109,13 +110,13 @@ const PurchaseSummary = () => {
             setProductosPedido(JSON.parse(productoPedidoDummy));
         }
     }, []);
-
+/*
     useEffect(() => {
         sessionStorage.removeItem("eventoDummy");
         sessionStorage.removeItem("edificiosDummy");
         sessionStorage.removeItem("pedidoDummy");
         sessionStorage.removeItem("productoPedidoDummy");
-    }, []);   
+    }, []);   */
 
     if (!eventoDummy) {
         return <p className="no-data-message">No hay información del evento disponible.</p>;
