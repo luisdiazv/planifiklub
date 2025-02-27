@@ -3,6 +3,13 @@
     padding: 2rem;
 }
 
+.configurador-roles-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-color);
+}
+
 .configurador-roles-container {
     display: flex;
     flex-direction: column;

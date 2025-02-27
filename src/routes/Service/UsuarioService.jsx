@@ -13,6 +13,8 @@ const ConfiguradorUsuario = () => {
   const [isSocio, setIsSocio] = useState(false); // Estado de socio del usuario
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  // Estado para el indicador de carga
+  const [loading, setLoading] = useState(false);
 
   // Cargar todos los roles al montar el componente
   useEffect(() => {
@@ -35,6 +37,7 @@ const ConfiguradorUsuario = () => {
     setError('');
     setSuccessMsg('');
     setUserInfo(null);
+    setLoading(true);
     try {
       const results = await getUsuariosByBusqueda(searchTerm);
       if (results && results.length > 0) {
@@ -46,6 +49,8 @@ const ConfiguradorUsuario = () => {
     } catch (err) {
       console.error("Error al buscar usuario:", err.message);
       window.alert("Ocurrió un error al buscar el usuario.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -125,19 +130,22 @@ const ConfiguradorUsuario = () => {
           </button>
         </div>
 
+        {/* Indicador de carga */}
+        {loading && <p className="configurador-roles-loading">Buscando usuarios...</p>}
+
         {error && <p className="configurador-roles-error">{error}</p>}
 
         {userInfo ? (
           <div className="configurador-roles-user-info">
             <div className="config-roles-roles-text">
-                <h3>Información del usuario</h3>
+              <h3>Información del usuario</h3>
             </div>
             <label><strong>Nombre:</strong> {userInfo.nombres}</label>
             <label>
               <strong>
                 {userInfo.tipo_documento === 'NIT' ? 'Encargado:' : 'Apellido:'}
               </strong> {userInfo.apellidos}
-              </label>
+            </label>
             <label><strong>Correo:</strong> {userInfo.correo}</label>
             <label><strong>Tipo de documento:</strong> {userInfo.tipo_documento}</label>
             <label><strong>Documento:</strong> {userInfo.documento}</label>
@@ -203,10 +211,8 @@ const ConfiguradorUsuario = () => {
               {users.map(user => (
                 <div key={user.idusuario} className="configurador-roles-user-item">
                   <div className="configurador-roles-user-item-content">
-                    <label>{user.nombres} {user.apellidos}</label>
-                    <></>
+                    <label><strong>{user.nombres} {user.apellidos}</strong></label>
                     <label>Correo: {user.correo}</label>
-                    <></>
                     <label>Documento: {user.documento}</label>
                     <button
                       className="configurador-roles-button"

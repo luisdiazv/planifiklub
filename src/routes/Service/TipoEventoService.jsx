@@ -19,11 +19,14 @@ const ConfiguradorTipoEventos = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [newFoto, setNewFoto] = useState(null);
   const [previewFoto, setPreviewFoto] = useState(null);
+  // Estado para el indicador de carga
+  const [loading, setLoading] = useState(false);
 
   const handleSearchByNombre = async () => {
     setError('');
     setSuccessMsg('');
     setTiposEvento([]); // Inicializa con un array vacío en lugar de null
+    setLoading(true);
   
     try {
       const filteredTipos = await getTipoEventoByNombre(searchTerm);
@@ -36,6 +39,8 @@ const ConfiguradorTipoEventos = () => {
     } catch (error) {
       console.error('Error al buscar tipos de evento por nombre:', error.message);
       window.alert('Ocurrió un error al buscar tipos de evento.');
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -180,6 +185,9 @@ const ConfiguradorTipoEventos = () => {
           Crear Nuevo Tipo de Evento
         </button>
       </div>
+
+      {/* Indicador de carga */}
+      {loading && <p style={{ textAlign: 'center', marginBottom: '10px' }}>Buscando tipos de evento...</p>}
 
       {error && <span style={styles.error}>{error}</span>}
       {successMsg && <span style={styles.success}>{successMsg}</span>}

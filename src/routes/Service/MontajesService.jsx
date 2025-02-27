@@ -20,11 +20,14 @@ const ConfiguradorMontajes = () => {
   const [newFoto, setNewFoto] = useState(null);
   // Estado para almacenar la URL de _preview_ de la imagen
   const [previewFoto, setPreviewFoto] = useState(null);
+  // Estado para el indicador de carga
+  const [loading, setLoading] = useState(false);
 
   const handleSearchByNombre = async () => {
     setError('');
     setSuccessMsg('');
     setMontajeInfo(null);
+    setLoading(true);
     try {
       const filteredMontajes = await getMontajesByNombre(searchTerm);
       if (filteredMontajes && filteredMontajes.length > 0) {
@@ -36,6 +39,8 @@ const ConfiguradorMontajes = () => {
     } catch (error) {
       console.error('Error al buscar montajes por nombre:', error.message);
       window.alert('Ocurrió un error al buscar montajes.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -173,6 +178,9 @@ const ConfiguradorMontajes = () => {
           </button>
         </div>
 
+        {/* Indicador de carga */}
+        {loading && <div className="montaje-config-loading">Buscando montajes...</div>}
+
         {error && <span className="montaje-config-error">{error}</span>}
         {successMsg && <span className="montaje-config-success">{successMsg}</span>}
 
@@ -214,10 +222,7 @@ const ConfiguradorMontajes = () => {
               style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
             />
           )}
-            
-          */
-            }
-
+            */}
             <div className="montaje-config-button-container">
               <button onClick={handleSave} className="montaje-config-button montaje-config-button-save">
                 Guardar
@@ -246,7 +251,6 @@ const ConfiguradorMontajes = () => {
                     </label>
                   </div>
                   <button className="montaje-config-button" onClick={() => handleSelectMontaje(montaje)}>Seleccionar</button>
-
                 </div>
               ))}
             </div>

@@ -17,6 +17,8 @@ const ConfiguradorEdificios = () => {
   const [newFoto, setNewFoto] = useState(null);
   // Estado para la URL de vista previa de la imagen
   const [previewFoto, setPreviewFoto] = useState(null);
+  // Estado para el indicador de carga
+  const [loading, setLoading] = useState(false);
 
   // Estados para los montajes
   const [availableMontajes, setAvailableMontajes] = useState([]);
@@ -60,6 +62,7 @@ const ConfiguradorEdificios = () => {
     setError('');
     setSuccessMsg('');
     setEdificioInfo(null);
+    setLoading(true);
     try {
       const filteredEdificios = await getEdificiosByNombre(searchTerm);
       if (filteredEdificios && filteredEdificios.length > 0) {
@@ -71,6 +74,8 @@ const ConfiguradorEdificios = () => {
     } catch (error) {
       console.error('Error al buscar edificios por nombre:', error.message);
       window.alert('Ocurrió un error al buscar edificios.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -227,6 +232,9 @@ const ConfiguradorEdificios = () => {
           </button>
         </div>
 
+        {/* Indicador de carga */}
+        {loading && <div className="edificios-config-loading">Buscando edificios...</div>}
+
         {error && <span className="edificios-config-error">{error}</span>}
         {successMsg && <span className="edificios-config-success">{successMsg}</span>}
 
@@ -299,7 +307,6 @@ const ConfiguradorEdificios = () => {
               className="edificios-config-input-image"
             />
 
-
             <label className="edificios-config-label">Montajes:</label>
             <div className="edificios-config-montajes-container">
               {availableMontajes.map((montaje) => (
@@ -341,7 +348,6 @@ const ConfiguradorEdificios = () => {
                 <div
                   key={edificio.idedificios}
                   className="edificios-config-producto-item"
-
                 >
                   <div>
                     <strong>{edificio.nombre}</strong>
