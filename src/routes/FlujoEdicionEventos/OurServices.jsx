@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getAllProducto } from "../../Ctrl/ProductoCtrl";
 import { getFotoProducto, uploadFotoProducto } from "../../API/StorageAPI";
 import './OurServicesStyles.css';
 import { formatCurrency } from "../../Util/MoneyFormat";
-import { getPedidos } from "../../Ctrl/PedidoCtrl";
+import { getPedidos, getInfoPedidos } from "../../Ctrl/PedidoCtrl";
 
-const OurProducts = ({id}) => {
+const OurProducts = ({ id }) => {
     const [products, setProducts] = useState([]);
     const [productQuantities, setProductQuantities] = useState({});
     const [selectedProducts, setSelectedProducts] = useState({});
@@ -13,6 +13,8 @@ const OurProducts = ({id}) => {
     const [showSummary, setShowSummary] = useState(false);
     const [extraServices, setExtraServices] = useState([]);
     const [file, setFile] = useState(null);
+    const submitButtonRef = useRef(null);
+    const [initialCostoTotal, setInitialCostoTotal] = useState(null);
 
     useEffect(() => {
         const fetchProductos = async () => {
@@ -32,7 +34,48 @@ const OurProducts = ({id}) => {
                 const pedidos = await getPedidos(id);
                 if (pedidos.length > 0) {
                     const pedidoDummy = pedidos[0]; // Asumiendo que quieres almacenar el primer pedido
+
                     sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
+
+                    // Obtener la información de los productos asociados al pedido
+                    const productosPedido = await getInfoPedidos(pedidoDummy.idpedido);
+                    sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productosPedido));
+
+                    // Actualizar el estado con los datos de productoPedidoDummy
+                    const selected = {};
+                    const quantities = {};
+                    productosPedido.forEach((producto) => {
+                        selected[producto.id_producto] = true;
+                        quantities[producto.id_producto] = producto.cantidad;
+                    });
+                    setSelectedProducts(selected);
+                    setProductQuantities(quantities);
+                    calculateTotalPrice(quantities); // Asegúrate de calcular el totalPrice aquí
+
+                    // Crear el objeto productoPedidoDummy
+                    const productoPedidoDummy = {
+                        idproducto_pedido: productosPedido[0].idproducto_pedido,
+                        id_pedido: pedidos[0].idpedido,
+                        id_producto: Object.keys(selected),
+                        cantidad: quantities,
+                        subtotal: calcularSubtotales(selected, quantities),
+                    };
+
+                    // Guardar productoPedidoDummy en sessionStorage
+                    sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedidoDummy));
+
+                    // Actualizar el estado con los datos de pedidos_adicionales
+                    const extraServicesArray = pedidoDummy.pedidos_adicionales ? pedidoDummy.pedidos_adicionales.split("%%") : [];
+                    setExtraServices(extraServicesArray);
+
+                    // Guardar el valor inicial de costo_total
+                    setInitialCostoTotal(pedidoDummy.costo_total);
+
+                    // Simula el clic en el botón "Siguiente"
+                    if (submitButtonRef.current) {
+                        submitButtonRef.current.click();
+                        console.log()
+                    }
                 } else {
                     console.warn("No se encontraron pedidos para el evento.");
                 }
@@ -40,7 +83,7 @@ const OurProducts = ({id}) => {
                 console.error("Error obteniendo los pedidos por id_evento:", error);
             }
         };
-    
+
         fetchPedidos();
     }, [id]);
 
@@ -68,6 +111,16 @@ const OurProducts = ({id}) => {
         }
     };
 
+    const calculateTotalPrice = (quantities) => {
+        let total = 0;
+        products.forEach(product => {
+            if (selectedProducts[product.idproducto]) {
+                total += (quantities[product.idproducto] || 0) * product.precio;
+            }
+        });
+        setTotalPrice(total);
+    };
+
     const handleCheckboxChange = (productId, isSelected) => {
         setSelectedProducts((prevSelected) => {
             const newSelected = { ...prevSelected, [productId]: isSelected };
@@ -86,16 +139,6 @@ const OurProducts = ({id}) => {
             }
             return newSelected;
         });
-    };
-
-    const calculateTotalPrice = (quantities) => {
-        let total = 0;
-        products.forEach(product => {
-            if (selectedProducts[product.idproducto]) {
-                total += (quantities[product.idproducto] || 0) * product.precio;
-            }
-        });
-        setTotalPrice(total);
     };
 
     const seleccionFinal = () => {
@@ -122,24 +165,25 @@ const OurProducts = ({id}) => {
         }
     };
 
-    const calcularSubtotales = () => {
-        const subtotals = {};
+    
+const calcularSubtotales = (selectedProducts, productQuantities) => {
+    const subtotals = {};
 
-        Object.keys(selectedProducts).forEach((productIdKey) => {
-            if (selectedProducts[productIdKey]) {
-                const productId = parseInt(productIdKey, 10);
-                const product = products.find((p) => p.idproducto === productId);
+    Object.keys(selectedProducts).forEach((productIdKey) => {
+        if (selectedProducts[productIdKey]) {
+            const productId = parseInt(productIdKey, 10);
+            const product = products.find((p) => p.idproducto === productId);
 
-                if (product) {
-                    const quantity = productQuantities[productIdKey] || 0;
-                    const subtotal = quantity * product.precio;
-                    subtotals[productId] = subtotal;
-                }
+            if (product) {
+                const quantity = productQuantities[productIdKey] || 0;
+                const subtotal = quantity * product.precio;
+                subtotals[productId] = subtotal;
             }
-        });
+        }
+    });
 
-        return subtotals;
-    };
+    return subtotals;
+};
 
     const getStringPedidosAdicionales = () => {
         return extraServices.filter(item => item.trim() !== "").join("%%");
@@ -147,47 +191,52 @@ const OurProducts = ({id}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        const existingPedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
+        const existingProductoPedidoDummy = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || {};
+    
         const pedido = {
-            id_evento: null,//Se genera en la BD (response)
+            id_evento: existingPedidoDummy.id_evento, // Mantener el id_evento existente
             fecha_pedido: new Date().toISOString().split("T")[0],
             costo_total: parseFloat(totalPrice.toFixed(2)),
             pedidos_adicionales: getStringPedidosAdicionales()
         };
-
+    
         const productoPedido = {
-            idproducto_pedido: null, //Se genera en la BD
-            id_pedido: null, //Se genera en la BD (response)
+            idproducto_pedido: existingProductoPedidoDummy.idproducto_pedido || null, // Mantener el idproducto_pedido existente
+            id_pedido: existingProductoPedidoDummy.id_pedido || null, // Mantener el id_pedido existente
             id_producto: seleccionFinal(),
             cantidad: productQuantities,
-            subtotal: calcularSubtotales(),
+            subtotal: calcularSubtotales(selectedProducts, productQuantities),
         };
-
+    
         if (sessionStorage.getItem("pedidoDummy") != null) {
             sessionStorage.removeItem("pedidoDummy");
         }
         if (sessionStorage.getItem("productoPedidoDummy") != null) {
             sessionStorage.removeItem("productoPedidoDummy");
         }
-
+    
         sessionStorage.setItem("pedidoDummy", JSON.stringify(pedido));
         sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedido));
 
-
-        console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")))
-        console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
-
+        // Reemplazar el valor de costo_total después del clic
+        const updatedPedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy"));
+        updatedPedidoDummy.costo_total = initialCostoTotal;
+        sessionStorage.setItem("pedidoDummy", JSON.stringify(updatedPedidoDummy));
+    
+        console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")));
+        console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")));
+    
         console.log("Pedido temporalmente guardado");
     
-
-
-        // Simula el clic en el botón con id "nextScreenSlider"
+        // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");
         if (nextButton) {
             nextButton.click();
         }
     };
-
+    
     const addExtraService = () => {
         setExtraServices([...extraServices, ""]);
         console.warn("Extra services:", extraServices);
@@ -275,7 +324,7 @@ const OurProducts = ({id}) => {
             </button>
             <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
 
-            <button type="submit" onClick={handleSubmit}>
+            <button type="submit" ref={submitButtonRef} onClick={handleSubmit}>
                 Siguiente
             </button>
         </div>
