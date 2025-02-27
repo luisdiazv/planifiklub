@@ -201,20 +201,18 @@ const Register = () => {
                     />
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div className="singUp-terms-container" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+
+
                     {/* Contenedor TC1 */}
-                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
-                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                    <div className="singUp-terms-content" >
+                        <div className="basic-input-checkbox-container">
                             <input
                                 className="basic-input-checkbox"
                                 type="checkbox"
                                 id="tc1"
                                 checked={acceptedTC1}
                                 onChange={(e) => setAcceptedTC1(e.target.checked)}
-                                style={{
-                                    position: "absolute",
-                                    transform: "scale(0.5)",
-                                }}
                             />
                         </div>
                         <div style={{ flexGrow: 1, textAlign: "left" }}>
@@ -228,18 +226,14 @@ const Register = () => {
                     </div>
 
                     {/* Contenedor TC2 */}
-                    <div style={{ display: "flex", alignItems: "left", gap: "1rem" }}>
-                        <div style={{ width: "30px", height: "30px", position: "relative", flexShrink: 0 }}>
+                    <div className="singUp-terms-content">
+                        <div className="basic-input-checkbox-container">
                             <input
                                 className="basic-input-checkbox"
                                 type="checkbox"
                                 id="tc2"
                                 checked={acceptedTC2}
                                 onChange={(e) => setAcceptedTC2(e.target.checked)}
-                                style={{
-                                    position: "absolute",
-                                    transform: "scale(0.5)",
-                                }}
                             />
                         </div>
                         <div style={{ flexGrow: 1, textAlign: "left" }}>
