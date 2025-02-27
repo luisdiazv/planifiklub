@@ -14,10 +14,10 @@
 .logo-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     flex: 5;
-
-    /* Ocupa toda la altura de la pantalla */
+    width: 60%;
+    margin: auto;
 }
 
 .club-logo {
@@ -32,6 +32,12 @@
     flex-direction: column;
     gap: 2rem;
     align-self: center;
+
+    .buttons-container {
+        display: flex;
+        gap: 2rem;
+        justify-content: space-around;
+    }
 }
 
 /* Club Info */
@@ -40,6 +46,8 @@
     flex-direction: column;
     text-align: center;
 }
+
+
 
 
 @media (max-width: 1000px) {
