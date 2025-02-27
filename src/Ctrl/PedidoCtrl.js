@@ -153,3 +153,42 @@ export const createProductoPedido = async (dummyProducto) => {
       throw new Error("Ocurrió un error al crear la entrada en producto_pedido: " + error.message);
   }
 };
+
+export const getPedidosAdicionalesByIdPedido = async (idPedido) => {
+  try {
+    const { data, error } = await supabase
+      .from("pedido")
+      .select("pedidos_adicionales")
+      .eq("idpedido", idPedido)
+      .single();
+
+    if (error) {
+      console.error("Error obteniendo pedidos adicionales:", error.message);
+      throw new Error("No se pudo obtener los pedidos adicionales: " + error.message);
+    }
+
+    return data.pedidos_adicionales;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los pedidos adicionales: " + error.message);
+  }
+};
+
+export const getPedidos = async (eventId) => {
+  try {
+    const { data, error } = await supabase
+      .from("pedido")
+      .select("*")
+      .eq("id_evento", eventId);
+
+    if (error) {
+      console.error("Error obteniendo los pedidos por id_evento:", error.message);
+      throw new Error("No se pudo obtener los pedidos por id_evento: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los pedidos por id_evento: " + error.message);
+  }
+};

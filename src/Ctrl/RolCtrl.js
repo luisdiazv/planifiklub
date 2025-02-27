@@ -19,32 +19,21 @@ export const getAllRoles = async () => {
 
 export const getAllAdmins = async () => {
   try {
-    // Obtener el ID del rol "Administrativo"
-    const { data: roles, error: errorRoles } = await supabase
-      .from('roles')
-      .select('idroles')
-      .eq('nombre_rol', 'Administrativo')
-      .single();
-
-    if (errorRoles) {
-      console.error('Error al obtener el rol Administrativo:', errorRoles);
-      return [];
-    }
-
-    const idRolAdministrativo = roles.idroles;
+    const idRolAdministrativo = 3; // ID del rol "Admin"
 
     // Obtener los IDs de los usuarios con el rol "Administrativo"
     const { data: accesos, error: errorAccesos } = await supabase
       .from('accesos')
       .select('id_usuario')
       .eq('id_rol', idRolAdministrativo);
-
+    console.log(accesos);
     if (errorAccesos) {
       console.error('Error al obtener los accesos de los usuarios administrativos:', errorAccesos);
       return [];
     }
 
     const idsUsuarios = accesos.map(acceso => acceso.id_usuario);
+    console.log(idsUsuarios);
 
     // Obtener los correos electrónicos de los usuarios administrativos
     const { data: usuarios, error: errorUsuarios } = await supabase

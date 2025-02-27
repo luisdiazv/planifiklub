@@ -22,6 +22,7 @@
     margin: 0;
 }
 
+/* Contenedor del input y botón */
 .configurador-roles-input-container {
     display: flex;
     gap: 2rem;
