@@ -51,7 +51,7 @@ const getListaPedidos = async (pedidoId) => {
   }
 };
 
-const getInfoPedidos = async (pedidoId) => {
+export const getInfoPedidos = async (pedidoId) => {
   try {
     const { data, error } = await supabase
       .from("producto_pedido")

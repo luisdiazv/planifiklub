@@ -67,16 +67,16 @@ const EdificiosList = ({ id }) => {
 }, [id]);
 
 useEffect(() => {
-  const selectedEdificiosSet = new Set();
-  const montajeSeleccionadoObj = {};
+    const selectedEdificiosSet = new Set();
+    const montajeSeleccionadoObj = {};
 
-  edificiosEvento.forEach((edificioEvento) => {
-      selectedEdificiosSet.add(edificioEvento.id_edificio);
-      montajeSeleccionadoObj[edificioEvento.id_edificio] = edificioEvento.id_montaje_elegido;
-  });
+    edificiosEvento.forEach((edificioEvento) => {
+        selectedEdificiosSet.add(edificioEvento.id_edificio);
+        montajeSeleccionadoObj[edificioEvento.id_edificio] = edificioEvento.id_montaje_elegido;
+    });
 
-  setSelectedEdificios(selectedEdificiosSet);
-  setMontajeSeleccionado(montajeSeleccionadoObj);
+    setSelectedEdificios(selectedEdificiosSet);
+    setMontajeSeleccionado(montajeSeleccionadoObj);
 }, [edificiosEvento]);
 
   const toggleExpand = (id) => {
@@ -119,6 +119,7 @@ useEffect(() => {
         }
 
         const subtotal = edificio.costo_hora * time;
+        console.log(`Edificio ID: ${idEdificio}, Subtotal: ${subtotal}`);
         if (!(selectedEdificios.size === 0 || !idMontaje)){
             return {
                 id_edificio: idEdificio,
@@ -127,7 +128,7 @@ useEffect(() => {
                 subtotal_alquiler: subtotal,
             };
         }
-    });
+    }).filter(edificio => edificio !== undefined); // Filtrar los valores undefined
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
         sessionStorage.removeItem("edificiosDummy");
@@ -140,7 +141,6 @@ useEffect(() => {
         nextButton.click();
     }
 };
-
 
   if (loading) return <p>Cargando edificios...</p>;
   if (error) return <p>Error: {error}</p>;
