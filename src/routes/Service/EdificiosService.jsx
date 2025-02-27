@@ -336,7 +336,7 @@ const ConfiguradorEdificios = () => {
           </div>
         ) : (
           edificios.length > 0 && (
-            <div>
+            <div className='edificios-config-producto-container'>
               {edificios.map((edificio) => (
                 <div
                   key={edificio.idedificios}

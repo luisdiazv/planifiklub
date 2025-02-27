@@ -1,5 +1,6 @@
 .fullEdificios-config-container {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     padding: 2rem;
 }
 
@@ -126,6 +127,12 @@
         color: var(--text-color) !important;
         margin: 0.5rem;
     }
+}
+
+.edificios-config-producto-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .edificios-config-producto-item {
