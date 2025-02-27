@@ -3,6 +3,17 @@ import "./footerStyles.css";
 import { Link } from "react-router-dom";
 import logo from "./imgs/LogoGolden.gif";
 
+const location = window.location.pathname;
+const isAppPage = location.startsWith("/app");
+
+// Carga condicional del CSS según la ruta
+console.log(isAppPage)
+if (isAppPage) {
+  require("./footerStyles.css");
+} else {
+  require("./footerStyles-PK.css");
+}
+
 const Footer = () => {
     const email = process.env.REACT_APP_EMAIL_ACTIVO;
     return (
