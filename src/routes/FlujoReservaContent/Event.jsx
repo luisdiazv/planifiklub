@@ -93,7 +93,6 @@ const EventDetails = () => {
             sessionStorage.removeItem("eventoDummy");
         }
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
-
         const nextButton = document.getElementById("nextScreenSlider");
         console.log(nextButton)
         if (nextButton) {

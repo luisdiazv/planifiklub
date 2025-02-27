@@ -129,8 +129,6 @@ const OurProducts = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        completitudDiccionarios();
-
         const pedido = {
             id_evento: null,//Se genera en la BD (response)
             fecha_pedido: new Date().toISOString().split("T")[0],
@@ -161,7 +159,9 @@ const OurProducts = () => {
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
 
         console.log("Pedido temporalmente guardado");
-        
+    
+
+
         // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");
         if (nextButton) {

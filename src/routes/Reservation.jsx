@@ -127,10 +127,10 @@ const Reservation = () => {
                 </div>
                 {/* Botones de Navegación */}
                 <div className="navigation-buttons">
-                    <button type="button" id="prevScreenSlider" onClick={handlePrev} disabled={activeSection === 0}>
+                    <button type="button" onClick={handlePrev} disabled={activeSection === 0}>
                         Anterior
                     </button>
-                    <button type="button" id="nextScreenSlider" onClick={handleNext} disabled={activeSection === sections.length - 1} hidden>
+                    <button type="button" onClick={handleNext} disabled={activeSection === sections.length - 1}>
                         Siguiente
                     </button>
                 </div>
