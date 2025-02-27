@@ -114,10 +114,14 @@ const EdificiosList = () => {
         nextButton.click();
       }
     }
-    
-    
-  };
+    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
 
+    // Simula el clic en el botón con id "nextScreenSlider"
+    const nextButton = document.getElementById("nextScreenSlider");
+    if (nextButton) {
+      nextButton.click();
+    }
+  };
 
   if (loading) return <p>Cargando edificios...</p>;
   if (error) return <p>Error: {error}</p>;
