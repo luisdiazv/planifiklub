@@ -69,7 +69,7 @@ const EdificiosList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     if (selectedEdificios.size === 0) {
       window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
       return;
@@ -91,25 +91,30 @@ const EdificiosList = () => {
       }
 
       const subtotal = edificio.costo_hora * time;
-      if (!(selectedEdificios.size === 0 || !idMontaje)){
         return {
           id_edificio: idEdificio,
           id_evento: null,
           id_montaje_elegido: idMontaje,
           subtotal_alquiler: subtotal,
         };
-      }
     });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
       sessionStorage.removeItem("edificiosDummy");
     }
-    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
+    
+    // Verifica que para cada id de edificio seleccionado haya un montaje asignado
+    if (
+      selectedEdificios.size > 0 &&
+      Array.from(selectedEdificios).every((id) => montajeSeleccionado[id])
+    ) {
+      sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
 
-    // Simula el clic en el botón con id "nextScreenSlider"
+      // Simula el clic en el botón con id "nextScreenSlider"
     const nextButton = document.getElementById("nextScreenSlider");
     if (nextButton) {
       nextButton.click();
+    }
     }
   };
 
