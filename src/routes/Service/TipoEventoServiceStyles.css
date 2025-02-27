@@ -49,7 +49,6 @@
     font-size: calc(8px + 2vmin);
     line-height: 1.3;
     color: var(--secondary-text-color);
-    height: auto !important;
 }
 
 .tipo-evento-serv-preview {

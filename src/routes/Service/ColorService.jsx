@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  getBackupInfoClub, 
-  getActualNombreClubInfo, 
-  getActualDescripcionClubInfo, 
+import {
+  getBackupInfoClub,
+  getActualNombreClubInfo,
+  getActualDescripcionClubInfo,
   getActualColorList,
   updateActualInfoClub
 } from '../../Ctrl/InformacionClubCtrl';
-import { 
-  getActualLogoClub, 
-  uploadActualLogoClub, 
+import {
+  getActualLogoClub,
+  uploadActualLogoClub,
   restoreBackupLogoClub,
   getBackupLogoClub
 } from '../../API/StorageAPI';
@@ -131,7 +131,7 @@ const ConfiguradorPaginaClub = () => {
       clubInfo.color8,
       clubInfo.color9,
     ];
-  
+
     try {
       console.log("Colores: ", colors);
       // Se actualiza la información del club (nombre, descripción y colores)
@@ -141,19 +141,19 @@ const ConfiguradorPaginaClub = () => {
         colors
       );
       console.log('Información del club actualizada:', updateResponse);
-  
+
       // Si se seleccionó un nuevo logo, se sube
       if (newLogo) {
         const uploadResult = await uploadActualLogoClub(newLogo);
         console.log("Logo actualizado:", uploadResult);
       }
-  
+
       console.log('Guardando configuración del club:', clubInfo, newLogo);
       window.alert('Configuración guardada exitosamente.');
     } catch (err) {
       window.alert(err.message);
     }
-  
+
     console.log('INFO:', clubInfo);
     window.location.reload();
   };
@@ -175,12 +175,12 @@ const ConfiguradorPaginaClub = () => {
         color8: coloresArray[7] || '#ffffff',
         color9: coloresArray[8] || '#ffffff'
       });
-      
+
       // Restaurar el logo de respaldo y actualizar el logo actual en el almacenamiento
       await restoreBackupLogoClub();
       const newLogoUrl = await getActualLogoClub();
       setCurrentLogo(newLogoUrl);
-      
+
       setNewLogo(null);
       setPreviewLogo(null);
       window.alert('Información de respaldo cargada y guardada correctamente.');
@@ -196,87 +196,91 @@ const ConfiguradorPaginaClub = () => {
   };
 
   return (
-    <div className="container">
-      <header className="header">Configurador de Página del Club</header>
+    <div className="full-color-container">
+      <div className="container">
+        <h2 className="header">Configurador de Página del Club</h2>
 
-      {error && <span className="error">{error}</span>}
-      {successMsg && <span className="success">{successMsg}</span>}
+        {error && <span className="error">{error}</span>}
+        {successMsg && <span className="success">{successMsg}</span>}
 
-      <div className="productoInfo">
-        <p className="label">Nombre del Club:</p>
-        <input
-          type="text"
-          name="nombre"
-          value={clubInfo.nombre}
-          onChange={handleChange}
-          className="input"
-        />
+        <div className="productoInfo">
+          <div className="productoInfo-section">
+            <label className="label">Nombre del Club:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={clubInfo.nombre}
+              onChange={handleChange}
+              className="input"
+            />
 
-        <p className="label">Descripción del Club (opcional):</p>
-        <textarea
-          name="descripcion"
-          value={clubInfo.descripcion}
-          onChange={handleChange}
-          className="textarea"
-        />
+            <label className="label">Descripción del Club (opcional):</label>
+            <textarea
+              name="descripcion"
+              value={clubInfo.descripcion}
+              onChange={handleChange}
+              className="textarea"
+            />
+          </div>
+          <div className="productoInfo-section">
+            <label className="label">Configuración de Colores:</label>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {Array.from({ length: 9 }, (_, i) => {
+                const index = i + 1;
+                return (
+                  <div key={`color${index}`} style={{ borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
+                    <div>
+                      <label className="subTitle">{labelInfo[`colorName${index}`]}</label>
+                    </div>
+                    <div>
+                      <label className="subDescription">{labelInfo[`colorDesc${index}`]}</label>
+                      <input
+                        type="color"
+                        name={`color${index}`}
+                        value={clubInfo[`color${index}`]}
+                        onChange={handleChange}
+                        className="input"
+                        style={{ padding: '0', height: '40px' }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="productoInfo-section">
+            <label className="label">Logo del Club (.svg):</label>
+            {previewLogo ? (
+              <img className='preview-color-img'
+                src={previewLogo}
+                alt="Preview Logo"
+              />
+            ) : currentLogo ? (
+              <img className='preview-color-img'
+                src={currentLogo}
+                alt="Logo Actual"
+              />
+            ) : null}
+            <input
+              type="file"
+              accept=".svg"
+              onChange={handleLogoChange}
+              className="input"
+            />
 
-        <p className="label">Configuración de Colores:</p>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {Array.from({ length: 9 }, (_, i) => {
-            const index = i + 1;
-            return (
-              <div key={`color${index}`} style={{ marginBottom: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-                <div>
-                  <label className="subTitle">{labelInfo[`colorName${index}`]}</label>
-                </div>
-                <div>
-                  <label className="subDescription">{labelInfo[`colorDesc${index}`]}</label>
-                  <input
-                    type="color"
-                    name={`color${index}`}
-                    value={clubInfo[`color${index}`]}
-                    onChange={handleChange}
-                    className="input"
-                    style={{ padding: '0', height: '40px' }}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <p className="label">Logo del Club (.svg):</p>
-        <input
-          type="file"
-          accept=".svg"
-          onChange={handleLogoChange}
-          className="input"
-        />
-        {previewLogo ? (
-          <img
-            src={previewLogo}
-            alt="Preview Logo"
-            style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
-          />
-        ) : currentLogo ? (
-          <img
-            src={currentLogo}
-            alt="Logo Actual"
-            style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '4px' }}
-          />
-        ) : null}
-
-        <div className="buttonContainer">
-          <button onClick={handleSave} className="saveButton">
-            Guardar
-          </button>
-          <button onClick={handleCancel} className="cancelButton">
-            Salir sin guardar
-          </button>
-          <div>
-            <button onClick={handleReset} className="exitButton">
-              Reiniciar
+          </div>
+          <div className="buttonContainer">
+            <button onClick={handleSave} className="saveButton">
+              Guardar
             </button>
+            <button onClick={handleCancel} className="cancelButton">
+              Salir sin guardar
+            </button>
+            <div>
+              <button onClick={handleReset} className="exitButton">
+                Reiniciar
+              </button>
+            </div>
           </div>
         </div>
       </div>
