@@ -5,6 +5,7 @@ import "./EventStyles.css";
 import SmallCallendar from "../../Components/smallCallendar";
 import HourSelector from "../../Components/hourSelector";
 import userControl from "../../Util/UserControl";
+import { getEventById } from "../../Ctrl/EventosCtrl"; 
 
 const EventTypeImage = ({ id, alt }) => {
   const [imgUrl, setImgUrl] = useState(null);
@@ -45,7 +46,70 @@ const EventDetails = ({ id }) => {
         fetchEventTypes();
     }, []);
 
-    const handleDateChange = (newDate) => setSelectedDate(newDate);
+    useEffect(() => {
+        const fetchEventTypes = async () => {
+            try {
+                const data = await getEventTypes();
+                setEventTypes(data);
+            } catch (err) {
+                console.error("Error obteniendo los tipos de eventos:", err);
+                setError("Ocurrió un error al cargar los tipos de eventos.");
+            }
+        };
+    
+        const fetchEventDetails = async () => {
+            try {
+                const event = await getEventById(id);
+                setSelectedEventId(event.id_tipo_evento);
+                if (event.fecha) {
+                    const formattedDate = new Date(event.fecha).toISOString().split('T')[0]; // Asegura el formato correcto
+                    setSelectedDate(formattedDate);
+                }
+                setSelectedHours({
+                    start: event.hora_inicio,
+                    end: event.hora_fin
+                });
+                setDescription(event.detalles);
+                setInvitados(event.personas);
+    
+                // Almacena el evento en eventoDummy por defecto
+                const eventoDummy = {
+                    id_usuario: event.id_usuario,
+                    id_tipo_evento: event.id_tipo_evento,
+                    fecha: new Date(event.fecha).toISOString().split('T')[0], // YYYY-MM-DD
+                    hora_inicio: new Date(`1970-01-01T${event.hora_inicio}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+                    hora_fin: new Date(`1970-01-01T${event.hora_fin}`).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false }) + ':00', // Formato HH:MM:00
+                    detalles: event.detalles,
+                    personas: parseInt(event.personas, 10),
+                    estado: event.estado,
+                    costo_total: event.costo_total,
+                    saldo_pendiente: event.saldo_pendiente
+                };
+    
+                if (sessionStorage.getItem("eventoDummy") != null) {
+                    sessionStorage.removeItem("eventoDummy");
+                }
+                sessionStorage.setItem("eventoDummy", JSON.stringify(eventoDummy));
+
+                
+            } catch (err) {
+                console.error("Error obteniendo los detalles del evento:", err);
+                setError("Ocurrió un error al cargar los detalles del evento.");
+            }
+        };
+    
+        fetchEventTypes();
+        fetchEventDetails();
+    }, [id]);
+
+    useEffect(() => {
+        if (eventTypes.length > 0 && selectedEventId !== null) {
+            const index = eventTypes.findIndex(et => et.idtipos_eventos === selectedEventId);
+            if (index !== -1) {
+                setSelectedIndex(index);
+            }
+        }
+    }, [eventTypes, selectedEventId]);
 
     const handleHourChange = (start, end) => setSelectedHours({ start, end });
 
@@ -100,8 +164,14 @@ const EventDetails = ({ id }) => {
             {error && <p className="error-message">{error}</p>}
             <form className="event-detail-container" onSubmit={handleSubmit}>
                 <div className="calendar-container">
-                    <SmallCallendar onDateChange={handleDateChange} />
-                    <HourSelector onChange={handleHourChange} />
+                <SmallCallendar 
+                    selectedDate={selectedDate} 
+                    onDateChange={setSelectedDate} 
+                />
+                <HourSelector 
+                    onChange={handleHourChange} 
+                    selectedHours={selectedHours} 
+                />
                 </div>
                 <div className="event-types-container">
                     <h2>Tipos de Eventos</h2>
