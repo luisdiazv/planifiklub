@@ -42,6 +42,19 @@ const EventDetails = () => {
             }
         };
 
+        if (sessionStorage.getItem("eventoDummy")) {
+            sessionStorage.removeItem("eventoDummy");
+        }
+        if (sessionStorage.getItem("edificiosDummy")) {
+            sessionStorage.removeItem("edificiosDummy");
+        }
+        if (sessionStorage.getItem("pedidoDummy")) {
+            sessionStorage.removeItem("pedidoDummy");
+        }
+        if (sessionStorage.getItem("productoPedidoDummy")) {
+            sessionStorage.removeItem("productoPedidoDummy");
+        }        
+
         fetchEventTypes();
     }, []);
 
