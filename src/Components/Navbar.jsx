@@ -61,15 +61,23 @@ class Navbar extends Component {
   };
 
   renderMenuItems = () => {
-    const { currentUser } = this.state;
     const location = window.location.pathname;
     const isAppPage = location.startsWith("/app");
+    // Si no es una ruta /app, se ignora el usuario logueado
+    const effectiveUser = isAppPage ? this.state.currentUser : null;
 
     return MenuItems.map((item, index) => {
-      if ((index === 3 && !isAppPage) || (index === 4 && isAppPage && !currentUser)) {
+      if (
+        (index === 3 && !isAppPage) ||
+        (index === 4 && isAppPage && !effectiveUser)
+      ) {
         return (
           <li key={index}>
-            <Link to={item.url} style={{ textDecoration: "none" }} onClick={this.closeDropdown}>
+            <Link
+              to={item.url}
+              style={{ textDecoration: "none" }}
+              onClick={this.closeDropdown}
+            >
               <button className={item.cName}>{item.title}</button>
             </Link>
           </li>
@@ -78,11 +86,15 @@ class Navbar extends Component {
 
       if ((index === 0 || index === 1 || index === 3) && isAppPage) return null;
       if ((index === 2 || index === 4) && !isAppPage) return null;
-      if ((index === 2 || index === 4) && currentUser) return null;
+      if ((index === 2 || index === 4) && effectiveUser) return null;
 
       return (
         <li key={index}>
-          <Link className={item.cName} to={item.url} onClick={this.closeDropdown}>
+          <Link
+            className={item.cName}
+            to={item.url}
+            onClick={this.closeDropdown}
+          >
             {item.title}
           </Link>
         </li>
@@ -94,6 +106,8 @@ class Navbar extends Component {
     const { isDropdownVisible, currentUser } = this.state;
     const location = window.location.pathname;
     const isAppPage = location.startsWith("/app");
+    // Si la ruta no es /app/*, se ignora el usuario logueado
+    const effectiveUser = isAppPage ? currentUser : null;
 
     // Obtener logo y nombre del club desde el contexto
     const { logo, clubName } = this.context;
@@ -112,9 +126,11 @@ class Navbar extends Component {
         </Link>
         <div className="burguer-menu-container" ref={this.menuRef}>
           <button
-            className={`${isAppPage && currentUser ? "burguer-button-menu-isIn" : "burguer-button-menu"} ${
-              isDropdownVisible ? "active" : ""
-            }`}
+            className={`${
+              isAppPage && effectiveUser
+                ? "burguer-button-menu-isIn"
+                : "burguer-button-menu"
+            } ${isDropdownVisible ? "active" : ""}`}
             onClick={this.toggleDropdown}
           >
             <i className="fa-solid fa-bars"></i>
@@ -127,7 +143,7 @@ class Navbar extends Component {
 
         <ul className="nav-menu">{this.renderMenuItems()}</ul>
 
-        {currentUser && isAppPage && (
+        {effectiveUser && (
           <div className="user-menu-container" ref={this.menuRef}>
             <button
               className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
