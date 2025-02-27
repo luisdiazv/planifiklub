@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { getAllEdificio } from "../../Ctrl/EdificiosCtrl";
+import { getAllEdificio, getEdificiosAndMontajesByIdEvento } from "../../Ctrl/EdificiosCtrl";
 import { getAllMontajeEdificio } from "../../Ctrl/MontajesEdificioCtrl";
 import { getNombreMontajeByIdMontaje } from "../../Ctrl/MontajesCtrl";
 import { getFotoEdificio } from "../../API/StorageAPI";
 import "./edificiosStyles.css";
 import { formatCurrency } from "../../Util/MoneyFormat";
 
-const EdificiosList = () => {
+const EdificiosList = ({ id }) => {
   const [edificios, setEdificios] = useState([]);
   const [montajes, setMontajes] = useState([]);
   const [montajesNombres, setMontajesNombres] = useState({});
@@ -16,40 +16,68 @@ const EdificiosList = () => {
   const [expanded, setExpanded] = useState({});
   const [selectedEdificios, setSelectedEdificios] = useState(new Set());
   const [edificioFotos, setEdificioFotos] = useState({});
+  const [edificiosEvento, setEdificiosEvento] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        let edificiosData = await getAllEdificio();
-        edificiosData = edificiosData.sort((a, b) => a.idedificios - b.idedificios);
-        setEdificios(edificiosData);
+        try {
+            let edificiosData = await getAllEdificio();
+            edificiosData = edificiosData.sort((a, b) => a.idedificios - b.idedificios);
+            setEdificios(edificiosData);
 
-        const montajesData = await getAllMontajeEdificio();
-        setMontajes(montajesData);
+            const montajesData = await getAllMontajeEdificio();
+            setMontajes(montajesData);
 
-        const nombresMontajes = {};
-        await Promise.all(
-          montajesData.map(async (montaje) => {
-            nombresMontajes[montaje.id_montajes] = await getNombreMontajeByIdMontaje(montaje.id_montajes);
-          })
-        );
-        setMontajesNombres(nombresMontajes);
+            const nombresMontajes = {};
+            await Promise.all(
+                montajesData.map(async (montaje) => {
+                    nombresMontajes[montaje.id_montajes] = await getNombreMontajeByIdMontaje(montaje.id_montajes);
+                })
+            );
+            setMontajesNombres(nombresMontajes);
 
-        const fotos = {};
-        for (const edificio of edificiosData) {
-          const fotoUrl = await getFotoEdificio(edificio.idedificios);
-          fotos[edificio.idedificios] = fotoUrl;
+            const fotos = {};
+            for (const edificio of edificiosData) {
+                const fotoUrl = await getFotoEdificio(edificio.idedificios);
+                fotos[edificio.idedificios] = fotoUrl;
+            }
+            setEdificioFotos(fotos);
+
+            // Obtener y guardar la información de edificios y montajes por defecto
+            const edificiosEvento = await getEdificiosAndMontajesByIdEvento(id);
+            const edificiosDummy = edificiosEvento.map((edificioEvento) => ({
+                ...edificioEvento,
+                id_evento: id,
+            }));
+
+            setEdificiosEvento(edificiosDummy);
+
+            if (sessionStorage.getItem("edificiosDummy") != null) {
+                sessionStorage.removeItem("edificiosDummy");
+            }
+            sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosDummy));
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
-        setEdificioFotos(fotos);
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
     };
     fetchData();
-  }, []);
+}, [id]);
+
+useEffect(() => {
+  const selectedEdificiosSet = new Set();
+  const montajeSeleccionadoObj = {};
+
+  edificiosEvento.forEach((edificioEvento) => {
+      selectedEdificiosSet.add(edificioEvento.id_edificio);
+      montajeSeleccionadoObj[edificioEvento.id_edificio] = edificioEvento.id_montaje_elegido;
+  });
+
+  setSelectedEdificios(selectedEdificiosSet);
+  setMontajeSeleccionado(montajeSeleccionadoObj);
+}, [edificiosEvento]);
 
   const toggleExpand = (id) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -71,41 +99,47 @@ const EdificiosList = () => {
     e.preventDefault();
 
     if (selectedEdificios.size === 0) {
-      window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
-      return;
+        window.alert("Debes seleccionar al menos un edificio para reservar en tu evento.");
+        return;
     }
 
     const eventoDumm = JSON.parse(sessionStorage.getItem("eventoDummy"));
     const time = Math.round(
-      (new Date(`2025-02-17T${eventoDumm.hora_fin}`) - new Date(`2025-02-17T${eventoDumm.hora_inicio}`)) / 3600000
+        (new Date(`2025-02-17T${eventoDumm.hora_fin}`) - new Date(`2025-02-17T${eventoDumm.hora_inicio}`)) / 3600000
     );
 
     // Crear lista de edificios seleccionados con montajes y subtotales
     const edificiosEvento = Array.from(selectedEdificios).map((idEdificio) => {
-      const edificio = edificios.find((e) => e.idedificios === idEdificio);
-      const idMontaje = montajeSeleccionado[idEdificio];
+        const edificio = edificios.find((e) => e.idedificios === idEdificio);
+        const idMontaje = montajeSeleccionado[idEdificio];
 
-      if (!idMontaje) {
-        window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
-        return undefined;
-      }
+        if (!idMontaje) {
+            window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
+            return undefined;
+        }
 
-      const subtotal = edificio.costo_hora * time;
-      if (!(selectedEdificios.size === 0 || !idMontaje)){
-        return {
-          id_edificio: idEdificio,
-          id_evento: null,
-          id_montaje_elegido: idMontaje,
-          subtotal_alquiler: subtotal,
-        };
-      }
+        const subtotal = edificio.costo_hora * time;
+        if (!(selectedEdificios.size === 0 || !idMontaje)){
+            return {
+                id_edificio: idEdificio,
+                id_evento: id,
+                id_montaje_elegido: idMontaje,
+                subtotal_alquiler: subtotal,
+            };
+        }
     });
 
     if (sessionStorage.getItem("edificiosDummy") != null) {
-      sessionStorage.removeItem("edificiosDummy");
+        sessionStorage.removeItem("edificiosDummy");
     }
     sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
-  };
+
+    // Simula el clic en el botón con id "nextScreenSlider"
+    const nextButton = document.getElementById("nextScreenSlider");
+    if (nextButton) {
+        nextButton.click();
+    }
+};
 
 
   if (loading) return <p>Cargando edificios...</p>;

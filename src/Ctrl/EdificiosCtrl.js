@@ -212,3 +212,21 @@ export const createEdificioEvento = async (dummyEdificio) => {
     }
 };
 
+export const getEdificiosAndMontajesByIdEvento = async (eventId) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios_evento")
+            .select("id_edificio, id_montaje_elegido, subtotal_alquiler")
+            .eq("id_evento", eventId);
+
+        if (error) {
+            console.error("Error obteniendo los edificios y montajes del evento:", error.message);
+            throw new Error("No se pudo obtener los edificios y montajes del evento: " + error.message);
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener los edificios y montajes del evento: " + error.message);
+    }
+};
