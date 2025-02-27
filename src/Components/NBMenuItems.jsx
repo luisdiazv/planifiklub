@@ -37,8 +37,7 @@ export const dropdownOptions = [
     { path: "/app/VisorDeCotizaciones", label: "Mis eventos" },
     { path: "/", label: "Cerrar sesión" }, // Sin referencia directa a handleLogout
     { path: "/app/CalendarioEventos", label: "Eventos y cotizaciones [ADMIN]" },
-    { path: "/app/rolesConfig", label: "Configurador de roles [ADMIN]" },
-    { path: "/app/sociosConfig", label: "Configurador de socios [ADMIN]" },
+    { path: "app/usuarioConfig", label: "Configurador de roles [ADMIN]" },
     { path: "/app/productosConfig", label: "Configurador de productos [ADMIN]" },
     { path: "/app/edificiosConfig", label: "Configurador de edificios [ADMIN]" },
     { path: "/app/montajesConfig", label: "Configurador de montajes [ADMIN]" },

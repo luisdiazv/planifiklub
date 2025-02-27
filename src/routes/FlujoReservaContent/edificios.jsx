@@ -101,16 +101,21 @@ const EdificiosList = () => {
       }
     });
 
-    if (sessionStorage.getItem("edificiosDummy") != null) {
-      sessionStorage.removeItem("edificiosDummy");
+    // Verifica que para cada id de edificio seleccionado haya un montaje asignado
+    if (
+      selectedEdificios.size > 0 &&
+      Array.from(selectedEdificios).every((id) => montajeSeleccionado[id])
+    ) {
+      sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
+      
+      // Simula el clic en el botón con id "nextScreenSlider"
+      const nextButton = document.getElementById("nextScreenSlider");
+      if (nextButton) {
+        nextButton.click();
+      }
     }
-    sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
-
-    // Simula el clic en el botón con id "nextScreenSlider"
-    const nextButton = document.getElementById("nextScreenSlider");
-    if (nextButton) {
-      nextButton.click();
-    }
+    
+    
   };
 
 

@@ -31,8 +31,7 @@ import ResumenPago from './routes/ResumenPago.jsx';
 
 // Configuradores
 import ConfiguradorPaginaClub from './routes/Service/ColorService.jsx';
-import ConfiguradorRoles from './routes/Service/RolesService.jsx';
-import ConfiguradorSocio from './routes/Service/MemberService.jsx';
+import ConfiguradorUsuario from './routes/Service/UsuarioService.jsx';
 import ConfiguradorProductos from './routes/Service/ProductosService.jsx';
 import ConfiguradorEdificios from './routes/Service/EdificiosService.jsx';
 import ConfiguradorMontajes from './routes/Service/MontajesService.jsx';
@@ -91,8 +90,7 @@ function App() {
             <Route path="/app/EdicionEventos/:id" element={<EdicionEventos />} />
 
             {/* Configuradores */}
-            <Route path="/app/rolesConfig" element={<ConfiguradorRoles />} /> {/* Solo Admin */}
-            <Route path="/app/sociosConfig" element={<ConfiguradorSocio />} /> {/* Solo Admin */}
+            <Route path="/app/usuarioConfig" element={<ConfiguradorUsuario />} /> {/* Solo Admin */}
             <Route path="/app/productosConfig" element={<ConfiguradorProductos />} /> {/* Solo Admin */}
             <Route path="/app/edificiosConfig" element={<ConfiguradorEdificios />} /> {/* Solo Admin */}
             <Route path="/app/montajesConfig" element={<ConfiguradorMontajes />} /> {/* Solo Admin */}
