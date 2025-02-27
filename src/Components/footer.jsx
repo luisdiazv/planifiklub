@@ -12,11 +12,17 @@ const Footer = () => {
                     <div className="resp-footer1">
                         <div className="top">
                             <div className="top-logo">
-                                <Link className="footer-link-logo" to="/">
-                                    <div className="logoContainer">
-                                        <img src={logo} alt="Logo" />
-                                    </div>
-                                </Link>
+                            <div
+                            className="footer-link-logo"
+                            onClick={() => {
+                                window.location.href = "/";
+                            }}
+                            style={{ cursor: "pointer" }}
+                            >
+                            <div className="logoContainer">
+                                <img src={logo} alt="Logo" />
+                            </div>
+                            </div>
 
                             </div>
                             <div className="User-Manual" >
