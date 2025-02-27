@@ -100,7 +100,7 @@ class Navbar extends Component {
 
     return (
       <nav className="NavbarItems">
-        <Link className="nav-link-logo" to="/" onClick={this.closeDropdown}>
+        <Link className="nav-link-logo" to="/app" onClick={this.closeDropdown}>
           <div className="logoContainer">
             {logo && <img src={logo} alt="Logo" />}
             <h1 className="navbar-logo"> {clubName}</h1>
@@ -108,9 +108,8 @@ class Navbar extends Component {
         </Link>
         <div className="burguer-menu-container" ref={this.menuRef}>
           <button
-            className={`${
-              isAppPage && currentUser ? "burguer-button-menu-isIn" : "burguer-button-menu"
-            } ${isDropdownVisible ? "active" : ""}`}
+            className={`${isAppPage && currentUser ? "burguer-button-menu-isIn" : "burguer-button-menu"
+              } ${isDropdownVisible ? "active" : ""}`}
             onClick={this.toggleDropdown}
           >
             <i className="fa-solid fa-bars"></i>

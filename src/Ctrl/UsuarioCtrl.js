@@ -18,7 +18,7 @@ export const verificarUsuario = async (username, password) => {
 export const registrarUsuario = async (usuario) => {
   try {
     const { data, error } = await supabase.from("usuario").insert(usuario);
-
+    console.log(usuario);
     if (error) {
       console.error("Error registrando usuario:", error.message);
       throw new Error("No se pudo registrar el usuario: " + error.message);
@@ -83,38 +83,40 @@ export const getUsuarioByID = async (id) => {
 };
 
 export const getNombresApellidosById = async (userId) => {
-    try {
-        const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("idusuario", userId);
+  try {
+    const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("idusuario", userId);
 
-        if (error) {
-            console.error("Error obteniendo el usuario:", error.message);
-            throw new Error("No se pudo obtener el usuario: " + error.message);
-        }
-
-        if (data.length > 0) { return `${data[0].nombres} ${data[0].apellidos}`;
-        } else { return "Usuario desconocido"; }
-
-    } catch (error) {
-        console.error("Error interno:", error.message);
-        throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
+    if (error) {
+      console.error("Error obteniendo el usuario:", error.message);
+      throw new Error("No se pudo obtener el usuario: " + error.message);
     }
+
+    if (data.length > 0) {
+      return `${data[0].nombres} ${data[0].apellidos}`;
+    } else { return "Usuario desconocido"; }
+
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
+  }
 };
 
 export const getNombresApellidosByEmail = async (email) => {
   try {
-      const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("correo", email);
+    const { data, error } = await supabase.from("usuario").select("nombres, apellidos").eq("correo", email);
 
-      if (error) {
-          console.error("Error obteniendo el usuario:", error.message);
-          throw new Error("No se pudo obtener el usuario: " + error.message);
-      }
+    if (error) {
+      console.error("Error obteniendo el usuario:", error.message);
+      throw new Error("No se pudo obtener el usuario: " + error.message);
+    }
 
-      if (data.length > 0) { return `${data[0].nombres} ${data[0].apellidos}`;
-      } else { return "Usuario desconocido"; }
+    if (data.length > 0) {
+      return `${data[0].nombres} ${data[0].apellidos}`;
+    } else { return "Usuario desconocido"; }
 
   } catch (error) {
-      console.error("Error interno:", error.message);
-      throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener la información del usuario: " + error.message);
   }
 };
 
@@ -144,4 +146,4 @@ export const actualizarPassword = async (email, newPassword) => {
   }
 };
 
-export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario , getUsuarioByID, actualizarPassword, getNombresApellidosById};
+export default { verificarUsuario, registrarUsuario, getUsuarioByEmail, updateUsuario, getUsuarioByID, actualizarPassword, getNombresApellidosById };
