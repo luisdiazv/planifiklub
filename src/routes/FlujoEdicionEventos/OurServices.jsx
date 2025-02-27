@@ -3,8 +3,9 @@ import { getAllProducto } from "../../Ctrl/ProductoCtrl";
 import { getFotoProducto, uploadFotoProducto } from "../../API/StorageAPI";
 import './OurServicesStyles.css';
 import { formatCurrency } from "../../Util/MoneyFormat";
+import { getPedidos } from "../../Ctrl/PedidoCtrl";
 
-const OurProducts = () => {
+const OurProducts = ({id}) => {
     const [products, setProducts] = useState([]);
     const [productQuantities, setProductQuantities] = useState({});
     const [selectedProducts, setSelectedProducts] = useState({});
@@ -24,6 +25,24 @@ const OurProducts = () => {
 
         fetchProductos();
     }, []);
+
+    useEffect(() => {
+        const fetchPedidos = async () => {
+            try {
+                const pedidos = await getPedidos(id);
+                if (pedidos.length > 0) {
+                    const pedidoDummy = pedidos[0]; // Asumiendo que quieres almacenar el primer pedido
+                    sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
+                } else {
+                    console.warn("No se encontraron pedidos para el evento.");
+                }
+            } catch (error) {
+                console.error("Error obteniendo los pedidos por id_evento:", error);
+            }
+        };
+    
+        fetchPedidos();
+    }, [id]);
 
     const getProductos = async () => {
         const Productos = await getAllProducto();
@@ -126,8 +145,8 @@ const OurProducts = () => {
         return extraServices.filter(item => item.trim() !== "").join("%%");
     }
 
-    const handleDummy = (e) => {
-        completitudDiccionarios();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         const pedido = {
             id_evento: null,//Se genera en la BD (response)
@@ -159,11 +178,14 @@ const OurProducts = () => {
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
 
         console.log("Pedido temporalmente guardado");
-    };
+    
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        handleDummy();
+
+        // Simula el clic en el botón con id "nextScreenSlider"
+        const nextButton = document.getElementById("nextScreenSlider");
+        if (nextButton) {
+            nextButton.click();
+        }
     };
 
     const addExtraService = () => {

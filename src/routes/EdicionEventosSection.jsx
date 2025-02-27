@@ -12,12 +12,12 @@ export const sections = (id) => [
     {
         title: "Lugar del evento",
         description: "Aquí podrás elegir los edificios que quiere reservar para tu evento.",
-        content: <EdificiosListEdicion />,
+        content: <EdificiosListEdicion id={id}/>,
     },
     {
         title: "Nuestros servicios",
         description: "Aquí podrás elegir los productos que pedirás para tu evento.",
-        content: <OurServicesEdicion />
+        content: <OurServicesEdicion id={id}/>
     },
     {
         title: "Resumen del evento actualizado",

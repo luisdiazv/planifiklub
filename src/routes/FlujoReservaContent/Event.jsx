@@ -63,17 +63,17 @@ const EventDetails = () => {
 
         if (selectedDate === null || selectedHours.start === null || selectedHours.end === null) {
             window.alert("Debes seleccionar la fecha y horas del evento.");
-            return;
+            //return;
         }
 
         if (selectedIndex === null) {
             window.alert("Debes seleccionar al menos un tipo de evento.");
-            return;
+            //return;
         }
 
         if (invitados === null) {
             window.alert("Debes ingresar la cantidad de asistentes que tendrá el evento.");
-            return;
+            //return;
         }
 
         const evento = {
@@ -93,7 +93,6 @@ const EventDetails = () => {
             sessionStorage.removeItem("eventoDummy");
         }
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
-
         const nextButton = document.getElementById("nextScreenSlider");
         console.log(nextButton)
         if (nextButton) {
