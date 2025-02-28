@@ -81,25 +81,30 @@ const EdificiosList = () => {
     );
 
     // Crear lista de edificios seleccionados con montajes y subtotales
-    const edificiosEvento = Array.from(selectedEdificios).map((idEdificio) => {
+    let edificiosEvento = [];
+
+    const faltaMontaje = Array.from(selectedEdificios).some((idEdificio) => {
       const edificio = edificios.find((e) => e.idedificios === idEdificio);
       const idMontaje = montajeSeleccionado[idEdificio];
 
       if (!idMontaje) {
         window.alert(`Debes seleccionar un montaje para el edificio: ${edificio?.nombre || "Desconocido"}`);
-        return undefined;
+        return true; // Detiene `some()` y retorna `true`
       }
 
       const subtotal = edificio.costo_hora * time;
-      if (!(selectedEdificios.size === 0 || !idMontaje)){
-        return {
-          id_edificio: idEdificio,
-          id_evento: null,
-          id_montaje_elegido: idMontaje,
-          subtotal_alquiler: subtotal,
-        };
-      }
+      edificiosEvento.push({
+        id_edificio: idEdificio,
+        id_evento: null,
+        id_montaje_elegido: idMontaje,
+        subtotal_alquiler: subtotal,
+      });
+
+      return false; // Continúa la iteración
     });
+
+    // Si `some()` devolvió `true`, detenemos `handleSubmit`
+    if (faltaMontaje) return;
 
     // Verifica que para cada id de edificio seleccionado haya un montaje asignado
     if (
@@ -107,7 +112,7 @@ const EdificiosList = () => {
       Array.from(selectedEdificios).every((id) => montajeSeleccionado[id])
     ) {
       sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
-      
+
       // Simula el clic en el botón con id "nextScreenSlider"
       const nextButton = document.getElementById("nextScreenSlider");
       if (nextButton) {
@@ -144,7 +149,7 @@ const EdificiosList = () => {
               <div className="edificio-info">
                 <div className="titleContainer">
                   <h2>{edificio.nombre}</h2>
-                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                  <button type="button" className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
                     {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
                   </button>
                 </div>
