@@ -10,7 +10,6 @@ import {
 import { getFotoProducto, uploadFotoProducto } from '../../API/StorageAPI'; // Ajusta la ruta según tu proyecto
 import "./ProductosServiceStyles.css";
 
-
 const ConfiguradorProductos = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [productoInfo, setProductoInfo] = useState(null);
@@ -21,11 +20,14 @@ const ConfiguradorProductos = () => {
   const [newFoto, setNewFoto] = useState(null);
   // Estado para almacenar la URL de _preview_ de la imagen (no se guarda en la BD)
   const [previewFoto, setPreviewFoto] = useState(null);
+  // Estado para el indicador de carga
+  const [loading, setLoading] = useState(false);
 
   const handleSearchByNombre = async () => {
     setError('');
     setSuccessMsg('');
     setProductoInfo(null);
+    setLoading(true);
     try {
       const filteredProductos = await getProductosByNombre(searchTerm);
       if (filteredProductos && filteredProductos.length > 0) {
@@ -37,6 +39,8 @@ const ConfiguradorProductos = () => {
     } catch (error) {
       console.error('Error al buscar productos por nombre:', error.message);
       window.alert('Ocurrió un error al buscar productos.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -170,10 +174,22 @@ const ConfiguradorProductos = () => {
       <div className="configurador-productos-container">
         <h2 className="configurador-productos-header">Configurador de Productos</h2>
         <div className="configurador-productos-input-container">
-          <input type="text" placeholder="Ingrese el nombre del producto" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="configurador-productos-input" />
-          <button onClick={handleSearchByNombre} className="configurador-productos-button">Buscar</button>
-          <button onClick={handleCreateNew} className="configurador-productos-button">Crear Nuevo Producto</button>
+          <input
+            type="text"
+            placeholder="Ingrese el nombre del producto"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="configurador-productos-input"
+          />
+          <button onClick={handleSearchByNombre} className="configurador-productos-button">
+            Buscar
+          </button>
+          <button onClick={handleCreateNew} className="configurador-productos-button">
+            Crear Nuevo Producto
+          </button>
         </div>
+        {/* Indicador de carga */}
+        {loading && <div className="configurador-productos-loading">Buscando productos...</div>}
         {error && <span className="configurador-productos-error">{error}</span>}
         {successMsg && <span className="configurador-productos-success">{successMsg}</span>}
         {productoInfo ? (
@@ -196,7 +212,6 @@ const ConfiguradorProductos = () => {
               <div className='configurador-productos-preview-img-container'>
                 {previewFoto && <img src={previewFoto} alt="Preview" className="configurador-productos-preview-img" />}
               </div>
-
               <input type="file" accept="image/*" onChange={handleImageChange} className="configurador-productos-input-image" />
             </div>
             <div className="configurador-productos-button-container">
@@ -208,14 +223,13 @@ const ConfiguradorProductos = () => {
         ) : (
           productos.length > 0 && productos.map((producto) => (
             <div key={producto.idproducto} className="configurador-productos-item" >
-              <strong>{producto.nombre}</strong> * {producto.descripcion} - ${producto.precio}
+              <strong>{producto.nombre}</strong> {producto.descripcion} - ${producto.precio}
               <button className="configurador-productos-button" onClick={() => handleSelectProducto(producto)}>Seleccionar </button>
             </div>
           ))
         )}
       </div>
     </div>
-
   );
 };
 

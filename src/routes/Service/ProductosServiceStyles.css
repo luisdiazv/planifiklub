@@ -1,5 +1,6 @@
 .fullProductServ-container {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     padding: 2rem;
 }
 
@@ -138,6 +139,13 @@
 }
 
 .configurador-productos-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--text-color);
+}
+
+.configurador-productos-loading{
     display: flex;
     flex-direction: column;
     gap: 1rem;

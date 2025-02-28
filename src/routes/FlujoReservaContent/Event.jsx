@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { getEventTypes } from "../../Ctrl/TiposEventosCtrl";
-import { getFotoTipoEvento } from "../../API/StorageAPI"; 
+import { getFotoTipoEvento } from "../../API/StorageAPI";
 import "./EventStyles.css";
 import SmallCallendar from "../../Components/smallCallendar";
 import HourSelector from "../../Components/hourSelector";
 import userControl from "../../Util/UserControl";
 
 const EventTypeImage = ({ id, alt }) => {
-  const [imgUrl, setImgUrl] = useState(null);
+    const [imgUrl, setImgUrl] = useState(null);
 
-  useEffect(() => {
-    const fetchImage = async () => {
-      const url = await getFotoTipoEvento(id);
-      setImgUrl(url);
-    };
-    fetchImage();
-  }, [id]);
+    useEffect(() => {
+        const fetchImage = async () => {
+            const url = await getFotoTipoEvento(id);
+            setImgUrl(url);
+        };
+        fetchImage();
+    }, [id]);
 
-  return <img className="event-type-image" src={imgUrl || ""} alt={alt} />;
+    return <img className="event-type-image" src={imgUrl || ""} alt={alt} />;
 };
 
 const EventDetails = () => {
@@ -42,6 +42,19 @@ const EventDetails = () => {
             }
         };
 
+        if (sessionStorage.getItem("eventoDummy")) {
+            sessionStorage.removeItem("eventoDummy");
+        }
+        if (sessionStorage.getItem("edificiosDummy")) {
+            sessionStorage.removeItem("edificiosDummy");
+        }
+        if (sessionStorage.getItem("pedidoDummy")) {
+            sessionStorage.removeItem("pedidoDummy");
+        }
+        if (sessionStorage.getItem("productoPedidoDummy")) {
+            sessionStorage.removeItem("productoPedidoDummy");
+        }
+
         fetchEventTypes();
     }, []);
 
@@ -63,17 +76,17 @@ const EventDetails = () => {
 
         if (selectedDate === null || selectedHours.start === null || selectedHours.end === null) {
             window.alert("Debes seleccionar la fecha y horas del evento.");
-            //return;
+            return;
         }
 
         if (selectedIndex === null) {
             window.alert("Debes seleccionar al menos un tipo de evento.");
-            //return;
+            return;
         }
 
         if (invitados === null) {
             window.alert("Debes ingresar la cantidad de asistentes que tendrá el evento.");
-            //return;
+            return;
         }
 
         const evento = {
@@ -106,8 +119,8 @@ const EventDetails = () => {
             {error && <p className="error-message">{error}</p>}
             <form className="event-detail-container" onSubmit={handleSubmit}>
                 <div className="calendar-container">
-                <SmallCallendar onDateChange={handleDateChange} selectedDate={selectedDate} />
-                <HourSelector onChange={handleHourChange} />
+                    <SmallCallendar onDateChange={handleDateChange} selectedDate={selectedDate} />
+                    <HourSelector onChange={handleHourChange} />
                 </div>
                 <div className="event-types-container">
                     <h2>Tipos de Eventos</h2>

@@ -23,7 +23,21 @@ function AboutPk() {
                             puedan tener una mejor organización de sus instalaciones y recursos,
                             generando así una mayor satisfacción en los clientes de los clubes.</p>
                     </div>
-
+                    <div>
+                        <h2 className='title'>Nuestra Propuesta</h2>
+                        <p className='text'>Centralizamos y gestionamos toda la reserva de eventos en clubes 
+                            campestres, facilitando la planificación y coordinación. Mejoramos la experiencia 
+                            de los socios y posicionamos al club como un referente moderno y eficiente.</p>
+                    </div>
+                    <div>
+                        <h2 className='title'>Nuestros Valores</h2>
+                        <p className='text'>El <b>compromiso</b> es la base de nuestro trabajo; actuamos con pasión y 
+                            responsabilidad, cumpliendo nuestras promesas y dando siempre lo mejor de nosotros. 
+                            Nos <b>enfocamos en resultados</b>, buscando soluciones concretas y midiendo el éxito por
+                            los logros alcanzados, adaptándonos estratégicamente a los desafíos. 
+                            La <b>determinación</b>  nos impulsa a superar obstáculos con perseverancia y valentía, 
+                            viéndolos como oportunidades para crecer y avanzar hacia nuestras metas.</p>
+                    </div>
                 </div>
                 <img className="image" alt="VisionImg" src={LogoRed} />
             </div>

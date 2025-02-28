@@ -11,6 +11,12 @@
     gap: 1.5rem;
 }
 
+.value-summary-text {
+    h3{
+        color: var(--secondary-container-color);
+    }
+  }
+
 .summary-title {
     text-align: center;
     margin: 0;

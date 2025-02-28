@@ -256,6 +256,12 @@ const ShowEvent = () => {
             setLoading(true);
             const facturas = await getPagosbyEventID(id);
     
+            if (!facturas || facturas.length === 0) {
+                alert('No hay facturación para este evento.');
+                setLoading(false);
+                return;
+            }
+    
             // Configuración del contenido en formato PDFMake
             const documentDefinition = {
                 content: [
