@@ -169,7 +169,7 @@ useEffect(() => {
               <div className="edificio-info">
                 <div className="titleContainer">
                   <h2>{edificio.nombre}</h2>
-                  <button className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
+                  <button type="button" className="toggle-btn" onClick={() => toggleExpand(edificio.idedificios)}>
                     {expanded[edificio.idedificios] ? "Ver menos" : "Ver más"}
                   </button>
                 </div>
