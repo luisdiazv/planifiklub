@@ -161,7 +161,7 @@ const OurProducts = () => {
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
 
         console.log("Pedido temporalmente guardado");
-        
+
         // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");
         if (nextButton) {
@@ -230,34 +230,34 @@ const OurProducts = () => {
                     <p>Cargando productos...</p>
                 )}
             </ul>
-
-            <h4>Servicios Adicionales o Personalizados</h4>
-            <ul className="ourService-cards">
-                {extraServices.map((service, index) => (
-                    <li className="additionalService-card" key={index}>
-                        <input
-                            type="text"
-                            placeholder="Ingrese un servicio adicional"
-                            value={service}
-                            onChange={(e) => handleExtraServiceChange(index, e.target.value)}
-                        />
-                        <button
-                            onClick={() => removeExtraService(index)}
-                        >
-                            X
-                        </button>
-                    </li>
-                ))}
-            </ul>
-            <button
-                onClick={addExtraService}
-            >
-                + Agregar Servicio
-            </button>
-            <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
-
+            <div className="additionalService-container">
+                <h4>Servicios Adicionales o Personalizados</h4>
+                <ul className="ourService-cards">
+                    {extraServices.map((service, index) => (
+                        <li className="additionalService-card" key={index}>
+                            <input
+                                type="text"
+                                placeholder="Ingrese un servicio adicional"
+                                value={service}
+                                onChange={(e) => handleExtraServiceChange(index, e.target.value)}
+                            />
+                            <button
+                                onClick={() => removeExtraService(index)}
+                            >
+                                X
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+                <button
+                    onClick={addExtraService}
+                >
+                    + Agregar Servicio
+                </button>
+                <h4 hidden>Precio total de productos y servicios: formatCurrency({totalPrice})</h4>
+            </div>
             <button type="submit" onClick={handleSubmit}>
-                Siguiente
+                Guardar y pasar a la siguiente sección
             </button>
         </div>
     );
