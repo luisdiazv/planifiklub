@@ -7,7 +7,7 @@ function NotFound() {
         <div className='error-container'>
             <img src={errorImg} alt="Error 404" className="error-image" />
             <div>
-                <h2>error 404: Página no encontrada</h2>
+                <h2>Parces que estás perdido, esta página no existe</h2>
                 <Link to="/">
                     <button>
                         Volver al inicio

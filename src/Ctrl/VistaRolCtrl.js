@@ -2,7 +2,7 @@ import { supabase } from "../API/SupabaseAPI";
 
 export const getVistaRolByRol = async (rolesIds) => {
   try {
-    const { data, error } = await supabase.from("vistasXrol").select("id_vista").in("id_rol", rolesIds);
+    const { data, error } = await supabase.from("vistas_rol").select("id_vista").in("id_rol", rolesIds);
     if (error) {
       console.error("Error verificando vistaRol:", error);
       throw new Error("No se pudo verificar la vistaRol");

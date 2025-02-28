@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Resizer from 'react-image-file-resizer';
 import './TipoEventoServiceStyles.css';
 import {
@@ -11,6 +11,7 @@ import {
   getFotoTipoEvento,
   uploadFotoTipoEvento
 } from '../../API/StorageAPI';
+import { handleAcceso } from '../../Util/AccessControl';
 
 const ConfiguradorTipoEventos = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,6 +23,17 @@ const ConfiguradorTipoEventos = () => {
   const [previewFoto, setPreviewFoto] = useState(null);
   // Estado para el indicador de carga
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(8);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
+  }, []);
 
   const handleSearchByNombre = async () => {
     setError('');

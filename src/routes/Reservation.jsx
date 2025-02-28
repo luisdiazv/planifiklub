@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import './ReservationStyles.css';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from "axios";
 import { sections } from "./ReservationSection.jsx";
+import { handleAcceso } from "../Util/AccessControl.js";
 
 const Reservation = () => {
     const [preferenceId, setPreferenceId] = useState(null);
@@ -11,6 +12,17 @@ const Reservation = () => {
 
     // Referencia al contenedor de las secciones para el deslizamiento
     const sliderRef = useRef(null);
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(2);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
 
     /*
     // Código para servicios y MercadoPago (comentado)

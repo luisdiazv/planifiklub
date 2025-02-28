@@ -3,6 +3,7 @@ import { getUsuariosByBusqueda, updateUsuario } from '../../Ctrl/UsuarioCtrl';
 import { getAllRoles } from '../../Ctrl/RolCtrl';
 import { getRolByUser, updateAccesos } from '../../Ctrl/AccesosCtrl';
 import "./UsuarioServiceStyles.css";
+import { handleAcceso } from '../../Util/AccessControl';
 
 const ConfiguradorUsuario = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +16,17 @@ const ConfiguradorUsuario = () => {
   const [successMsg, setSuccessMsg] = useState('');
   // Estado para el indicador de carga
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(5);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
+}, []);
 
   // Cargar todos los roles al montar el componente
   useEffect(() => {

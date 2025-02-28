@@ -7,6 +7,7 @@ import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import { getPagosbyEventID } from "../Ctrl/PagosCtrl";
 import "./ShowEventStyles.css";
 import { formatCurrency } from "../Util/MoneyFormat";
+import { handleAcceso } from "../Util/AccessControl";
 
 import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -23,6 +24,17 @@ const ShowEvent = () => {
     const [edificios, setEdificios] = useState([]);
     const [pedidos, setPedidos] = useState();
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(3);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
 
     useEffect(() => {
         const fetchEventInfo = async () => {
