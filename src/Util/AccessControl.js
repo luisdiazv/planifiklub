@@ -3,7 +3,6 @@ import userControl from './UserControl';
 export const handleAcceso = async (idVista) => {
     try {
         const acceso = await userControl.tieneAcceso(idVista);
-        console.log("acceso");
         
         if (!acceso) {
             console.log("DENEGADO");

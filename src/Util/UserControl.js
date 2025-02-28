@@ -32,6 +32,7 @@ class UserControl {
     }
 
     tieneAcceso = async (vista) => {
+        this.getCurrentUser()
         if (!this.currentUser) {
             console.error("No hay usuario logueado");
             return false;
