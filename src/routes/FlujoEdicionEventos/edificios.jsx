@@ -6,7 +6,7 @@ import { getFotoEdificio } from "../../API/StorageAPI";
 import "./edificiosStyles.css";
 import { formatCurrency } from "../../Util/MoneyFormat";
 
-const EdificiosList = ({ id }) => {
+const EdificiosList = ({ id, handleNext }) => {
   const [edificios, setEdificios] = useState([]);
   const [montajes, setMontajes] = useState([]);
   const [montajesNombres, setMontajesNombres] = useState({});
@@ -17,6 +17,7 @@ const EdificiosList = ({ id }) => {
   const [selectedEdificios, setSelectedEdificios] = useState(new Set());
   const [edificioFotos, setEdificioFotos] = useState({});
   const [edificiosEvento, setEdificiosEvento] = useState([]);
+  const [isEditable, setIsEditable] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +58,12 @@ const EdificiosList = ({ id }) => {
             }
             sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosDummy));
 
+            // Verifica el estado del evento
+            const eventoDummy = JSON.parse(sessionStorage.getItem("eventoDummy"));
+            if (eventoDummy && eventoDummy.estado === "Aprobado") {
+                setIsEditable(false);
+            }
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -84,6 +91,7 @@ useEffect(() => {
   };
 
   const handleSelectionChange = (id) => {
+    if (!isEditable) return;
     setSelectedEdificios((prev) => {
       const updated = new Set(prev);
       updated.has(id) ? updated.delete(id) : updated.add(id);
@@ -92,6 +100,7 @@ useEffect(() => {
   };
 
   const handleMontajeChange = (edificioId, montajeId) => {
+    if (!isEditable) return;
     setMontajeSeleccionado((prev) => ({ ...prev, [edificioId]: montajeId }));
   };
 
@@ -135,11 +144,7 @@ useEffect(() => {
     }
     sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosEvento));
 
-    // Simula el clic en el botón con id "nextScreenSlider"
-    const nextButton = document.getElementById("nextScreenSlider");
-    if (nextButton) {
-        nextButton.click();
-    }
+    handleNext(); 
 };
 
   if (loading) return <p>Cargando edificios...</p>;
@@ -149,6 +154,7 @@ useEffect(() => {
     <div className="edificios-container">
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
+      {!isEditable && <p>Debido al estado de su solicitud, para realizar modificaciones en este evento, comuníquese con la administración.</p>}
         {edificios.map((edificio) => {
           const montajesFiltrados = montajes.filter((m) => m.id_edificio === edificio.idedificios);
           return (
@@ -182,6 +188,7 @@ useEffect(() => {
                     <select className="montajes-drop-select"
                       value={montajeSeleccionado[edificio.idedificios] || ""}
                       onChange={(e) => handleMontajeChange(edificio.idedificios, e.target.value)}
+                      disabled={!isEditable}
                     >
                       {montajesFiltrados.length > 0 ? (
                         <>
@@ -203,6 +210,7 @@ useEffect(() => {
                       type="checkbox"
                       checked={selectedEdificios.has(edificio.idedificios)}
                       onChange={() => handleSelectionChange(edificio.idedificios)}
+                      disabled={!isEditable}
                     />
                   </div>
                 </div>
@@ -211,7 +219,7 @@ useEffect(() => {
             </div>
           );
         })}
-        <button type="submit">Guardar y Pasar a la Siguiente Sección</button>
+        <button type="submit" >Guardar y Pasar a la Siguiente Sección</button>
       </form>
     </div>
   );

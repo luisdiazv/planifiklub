@@ -5,7 +5,7 @@ import './OurServicesStyles.css';
 import { formatCurrency } from "../../Util/MoneyFormat";
 import { getPedidos, getInfoPedidos } from "../../Ctrl/PedidoCtrl";
 
-const OurProducts = ({ id }) => {
+const OurProducts = ({ id, handleNext }) => {
     const [products, setProducts] = useState([]);
     const [productQuantities, setProductQuantities] = useState({});
     const [selectedProducts, setSelectedProducts] = useState({});
@@ -78,12 +78,12 @@ const OurProducts = ({ id }) => {
                     setInitialCostoTotal(pedidoDummy.costo_total);
     
                     // Simula el clic en el botón "Siguiente"
-                    if (submitButtonRef.current) {
+                   /* if (submitButtonRef.current) {
                         console.log("Simulando clic en el botón 'Siguiente'");
                         console.log("Subtotal:", productoPedidoDummy.subtotal);
                         console.log("Total Price:", totalPrice);
                         submitButtonRef.current.click();
-                    }
+                    }*/
                 } else {
                     console.warn("No se encontraron pedidos para el evento.");
                 }
@@ -255,12 +255,12 @@ const OurProducts = ({ id }) => {
         console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")));
     
         console.log("Pedido temporalmente guardado");
-    
+    /*
         // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");
         if (nextButton) {
             nextButton.click();
-        }
+        }*/handleNext(); 
     };
     
     const addExtraService = () => {

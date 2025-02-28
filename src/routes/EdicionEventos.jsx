@@ -19,7 +19,7 @@ const EdicionEventos = () => {
 
     // Función para mover el timeline hacia la derecha
     const handleNext = () => {
-        if (activeSection < sections(id).length - 1) {
+        if (activeSection < sections(id, handleNext).length - 1) {
             setActiveSection(prev => prev + 1);
             sliderRef.current.scrollTo({
                 left: (activeSection + 1) * sliderRef.current.offsetWidth,
@@ -48,11 +48,11 @@ const EdicionEventos = () => {
                     <div className="timeline-line">
                         <div
                             className="timeline-progress"
-                            style={{ width: `${(activeSection / (sections(id).length - 1)) * 100}%` }}
+                            style={{ width: `${(activeSection / (sections(id, handleNext).length - 1)) * 100}%` }}
                         />
                     </div>
                     <div className="timeline-points">
-                        {sections(id).map((section, index) => (
+                        {sections(id, handleNext).map((section, index) => (
                             <div
                                 key={index}
                                 className={`timeline-point ${index < activeSection ? "completed" : ""} ${activeSection === index ? "active" : ""}`}
@@ -66,18 +66,17 @@ const EdicionEventos = () => {
                 </div>
                 {/* Botones de Navegación */}
                 <div className="navigation-buttons">
-                    <button type="button" onClick={handlePrev} disabled={activeSection === 0}>
+                    <button type="button" id="prevScreenSlider" onClick={handlePrev} disabled={activeSection === 0}>
                         Anterior
                     </button>
-
-                    <button type="button" onClick={handleNext} disabled={activeSection === sections.length - 1}>
+                    <button type="button" id="nextScreenSlider" onClick={handleNext} disabled={activeSection === sections.length - 1} hidden>
                         Siguiente
                     </button>
                 </div>
 
                 {/* Contenedor del slider, se muestra únicamente la sección activa */}
                 <div ref={sliderRef} className="ServicesSlider">
-                    {sections(id).map((section, index) => (
+                    {sections(id, handleNext).map((section, index) => (
                         <div key={index} className={`section ${activeSection === index ? '' : 'hidden'}`}>
                             <h2>{section.title}</h2>
                             <p>{section.description}</p>

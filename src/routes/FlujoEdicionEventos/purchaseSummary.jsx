@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getAllAdmins } from "../../Ctrl/RolCtrl";
-import { createEvent } from "../../Ctrl/EventosCtrl"; 
-import { createEdificioEvento } from "../../Ctrl/EdificiosCtrl"; 
-import {createPedido, createProductoPedido} from "../../Ctrl/PedidoCtrl"
+import { updateEventByID } from "../../Ctrl/EventosCtrl"; 
+import { upsertEdificiosEvento } from "../../Ctrl/EdificiosCtrl"; 
+import { updatePedidoById, upsertProductoPedido} from "../../Ctrl/PedidoCtrl"
 import axios from "axios";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -11,7 +11,8 @@ import "./purchaseSummaryStyles.css";
 import { formatCurrency } from "../../Util/MoneyFormat";
 pdfMake.vfs = pdfFonts;
 
-const PurchaseSummary = () => {
+const PurchaseSummary = ({id}) => {
+
     const location = useLocation();
     const { selectedServices, serviceQuantities, totalPrice } = location.state || {};
     const [eventoDummy, setEventoDummy] = useState(() => 
@@ -32,10 +33,11 @@ const PurchaseSummary = () => {
         JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || []
     );
     const [pedidosAdicionales, setPedidosAdicionales] = useState("");
+    
 
     useEffect(() => {
         const servicioExtra = JSON.parse(sessionStorage.getItem("pedidoDummy"));
-        console.log("servicioExtra:", servicioExtra);
+        
         if (servicioExtra && servicioExtra.pedidos_adicionales) {
             setPedidosAdicionales(servicioExtra.pedidos_adicionales);
         } else {
@@ -44,7 +46,7 @@ const PurchaseSummary = () => {
     }, [pedidoDummy]);
     
     useEffect(() => {
-        console.log("pedidosAdicionales actualizado:", pedidosAdicionales);
+        
     }, [pedidosAdicionales]);
     
     useEffect(() => {
@@ -66,15 +68,17 @@ const PurchaseSummary = () => {
 
     useEffect(() => {
         // Obtener los edificios guardados en sessionStorage
+        
         const edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
-    
+        sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosDummy));
+
+      
         // Calcular la suma de los subtotales de los edificios
         const subtotalEdificios = edificiosDummy.reduce((sum, edificio) => sum + (edificio.subtotal_alquiler || 0), 0);
-
         const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
             
         const subtotalProductos = pedidoDummy.costo_total ? Number(pedidoDummy.costo_total) : 0;
-        console.log("subtotalProductos:", subtotalProductos);
+        
     
         // Calcular el costo total
         const total = subtotalEdificios + subtotalProductos;
@@ -130,7 +134,7 @@ const PurchaseSummary = () => {
                 { correo, nombres },
                 { headers: { "Content-Type": "application/json" } }
             );
-            console.log("Respuesta del servidor:", response.data);
+            //console.log("Respuesta del servidor:", response.data);
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -149,10 +153,25 @@ const PurchaseSummary = () => {
                 { correos },
                 { headers: { "Content-Type": "application/json" } }
             );
-            console.log("Respuesta del servidor, admin:", response.data);
+           // console.log("Respuesta del servidor, admin:", response.data);
         } catch (error) {
             console.error("Error en la petición:", error);
         }
+    };
+
+    const formatTime = (timeString) => {
+        if (!timeString) return "Hora no disponible";
+        
+        // Si el formato es "HH:MM" o similar, simplemente lo devolvemos
+        if (timeString.includes(":")) return timeString;
+    
+        // Intentamos parsear la hora si viene como timestamp o formato extraño
+        const date = new Date(timeString);
+        if (isNaN(date.getTime())) {
+            console.error("Formato de hora inválido:", timeString);
+            return "Formato inválido";
+        }
+        return date.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false });
     };
 
     const handleConfirmarCotizacion = async () => {
@@ -167,112 +186,106 @@ const PurchaseSummary = () => {
                 return;
             }
     
+            // Resto del código para confirmar la cotización...
+            const horaInicio = formatTime(eventoDummy.hora_inicio);
+            const horaFin = formatTime(eventoDummy.hora_fin);
+            console.log(eventoDummy.costo_total);
+            const eventoEditado = {
+                idevento: Number(id),
+                id_usuario: eventoDummy.id_usuario,
+                fecha: new Date(eventoDummy.fecha).toISOString().split('T')[0], // YYYY-MM-DD
+                hora_inicio: horaInicio,
+                hora_fin: horaFin,
+                id_tipo_evento: eventoDummy.id_tipo_evento,
+                detalles: eventoDummy.detalles,
+                estado: eventoDummy.estado,
+                personas: eventoDummy.personas,
+                costo_total: eventoDummy.costo_total,
+                saldo_pendiente: (eventoDummy.costo_total).toString()
+            };
+    
             // Guardar el evento en la base de datos y obtener el ID generado
-            const eventId = await createEvent(eventoDummy);
-            setMessage(`Cotización confirmada con éxito. ID del evento: ${eventId}`);
+            console.log("eventoEditado:", eventoEditado);
+            console.log("id:", id);
+            try {
+                console.log("Antes de llamar a updateEventByID");
+                await updateEventByID(id, eventoEditado);
+                console.log("Después de llamar a updateEventByID");
+            } catch (error) {
+                console.error("Error en updateEventByID:", error);
+            }
     
-            // Actualizar el eventoDummy con el nuevo ID del evento y guardarlo en sessionStorage
-            eventoDummy.id_evento = eventId;
-            sessionStorage.setItem("eventoDummy", JSON.stringify(eventoDummy));
-    
-            // Actualizar los edificiosDummy con el nuevo ID del evento
-            let edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
-            edificiosDummy = edificiosDummy.map(edificio => ({
-                ...edificio,
-                id_evento: eventId
+            const edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
+            const edificiosEvento = edificiosDummy.map(edificio => ({
+                id_edificio: edificio.id_edificio,
+                id_evento: edificio.id_evento,
+                id_montaje_elegido: edificio.id_montaje_elegido,
+                subtotal_alquiler: edificio.subtotal_alquiler
             }));
-            sessionStorage.setItem("edificiosDummy", JSON.stringify(edificiosDummy));
     
-            // Actualizar los pedidoDummy con el nuevo ID del evento
-            let pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy"));
-
-            if (Array.isArray(pedidoDummy)) {
-                pedidoDummy = pedidoDummy.map(pedido => ({
-                    ...pedido,
-                    id_evento: eventId
-                }));
-            } else if (pedidoDummy && typeof pedidoDummy === "object") {
-                pedidoDummy.id_evento = eventId;
+            console.log("Edificios:", edificiosEvento);
+            try {
+                console.log("Antes de llamar a upsertEdificiosEvento");
+                await upsertEdificiosEvento(id, edificiosEvento);
+                console.log("Después de llamar a upsertEdificiosEvento");
+            } catch (error) {
+                console.error("Error en upsertEdificiosEvento:", error);
             }
-
-            sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
-
     
-            // 🔹 Forzar actualización de productosPedido en el estado
-            setProductosPedido(JSON.parse(sessionStorage.getItem("pedidoDummy")) || []);
-
-            
-            await Promise.all(
-                edificiosDummy.map(async (edificio) => {
-                    if (!edificio.id_edificio) {
-                        console.error("Error: id_edificio es null o undefined en", edificio);
-                    }
-                    await createEdificioEvento(edificio);
-                })
-            );
-            
-            // Insertar el pedido en la base de datos
-            if (pedidoDummy) {
-                const pedidoId = await createPedido(pedidoDummy);
-            
-                // Actualizar el pedidoDummy con el nuevo ID y guardarlo en sessionStorage
-                pedidoDummy.id_pedido = pedidoId;
-                sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
-
-                setProductosPedido({ ...pedidoDummy });
-            
-                // Recuperar datos del sessionStorage
-                const productoPedidoDummy = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || {};
-
-                if (!productoPedidoDummy || !pedidoId) {
-                    console.error("Error: productoPedidoDummy o pedidoId no están definidos.");
-                } else {
-
-                    await Promise.all(
-                        Object.keys(productoPedidoDummy.cantidad || {}).map(async (productId) => {
-                            const cantidad = productoPedidoDummy.cantidad?.[productId] ?? null;
-                            const subtotal = productoPedidoDummy.subtotal?.[productId] ?? null;
-
-                           
-                            if (cantidad === null || cantidad <= 0) {
-                                console.error(`Error: cantidad inválida para el producto ${productId}:`, cantidad);
-                                return; // Evitar inserciones con cantidad inválida
-                            }
-
-                            if (subtotal === null || subtotal <= 0) {
-                                console.error(`Error: subtotal inválido para el producto ${productId}:`, subtotal);
-                                return; // Evitar inserciones con subtotal inválido
-                            }
-
-                            const productoPedido = {
-                                id_pedido: pedidoId,
-                                id_producto: productId,
-                                cantidad,
-                                subtotal,
-                            };
-                            const cantidadLimpia = parseInt(productoPedido.cantidad ?? 0, 10);
-                            const subtotalLimpio = parseFloat(productoPedido.subtotal ?? 0);
-
-                        const productoPedidoLimpio = {
-                            ...productoPedido,
-                            cantidadLimpia,
-                            subtotalLimpio
-                        };
-
-                        await createProductoPedido(productoPedidoLimpio);
-                        })
-                    );
-                }
-
-
+            const productoPedidoDummy = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || {};
+            console.log("productoPedidoDummy:", productoPedidoDummy);
+    
+            const productoPedido = {
+                id_pedido: productoPedidoDummy.id_pedido,
+                productos: productoPedidoDummy.id_producto.map(id => ({
+                    id_producto: id,
+                    cantidad: productoPedidoDummy.cantidad[id],
+                    subtotal: productoPedidoDummy.subtotal[id]
+                }))
+            };
+    
+            console.log("productoPedido:", productoPedido);
+    
+            const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy"));
+            if (!pedidoDummy) throw new Error("pedidoDummy es null o undefined");
+    
+            const pedidoactual = {
+                id_evento: pedidoDummy.id_evento,
+                idpedido: productoPedido.id_pedido,
+                fecha_pedido: pedidoDummy.fecha_pedido,
+                costo_total: pedidoDummy.costo_total,
+                pedidos_adicionales: pedidoDummy.pedidos_adicionales
+            };
+    
+            console.log("Pedido Actual:", pedidoactual);
+    
+            // Llamar a la función updatePedidoById
+            try {
+                console.log("Antes de llamar a updatePedidoById");
+                await updatePedidoById(pedidoactual.idpedido, pedidoactual);
+                console.log("Después de llamar a updatePedidoById");
+            } catch (error) {
+                console.error("Error en updatePedidoById:", error);
             }
+    
+            // Llamar a la función upsertProductoPedido
+            try {
+                console.log("Antes de llamar a upsertProductoPedido");
+                await upsertProductoPedido(productoPedido.id_pedido, productoPedido);
+                console.log("Después de llamar a upsertProductoPedido");
+            } catch (error) {
+                console.error("Error en upsertProductoPedido:", error);
+            }
+            
+            
+            /*
             const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
             const nombre = currentUser.nombres;
             const apellido = currentUser.apellidos;
-            const correo = currentUser.correo;
-            alert("Cotización confirmada.");
+            const correo = currentUser.correo;*/
+            alert("Modificación realizada.");/*
             enviarCorreoSocio(correo, `${nombre} ${apellido}`);
-            enviarCorreoAdmin();
+            enviarCorreoAdmin();*/
 
             sessionStorage.removeItem("eventoDummy");
             sessionStorage.removeItem("edificiosDummy");
@@ -283,11 +296,13 @@ const PurchaseSummary = () => {
     
     
         } catch (error) {
-            setMessage(`Error al confirmar la cotización: ${error.message}`);
+            //setMessage(`Error al confirmar la cotización: ${error.message}`);
         }
     
         setLoading(false);
     }; 
+    
+
 
     return (
         <div className="purchase-summary-container">

@@ -174,7 +174,7 @@ export const updateEventByID = async (eventID, newInfo) => {
   if (error) {
     console.error('Error actualizando evento:', error);
   } else {
-    console.log('Evento actualizado:', data);
+    console.log('Evento actualizado');
   }
 }
 
