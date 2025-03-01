@@ -109,5 +109,3 @@ export const getDropdownOptions = async () => {
   
     return options;
   };
-
-export const dropdownOptions = await getDropdownOptions();

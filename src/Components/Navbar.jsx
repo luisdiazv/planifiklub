@@ -1,14 +1,28 @@
-// src/components/Navbar.js
 import React, { Component, createRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { MenuItems, dropdownOptions } from "./NBMenuItems";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { MenuItems, getDropdownOptions } from "./NBMenuItems";
 import userControl from "../Util/UserControl";
 import { ClubInfoContext } from "../context/infoClubContext";
 
-// Componente funcional para emitir un evento personalizado cada vez que cambia la ruta
+// HOC para inyectar navigate en componentes de clase
+function withNavigation(Component) {
+  return function (props) {
+    const navigate = useNavigate();
+    return <Component {...props} navigate={navigate} />;
+  };
+}
+
+var dropdownOptions = [];
+getDropdownOptions().then((options) => {
+  dropdownOptions = options;
+});
+
 function RouteChangeListener() {
   const location = useLocation();
   React.useEffect(() => {
+    getDropdownOptions().then((options) => {
+      dropdownOptions = options;
+    });
     const event = new CustomEvent("routeChanged", {
       detail: { pathname: location.pathname },
     });
@@ -40,7 +54,6 @@ class Navbar extends Component {
     if (user) {
       this.setState({ currentUser: user });
     }
-    // Aplica los estilos iniciales según la ruta actual
     this.updateStyles();
   }
 
@@ -55,7 +68,6 @@ class Navbar extends Component {
     this.setState({ currentUser: user });
   };
 
-  // Función que actualiza el enlace al CSS según la ruta actual usando require()
   updateStyles() {
     let linkElement = document.getElementById("navbar-style");
     if (!linkElement) {
@@ -72,7 +84,6 @@ class Navbar extends Component {
     }
   }
 
-  // Se invoca cada vez que se dispara el evento de cambio de ruta
   handleRouteChange(event) {
     this.updateStyles();
   }
@@ -93,10 +104,12 @@ class Navbar extends Component {
     this.setState({ isDropdownVisible: false });
   };
 
+  // Función optimizada de logout usando useNavigate
   handleLogout = () => {
     userControl.Logout();
-    this.setState({ currentUser: null });
-    window.location.href = "/app/login";
+    this.setState({ currentUser: null }, () => {
+      this.props.navigate("/app/login");
+    });
   };
 
   renderMenuItems = () => {
@@ -111,28 +124,19 @@ class Navbar extends Component {
       ) {
         return (
           <li key={index}>
-            <Link
-              to={item.url}
-              style={{ textDecoration: "none" }}
-              onClick={this.closeDropdown}
-            >
+            <Link to={item.url} style={{ textDecoration: "none" }} onClick={this.closeDropdown}>
               <button className={item.cName}>{item.title}</button>
             </Link>
           </li>
         );
       }
-      if ((index === 0 || index === 1 || index === 3) && isAppPage)
-        return null;
+      if ((index === 0 || index === 1 || index === 3) && isAppPage) return null;
       if ((index === 2 || index === 4) && !isAppPage) return null;
       if ((index === 2 || index === 4) && effectiveUser) return null;
 
       return (
         <li key={index}>
-          <Link
-            className={item.cName}
-            to={item.url}
-            onClick={this.closeDropdown}
-          >
+          <Link className={item.cName} to={item.url} onClick={this.closeDropdown}>
             {item.title}
           </Link>
         </li>
@@ -149,14 +153,9 @@ class Navbar extends Component {
 
     return (
       <>
-        {/* Componente que escucha los cambios de ruta */}
         <RouteChangeListener />
         <nav className="NavbarItems">
-          <Link
-            className="nav-link-logo"
-            to={isAppPage ? "/app/" : "/"}
-            onClick={this.closeDropdown}
-          >
+          <Link className="nav-link-logo" to={isAppPage ? "/app/" : "/"} onClick={this.closeDropdown}>
             <div className="logoContainer">
               {logo && <img src={logo} alt="Logo" />}
               <h1 className="navbar-logo">{clubName}</h1>
@@ -164,28 +163,22 @@ class Navbar extends Component {
           </Link>
           <div className="burguer-menu-container" ref={this.menuRef}>
             <button
-              className={`${
-                isAppPage && effectiveUser
-                  ? "burguer-button-menu-isIn"
-                  : "burguer-button-menu"
-              } ${isDropdownVisible ? "active" : ""}`}
+              className={`${isAppPage && effectiveUser ? "burguer-button-menu-isIn" : "burguer-button-menu"} ${
+                isDropdownVisible ? "active" : ""
+              }`}
               onClick={this.toggleDropdown}
             >
               <i className="fa-solid fa-bars"></i>
             </button>
             {isDropdownVisible && (
-              <div className="burguer-dropdown-menu">
-                {this.renderMenuItems()}
-              </div>
+              <div className="burguer-dropdown-menu">{this.renderMenuItems()}</div>
             )}
           </div>
           <ul className="nav-menu">{this.renderMenuItems()}</ul>
           {effectiveUser && (
             <div className="user-menu-container" ref={this.menuRef}>
               <button
-                className={`user-button-menu ${
-                  isDropdownVisible ? "active" : ""
-                }`}
+                className={`user-button-menu ${isDropdownVisible ? "active" : ""}`}
                 onClick={this.toggleDropdown}
               >
                 <i className="fa-solid fa-circle-user"></i>
@@ -198,8 +191,7 @@ class Navbar extends Component {
                       to={option.path}
                       className="dropdown-item"
                       onClick={() => {
-                        if (option.label === "Cerrar sesión")
-                          this.handleLogout();
+                        if (option.label === "Cerrar sesión") this.handleLogout();
                         this.closeDropdown();
                       }}
                     >
@@ -216,4 +208,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withNavigation(Navbar);
