@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getAllAdmins } from "../../Ctrl/RolCtrl";
 import { createEvent } from "../../Ctrl/EventosCtrl";
-import { createEdificioEvento } from "../../Ctrl/EdificiosCtrl";
+import { createEdificioEvento, getEdificioName } from "../../Ctrl/EdificiosCtrl";
 import { createPedido, createProductoPedido } from "../../Ctrl/PedidoCtrl"
+import {getProductoByID} from "../../Ctrl/ProductoCtrl";
 import axios from "axios";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -32,6 +33,52 @@ const PurchaseSummary = () => {
         JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || []
     );
     const [pedidosAdicionales, setPedidosAdicionales] = useState("");
+    const [productosNombres, setProductosNombres] = useState({});
+
+    const [nombresEdificios, setNombresEdificios] = useState({});
+    
+        useEffect(() => {
+            const fetchEdificioNames = async () => {
+                const nombres = {};
+                await Promise.all(edificiosDummy.map(async (edificio) => {
+                    try {
+                        const nombre = await getEdificioName(edificio.id_edificio);
+                        nombres[edificio.id_edificio] = nombre;
+                    } catch (error) {
+                        console.error("Error obteniendo el nombre del edificio:", error);
+                        nombres[edificio.id_edificio] = `Edificio ${edificio.id_edificio}`;
+                    }
+                }));
+                setNombresEdificios(nombres);
+            };
+        
+            if (edificiosDummy.length > 0) {
+                fetchEdificioNames();
+            }
+        }, [edificiosDummy]);
+
+    useEffect(() => {
+        const fetchProductNames = async () => {
+            if (!productosPedido || !productosPedido.cantidad) return;
+            
+            const nombres = {};
+            await Promise.all(
+                Object.keys(productosPedido.cantidad).map(async (productId) => {
+                    try {
+                        const producto = await getProductoByID(productId);
+                        nombres[productId] = producto.nombre || `Producto ${productId}`; // Fallback en caso de error
+                    } catch (error) {
+                        console.error(`Error obteniendo el nombre del producto ${productId}:`, error);
+                        nombres[productId] = `Producto ${productId}`;
+                    }
+                })
+            );
+    
+            setProductosNombres(nombres);
+        };
+    
+        fetchProductNames();
+    }, [productosPedido]);
 
     useEffect(() => {
         const servicioExtra = JSON.parse(sessionStorage.getItem("pedidoDummy"));
@@ -318,8 +365,8 @@ const PurchaseSummary = () => {
                         {edificiosDummy.map((edificio, index) => (
                             <li key={index} className="list-item">
                                 <div className="detail-item">
-                                    <p1 className="detail-label">ID Edificio:</p1>
-                                    <p1 className="detail-value">{edificio.id_edificio}</p1>
+                                <p1 className="detail-label">Edificio:</p1>
+                                <p1 className="detail-value">{nombresEdificios[edificio.id_edificio] || "Cargando..."}</p1>
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Montaje Seleccionado:</p1>
@@ -337,31 +384,32 @@ const PurchaseSummary = () => {
                 <p className="no-data-message">No hay edificios seleccionados.</p>
             )}
 
-            {productosPedido && Object.keys(productosPedido.cantidad || {}).length > 0 ? (
-                <div className="event-section">
-                    <h2 className="section-title">Productos Seleccionados</h2>
-                    <ul className="list-container">
-                        {Object.keys(productosPedido.cantidad).map((productId, index) => (
-                            <li key={index} className="list-item">
-                                <div className="detail-item">
-                                    <p1 className="detail-label">ID Producto:</p1>
-                                    <p1 className="detail-value">{productId}</p1>
-                                </div>
-                                <div className="detail-item">
-                                    <p1 className="detail-label">Cantidad:</p1>
-                                    <p1 className="detail-value">{productosPedido.cantidad[productId]}</p1>
-                                </div>
-                                <div className="detail-item">
-                                    <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">{formatCurrency(productosPedido.subtotal[productId])}</p1>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ) : (
-                <p className="no-data-message">No hay productos seleccionados.</p>
-            )}
+{productosPedido && Object.keys(productosPedido.cantidad || {}).length > 0 ? (
+    <div className="event-section">
+        <h2 className="section-title">Productos Seleccionados</h2>
+        <ul className="list-container">
+            {Object.keys(productosPedido.cantidad).map((productId, index) => (
+                <li key={index} className="list-item">
+                    <div className="detail-item">
+                        <p1 className="detail-label">Producto:</p1>
+                        <p1 className="detail-value">{productosNombres[productId] || "Cargando..."}</p1>
+                    </div>
+                    <div className="detail-item">
+                        <p1 className="detail-label">Cantidad:</p1>
+                        <p1 className="detail-value">{productosPedido.cantidad[productId]}</p1>
+                    </div>
+                    <div className="detail-item">
+                        <p1 className="detail-label">Subtotal:</p1>
+                        <p1 className="detail-value">{formatCurrency(productosPedido.subtotal[productId])}</p1>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </div>
+) : (
+    <p className="no-data-message">No hay productos seleccionados.</p>
+)}
+
 
             {pedidoDummy && (
             <div className="event-section">

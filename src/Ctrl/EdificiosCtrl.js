@@ -41,7 +41,7 @@ export const getEdificiosByIdEvento = async (eventId) => {
     }
 };
 
-const getEdificioName = async (edificioId) => {
+export const getEdificioName = async (edificioId) => {
     try {
         const { data, error } = await supabase
             .from("edificios")
