@@ -12,10 +12,9 @@
 }
 
 .value-summary-text {
-    h3{
-        color: var(--secondary-container-color);
-    }
-  }
+    color: var(--secondary-container-color);
+
+}
 
 .summary-title {
     text-align: center;
@@ -30,9 +29,7 @@
 }
 
 .section-title {
-
-    margin-bottom: 15px;
-    font-size: 1.9rem;
+    color: var(--secondary-text-color);
 }
 
 .detail-item {
