@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import { getEventType } from "../Ctrl/TiposEventosCtrl";
 import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
-import {getPedidosByIdEvento} from "../Ctrl/PedidoCtrl";
+import {getPedidosByIdEvento, getPedidosAdicionalesByIdPedido} from "../Ctrl/PedidoCtrl";
 import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import { getPagosbyEventID } from "../Ctrl/PagosCtrl";
 import "./ShowEventStyles.css";
 import { formatCurrency } from "../Util/MoneyFormat";
 import { handleAcceso } from "../Util/AccessControl";
 
-import { getEventById, updateEventStatus } from "../Ctrl/EventosCtrl";
+import { getEventById, updateEventStatus, updateEventCostAndBalance } from "../Ctrl/EventosCtrl";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
@@ -24,6 +24,20 @@ const ShowEvent = () => {
     const [edificios, setEdificios] = useState([]);
     const [pedidos, setPedidos] = useState();
     const [error, setError] = useState(null);
+    const [pedidosAdicionales, setPedidosAdicionales] = useState("");
+    const [extraCharge, setExtraCharge] = useState(0);
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(3);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
 
     useEffect(() => {
         const verificarAcceso = async () => {
@@ -85,6 +99,7 @@ const ShowEvent = () => {
             try {
                 const pedidos = await getPedidosByIdEvento(id);
                 setPedidos(pedidos);
+                console.log(pedidos)
             } catch (err) {
                 console.error("Error obteniendo pedidos:", err);
                 setPedidos([]);
@@ -107,7 +122,42 @@ const ShowEvent = () => {
         };
         fetchEdificios();
     }, [id]);
-       
+
+    useEffect(() => {
+        const fetchPedidosAdicionales = async () => {
+            if (pedidos && pedidos.length > 0) {
+                try {
+                    const adicionales = await getPedidosAdicionalesByIdPedido(pedidos[0].id_pedido);
+                    setPedidosAdicionales(adicionales || "No aplica");
+                } catch (error) {
+                    console.error("Error obteniendo pedidos adicionales:", error.message);
+                    setPedidosAdicionales("No aplica");
+                }
+            }
+        };
+        fetchPedidosAdicionales();
+    }, [pedidos]); 
+    
+    const handleExtraChargeChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) { // Verifica que solo se ingresen números
+            setExtraCharge(parseInt(value, 10) || 0);
+        }
+    };
+    const handleAddExtraCharge = async () => {
+        const newTotalCost = eventInfo.costo_total + extraCharge;
+        const originalSaldoPendiente = parseFloat(eventInfo.saldo_pendiente);
+        const newSaldoPendiente = originalSaldoPendiente + extraCharge;
+        console.log(newSaldoPendiente);
+    
+        try {
+            await updateEventCostAndBalance(id, newTotalCost, newSaldoPendiente.toString());
+            setEventInfo({ ...eventInfo, costo_total: newTotalCost, saldo_pendiente: newSaldoPendiente.toString() });
+            setMessage("Cobro extra agregado y valores actualizados.");
+        } catch (error) {
+            setMessage(`Error al agregar el cobro extra: ${error.message}`);
+        }
+    };
 
     // Función para cambiar el estado a "Confirmado" y redirigir al calendario
     const handleGenerarEvento = async () => {
@@ -129,6 +179,8 @@ const ShowEvent = () => {
             console.error("Error al cambiar el estado del evento:", err);
         }
     };
+
+    
   
     const [loading, setLoading] = useState(false);
 
@@ -299,44 +351,44 @@ const ShowEvent = () => {
                     <div className="event-section">
                         <h2 className="section-title">Detalles del Evento</h2>
                         <div className="detail-item">
-                            <span className="detail-label">Nombre del Usuario:</span>
-                            <span className="detail-value">{userName}</span>
+                            <p1 className="detail-label">Nombre del Usuario:</p1>
+                            <p1 className="detail-value">{userName}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Tipo de Evento:</span>
-                            <span className="detail-value">{eventType}</span>
+                            <p1 className="detail-label">Tipo de Evento:</p1>
+                            <p1 className="detail-value">{eventType}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Fecha:</span>
-                            <span className="detail-value">{eventInfo.fecha}</span>
+                            <p1 className="detail-label">Fecha:</p1>
+                            <p1 className="detail-value">{eventInfo.fecha}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Hora de Inicio:</span>
-                            <span className="detail-value">{eventInfo.hora_inicio}</span>
+                            <p1 className="detail-label">Hora de Inicio:</p1>
+                            <p1 className="detail-value">{eventInfo.hora_inicio}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Hora de Fin:</span>
-                            <span className="detail-value">{eventInfo.hora_fin}</span>
+                            <p1 className="detail-label">Hora de Fin:</p1>
+                            <p1 className="detail-value">{eventInfo.hora_fin}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Detalles:</span>
-                            <span className="detail-value">{eventInfo.detalles}</span>
+                            <p1 className="detail-label">Detalles:</p1>
+                            <p1 className="detail-value">{eventInfo.detalles}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Número de Personas:</span>
-                            <span className="detail-value">{eventInfo.personas}</span>
+                            <p1 className="detail-label">Número de Personas:</p1>
+                            <p1 className="detail-value">{eventInfo.personas}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Estado:</span>
-                            <span className="detail-value">{eventInfo.estado}</span>
+                            <p1 className="detail-label">Estado:</p1>
+                            <p1 className="detail-value">{eventInfo.estado}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Costo Total:</span>
-                            <span className="detail-value">{formatCurrency(eventInfo.costo_total)}</span>
+                            <p1 className="detail-label">Costo Total:</p1>
+                            <p1 className="detail-value">{formatCurrency(eventInfo.costo_total)}</p1>
                         </div>
                         <div className="detail-item">
-                            <span className="detail-label">Saldo Pendiente:</span>
-                            <span className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</span>
+                            <p1 className="detail-label">Saldo Pendiente:</p1>
+                            <p1 className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</p1>
                         </div>
                     </div>
     
@@ -348,16 +400,16 @@ const ShowEvent = () => {
                                 {edificios.map((edificio) => (
                                     <li key={edificio.idedificio} className="list-item">
                                         <div className="detail-item">
-                                            <span className="detail-label">Edificio:</span>
-                                            <span className="detail-value">{edificio.nombre_edificio}</span>
+                                            <p1 className="detail-label">Edificio:</p1>
+                                            <p1 className="detail-value">{edificio.nombre_edificio}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Montaje:</span>
-                                            <span className="detail-value">{edificio.nombre_montaje}</span>
+                                            <p1 className="detail-label">Montaje:</p1>
+                                            <p1 className="detail-value">{edificio.nombre_montaje}</p1>
                                         </div>                                        
                                         <div className="detail-item">
-                                            <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</span>
+                                            <p1 className="detail-label">Subtotal:</p1>
+                                            <p1 className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p1>
                                         </div>
                                     </li>
                                 ))}
@@ -375,16 +427,16 @@ const ShowEvent = () => {
                                 {pedidos.map((pedido) => (
                                     <li key={pedido.idproducto_pedido} className="list-item">
                                         <div className="detail-item">
-                                            <span className="detail-label">Producto:</span>
-                                            <span className="detail-value">{pedido.nombre_producto}</span>
+                                            <p1 className="detail-label">Producto:</p1>
+                                            <p1 className="detail-value">{pedido.nombre_producto}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Cantidad:</span>
-                                            <span className="detail-value">{pedido.cantidad}</span>
+                                            <p1 className="detail-label">Cantidad:</p1>
+                                            <p1 className="detail-value">{pedido.cantidad}</p1>
                                         </div>
                                         <div className="detail-item">
-                                            <span className="detail-label">Subtotal:</span>
-                                            <span className="detail-value">{formatCurrency(pedido.subtotal)}</span>
+                                            <p1 className="detail-label">Subtotal:</p1>
+                                            <p1 className="detail-value">{formatCurrency(pedido.subtotal)}</p1>
                                         </div>
                                     </li>
                                 ))}
@@ -392,6 +444,37 @@ const ShowEvent = () => {
                         ) : (
                             <p className="no-data-message">No hay pedidos registrados para este evento.</p>
                         )}
+                    </div>
+
+                    <div className="event-section">
+                        <h2 className="section-title">Pedidos Adicionales</h2>
+                        <div className="detail-item">
+                            <p1 className="detail-label">Pedidos Adicionales:</p1>
+                            <p1 className="detail-value">{pedidosAdicionales || "No aplica"}</p1>
+                        </div>
+                    </div>
+
+                    <div className="event-section">
+                        <h2 className="section-title">Costo Total</h2>
+                        <div className="detail-item">
+                            <p1 className="detail-label">Costo Total:</p1>
+                            <p1 className="detail-value">{formatCurrency(eventInfo.costo_total)}</p1>
+                        </div>
+                    </div>
+                    <div className="event-section">
+                        <h2 className="section-title">Cobro servicios extra</h2>
+                        <div className="detail-item">
+                            <p1 className="detail-label">Cobro Extra:</p1>
+                            <input
+                                type="text"
+                                value={extraCharge}
+                                onChange={handleExtraChargeChange}
+                                placeholder="Ingrese el cobro extra"
+                            />
+                        </div>
+                        <button onClick={handleAddExtraCharge} className="confirm-button">
+                            Agregar Cobro Extra
+                        </button>
                     </div>
                 </div>
             ) : (
@@ -404,23 +487,16 @@ const ShowEvent = () => {
                     <>
                         {eventInfo.estado === "En Cotizacion" ? (
                             <>
-                                <div>
-                                    <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
-                                </div>
-                                <div>
-                                    <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
-                                </div>
+                                <button className="btn-approve" onClick={handleGenerarEvento}>Aprobar Cotización</button>
+
+                                <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Cotización</button>
+
                             </>
                         ) : (
                             <button className="btn-cancel" onClick={handleCancelarEvento}>Cancelar Evento</button>
                         )}
                     </>
                 )}
-            </div>
-
-    
-            {/* Botones de Generación de PDF */}
-            <div className="pdf-buttons">
                 <button
                     onClick={generatePDF}
                     disabled={loading}
@@ -436,6 +512,7 @@ const ShowEvent = () => {
                     {loading ? "Generando Facturación..." : "Generar Facturación en PDF"}
                 </button>
             </div>
+           
         </div>
     );
 };

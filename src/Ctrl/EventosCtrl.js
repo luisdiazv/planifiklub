@@ -133,7 +133,7 @@ export const createEvent = async (eventoDummy) => {
 
 export const getEventIDsByUser = async (userID) => {
   try {
-    const { data, error } = await supabase.from("evento").select("*").eq("id_evento", userID);
+    const { data, error } = await supabase.from("evento").select("*").eq("id_usuario", userID);
 
     if (error) {
       console.error("Error obteniendo la lista de eventos del usuario:", error.message);
@@ -174,6 +174,71 @@ export const updateEventByID = async (eventID, newInfo) => {
   if (error) {
     console.error('Error actualizando evento:', error);
   } else {
-    console.log('Evento actualizado:', data);
+    console.log('Evento actualizado');
   }
 }
+
+export const getEventType = async (idtipos_eventos) => {
+  try {
+    const { data, error } = await supabase
+      .from("tipos_eventos")
+      .select("nombre")
+      .eq("idtipos_eventos", idtipos_eventos)
+      .single();
+
+    if (error) {
+      console.error("Error obteniendo el tipo de evento:", error.message);
+      throw new Error("No se pudo obtener el tipo de evento: " + error.message);
+    }
+
+    if (!data) {
+      throw new Error("No se encontró el tipo de evento con el ID proporcionado.");
+    }
+
+    return data.nombre; // Retorna el valor de la columna 'nombre'
+
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener el tipo de evento: " + error.message);
+  }
+};
+export const updateEventCostAndBalance = async (eventID, nuevoCosto, nuevoSaldo) => {
+  try {
+    const { data, error } = await supabase
+      .from('evento')
+      .update({ costo_total: nuevoCosto, saldo_pendiente: nuevoSaldo })
+      .eq('idevento', eventID);
+
+    if (error) {
+      console.error('Error actualizando costo y saldo del evento:', error.message);
+      throw new Error('No se pudo actualizar el costo y saldo del evento: ' + error.message);
+    }
+
+    console.log('Costo y saldo del evento actualizados:', data);
+    return data;
+  } catch (error) {
+    console.error('Error interno:', error.message);
+    throw new Error('Ocurrió un error al actualizar el costo y saldo del evento: ' + error.message);
+  }
+};
+
+export const updateEventBalance = async (eventID, nuevoSaldo) => {
+  try {
+    const { data, error } = await supabase
+      .from("evento")
+      .update({ saldo_pendiente: nuevoSaldo })
+      .eq("idevento", eventID);
+
+    if (error) {
+      console.error("Error actualizando saldo pendiente del evento:", error.message);
+      throw new Error("No se pudo actualizar el saldo pendiente del evento: " + error.message);
+    }
+
+    console.log("Saldo pendiente del evento actualizado:", data);
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al actualizar el saldo pendiente del evento: " + error.message);
+  }
+};
+

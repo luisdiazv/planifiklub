@@ -51,7 +51,7 @@ const getListaPedidos = async (pedidoId) => {
   }
 };
 
-const getInfoPedidos = async (pedidoId) => {
+export const getInfoPedidos = async (pedidoId) => {
   try {
     const { data, error } = await supabase
       .from("producto_pedido")
@@ -151,5 +151,177 @@ export const createProductoPedido = async (dummyProducto) => {
   } catch (error) {
       console.error("Error interno:", error.message);
       throw new Error("Ocurrió un error al crear la entrada en producto_pedido: " + error.message);
+  }
+};
+
+export const getPedidosAdicionalesByIdPedido = async (idPedido) => {
+  try {
+    const { data, error } = await supabase
+      .from("pedido")
+      .select("pedidos_adicionales")
+      .eq("idpedido", idPedido)
+      .single();
+
+    if (error) {
+      console.error("Error obteniendo pedidos adicionales:", error.message);
+      throw new Error("No se pudo obtener los pedidos adicionales: " + error.message);
+    }
+
+    return data.pedidos_adicionales;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los pedidos adicionales: " + error.message);
+  }
+};
+
+export const getPedidos = async (eventId) => {
+  try {
+    const { data, error } = await supabase
+      .from("pedido")
+      .select("*")
+      .eq("id_evento", eventId);
+
+    if (error) {
+      console.error("Error obteniendo los pedidos por id_evento:", error.message);
+      throw new Error("No se pudo obtener los pedidos por id_evento: " + error.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al obtener los pedidos por id_evento: " + error.message);
+  }
+};
+
+export const upsertEdificiosEvento = async (id_evento, edificiosDummy) => {
+  try {
+    // Obtener edificios ya registrados para el evento
+    const { data: edificiosExistentes, error: errorSelect } = await supabase
+      .from("edificios_evento")
+      .select("id_edificio")
+      .eq("id_evento", id_evento);
+
+    if (errorSelect) {
+      console.error("Error obteniendo edificios del evento:", errorSelect.message);
+      throw new Error("No se pudo obtener los edificios del evento");
+    }
+
+    // Convertir los existentes a un Set para fácil comparación
+    const edificiosRegistrados = new Set(edificiosExistentes.map(e => e.id_edificio));
+
+    for (const edificio of edificiosDummy) {
+      const { id_edificio, id_montaje_elegido, subtotal_alquiler } = edificio;
+
+      if (edificiosRegistrados.has(id_edificio)) {
+        // Si el edificio ya está en la BD, actualizar la información
+        const { error: errorUpdate } = await supabase
+          .from("edificios_evento")
+          .update({ id_montaje_elegido, subtotal_alquiler })
+          .match({ id_evento, id_edificio });
+
+        if (errorUpdate) {
+          console.error(`Error actualizando edificio ${id_edificio}:`, errorUpdate.message);
+          throw new Error("No se pudo actualizar el edificio del evento");
+        }
+      } else {
+        // Si el edificio no está en la BD, insertarlo
+        const { error: errorInsert } = await supabase
+          .from("edificios_evento")
+          .insert([{ id_evento, id_edificio, id_montaje_elegido, subtotal_alquiler }]);
+
+        if (errorInsert) {
+          console.error("Error insertando nuevo edificio:", errorInsert.message);
+          throw new Error("No se pudo insertar el nuevo edificio del evento");
+        }
+      }
+    }
+
+    console.log("Edificios del evento actualizados correctamente.");
+    return true;
+  } catch (error) {
+    console.error("Error interno en upsertEdificiosEvento:", error.message);
+    throw new Error("Ocurrió un error al actualizar los edificios del evento");
+  }
+};
+
+export const updatePedidoById = async (idpedido, pedido) => {
+  try {
+    const { id_evento, fecha_pedido, costo_total, pedidos_adicionales } = pedido;
+
+    const { data, error } = await supabase
+      .from("pedido")
+      .update({
+        id_evento,
+        fecha_pedido,
+        costo_total,
+        pedidos_adicionales
+      })
+      .eq("idpedido", idpedido);
+
+    if (error) {
+      console.error("Error actualizando el pedido:", error.message);
+      throw new Error("No se pudo actualizar el pedido: " + error.message);
+    }
+
+    console.log("Pedido actualizado correctamente");
+    return data;
+
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al actualizar el pedido: " + error.message);
+  }
+};
+
+export const upsertProductoPedido = async (idpedido, productoPedido) => {
+  try {
+    // Obtener los productos ya registrados para el pedido
+    const { data: productosExistentes, error: errorSelect } = await supabase
+      .from("producto_pedido")
+      .select("id_producto")
+      .eq("id_pedido", idpedido);
+
+    if (errorSelect) {
+      console.error("Error obteniendo productos del pedido:", errorSelect.message);
+      throw new Error("No se pudo obtener los productos del pedido");
+    }
+
+    // Convertir los existentes a un Set para fácil comparación
+    const productosRegistrados = new Set(productosExistentes.map(p => p.id_producto));
+
+    for (const producto of productoPedido.productos) {
+      console.log(producto);
+      const { id_producto, cantidad, subtotal } = producto;
+      const idProductoNumerico = Number(id_producto); // Convertir id_producto a número
+      console.log(productosRegistrados.has(idProductoNumerico));
+
+      if (productosRegistrados.has(idProductoNumerico)) {
+        // Si el producto ya está en la BD, actualizar la información
+        const { error: errorUpdate } = await supabase
+          .from("producto_pedido")
+          .update({ cantidad, subtotal })
+          .match({ id_pedido: idpedido, id_producto: idProductoNumerico });
+
+        if (errorUpdate) {
+          console.error(`Error actualizando producto ${id_producto}:`, errorUpdate.message);
+          throw new Error("No se pudo actualizar el producto del pedido");
+        }
+      } else {
+        // Si el producto no está en la BD, insertarlo
+        const { error: errorInsert } = await supabase
+          .from("producto_pedido")
+          .insert([{ id_pedido: idpedido, id_producto: idProductoNumerico, cantidad, subtotal }]);
+
+        if (errorInsert) {
+          console.error("Error insertando nuevo producto:", errorInsert.message);
+          throw new Error("No se pudo insertar el nuevo producto del pedido");
+        }
+      }
+    }
+
+    console.log("Productos del pedido actualizados correctamente.");
+    return true;
+  } catch (error) {
+    console.error("Error interno en upsertProductoPedido:", error.message);
+    throw new Error("Ocurrió un error al actualizar los productos del pedido");
   }
 };

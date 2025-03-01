@@ -1,5 +1,5 @@
 import React from "react";
-import "./footerStyles.css";
+import "./footerStyles-PK.css";
 import { Link } from "react-router-dom";
 import logo from "./imgs/LogoGolden.gif";
 

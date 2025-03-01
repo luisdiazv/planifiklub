@@ -1,5 +1,5 @@
 import "rc-time-picker/assets/index.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TimePicker from "rc-time-picker";
 import moment from "moment";
 import "./hourSelectorStyles.css";
@@ -7,9 +7,18 @@ import "./hourSelectorStyles.css";
 const isBeforeTime = (time1, time2) =>
     time1 && time2 && time1.minutes() + time1.hours() * 60 < time2.minutes() + time2.hours() * 60;
 
-export default function HourSelector({ value, onChange, disabledHours, minuteStep = 30 }) {
-    const [value1, setValue1] = useState(value ? value.clone() : null);
-    const [value2, setValue2] = useState(value ? value.clone().add(minuteStep, "minutes") : null);
+export default function HourSelector({ selectedHours, onChange, disabledHours, minuteStep = 30 }) {
+    const [value1, setValue1] = useState(selectedHours.start ? moment(selectedHours.start, "HH:mm:ss") : null);
+    const [value2, setValue2] = useState(selectedHours.end ? moment(selectedHours.end, "HH:mm:ss") : null);
+
+    useEffect(() => {
+        if (selectedHours.start) {
+            setValue1(moment(selectedHours.start, "HH:mm:ss"));
+        }
+        if (selectedHours.end) {
+            setValue2(moment(selectedHours.end, "HH:mm:ss"));
+        }
+    }, [selectedHours]);
 
     const handleValueChange1 = (newValue1) => {
         if (!newValue1) {
@@ -35,7 +44,7 @@ export default function HourSelector({ value, onChange, disabledHours, minuteSte
         onChange(value1, newValue2);
     };
 
-    // 🔹 Deshabilitar todas las horas menores o iguales a `value1`
+    // Deshabilitar todas las horas menores o iguales a `value1`
     const getDisabledHoursForValue2 = () => {
         if (!value1) return disabledHours;
         const selectedHour = value1.hour();
@@ -53,7 +62,7 @@ export default function HourSelector({ value, onChange, disabledHours, minuteSte
                     minuteStep={minuteStep}
                     showSecond={false}
                     onChange={handleValueChange1}
-                    format="hh:mm A"
+                    format="HH:mm"
                     className="hourSelector-input"
                 />
             </div>
@@ -61,13 +70,13 @@ export default function HourSelector({ value, onChange, disabledHours, minuteSte
                 <label className="hourSelector-label">Hora final del evento:</label>
                 <TimePicker
                     value={value2}
-                    disabledHours={getDisabledHoursForValue2} // 🔹 Aplica la restricción a value2
+                    disabledHours={getDisabledHoursForValue2} // Aplica la restricción a value2
                     minuteStep={minuteStep}
                     showSecond={false}
                     onChange={handleValueChange2}
-                    format="hh:mm A"
+                    format="HH:mm"
                     className="hourSelector-input"
-                    disabled={!value1} // 🔹 Bloquea hasta que value1 tenga un valor
+                    disabled={!value1} // Bloquea hasta que value1 tenga un valor
                 />
             </div>
         </div>
@@ -75,7 +84,7 @@ export default function HourSelector({ value, onChange, disabledHours, minuteSte
 }
 
 HourSelector.defaultProps = {
-    disabledHours: [0, 1, 2, 3, 4], // 🔹 Horas deshabilitadas iniciales
-    value: null,
+    disabledHours: [0, 1, 2, 3, 4], // Horas deshabilitadas iniciales
+    selectedHours: { start: null, end: null },
     minuteStep: 30,
 };

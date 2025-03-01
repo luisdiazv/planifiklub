@@ -31,12 +31,8 @@ export const MenuItems = [
 
 ];
 
+//    { path: "/app/VisorDeCotizaciones", label: "Mis eventos" }
 
-// No modifiques nada más
-
-// Mantén MenuItems y handleAcceso tal como están
-
-// Reemplaza dropdownOptions por una función que retorne las opciones filtradas
 export const getDropdownOptions = async () => {
     const options = [];
     if ( sessionStorage.getItem("currentUser") == null){

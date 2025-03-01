@@ -31,12 +31,6 @@
     position: relative;
 }
 
-.additionalService-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
 .additionalService-card {
     display: flex;
     justify-content: space-between;
@@ -50,7 +44,6 @@
     gap: 2rem;
     padding: 1.5rem;
     box-sizing: border-box;
-    width: 100%;
 
     input {
         flex: 1;

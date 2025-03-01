@@ -23,8 +23,11 @@ import ChangePassword from './routes/changePassword.jsx';
 
 // Manejo de eventos
 import Reservation from './routes/Reservation.jsx';
+import EdicionEventos from './routes/EdicionEventos.jsx';
 import ShowEvent from './routes/ShowEvent.jsx';
 import CalendarioEventos from './routes/CalendarioEventos.jsx';
+import VisorDeCotizaciones from './routes/VisorDeCotizaciones.jsx';
+import ResumenPago from './routes/ResumenPago.jsx'; 
 
 // Configuradores
 import ConfiguradorPaginaClub from './routes/Service/ColorService.jsx';
@@ -36,7 +39,12 @@ import ConfiguradorTipoEventos from './routes/Service/TipoEventoService.jsx';
 
 // Ruta no encontrada
 import NotFound from './routes/NotFound.jsx';
+// Ruta no autorizada
 import NotAuthorized from './routes/NotAuthorized.jsx';
+
+// Terminos y condiciones
+import TerminosCondicionesClub from './routes/TyC/Club.jsx';
+import TerminosCondicionesPlanifiKlub from './routes/TyC/PlanifiKlub.jsx';
 
 // Envolve ClubInfoProvider
 import { ClubInfoProvider } from './context/infoClubContext';
@@ -82,6 +90,9 @@ function App() {
             <Route path="/app/ShowEvent" element={<ShowEvent />} />
             <Route path="/app/CalendarioEventos" element={<CalendarioEventos />} />
             <Route path="/app/evento/:id" element={<ShowEvent />} />  {/* Ruta para evento específico */}
+            <Route path="/app/VisorDeCotizaciones" element={<VisorDeCotizaciones />} />
+            <Route path="/app/ResumenPago/:id" element={<ResumenPago />} />
+            <Route path="/app/EdicionEventos/:id" element={<EdicionEventos />} />
 
             {/* Configuradores */}
             <Route path="/app/usuarioConfig" element={<ConfiguradorUsuario />} /> {/* Solo Admin */}
@@ -91,9 +102,16 @@ function App() {
             <Route path="/app/tiposeventoConfig" element={<ConfiguradorTipoEventos />} /> {/*Solo Admin */}
             <Route path="/app/pageConfig" element={<ConfiguradorPaginaClub />} /> {/* Solo Admin */}
 
+            {/* Términos y condiciones */}
+            <Route path="/app/TerminosyCondiciones/Club" element={<TerminosCondicionesClub />} />
+            <Route path="/app/TerminosyCondiciones/PlanifiKlub" element={<TerminosCondicionesPlanifiKlub />} />
+            
             {/* Ruta no encontrada */}
             <Route path="/app/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
+
+            {/* Ruta no autorizada */}
+            <Route path="/app/502" element={<NotAuthorized />} />
 
           </Routes>
         </div>
