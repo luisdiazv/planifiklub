@@ -52,7 +52,7 @@ export const ClubInfoProvider = ({ children }) => {
           table: "informacion_club",
         },
         (payload) => {
-          console.log("Actualización recibida:", payload);
+          
           if (payload.new.logo) {
             setLogo(payload.new.logo);
             localStorage.setItem("clubLogo", payload.new.logo);

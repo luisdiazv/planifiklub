@@ -39,7 +39,7 @@ class UserControl {
         }
 
         const roles = await getRolByUser(this.currentUser.idusuario);
-        console.log(roles.length)
+        
         if (roles.length === 0) {
             console.error("El usuario no tiene roles asignados");
             return false;

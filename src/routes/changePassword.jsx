@@ -52,7 +52,7 @@ const ChangePassword = ({ userEmail }) => {
     const validarPassword = (password) => {
         const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{}|;:'",.<>?/\\-]).{8,}$/;
         const testResult = regex.test(password);
-        console.log("Resultado de la prueba de password:", testResult);
+        
         return testResult;
     };
 
@@ -61,7 +61,7 @@ const ChangePassword = ({ userEmail }) => {
           const usuario = await getUsuarioByEmail(email);
           return usuario !== null;  // Retorna true si existe, false si no.
         } catch (error) {
-          console.log("El correo no está registrado.");
+          
           setErrorMessage("Correo no registrado");
           return false;
         }

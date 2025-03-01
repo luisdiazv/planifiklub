@@ -41,7 +41,7 @@ const EditProfile = () => {
         const cargarDatosUsuario = async () => {
             try {
                 const usuario = userControl.getCurrentUser();
-                console.log("Usuario cargado:", usuario); // Añadir para depuración
+                 // Añadir para depuración
                 if (usuario) {
                     setCorreo(usuario.correo);
                     setNombres(usuario.nombres);
@@ -98,7 +98,7 @@ const EditProfile = () => {
                 documento,
             };
 
-            console.log("Datos a actualizar:", usuarioActualizado);
+            
 
             const respuesta = await updateUsuario(correo, usuarioActualizado); // Utiliza solo los campos que se actualizan
 
@@ -107,7 +107,7 @@ const EditProfile = () => {
                 alert("Hubo un problema al actualizar el perfil.");
             } else {
                 // Actualiza los estados locales si la API devuelve los datos actualizados
-                console.log(respuesta)
+                
                 if (respuesta.nombres) setNombres(respuesta.nombres);
                 if (respuesta.apellidos) setApellidos(respuesta.apellidos);
                 if (respuesta.telefono) setTelefono(respuesta.telefono);

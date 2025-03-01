@@ -12,8 +12,8 @@ export const getPedidosByIdEvento = async (eventId) => {
       throw new Error("No se pudo obtener el id del pedido: " + error.message);
     }
     if (data.length > 0) {
-      console.log(eventId);
-      console.log(data[0]);
+      
+      
       return await getListaPedidos(data[0].idpedido);
     } else {
       return "ID de Pedido Desconocido";
@@ -119,7 +119,7 @@ export const createPedido = async (pedidoDummy) => {
 
       const idPedidoCreado = data?.[0]?.idpedido; // Obtiene la ID del evento insertado
 
-      console.log("Pedido creado correctamente. ID:", idPedidoCreado);
+      
       return idPedidoCreado; // Retorna solo la ID
 
   } catch (error) {
@@ -236,7 +236,7 @@ export const upsertEdificiosEvento = async (id_evento, edificiosDummy) => {
       }
     }
 
-    console.log("Edificios del evento actualizados correctamente.");
+    
     return true;
   } catch (error) {
     console.error("Error interno en upsertEdificiosEvento:", error.message);
@@ -263,7 +263,7 @@ export const updatePedidoById = async (idpedido, pedido) => {
       throw new Error("No se pudo actualizar el pedido: " + error.message);
     }
 
-    console.log("Pedido actualizado correctamente");
+    
     return data;
 
   } catch (error) {
@@ -289,10 +289,10 @@ export const upsertProductoPedido = async (idpedido, productoPedido) => {
     const productosRegistrados = new Set(productosExistentes.map(p => p.id_producto));
 
     for (const producto of productoPedido.productos) {
-      console.log(producto);
+      
       const { id_producto, cantidad, subtotal } = producto;
       const idProductoNumerico = Number(id_producto); // Convertir id_producto a número
-      console.log(productosRegistrados.has(idProductoNumerico));
+
 
       if (productosRegistrados.has(idProductoNumerico)) {
         // Si el producto ya está en la BD, actualizar la información
@@ -318,7 +318,7 @@ export const upsertProductoPedido = async (idpedido, productoPedido) => {
       }
     }
 
-    console.log("Productos del pedido actualizados correctamente.");
+    
     return true;
   } catch (error) {
     console.error("Error interno en upsertProductoPedido:", error.message);

@@ -5,7 +5,7 @@ export const getAllEdificio = async () => {
     try {
         const { data, error } = await supabase.from("edificios").select("*");
 
-        console.log("Edificios obtenidos:", data);
+        
         if (error) {
             console.error("Error obteniendo todos los edificios:", error);
             throw new Error("No se pudo obtener los edificios");
@@ -41,7 +41,7 @@ export const getEdificiosByIdEvento = async (eventId) => {
     }
 };
 
-const getEdificioName = async (edificioId) => {
+export const getEdificioName = async (edificioId) => {
     try {
         const { data, error } = await supabase
             .from("edificios")
@@ -239,7 +239,7 @@ export const upsertEdificiosEvento = async (id_evento, edificiosDummy) => {
         .eq("id_evento", id_evento);
   
       if (errorSelect) {
-        console.log("Error obteniendo edificios del evento:", errorSelect.message);
+        
         //throw new Error("No se pudo obtener los edificios del evento");
       }
   
@@ -273,7 +273,7 @@ export const upsertEdificiosEvento = async (id_evento, edificiosDummy) => {
         }
       }
   
-      console.log("Edificios del evento actualizados correctamente.");
+      
       
     } catch (error) {
       console.error("Error interno en upsertEdificiosEvento:", error.message);

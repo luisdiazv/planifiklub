@@ -5,7 +5,7 @@ export const getAllRoles = async () => {
   try {
     const { data, error } = await supabase.from("roles").select("*");
 
-    console.log("Roles obtenidos:", data);
+    
     if (error) {
       console.error("Error obteniendo todos los roles:", error);
       throw new Error("No se pudo obtener los roles");
@@ -26,14 +26,14 @@ export const getAllAdmins = async () => {
       .from('accesos')
       .select('id_usuario')
       .eq('id_rol', idRolAdministrativo);
-    console.log(accesos);
+    
     if (errorAccesos) {
       console.error('Error al obtener los accesos de los usuarios administrativos:', errorAccesos);
       return [];
     }
 
     const idsUsuarios = accesos.map(acceso => acceso.id_usuario);
-    console.log(idsUsuarios);
+    
 
     // Obtener los correos electrónicos de los usuarios administrativos
     const { data: usuarios, error: errorUsuarios } = await supabase
@@ -46,7 +46,7 @@ export const getAllAdmins = async () => {
       return [];
     }
 
-    console.log('Correos de usuarios administrativos:', usuarios);
+    
     return usuarios;
 
   } catch (error) {

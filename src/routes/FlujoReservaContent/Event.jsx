@@ -108,7 +108,7 @@ const EventDetails = () => {
         sessionStorage.setItem("eventoDummy", JSON.stringify(evento));
 
         const nextButton = document.getElementById("nextScreenSlider");
-        console.log(nextButton)
+        
         if (nextButton) {
             nextButton.click();
         }

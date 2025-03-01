@@ -66,7 +66,7 @@ export const saveMontajesEdificio = async (idEdificio, montajesSeleccionados) =>
       }
     }
 
-    console.log("Montajes guardados exitosamente para el edificio:", idEdificio);
+    
   } catch (error) {
     console.error("Error interno:", error);
     throw new Error("FATAL ERROR: No se pudo guardar los montajes del edificio");

@@ -42,7 +42,7 @@ const OurProducts = ({ id, handleNext }) => {
                     
                     
                     sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productosPedido));
-                    console.log(sessionStorage.getItem("productoPedidoDummy"));
+                    
     
                     // Actualizar el estado con los datos de productoPedidoDummy
                     const selected = {};
@@ -63,8 +63,8 @@ const OurProducts = ({ id, handleNext }) => {
                         cantidad: quantities,
                         subtotal: productosPedido[0].subtotal
                     };
-                    console.log("Datos del producto:", productoPedidoDummy);
-                    console.log("Cantidad:", productoPedidoDummy.cantidad, "Precio:", productoPedidoDummy.precio);
+                    
+                    
 
     
                     // Guardar productoPedidoDummy en sessionStorage
@@ -79,9 +79,9 @@ const OurProducts = ({ id, handleNext }) => {
     
                     // Simula el clic en el botón "Siguiente"
                    /* if (submitButtonRef.current) {
-                        console.log("Simulando clic en el botón 'Siguiente'");
-                        console.log("Subtotal:", productoPedidoDummy.subtotal);
-                        console.log("Total Price:", totalPrice);
+                        
+                        
+                        
                         submitButtonRef.current.click();
                     }*/
                 } else {
@@ -139,7 +139,7 @@ const OurProducts = ({ id, handleNext }) => {
             }
         });
     
-        console.log("Calculated Total Price:", total); // Ahora debería mostrar el total correcto
+         // Ahora debería mostrar el total correcto
         setTotalPrice(total);
     };
     
@@ -205,7 +205,7 @@ const OurProducts = ({ id, handleNext }) => {
             }
         });
     
-        console.log("Calculated Subtotals:", subtotals);
+        
         return subtotals;
     };
     const getStringPedidosAdicionales = () => {
@@ -248,13 +248,12 @@ const OurProducts = ({ id, handleNext }) => {
         updatedPedidoDummy.costo_total = parseFloat(totalPrice.toFixed(2));
         sessionStorage.setItem("pedidoDummy", JSON.stringify(updatedPedidoDummy));
 
-        console.log("Pedido actualizado:", updatedPedidoDummy);
+        
 
     
-        console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")));
-        console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")));
+
     
-        console.log("Pedido temporalmente guardado");
+        
     /*
         // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");

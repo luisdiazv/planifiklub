@@ -145,28 +145,28 @@ const ConfiguradorPaginaClub = () => {
     ];
 
     try {
-      console.log("Colores: ", colors);
+      
       // Se actualiza la información del club (nombre, descripción y colores)
       const updateResponse = await updateActualInfoClub(
         clubInfo.nombre,
         clubInfo.descripcion,
         colors
       );
-      console.log('Información del club actualizada:', updateResponse);
+      
 
       // Si se seleccionó un nuevo logo, se sube
       if (newLogo) {
         const uploadResult = await uploadActualLogoClub(newLogo);
-        console.log("Logo actualizado:", uploadResult);
+        
       }
 
-      console.log('Guardando configuración del club:', clubInfo, newLogo);
+      
       window.alert('Configuración guardada exitosamente.');
     } catch (err) {
       window.alert(err.message);
     }
 
-    console.log('INFO:', clubInfo);
+    
     window.location.reload();
   };
 
@@ -203,7 +203,7 @@ const ConfiguradorPaginaClub = () => {
   };
 
   const handleCancel = () => {
-    console.log('Operación cancelada.');
+    
     window.location.href = "/app";
   };
 

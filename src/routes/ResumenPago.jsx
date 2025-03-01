@@ -156,8 +156,8 @@ const ResumenPago = () => {
         if (/^\d*$/.test(value)) { // Solo números
             setInputValue(value); // Permite escribir el número
     
-            if (eventInfo.saldo_pendiente !== eventInfo.costo_total) {
-                const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
+            if (eventInfo.saldo_pendiente === eventInfo.costo_total) {
+                const porcentajeMinimo = cliente.socio ? porcentajeSocio : porcentajeNoSocio; 
                 const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
                 
                 if (Number(value) >= pagoMinimo) {
@@ -182,36 +182,51 @@ const ResumenPago = () => {
                 quantity: 1,
                 price: price,
             });
+
+            /*
+
+            const saldoPendiente = Number(eventInfo.saldo_pendiente);
+            const saldonuevo = saldoPendiente - price;
+            await updateEventBalance(eventInfo.idevento, saldonuevo.toString());*/
     
             if (response.data?.id) {
+                
                 return response.data.id;
             } else {
                 throw new Error("No se recibió un ID de preferencia válido.");
             }
+            
         } catch (error) {
             console.error("Error al crear la preferencia:", error);
             return null;
         }
+
+        
     };
     
 
     const handleBuy = async () => {
-        const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
-        const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
-    
-        if (price < pagoMinimo) {
-            alert(`El monto mínimo a pagar es ${formatCurrency(pagoMinimo)}.`);
-            return;
+        if (eventInfo.saldo_pendiente === eventInfo.costo_total) {
+            const porcentajeMinimo = cliente.socio ? porcentajeSocio : porcentajeNoSocio; 
+            const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
+            
+            if (Number(price) >= pagoMinimo) {
+                setPrice(parseInt(price, 10) || 0); // Solo actualiza el precio si es válido
+            } else {
+                setPrice(0); // No permite valores menores al mínimo
+            }
+        } else {
+            setPrice(parseInt(price, 10) || 0); 
         }
     
         const id = await createPreference();
         if (id) {
             setPreferenceId(id);  
         }
-    /*
+    
         const saldoPendiente = Number(eventInfo.saldo_pendiente);
         const saldonuevo = saldoPendiente - price;
-        await updateEventBalance(eventInfo.idevento, saldonuevo.toString());*/
+        await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
     };
     
 
@@ -357,15 +372,24 @@ const ResumenPago = () => {
                     texts: { valueProp: 'smart_option' },
                     button: { label: 'Pagar', color: 'default', textColor: 'white' }
                 }}
-                onReady={() => console.log("Pago iniciado")}
-                onSubmit={() => console.log("Pago enviado")}
                 onApprove={async (response) => {
-                    console.log("Pago aprobado:", response);
                     
+                    if (!response || !response.status) {
+                        console.error("La respuesta no tiene estado, posible error.");
+                        return;
+                    }
+                
+                    // Verifica si el pago fue aprobado
+                    if (response.status !== "approved") {
+                        console.warn("El pago no fue aprobado:", response.status);
+                        alert("El pago no fue aprobado.");
+                        return;
+                    }
                     // Aquí actualizas el saldo en la base de datos
-                    const saldoPendiente = Number(eventInfo.saldo_pendiente);
+                    
+                    /*const saldoPendiente = Number(eventInfo.saldo_pendiente);
                     const saldonuevo = saldoPendiente - price;
-                    await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
+                    await updateEventBalance(eventInfo.idevento, saldonuevo.toString());*/
                     
                     alert("Pago confirmado ");
                     //navigate("/ruta-exito");

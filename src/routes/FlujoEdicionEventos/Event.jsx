@@ -139,7 +139,7 @@ const EventDetails = ({ id, handleNext }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log("Submit button clicked");
+        
 
         if (selectedDate === null || selectedHours.start === null || selectedHours.end === null) {
             window.alert("Debes seleccionar la fecha y horas del evento.");

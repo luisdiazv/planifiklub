@@ -40,13 +40,13 @@ export const verificarUsuario = async (username, password) => {
 export const registrarUsuario = async (usuario) => {
   try {
     const { data, error } = await supabase.from("usuario").insert(usuario);
-    console.log(usuario);
+    
     if (error) {
       console.error("Error registrando usuario:", error.message);
       throw new Error("No se pudo registrar el usuario: " + error.message);
     }
 
-    console.log("Usuario registrado con éxito:", data);
+    
     return data;
   } catch (error) {
     console.error("Error interno:", error.message);
@@ -74,8 +74,8 @@ export const updateUsuario = async (email, updates) => {
     console.warn(updates);
     const { data, error } = await supabase.from("usuario").update(updates).eq("correo", email);
     const usuario = await getUsuarioByEmail(email);
-    console.log("Usuario encontrado:", usuario);
-    console.log("Datos actualizados:", data);
+    
+    
     if (error) {
       console.error(`Error al modificar usuario con ID ${email}:`, error);
       return { data: null, error };
@@ -164,7 +164,7 @@ export const actualizarPassword = async (email, newPassword) => {
       return false; // No se actualizó ningún registro
     }
 
-    console.log("Contraseña actualizada con éxito");
+    
     return true; // Contraseña actualizada exitosamente
   } catch (error) {
     console.error("Error interno:", error.message);

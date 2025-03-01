@@ -69,7 +69,7 @@ export const deleteFotoProducto = async (id) => {
       console.error("Error al eliminar la imagen:", error.message);
       throw new Error("No se pudo eliminar la imagen");
     }
-    console.log("Imagen eliminada exitosamente:", data);
+    
     return data;
   } catch (error) {
     console.error("Error al eliminar la imagen:", error.message);
@@ -85,7 +85,7 @@ export const deleteFotoEdificio = async (id) => {
       console.error("Error al eliminar la imagen:", error.message);
       throw new Error("No se pudo eliminar la imagen");
     }
-    console.log("Imagen eliminada exitosamente:", data);
+    
     return data;
   } catch (error) {
     console.error("Error al eliminar la imagen:", error.message);
@@ -190,7 +190,7 @@ export const deleteFotoTipoEvento = async (id) => {
       console.error("Error al eliminar la imagen:", error.message);
       throw new Error("No se pudo eliminar la imagen");
     }
-    console.log("Imagen eliminada exitosamente:", data);
+    
     return data;
   } catch (error) {
     console.error("Error al eliminar la imagen:", error.message);

@@ -9,7 +9,7 @@ const AppHome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('Datos del club en AppHome:', { logo, clubName });
+    
     const user = sessionStorage.getItem('currentUser');
     setIsLoggedIn(!!user);
   }, [logo, clubName]);
