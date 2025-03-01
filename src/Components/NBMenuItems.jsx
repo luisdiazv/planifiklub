@@ -31,8 +31,6 @@ export const MenuItems = [
 
 ];
 
-//    { path: "/app/VisorDeCotizaciones", label: "Mis eventos" }
-
 export const getDropdownOptions = async () => {
     const options = [];
     if ( sessionStorage.getItem("currentUser") == null){
@@ -58,6 +56,7 @@ export const getDropdownOptions = async () => {
     // 2: Reservar
     if (vistaIdle.includes(2)) {
       options.push({ path: "/app/reservation", label: "Reservar" });
+      options.push({ path: "/app/VisorDeCotizaciones", label: "Mis eventos" });
     }
   
     // 1: Editar perfil
