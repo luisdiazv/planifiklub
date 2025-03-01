@@ -40,6 +40,17 @@ const ShowEvent = () => {
     }, []);
 
     useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(3);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
+
+    useEffect(() => {
         const fetchEventInfo = async () => {
             try {
                 const data = await getEventById(id);
