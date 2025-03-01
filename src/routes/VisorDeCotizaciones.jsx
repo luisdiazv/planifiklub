@@ -107,7 +107,7 @@ const VisorDeCotizaciones = () => {
             <div className='container-visor-inner'>
                 <h2 className='title'>Visor de Cotizaciones</h2>
                 {eventos.length === 0 ? (
-                    <p>No se encontraron eventos asociados al ID.</p>
+                    <p>No se encontraron eventos asociados al usuario.</p>
                 ) : (
                     <ul>
                         {eventos.map(evento => (

@@ -157,10 +157,9 @@ const OurProducts = () => {
         sessionStorage.setItem("productoPedidoDummy", JSON.stringify(productoPedido));
 
 
-        console.log("Productos", JSON.parse(sessionStorage.getItem("pedidoDummy")))
-        console.log("Cantidad", JSON.parse(sessionStorage.getItem("productoPedidoDummy")))
+       
 
-        console.log("Pedido temporalmente guardado");
+        
 
         // Simula el clic en el botón con id "nextScreenSlider"
         const nextButton = document.getElementById("nextScreenSlider");

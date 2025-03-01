@@ -86,7 +86,7 @@ export const updateEventStatus = async (eventId, newStatus) => {
             throw new Error("No se pudo actualizar el estado del evento: " + error.message);
         }
 
-        console.log("Estado del evento actualizado correctamente.");
+        
     } catch (error) {
         console.error("Error interno:", error.message);
         throw new Error("Ocurrió un error al actualizar el estado del evento: " + error.message);
@@ -122,7 +122,7 @@ export const createEvent = async (eventoDummy) => {
 
       const idEventoCreado = data?.[0]?.idevento; // Obtiene la ID del evento insertado
 
-      console.log("Evento creado correctamente. ID:", idEventoCreado);
+      
       return idEventoCreado; // Retorna solo la ID
 
   } catch (error) {
@@ -174,7 +174,7 @@ export const updateEventByID = async (eventID, newInfo) => {
   if (error) {
     console.error('Error actualizando evento:', error);
   } else {
-    console.log('Evento actualizado');
+    
   }
 }
 
@@ -214,7 +214,7 @@ export const updateEventCostAndBalance = async (eventID, nuevoCosto, nuevoSaldo)
       throw new Error('No se pudo actualizar el costo y saldo del evento: ' + error.message);
     }
 
-    console.log('Costo y saldo del evento actualizados:', data);
+    
     return data;
   } catch (error) {
     console.error('Error interno:', error.message);
@@ -234,7 +234,7 @@ export const updateEventBalance = async (eventID, nuevoSaldo) => {
       throw new Error("No se pudo actualizar el saldo pendiente del evento: " + error.message);
     }
 
-    console.log("Saldo pendiente del evento actualizado:", data);
+    
     return data;
   } catch (error) {
     console.error("Error interno:", error.message);

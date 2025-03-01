@@ -284,7 +284,7 @@ const Register = () => {
                                         socio: false
                                     };
                                     const response = await registrarUsuario(user);
-                                    console.log("Usuario registrado: ", response);
+                                    
                                     alert("¡Registro exitoso!");
                                     navegar("/app/LogIn");
                                 } else {

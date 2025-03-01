@@ -51,10 +51,10 @@ const Calendario = () => {
             const eventDetails = await Promise.all(
                 eventIds.map(async (id) => {
                     const event = await getEventById(id);
-                    //console.log(event)
+                    //
                     if (!event || (event.estado !== "Aprobado" && event.estado !== "En Cotizacion" && event.estado !== "En Curso")) {
                         console.warn(`Evento con ID ${id} tiene un estado no válido.`);
-                        console.log(event.estado)
+                        
                         return null;
                     }
 
@@ -102,7 +102,7 @@ const Calendario = () => {
     const handleNavigate = (date) => {
         if (currentView === "month") {
             setCurrentMonth(dayjs(date).format("YYYY-MM"));
-            console.log(currentMonth);
+            
         }
     };
 
@@ -174,7 +174,7 @@ const Calendario = () => {
     }, [filter]); // Dependemos del filtro para actualizar la vista de eventos
 
     const handleEventClick = (event) => {
-        console.log(event.id); // Verifica que el evento tenga un id
+         // Verifica que el evento tenga un id
         if (event.id) {
             navigate(`/app/evento/${event.id}`);
         } else {

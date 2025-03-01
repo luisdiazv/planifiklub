@@ -18,34 +18,34 @@ export const updateAccesos = async (userId, roles) => {
   try {
     // Obtener los roles previos del usuario
     const prevData = await getRolByUser(userId);
-    console.log(prevData)
+    
     // Se actualiza para considerar ambos nombres de propiedad (id_rol o idroles)
     const prevRoles = prevData.map(role => role.id_rol || role.idroles);
     
-    console.log(prevRoles)
+    
 
     // 1. Filtrar los roles nuevos (aquellos que no están en prevRoles)
     const rolesToUpsert = roles.filter(role => !prevRoles.includes(role));
     
-    console.log(rolesToUpsert)
+    
 
     // 2. Filtrar los roles para eliminar (aquellos que están en prevRoles pero no en roles)
     const rolesToDelete = prevRoles.filter(role => !roles.includes(role));
     
-    console.log(rolesToDelete)
+    
 
     // Realizar el upsert de roles nuevos (añadir o actualizar roles)
     if (rolesToUpsert.length > 0) {
       const { data: upsertData, error: upsertError } = await supabase.from("accesos").upsert(
         rolesToUpsert.map(role => ({ id_usuario: userId, id_rol: role }))
       ).select();
-      console.log(upsertData)
+      
 
       if (upsertError) {
         console.error("Error al realizar el upsert:", upsertError);
         return;
       } else {
-        console.log("Upsert exitoso:", upsertData);
+        
       }
     }
 
@@ -61,13 +61,13 @@ export const updateAccesos = async (userId, roles) => {
         console.error("Error al eliminar roles:", deleteError);
         return;
       } else {
-        console.log("Roles eliminados:", deleteData);
+        
       }
     }
 
     // Si no hubo cambios
     if (rolesToUpsert.length === 0 && rolesToDelete.length === 0) {
-      console.log("No hay cambios para realizar.");
+      
     }
 
   } catch (error) {

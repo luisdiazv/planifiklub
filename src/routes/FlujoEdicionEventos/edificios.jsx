@@ -128,7 +128,7 @@ useEffect(() => {
         }
 
         const subtotal = edificio.costo_hora * time;
-        console.log(`Edificio ID: ${idEdificio}, Subtotal: ${subtotal}`);
+        
         if (!(selectedEdificios.size === 0 || !idMontaje)){
             return {
                 id_edificio: idEdificio,

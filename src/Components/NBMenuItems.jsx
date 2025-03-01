@@ -39,18 +39,18 @@ export const getDropdownOptions = async () => {
         ]
     }
     const user  = JSON.parse(sessionStorage.getItem("currentUser"));
-    console.log(user)
+    
     const roles = await getRolByUser(user.idusuario);
-    console.log(roles)
+    
     const acceso = await getVistaRolByRol(roles.map(objeto => objeto.id_rol));
-    console.log(acceso)
+    
     const vistaIdle = acceso.map(objeto => objeto.id_vista);
-    console.log(vistaIdle)
+    
    
-
+/*
     for (let i = 1; i <= 10; i++) {
-        console.log("A"+i+": "+vistaIdle.includes(1))
-      }
+        )
+      }*/
       
   
     // 2: Reservar

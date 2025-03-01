@@ -99,7 +99,7 @@ const ShowEvent = () => {
             try {
                 const pedidos = await getPedidosByIdEvento(id);
                 setPedidos(pedidos);
-                console.log(pedidos)
+                
             } catch (err) {
                 console.error("Error obteniendo pedidos:", err);
                 setPedidos([]);
@@ -148,7 +148,7 @@ const ShowEvent = () => {
         const newTotalCost = eventInfo.costo_total + extraCharge;
         const originalSaldoPendiente = parseFloat(eventInfo.saldo_pendiente);
         const newSaldoPendiente = originalSaldoPendiente + extraCharge;
-        console.log(newSaldoPendiente);
+        
     
         try {
             await updateEventCostAndBalance(id, newTotalCost, newSaldoPendiente.toString());

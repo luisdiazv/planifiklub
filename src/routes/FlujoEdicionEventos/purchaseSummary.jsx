@@ -134,7 +134,7 @@ const PurchaseSummary = ({id}) => {
                 { correo, nombres },
                 { headers: { "Content-Type": "application/json" } }
             );
-            //console.log("Respuesta del servidor:", response.data);
+            //
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -153,7 +153,7 @@ const PurchaseSummary = ({id}) => {
                 { correos },
                 { headers: { "Content-Type": "application/json" } }
             );
-           // console.log("Respuesta del servidor, admin:", response.data);
+           // 
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -189,7 +189,7 @@ const PurchaseSummary = ({id}) => {
             // Resto del código para confirmar la cotización...
             const horaInicio = formatTime(eventoDummy.hora_inicio);
             const horaFin = formatTime(eventoDummy.hora_fin);
-            console.log(eventoDummy.costo_total);
+            
             const eventoEditado = {
                 idevento: Number(id),
                 id_usuario: eventoDummy.id_usuario,
@@ -205,12 +205,12 @@ const PurchaseSummary = ({id}) => {
             };
     
             // Guardar el evento en la base de datos y obtener el ID generado
-            console.log("eventoEditado:", eventoEditado);
-            console.log("id:", id);
+            
+            
             try {
-                console.log("Antes de llamar a updateEventByID");
+                
                 await updateEventByID(id, eventoEditado);
-                console.log("Después de llamar a updateEventByID");
+                
             } catch (error) {
                 console.error("Error en updateEventByID:", error);
             }
@@ -223,17 +223,17 @@ const PurchaseSummary = ({id}) => {
                 subtotal_alquiler: edificio.subtotal_alquiler
             }));
     
-            console.log("Edificios:", edificiosEvento);
+            
             try {
-                console.log("Antes de llamar a upsertEdificiosEvento");
+                
                 await upsertEdificiosEvento(id, edificiosEvento);
-                console.log("Después de llamar a upsertEdificiosEvento");
+                
             } catch (error) {
                 console.error("Error en upsertEdificiosEvento:", error);
             }
     
             const productoPedidoDummy = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || {};
-            console.log("productoPedidoDummy:", productoPedidoDummy);
+            
     
             const productoPedido = {
                 id_pedido: productoPedidoDummy.id_pedido,
@@ -244,7 +244,7 @@ const PurchaseSummary = ({id}) => {
                 }))
             };
     
-            console.log("productoPedido:", productoPedido);
+            
     
             const pedidoDummy = JSON.parse(sessionStorage.getItem("pedidoDummy"));
             if (!pedidoDummy) throw new Error("pedidoDummy es null o undefined");
@@ -257,22 +257,22 @@ const PurchaseSummary = ({id}) => {
                 pedidos_adicionales: pedidoDummy.pedidos_adicionales
             };
     
-            console.log("Pedido Actual:", pedidoactual);
+            
     
             // Llamar a la función updatePedidoById
             try {
-                console.log("Antes de llamar a updatePedidoById");
+                
                 await updatePedidoById(pedidoactual.idpedido, pedidoactual);
-                console.log("Después de llamar a updatePedidoById");
+                
             } catch (error) {
                 console.error("Error en updatePedidoById:", error);
             }
     
             // Llamar a la función upsertProductoPedido
             try {
-                console.log("Antes de llamar a upsertProductoPedido");
+                
                 await upsertProductoPedido(productoPedido.id_pedido, productoPedido);
-                console.log("Después de llamar a upsertProductoPedido");
+                
             } catch (error) {
                 console.error("Error en upsertProductoPedido:", error);
             }

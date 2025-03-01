@@ -35,7 +35,7 @@ const PurchaseSummary = () => {
 
     useEffect(() => {
         const servicioExtra = JSON.parse(sessionStorage.getItem("pedidoDummy"));
-        console.log("servicioExtra:", servicioExtra);
+        
         if (servicioExtra && servicioExtra.pedidos_adicionales) {
             setPedidosAdicionales(servicioExtra.pedidos_adicionales);
         } else {
@@ -44,7 +44,7 @@ const PurchaseSummary = () => {
     }, [pedidoDummy]);
 
     useEffect(() => {
-        console.log("pedidosAdicionales actualizado:", pedidosAdicionales);
+        
     }, [pedidosAdicionales]);
 
     useEffect(() => {
@@ -129,7 +129,7 @@ const PurchaseSummary = () => {
                 { correo, nombres },
                 { headers: { "Content-Type": "application/json" } }
             );
-            console.log("Respuesta del servidor:", response.data);
+            
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -148,7 +148,7 @@ const PurchaseSummary = () => {
                 { correos },
                 { headers: { "Content-Type": "application/json" } }
             );
-            console.log("Respuesta del servidor, admin:", response.data);
+            
         } catch (error) {
             console.error("Error en la petición:", error);
         }
@@ -267,7 +267,7 @@ const PurchaseSummary = () => {
             alert("Cotización confirmada.");
             await enviarCorreoSocio(correo, `${nombre} ${apellido}`);
             await enviarCorreoAdmin();
-            console.log("Cotización confirmada con éxito.");
+            
 
             // Mover las líneas de eliminación de sessionStorage aquí
             sessionStorage.removeItem("eventoDummy");

@@ -8,7 +8,7 @@ export const enviarCodigoAuth = async (correo, nombres, codigo) => {
             { correo, nombres, codigo },
             { headers: { "Content-Type": "application/json" } }
         );
-        console.log("Respuesta del servidor:", response.data);
+        
         return true
     } catch (error) {
         console.error("Error en la petición:", error);
