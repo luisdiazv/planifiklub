@@ -166,11 +166,17 @@ const ResumenPago = () => {
     const createPreference = async () => {
         try {
             const requestUrl = `${process.env.REACT_APP_MERCADOPAGO_API_URL}/create_preference`;
+            const currentUrl = window.location.href;
+            
             const response = await axios.post(requestUrl, {
                 title: "Reserva de evento",
                 quantity: 1,
                 price: price,
+                success_url: currentUrl,
+                failure_url: currentUrl,
+                pending_url: currentUrl,
             });
+            
             if (response.data?.id) {
                 return response.data.id;
             } else {
@@ -180,7 +186,7 @@ const ResumenPago = () => {
             console.error("Error al crear la preferencia:", error);
             return null;
         }
-    };
+    };    
 
     const handleBuy = async () => {
         const porcentajeMinimo = cliente.socio ? 0.3 : 0.5;
