@@ -367,13 +367,17 @@ const PurchaseSummary = () => {
             )}
 
             {pedidoDummy && (
-                <div className="event-section">
-                    <h2 className="section-title">Pedidos Adicionales</h2>
-                    <div className="detail-item">
-                        <p1 className="detail-label">Pedidos Adicionales:</p1>
-                        <p1 className="detail-value">{pedidosAdicionales}</p1>
-                    </div>
+            <div className="event-section">
+                <h2 className="section-title">Pedidos Adicionales</h2>
+                <div className="detail-item">
+                <p className="detail-label">Pedidos Adicionales:</p>
+                <div className="pedidos-list">
+                    {pedidosAdicionales.split("%%").map((pedido, index) => (
+                    <p key={index} className="pedido-item">{pedido}</p>
+                    ))}
                 </div>
+                </div>
+            </div>
             )}
 
             <h2>Total de la cotización: ${totalCost}</h2>
