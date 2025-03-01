@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getEventIDsByUser, getEventType } from '../Ctrl/EventosCtrl'; // Asegúrate de ajustar la ruta según tu estructura de archivos
 import './VisorDeCotizacionesStyles.css';
+import { handleAcceso } from "../Util/AccessControl";
 
 const VisorDeCotizaciones = () => {
     const [eventos, setEventos] = useState([]);
@@ -12,6 +13,17 @@ const VisorDeCotizaciones = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(2);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+
         // Obtener el userID del sessionStorage
         const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
         if (currentUser && currentUser.idusuario) {
