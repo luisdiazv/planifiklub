@@ -168,7 +168,7 @@ const PurchaseSummary = () => {
 
             // Guardar el evento en la base de datos y obtener el ID generado
             const eventId = await createEvent(eventoDummy);
-            setMessage(`Cotización confirmada con éxito. ID del evento: ${eventId}`);
+            setMessage(`Cotización confirmada con éxito.`);
 
             // Actualizar el eventoDummy con el nuevo ID del evento y guardarlo en sessionStorage
             eventoDummy.id_evento = eventId;

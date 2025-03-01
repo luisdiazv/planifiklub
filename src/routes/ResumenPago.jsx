@@ -13,7 +13,7 @@ import { handleAcceso } from "../Util/AccessControl";
 
 const ResumenPago = () => {
     const { id } = useParams();
-    const navigate = useNavigate(); // Crear la instancia de navigate
+    const navigate = useNavigate(); // Instancia de navigate
     const [eventInfo, setEventInfo] = useState(null);
     const [userName, setUserName] = useState("");
     const [eventType, setEventType] = useState("");
@@ -39,13 +39,11 @@ const ResumenPago = () => {
         verificarAcceso();
     }, []);
 
-
     useEffect(() => {
         if (eventInfo?.id_usuario) {
             getUsuarioByID(eventInfo.id_usuario).then(setCliente).catch(console.error);
         }
     }, [eventInfo]);
-
 
     initMercadoPago('APP_USR-559230ce-2f09-4179-959c-855f9d01f382', {
         locale: "es-CO"
@@ -123,12 +121,9 @@ const ResumenPago = () => {
     }, [id]);
 
     useEffect(() => {
-
         if (eventInfo) {
             const saldoPendiente = Number(eventInfo.saldo_pendiente);
             const costoTotal = Number(eventInfo.costo_total);
-            
-
             if (saldoPendiente < costoTotal) {
                 setPrice(saldoPendiente);
             }
@@ -152,27 +147,21 @@ const ResumenPago = () => {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-        
         if (/^\d*$/.test(value)) { // Solo números
-            setInputValue(value); // Permite escribir el número
-    
+            setInputValue(value);
             if (eventInfo.saldo_pendiente !== eventInfo.costo_total) {
-                const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
-                const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
-                
+                const porcentajeMinimo = cliente.socio ? 0.3 : 0.5;
+                const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo);
                 if (Number(value) >= pagoMinimo) {
-                    setPrice(parseInt(value, 10) || 0); // Solo actualiza el precio si es válido
+                    setPrice(parseInt(value, 10) || 0);
                 } else {
-                    setPrice(0); // No permite valores menores al mínimo
+                    setPrice(0);
                 }
             } else {
-                setPrice(parseInt(value, 10) || 0); // Permite cualquier monto si saldo_pendiente === costo_total
+                setPrice(parseInt(value, 10) || 0);
             }
         }
     };
-    
-    
-    
 
     const createPreference = async () => {
         try {
@@ -182,7 +171,6 @@ const ResumenPago = () => {
                 quantity: 1,
                 price: price,
             });
-    
             if (response.data?.id) {
                 return response.data.id;
             } else {
@@ -193,27 +181,24 @@ const ResumenPago = () => {
             return null;
         }
     };
-    
 
     const handleBuy = async () => {
-        const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
-        const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
-    
+        const porcentajeMinimo = cliente.socio ? 0.3 : 0.5;
+        const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo);
         if (price < pagoMinimo) {
             alert(`El monto mínimo a pagar es ${formatCurrency(pagoMinimo)}.`);
             return;
         }
-    
         const id = await createPreference();
         if (id) {
-            setPreferenceId(id);  
+            setPreferenceId(id);
         }
-    /*
-        const saldoPendiente = Number(eventInfo.saldo_pendiente);
-        const saldonuevo = saldoPendiente - price;
-        await updateEventBalance(eventInfo.idevento, saldonuevo.toString());*/
+        /*
+            const saldoPendiente = Number(eventInfo.saldo_pendiente);
+            const saldonuevo = saldoPendiente - price;
+            await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
+        */
     };
-    
 
     return (
         <div className="showevent-container">
@@ -225,44 +210,44 @@ const ResumenPago = () => {
                     <div className="event-section">
                         <h2 className="section-title">Detalles del Evento</h2>
                         <div className="detail-item">
-                            <p1 className="detail-label">Nombre del Usuario:</p1>
-                            <p1 className="detail-value">{userName}</p1>
+                            <p className="detail-label">Nombre del Usuario:</p>
+                            <p className="detail-value">{userName}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Tipo de Evento:</p1>
-                            <p1 className="detail-value">{eventType}</p1>
+                            <p className="detail-label">Tipo de Evento:</p>
+                            <p className="detail-value">{eventType}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Fecha:</p1>
-                            <p1 className="detail-value">{eventInfo.fecha}</p1>
+                            <p className="detail-label">Fecha:</p>
+                            <p className="detail-value">{eventInfo.fecha}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Hora de Inicio:</p1>
-                            <p1 className="detail-value">{eventInfo.hora_inicio}</p1>
+                            <p className="detail-label">Hora de Inicio:</p>
+                            <p className="detail-value">{eventInfo.hora_inicio}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Hora de Fin:</p1>
-                            <p1 className="detail-value">{eventInfo.hora_fin}</p1>
+                            <p className="detail-label">Hora de Fin:</p>
+                            <p className="detail-value">{eventInfo.hora_fin}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Detalles:</p1>
-                            <p1 className="detail-value">{eventInfo.detalles}</p1>
+                            <p className="detail-label">Detalles:</p>
+                            <p className="detail-value">{eventInfo.detalles}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Número de Personas:</p1>
-                            <p1 className="detail-value">{eventInfo.personas}</p1>
+                            <p className="detail-label">Número de Personas:</p>
+                            <p className="detail-value">{eventInfo.personas}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Estado:</p1>
-                            <p1 className="detail-value">{eventInfo.estado}</p1>
+                            <p className="detail-label">Estado:</p>
+                            <p className="detail-value">{eventInfo.estado}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Costo Total:</p1>
-                            <p1 className="detail-value">{formatCurrency(eventInfo.costo_total)}</p1>
+                            <p className="detail-label">Costo Total:</p>
+                            <p className="detail-value">{formatCurrency(eventInfo.costo_total)}</p>
                         </div>
                         <div className="detail-item">
-                            <p1 className="detail-label">Saldo Pendiente:</p1>
-                            <p1 className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</p1>
+                            <p className="detail-label">Saldo Pendiente:</p>
+                            <p className="detail-value">{formatCurrency(eventInfo.saldo_pendiente)}</p>
                         </div>
                     </div>
 
@@ -274,16 +259,16 @@ const ResumenPago = () => {
                                 {edificios.map((edificio) => (
                                     <li key={edificio.idedificio} className="list-item">
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Edificio:</p1>
-                                            <p1 className="detail-value">{edificio.nombre_edificio}</p1>
+                                            <p className="detail-label">Edificio:</p>
+                                            <p className="detail-value">{edificio.nombre_edificio}</p>
                                         </div>
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Montaje:</p1>
-                                            <p1 className="detail-value">{edificio.nombre_montaje}</p1>
+                                            <p className="detail-label">Montaje:</p>
+                                            <p className="detail-value">{edificio.nombre_montaje}</p>
                                         </div>
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Subtotal:</p1>
-                                            <p1 className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p1>
+                                            <p className="detail-label">Subtotal:</p>
+                                            <p className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p>
                                         </div>
                                     </li>
                                 ))}
@@ -301,16 +286,16 @@ const ResumenPago = () => {
                                 {pedidos.map((pedido) => (
                                     <li key={pedido.idproducto_pedido} className="list-item">
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Producto:</p1>
-                                            <p1 className="detail-value">{pedido.nombre_producto}</p1>
+                                            <p className="detail-label">Producto:</p>
+                                            <p className="detail-value">{pedido.nombre_producto}</p>
                                         </div>
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Cantidad:</p1>
-                                            <p1 className="detail-value">{pedido.cantidad}</p1>
+                                            <p className="detail-label">Cantidad:</p>
+                                            <p className="detail-value">{pedido.cantidad}</p>
                                         </div>
                                         <div className="detail-item">
-                                            <p1 className="detail-label">Subtotal:</p1>
-                                            <p1 className="detail-value">{formatCurrency(pedido.subtotal)}</p1>
+                                            <p className="detail-label">Subtotal:</p>
+                                            <p className="detail-value">{formatCurrency(pedido.subtotal)}</p>
                                         </div>
                                     </li>
                                 ))}
@@ -326,17 +311,17 @@ const ResumenPago = () => {
             <div className="event-section">
                 <h2 className="section-title">Pedidos Adicionales</h2>
                 <div className="detail-item">
-                    <p1 className="detail-label">Pedidos Adicionales:</p1>
+                    <p className="detail-label">Pedidos Adicionales:</p>
                     {pedidosAdicionales.split("%%").map((pedido, index) => (
-                    <p1 key={index} className="pedido-item">{pedido}</p1>
+                        <p key={index} className="pedido-item">{pedido}</p>
                     ))}
                 </div>
-            </div>    
+            </div>
 
             <h2>Pago restante del evento: {eventInfo && formatCurrency(eventInfo.saldo_pendiente)}</h2>
             {eventInfo && Number(eventInfo.saldo_pendiente) === Number(eventInfo.costo_total) && (
                 <div className="input-container">
-                    <label htmlFor="saldo-pendiente-input" style={{color : "#3D0C01"}}>Cantidad a pagar:</label>
+                    <label htmlFor="saldo-pendiente-input" style={{ color: "#3D0C01" }}>Cantidad a pagar:</label>
                     <input
                         id="saldo-pendiente-input"
                         type="text"
@@ -349,29 +334,44 @@ const ResumenPago = () => {
             <button className="pagar" onClick={handleBuy}>Pagar</button>
             {preferenceId && (
                 <Wallet 
-                initialization={{
-                    preferenceId,
-                    redirectMode: "modal"
-                }}
-                customization={{
-                    texts: { valueProp: 'smart_option' },
-                    button: { label: 'Pagar', color: 'default', textColor: 'white' }
-                }}
-                onReady={() => console.log("Pago iniciado")}
-                onSubmit={() => console.log("Pago enviado")}
-                onApprove={async (response) => {
-                    console.log("Pago aprobado:", response);
-                    
-                    // Aquí actualizas el saldo en la base de datos
-                    const saldoPendiente = Number(eventInfo.saldo_pendiente);
-                    const saldonuevo = saldoPendiente - price;
-                    await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
-                    
-                    alert("Pago confirmado ");
-                    //navigate("/ruta-exito");
-                }}
-            />
-            
+                    initialization={{
+                        preferenceId,
+                        redirectMode: "modal"
+                    }}
+                    customization={{
+                        texts: { valueProp: 'smart_option' },
+                        button: { label: 'Pagar', color: 'default', textColor: 'white' }
+                    }}
+                    onReady={() => console.log("Pago iniciado")}
+                    onSubmit={() => console.log("Pago enviado")}
+                    onApprove={async (response) => {
+                        console.log("Pago aprobado:", response);
+                        // Se asume que el paymentId viene en response.data.id o response.id
+                        const paymentId = response.data?.id || response.id;
+                        if (!paymentId) {
+                            console.error("No se pudo obtener el paymentId de la respuesta");
+                            alert("Error al obtener el ID del pago");
+                            return;
+                        }
+                        try {
+                            const statusUrl = `${process.env.REACT_APP_MERCADOPAGO_API_URL}/payment-status`;
+                            const resStatus = await axios.post(statusUrl, { paymentId });
+                            console.log("Estado del pago:", resStatus.data);
+                            if (resStatus.data.status === "success") {
+                                const saldoPendiente = Number(eventInfo.saldo_pendiente);
+                                const saldonuevo = saldoPendiente - price;
+                                await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
+                                alert("Pago confirmado");
+                                // navigate("/ruta-exito");
+                            } else {
+                                alert("El pago no se realizó correctamente. Estado: " + resStatus.data.status);
+                            }
+                        } catch (error) {
+                            console.error("Error al verificar el estado del pago:", error);
+                            alert("Error al verificar el estado del pago");
+                        }
+                    }}
+                />
             )}
         </div>
     );
