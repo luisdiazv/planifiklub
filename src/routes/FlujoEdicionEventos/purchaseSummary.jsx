@@ -348,7 +348,7 @@ const PurchaseSummary = ({id}) => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${edificio.subtotal_alquiler}</p1>
+                                    <p1 className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p1>
                                 </div>
                             </li>
                         ))}
@@ -374,7 +374,7 @@ const PurchaseSummary = ({id}) => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${productosPedido.subtotal[productId]}</p1>
+                                    <p1 className="detail-value">{formatCurrency(productosPedido.subtotal[productId])}</p1>
                                 </div>
                             </li>
                         ))}
@@ -394,7 +394,7 @@ const PurchaseSummary = ({id}) => {
                 </div>
             )}
 
-            <h2>Total de la cotización: ${totalCost}</h2>
+            <h2>Total de la cotización: {formatCurrency(totalCost)}</h2>
             <div>
                 <button onClick={handleConfirmarCotizacion} disabled={loading} className="confirm-button">
                     {loading ? "Confirmando..." : "Confirmar la cotización"}

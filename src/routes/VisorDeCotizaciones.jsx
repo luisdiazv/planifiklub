@@ -79,7 +79,7 @@ const VisorDeCotizaciones = () => {
     }
 
     if (error) {
-        return <p>Error al cargar eventos: {error}</p>;
+        return <p>El usuario no cuenta con ningun evento creado</p>;
     }
 
     const handleEditarClick = (evento) => {

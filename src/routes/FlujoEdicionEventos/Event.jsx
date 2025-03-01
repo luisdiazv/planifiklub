@@ -268,7 +268,7 @@ const EventDetails = ({ id, handleNext }) => {
                     />
                 </div>
 
-                <button type="submit" >Guardar y Pasar a la Siguiente Sección</button>
+                <button type="submit" >Siguiente</button>
             </form>
         </div>
     );

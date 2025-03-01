@@ -142,17 +142,22 @@ const ResumenPago = () => {
         
         if (/^\d*$/.test(value)) { // Solo números
             setInputValue(value); // Permite escribir el número
-            
-            const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
-            const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
-            
-            if (Number(value) >= pagoMinimo) {
-                setPrice(parseInt(value, 10) || 0); // Solo actualiza el precio si es válido
+    
+            if (eventInfo.saldo_pendiente !== eventInfo.costo_total) {
+                const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
+                const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
+                
+                if (Number(value) >= pagoMinimo) {
+                    setPrice(parseInt(value, 10) || 0); // Solo actualiza el precio si es válido
+                } else {
+                    setPrice(0); // No permite valores menores al mínimo
+                }
             } else {
-                setPrice(0); // No permite valores menores al mínimo
+                setPrice(parseInt(value, 10) || 0); // Permite cualquier monto si saldo_pendiente === costo_total
             }
         }
     };
+    
     
     
 
