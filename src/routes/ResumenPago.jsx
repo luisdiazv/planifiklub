@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import { getEventType } from "../Ctrl/TiposEventosCtrl";
-import { getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
+import { getNombresApellidosById,  getUsuarioByID } from "../Ctrl/UsuarioCtrl";
 import { getPedidosByIdEvento, getPedidosAdicionalesByIdPedido } from "../Ctrl/PedidoCtrl";
 import { getEdificiosByIdEvento } from "../Ctrl/EdificiosCtrl";
 import "./ShowEventStyles.css";
 import { formatCurrency } from "../Util/MoneyFormat";
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from "axios";
-import { getEventById } from "../Ctrl/EventosCtrl";
+import { getEventById, updateEventBalance } from "../Ctrl/EventosCtrl";
 
 const ResumenPago = () => {
     const { id } = useParams();
@@ -23,6 +23,16 @@ const ResumenPago = () => {
     const [inputValue, setInputValue] = useState(""); // Estado para el valor del campo de entrada
     const [price, setPrice] = useState(0); // Estado para el valor del precio
     const [pedidosAdicionales, setPedidosAdicionales] = useState("");
+    const [cliente, setCliente] = useState(null);
+    const porcentajeSocio = 0.3;
+    const porcentajeNoSocio = 0.5;
+
+    useEffect(() => {
+        if (eventInfo?.id_usuario) {
+            getUsuarioByID(eventInfo.id_usuario).then(setCliente).catch(console.error);
+        }
+    }, [eventInfo]);
+
 
     initMercadoPago('APP_USR-559230ce-2f09-4179-959c-855f9d01f382', {
         locale: "es-CO"
@@ -100,9 +110,11 @@ const ResumenPago = () => {
     }, [id]);
 
     useEffect(() => {
+
         if (eventInfo) {
             const saldoPendiente = Number(eventInfo.saldo_pendiente);
             const costoTotal = Number(eventInfo.costo_total);
+            
 
             if (saldoPendiente < costoTotal) {
                 setPrice(saldoPendiente);
@@ -127,35 +139,63 @@ const ResumenPago = () => {
 
     const handleInputChange = (e) => {
         const value = e.target.value;
-        if (/^\d*$/.test(value)) { // Verifica que solo se ingresen números
-            setInputValue(value);
-            setPrice(parseInt(value, 10) || 0);
+        
+        if (/^\d*$/.test(value)) { // Solo números
+            setInputValue(value); // Permite escribir el número
+            
+            const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
+            const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
+            
+            if (Number(value) >= pagoMinimo) {
+                setPrice(parseInt(value, 10) || 0); // Solo actualiza el precio si es válido
+            } else {
+                setPrice(0); // No permite valores menores al mínimo
+            }
         }
     };
+    
+    
 
     const createPreference = async () => {
         try {
-            const request = process.env.REACT_APP_MERCADOPAGO_API_URL + "/create_preference";
-
-            const response = await axios.post(request, {
+            const requestUrl = `${process.env.REACT_APP_MERCADOPAGO_API_URL}/create_preference`;
+            const response = await axios.post(requestUrl, {
                 title: "Reserva de evento",
                 quantity: 1,
                 price: price,
             });
-
-            const { id } = response.data;
-            return id;
+    
+            if (response.data?.id) {
+                return response.data.id;
+            } else {
+                throw new Error("No se recibió un ID de preferencia válido.");
+            }
         } catch (error) {
             console.error("Error al crear la preferencia:", error);
+            return null;
         }
     };
+    
 
     const handleBuy = async () => {
+        const porcentajeMinimo = cliente.socio ? 0.3 : 0.5; // 30% si es socio, 50% si no
+        const pagoMinimo = Math.ceil(eventInfo.costo_total * porcentajeMinimo); // Cálculo del mínimo permitido
+    
+        if (price < pagoMinimo) {
+            alert(`El monto mínimo a pagar es ${formatCurrency(pagoMinimo)}.`);
+            return;
+        }
+    
         const id = await createPreference();
         if (id) {
-            setPreferenceId(id);  // Setea el ID de la preferencia si se recibe correctamente
+            setPreferenceId(id);  
         }
+    /*
+        const saldoPendiente = Number(eventInfo.saldo_pendiente);
+        const saldonuevo = saldoPendiente - price;
+        await updateEventBalance(eventInfo.idevento, saldonuevo.toString());*/
     };
+    
 
     return (
         <div className="showevent-container">
@@ -269,7 +309,9 @@ const ResumenPago = () => {
                 <h2 className="section-title">Pedidos Adicionales</h2>
                 <div className="detail-item">
                     <p1 className="detail-label">Pedidos Adicionales:</p1>
-                    <p1 className="detail-value">{pedidosAdicionales}</p1>
+                    {pedidosAdicionales.split("%%").map((pedido, index) => (
+                    <p1 key={index} className="pedido-item">{pedido}</p1>
+                    ))}
                 </div>
             </div>    
 
@@ -288,11 +330,30 @@ const ResumenPago = () => {
             )}
             <button className="pagar" onClick={handleBuy}>Pagar</button>
             {preferenceId && (
-                <Wallet
-                    initialization={{ preferenceId, redirectMode: "modal" }}
-                    customization={{ texts: { valueProp: 'smart_option' }, button: { label: 'Pagar', color: 'default', textColor: 'white' } }}
-                    className="mercado-pago-button"
-                />
+                <Wallet 
+                initialization={{
+                    preferenceId,
+                    redirectMode: "modal"
+                }}
+                customization={{
+                    texts: { valueProp: 'smart_option' },
+                    button: { label: 'Pagar', color: 'default', textColor: 'white' }
+                }}
+                onReady={() => console.log("Pago iniciado")}
+                onSubmit={() => console.log("Pago enviado")}
+                onApprove={async (response) => {
+                    console.log("Pago aprobado:", response);
+                    
+                    // Aquí actualizas el saldo en la base de datos
+                    const saldoPendiente = Number(eventInfo.saldo_pendiente);
+                    const saldonuevo = saldoPendiente - price;
+                    await updateEventBalance(eventInfo.idevento, saldonuevo.toString());
+                    
+                    alert("Pago confirmado ");
+                    //navigate("/ruta-exito");
+                }}
+            />
+            
             )}
         </div>
     );

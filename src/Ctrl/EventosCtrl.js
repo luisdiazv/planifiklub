@@ -221,3 +221,24 @@ export const updateEventCostAndBalance = async (eventID, nuevoCosto, nuevoSaldo)
     throw new Error('Ocurrió un error al actualizar el costo y saldo del evento: ' + error.message);
   }
 };
+
+export const updateEventBalance = async (eventID, nuevoSaldo) => {
+  try {
+    const { data, error } = await supabase
+      .from("evento")
+      .update({ saldo_pendiente: nuevoSaldo })
+      .eq("idevento", eventID);
+
+    if (error) {
+      console.error("Error actualizando saldo pendiente del evento:", error.message);
+      throw new Error("No se pudo actualizar el saldo pendiente del evento: " + error.message);
+    }
+
+    console.log("Saldo pendiente del evento actualizado:", data);
+    return data;
+  } catch (error) {
+    console.error("Error interno:", error.message);
+    throw new Error("Ocurrió un error al actualizar el saldo pendiente del evento: " + error.message);
+  }
+};
+
