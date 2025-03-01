@@ -1,0 +1,252 @@
+  .NavbarItems {
+    display: flex;
+    height: 70px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px 0 #3D0C01; /* var(--secondary-container-color) */
+    width: 100%;
+    background-color: #7C0A01; /* var(--container-color) */
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.nav-link-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-decoration: none;
+    padding-left: 1rem;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #CC9901; /* var(--button-color) */
+    cursor: pointer;
+}
+
+.logoContainer img {
+    height: 60px;
+}
+
+.navbar-logo {
+    font-size: calc(15px + 5vmin);
+    color: #CC9901; /* var(--button-color) */
+    font-family: 'FoghlihtenNo01';
+    font-weight: lighter;
+}
+
+.navbar-logo:hover {
+    color: #DAA520; /* var(--secondary-button-color) */
+}
+
+.menu-icons {
+    display: block;
+    cursor: pointer;
+    color: white; /* var(--text-color) */
+}
+
+.menu-icons i {
+    color: white; /* var(--text-color) */
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    list-style: none;
+    margin: 0;
+    padding-right: 1rem;
+}
+
+.nav-menu li {
+    display: flex;
+    margin: 0 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-links {
+    text-decoration: none;
+    color: white; /* var(--text-color) */
+    font-family: 'FoghlihtenNo01';
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.nav-links:hover {
+    color: #DAA520; /* var(--secondary-button-color) */
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-links-button {
+    margin-top: 0%;
+    width: 100%;
+    padding: 1.2rem;
+    font-weight: bold;
+    background-color: #CC9901; /* var(--button-color) */
+    color: #3D0C01; /* var(--secondary-text-color) */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    text-decoration: none;
+    font-family: 'FoghlihtenNo01';
+}
+
+.nav-links-button:hover {
+    transition: all 0.3s ease-in-out;
+    background-color: #DAA520; /* var(--secondary-button-color) */
+    color: white; /* var(--text-color) */
+}
+
+.user-button-menu {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    color: #CC9901; /* var(--button-color) */
+}
+
+.user-button-menu.active {
+    color: white; /* var(--text-color) */
+    /* Cambia el color del ícono a blanco */
+}
+
+.user-button-menu:hover {
+    color: white; /* var(--text-color) */
+    background-color: transparent;
+    /* Cambia el color al pasar el mouse */
+}
+
+/* Estilo para el menú desplegable */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border: none;
+    background-color: #7C0A01; /* var(--container-color) */
+    box-shadow: 0 4px 8px #3D0C01; /* var(--secondary-container-color) */
+    z-index: 1000;
+    padding: 10px;
+}
+
+/* Estilo para los elementos del menú */
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: white; /* var(--text-color) */
+    transition: background-color 0.3s;
+    text-align: start;
+}
+
+.dropdown-item:hover {
+    background-color: #3D0C01; /* var(--secondary-container-color) */
+}
+
+.burguer-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    border: none;
+    background-color: #7C0A01; /* var(--container-color) */
+    box-shadow: 0 4px 8px #3D0C01; /* var(--secondary-container-color) */
+    z-index: 1000;
+    padding: 10px;
+}
+
+.burguer-button-menu {
+    display: none;
+}
+
+.burguer-button-menu-isIn {
+    display: none;
+}
+
+.fa-solid {
+    font-size: max(calc(10px + 5vmin), 50px);
+}
+
+@media screen and (max-width: 1200px) {
+    .nav-menu {
+        display: none;
+    }
+
+    .navbar-logo {
+        display: flex;
+    }
+
+    .burguer-button-menu {
+        background: none;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+        font-size: calc(10px + 5vmin);
+        color: #CC9901; /* var(--button-color) */
+    }
+
+    .burguer-button-menu.active {
+        color: white; /* var(--text-color) */
+        /* Cambia el color del ícono a blanco */
+    }
+
+    .burguer-button-menu:hover {
+        color: white; /* var(--text-color) */
+        background-color: transparent;
+        /* Cambia el color al pasar el mouse */
+    }
+
+    .nav-links {
+        display: block;
+        padding: 8px 16px;
+        text-decoration: none;
+        color: white; /* var(--text-color) */
+        transition: background-color 0.3s;
+        text-align: start;
+    }
+
+    .nav-links:hover {
+        background-color: #3D0C01; /* var(--secondary-container-color) */
+    }
+
+    .nav-links-button {
+        margin-top: 0%;
+        width: 100%;
+        padding: 1.2rem;
+        font-weight: bold;
+        background-color: #3D0C01; /* var(--secondary-container-color) */
+        color: white; /* var(--text-color) */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        text-decoration: none;
+        font-family: 'FoghlihtenNo01';
+    }
+}

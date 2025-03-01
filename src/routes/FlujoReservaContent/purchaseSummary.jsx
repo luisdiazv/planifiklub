@@ -63,7 +63,7 @@ const PurchaseSummary = () => {
 
         return () => clearInterval(interval);
     }, []);
-
+  
     useEffect(() => {
         // Obtener los edificios guardados en sessionStorage
         const edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
@@ -85,9 +85,9 @@ const PurchaseSummary = () => {
         eventoDummy.costo_total = total;
 
         sessionStorage.setItem("eventoDummy", JSON.stringify(eventoDummy));
-        setEventoDummy(eventoDummy);  // 🔥 Actualizar el estado para reflejar el cambio en la UI
+        setEventoDummy(eventoDummy);  // Actualizar el estado para reflejar el cambio en la UI
 
-    }, [pedidoDummy, productoPedidoDummy]); // 🔄 Se ejecuta cuando cambian los pedidos o productos
+    }, [pedidoDummy, productoPedidoDummy]); // Se ejecuta cuando cambian los pedidos o productos
 
 
     useEffect(() => {
@@ -195,10 +195,10 @@ const PurchaseSummary = () => {
             }
 
             sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
-
-            // 🔹 Forzar actualización de productosPedido en el estado
+          
+            // Forzar actualización de productosPedido en el estado
             setProductosPedido(JSON.parse(sessionStorage.getItem("pedidoDummy")) || []);
-
+          
             await Promise.all(
                 edificiosDummy.map(async (edificio) => {
                     if (!edificio.id_edificio) {
@@ -228,7 +228,7 @@ const PurchaseSummary = () => {
                         Object.keys(productoPedidoDummy.cantidad || {}).map(async (productId) => {
                             const cantidad = productoPedidoDummy.cantidad?.[productId] ?? null;
                             const subtotal = productoPedidoDummy.subtotal?.[productId] ?? null;
-
+                          
                             if (cantidad === null || cantidad <= 0) {
                                 console.error(`Error: cantidad inválida para el producto ${productId}:`, cantidad);
                                 return; // Evitar inserciones con cantidad inválida
@@ -274,7 +274,6 @@ const PurchaseSummary = () => {
             sessionStorage.removeItem("edificiosDummy");
             sessionStorage.removeItem("pedidoDummy");
             sessionStorage.removeItem("productoPedidoDummy");
-            console.log("Datos eliminados de sessionStorage.");
             window.location.href = "/app";
 
         } catch (error) {
@@ -283,8 +282,6 @@ const PurchaseSummary = () => {
 
         setLoading(false);
     };
-
-
 
     return (
         <div className="purchase-summary-container">
