@@ -212,3 +212,71 @@ export const createEdificioEvento = async (dummyEdificio) => {
     }
 };
 
+export const getEdificiosAndMontajesByIdEvento = async (eventId) => {
+    try {
+        const { data, error } = await supabase
+            .from("edificios_evento")
+            .select("id_edificio, id_montaje_elegido, subtotal_alquiler")
+            .eq("id_evento", eventId);
+
+        if (error) {
+            console.error("Error obteniendo los edificios y montajes del evento:", error.message);
+            throw new Error("No se pudo obtener los edificios y montajes del evento: " + error.message);
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error interno:", error.message);
+        throw new Error("Ocurrió un error al obtener los edificios y montajes del evento: " + error.message);
+    }
+};
+export const upsertEdificiosEvento = async (id_evento, edificiosDummy) => {
+    try {
+      // Obtener edificios ya registrados para el evento
+      const { data: edificiosExistentes, error: errorSelect } = await supabase
+        .from("edificios_evento")
+        .select("id_edificio")
+        .eq("id_evento", id_evento);
+  
+      if (errorSelect) {
+        console.log("Error obteniendo edificios del evento:", errorSelect.message);
+        //throw new Error("No se pudo obtener los edificios del evento");
+      }
+  
+      // Convertir los existentes a un Set para fácil comparación
+      const edificiosRegistrados = new Set(edificiosExistentes.map(e => e.id_edificio));
+  
+      for (const edificio of edificiosDummy) {
+        const { id_edificio, id_montaje_elegido, subtotal_alquiler } = edificio;
+  
+        if (edificiosRegistrados.has(id_edificio)) {
+          // Si el edificio ya está en la BD, actualizar la información
+          const { error: errorUpdate } = await supabase
+            .from("edificios_evento")
+            .update({ id_montaje_elegido, subtotal_alquiler })
+            .match({ id_evento, id_edificio });
+  
+          if (errorUpdate) {
+            console.error(`Error actualizando edificio ${id_edificio}:`, errorUpdate.message);
+            //throw new Error("No se pudo actualizar el edificio del evento");
+          }
+        } else {
+          // Si el edificio no está en la BD, insertarlo
+          const { error: errorInsert } = await supabase
+            .from("edificios_evento")
+            .insert([{ id_evento, id_edificio, id_montaje_elegido, subtotal_alquiler }]);
+  
+          if (errorInsert) {
+            console.error("Error insertando nuevo edificio:", errorInsert.message);
+            //throw new Error("No se pudo insertar el nuevo edificio del evento");
+          }
+        }
+      }
+  
+      console.log("Edificios del evento actualizados correctamente.");
+      
+    } catch (error) {
+      console.error("Error interno en upsertEdificiosEvento:", error.message);
+      //throw new Error("Ocurrió un error al actualizar los edificios del evento");
+    }
+  };

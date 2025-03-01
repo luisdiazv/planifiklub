@@ -8,7 +8,7 @@ import axios from "axios";
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import "./PurchaseSummaryStyles.css";
-
+import { formatCurrency } from "../../Util/MoneyFormat";
 pdfMake.vfs = pdfFonts;
 
 const PurchaseSummary = () => {
@@ -26,17 +26,32 @@ const PurchaseSummary = () => {
     const [message, setMessage] = useState("");
     const [totalCost, setTotalCost] = useState(0);
     const [pedidoDummy, setPedidoDummy] = useState(() =>
-        JSON.parse(sessionStorage.getItem("pedidoDummy")) || []
+        JSON.parse(sessionStorage.getItem("pedidoDummy")) || {}
     );
     const [productoPedidoDummy, setProductoPedidoDummy] = useState(() =>
         JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || []
     );
+    const [pedidosAdicionales, setPedidosAdicionales] = useState("");
+
+    useEffect(() => {
+        const servicioExtra = JSON.parse(sessionStorage.getItem("pedidoDummy"));
+        console.log("servicioExtra:", servicioExtra);
+        if (servicioExtra && servicioExtra.pedidos_adicionales) {
+            setPedidosAdicionales(servicioExtra.pedidos_adicionales);
+        } else {
+            setPedidosAdicionales("No aplica");
+        }
+    }, [pedidoDummy]);
+
+    useEffect(() => {
+        console.log("pedidosAdicionales actualizado:", pedidosAdicionales);
+    }, [pedidosAdicionales]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             const newEvento = JSON.parse(sessionStorage.getItem("eventoDummy")) || {};
             const newEdificios = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
-            const newPedido = JSON.parse(sessionStorage.getItem("pedidoDummy")) || [];
+            const newPedido = JSON.parse(sessionStorage.getItem("pedidoDummy")) || {};
             const newProductoPedido = JSON.parse(sessionStorage.getItem("productoPedidoDummy")) || [];
 
             setEventoDummy(prev => JSON.stringify(prev) !== JSON.stringify(newEvento) ? newEvento : prev);
@@ -48,6 +63,7 @@ const PurchaseSummary = () => {
 
         return () => clearInterval(interval);
     }, []);
+  
     useEffect(() => {
         // Obtener los edificios guardados en sessionStorage
         const edificiosDummy = JSON.parse(sessionStorage.getItem("edificiosDummy")) || [];
@@ -69,9 +85,9 @@ const PurchaseSummary = () => {
         eventoDummy.costo_total = total;
 
         sessionStorage.setItem("eventoDummy", JSON.stringify(eventoDummy));
-        setEventoDummy(eventoDummy);  // 🔥 Actualizar el estado para reflejar el cambio en la UI
+        setEventoDummy(eventoDummy);  // Actualizar el estado para reflejar el cambio en la UI
 
-    }, [pedidoDummy, productoPedidoDummy]); // 🔄 Se ejecuta cuando cambian los pedidos o productos
+    }, [pedidoDummy, productoPedidoDummy]); // Se ejecuta cuando cambian los pedidos o productos
 
 
     useEffect(() => {
@@ -87,11 +103,18 @@ const PurchaseSummary = () => {
             setEdificiosDummy(JSON.parse(storedEdificios));
         }
         if (pedidoDummy) {
-            setPedido(JSON.parse(pedidoDummy));
+            setPedidoDummy(JSON.parse(pedidoDummy));
         }
         if (productoPedidoDummy) {
             setProductosPedido(JSON.parse(productoPedidoDummy));
         }
+    }, []);
+
+    useEffect(() => {
+        sessionStorage.removeItem("eventoDummy");
+        sessionStorage.removeItem("edificiosDummy");
+        sessionStorage.removeItem("pedidoDummy");
+        sessionStorage.removeItem("productoPedidoDummy");
     }, []);
 
     if (!eventoDummy) {
@@ -172,12 +195,10 @@ const PurchaseSummary = () => {
             }
 
             sessionStorage.setItem("pedidoDummy", JSON.stringify(pedidoDummy));
-
-
-            // 🔹 Forzar actualización de productosPedido en el estado
+          
+            // Forzar actualización de productosPedido en el estado
             setProductosPedido(JSON.parse(sessionStorage.getItem("pedidoDummy")) || []);
-
-
+          
             await Promise.all(
                 edificiosDummy.map(async (edificio) => {
                     if (!edificio.id_edificio) {
@@ -203,13 +224,11 @@ const PurchaseSummary = () => {
                 if (!productoPedidoDummy || !pedidoId) {
                     console.error("Error: productoPedidoDummy o pedidoId no están definidos.");
                 } else {
-
                     await Promise.all(
                         Object.keys(productoPedidoDummy.cantidad || {}).map(async (productId) => {
                             const cantidad = productoPedidoDummy.cantidad?.[productId] ?? null;
                             const subtotal = productoPedidoDummy.subtotal?.[productId] ?? null;
-
-
+                          
                             if (cantidad === null || cantidad <= 0) {
                                 console.error(`Error: cantidad inválida para el producto ${productId}:`, cantidad);
                                 return; // Evitar inserciones con cantidad inválida
@@ -239,24 +258,23 @@ const PurchaseSummary = () => {
                         })
                     );
                 }
-
-
             }
+
             const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
             const nombre = currentUser.nombres;
             const apellido = currentUser.apellidos;
             const correo = currentUser.correo;
             alert("Cotización confirmada.");
-            enviarCorreoSocio(correo, `${nombre} ${apellido}`);
-            enviarCorreoAdmin();
+            await enviarCorreoSocio(correo, `${nombre} ${apellido}`);
+            await enviarCorreoAdmin();
+            console.log("Cotización confirmada con éxito.");
 
+            // Mover las líneas de eliminación de sessionStorage aquí
             sessionStorage.removeItem("eventoDummy");
             sessionStorage.removeItem("edificiosDummy");
             sessionStorage.removeItem("pedidoDummy");
             sessionStorage.removeItem("productoPedidoDummy");
             window.location.href = "/app";
-
-
 
         } catch (error) {
             setMessage(`Error al confirmar la cotización: ${error.message}`);
@@ -267,10 +285,9 @@ const PurchaseSummary = () => {
 
     return (
         <div className="purchase-summary-container">
-            <h2 className="summary-title">Resumen de Compra</h2>
             {eventoDummy && (
                 <div className="event-section">
-                    <h3 className="section-title">Detalles del Evento</h3>
+                    <h2 className="section-title">Detalles del Evento</h2>
                     <div className="detail-item">
                         <p1 className="detail-label">Fecha:</p1>
                         <p1 className="detail-value">{eventoDummy.fecha}</p1>
@@ -296,7 +313,7 @@ const PurchaseSummary = () => {
 
             {edificiosDummy.length > 0 ? (
                 <div className="event-section">
-                    <h3 className="section-title">Edificios Seleccionados</h3>
+                    <h2 className="section-title">Edificios Seleccionados</h2>
                     <ul className="list-container">
                         {edificiosDummy.map((edificio, index) => (
                             <li key={index} className="list-item">
@@ -310,7 +327,7 @@ const PurchaseSummary = () => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${edificio.subtotal_alquiler}</p1>
+                                    <p1 className="detail-value">{formatCurrency(edificio.subtotal_alquiler)}</p1>
                                 </div>
                             </li>
                         ))}
@@ -322,7 +339,7 @@ const PurchaseSummary = () => {
 
             {productosPedido && Object.keys(productosPedido.cantidad || {}).length > 0 ? (
                 <div className="event-section">
-                    <h3 className="section-title">Productos Seleccionados</h3>
+                    <h2 className="section-title">Productos Seleccionados</h2>
                     <ul className="list-container">
                         {Object.keys(productosPedido.cantidad).map((productId, index) => (
                             <li key={index} className="list-item">
@@ -336,7 +353,7 @@ const PurchaseSummary = () => {
                                 </div>
                                 <div className="detail-item">
                                     <p1 className="detail-label">Subtotal:</p1>
-                                    <p1 className="detail-value">${productosPedido.subtotal[productId]}</p1>
+                                    <p1 className="detail-value">{formatCurrency(productosPedido.subtotal[productId])}</p1>
                                 </div>
                             </li>
                         ))}
@@ -346,8 +363,21 @@ const PurchaseSummary = () => {
                 <p className="no-data-message">No hay productos seleccionados.</p>
             )}
 
-            <h3 className="value-summary-text">Total de la cotización: ${totalCost}</h3>
+            {pedidoDummy && (
+            <div className="event-section">
+                <h2 className="section-title">Pedidos Adicionales</h2>
+                <div className="detail-item">
+                <p className="detail-label">Pedidos Adicionales:</p>
+                <div className="pedidos-list">
+                    {pedidosAdicionales.split("%%").map((pedido, index) => (
+                    <p key={index} className="pedido-item">{pedido}</p>
+                    ))}
+                </div>
+                </div>
+            </div>
+            )}
 
+            <h2>Total de la cotización: ${totalCost}</h2>
             <div>
                 <button onClick={handleConfirmarCotizacion} disabled={loading} className="confirm-button">
                     {loading ? "Confirmando..." : "Confirmar la cotización"}
