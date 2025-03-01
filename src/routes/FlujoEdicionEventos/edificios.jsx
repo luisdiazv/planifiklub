@@ -155,7 +155,9 @@ useEffect(() => {
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
       {!isEditable && <p>Debido al estado de su solicitud, para realizar modificaciones en este evento, comuníquese con la administración.</p>}
-        {edificios.map((edificio) => {
+        {edificios
+          .filter((edificio) => montajes.some((m) => m.id_edificio === edificio.idedificios))
+          .map((edificio) => {
           const montajesFiltrados = montajes.filter((m) => m.id_edificio === edificio.idedificios);
           return (
             <div key={edificio.idedificios} className="edificio-card">
