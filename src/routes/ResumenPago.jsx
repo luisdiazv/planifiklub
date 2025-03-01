@@ -9,6 +9,7 @@ import { formatCurrency } from "../Util/MoneyFormat";
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import axios from "axios";
 import { getEventById, updateEventBalance } from "../Ctrl/EventosCtrl";
+import { handleAcceso } from "../Util/AccessControl";
 
 const ResumenPago = () => {
     const { id } = useParams();
@@ -26,6 +27,18 @@ const ResumenPago = () => {
     const [cliente, setCliente] = useState(null);
     const porcentajeSocio = 0.3;
     const porcentajeNoSocio = 0.5;
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(2);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
+
 
     useEffect(() => {
         if (eventInfo?.id_usuario) {

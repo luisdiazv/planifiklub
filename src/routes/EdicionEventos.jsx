@@ -1,12 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import './ReservationStyles.css';
 import { useParams } from 'react-router-dom';
 import { sections } from "./EdicionEventosSection.jsx";
+import { handleAcceso } from "../Util/AccessControl";
 
 const EdicionEventos = () => {
     const { id } = useParams(); // Obtener el id de la URL
     const [activeSection, setActiveSection] = useState(0);
     const sliderRef = useRef(null);
+
+    useEffect(() => {
+            const verificarAcceso = async () => {
+                const acceso = await handleAcceso(2);
+                // Si no hay acceso, se asume que handleAcceso redirige a /404
+                if (!acceso) {
+                    return;
+                }
+            };
+            verificarAcceso();
+        }, []);
 
     // Función para manejar la selección de las secciones de la línea del tiempo
     const handleSectionClick = (index) => {
