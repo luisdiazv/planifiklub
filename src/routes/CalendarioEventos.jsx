@@ -9,6 +9,7 @@ import { getAllEventIds, getEventById, getAllEventIdsByMonth } from "../Ctrl/Eve
 import { getUsuarioByID, getNombresApellidosById } from "../Ctrl/UsuarioCtrl";
 import { useNavigate } from 'react-router-dom';
 import './CalendarioEventosStyles.css';
+import { handleAcceso } from '../Util/AccessControl';
 import { formatCurrency } from "../Util/MoneyFormat";
 
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -27,6 +28,17 @@ const Calendario = () => {
     const [loading, setLoading] = useState(false);
     const [currentView, setCurrentView] = useState("month");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const verificarAcceso = async () => {
+            const acceso = await handleAcceso(4);
+            // Si no hay acceso, se asume que handleAcceso redirige a /404
+            if (!acceso) {
+                return;
+            }
+        };
+        verificarAcceso();
+    }, []);
 
     const fetchEvents = async () => {
         try {

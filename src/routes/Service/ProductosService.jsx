@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Resizer from 'react-image-file-resizer';
-
+import { handleAcceso } from '../../Util/AccessControl';
 import {
   getProductosByNombre,
   updateProducto,
@@ -22,6 +22,17 @@ const ConfiguradorProductos = () => {
   const [previewFoto, setPreviewFoto] = useState(null);
   // Estado para el indicador de carga
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const verificarAcceso = async () => {
+        const acceso = await handleAcceso(10);
+        // Si no hay acceso, se asume que handleAcceso redirige a /404
+        if (!acceso) {
+            return;
+        }
+    };
+    verificarAcceso();
+}, []);
 
   const handleSearchByNombre = async () => {
     setError('');

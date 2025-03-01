@@ -107,6 +107,7 @@ function App() {
             <Route path="/app/TerminosyCondiciones/PlanifiKlub" element={<TerminosCondicionesPlanifiKlub />} />
             
             {/* Ruta no encontrada */}
+            <Route path="/app/404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
 
             {/* Ruta no autorizada */}
